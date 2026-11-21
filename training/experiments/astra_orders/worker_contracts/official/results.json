@@ -1,0 +1,3023 @@
+{
+  "artifact_catalog": [
+    {
+      "bytes": 8038,
+      "digest": "sha256:dd233507fba50fd83790d650ebc3d644e331639507c30059ad5ba082954efd6c",
+      "id": 14693882513,
+      "name": "f3-f3-1-attempt-1",
+      "run": 44869027245,
+      "sha": "ac77ff328406b4404de205c4ce62266ac0b181b8"
+    },
+    {
+      "bytes": 7932,
+      "digest": "sha256:a306112997d65a294a43e2b830fb67fe403b399b8897609414693e852666dfdc",
+      "id": 14693094197,
+      "name": "f3-f3-2-attempt-1",
+      "run": 44869027245,
+      "sha": "ac77ff328406b4404de205c4ce62266ac0b181b8"
+    },
+    {
+      "bytes": 7702,
+      "digest": "sha256:fc093d2def81865451df8967f52ea200f4436d96503fe2fe5097185ea13bfcb0",
+      "id": 14694108244,
+      "name": "f3-f3-3-attempt-1",
+      "run": 44869027245,
+      "sha": "ac77ff328406b4404de205c4ce62266ac0b181b8"
+    },
+    {
+      "bytes": 7863,
+      "digest": "sha256:7fb69eeba506ccd05e39e0c421f2c1788038c2a495ea90327f918e811e4edc5d",
+      "id": 14694588118,
+      "name": "f3-f3-4-attempt-1",
+      "run": 44869027245,
+      "sha": "ac77ff328406b4404de205c4ce62266ac0b181b8"
+    },
+    {
+      "bytes": 7142,
+      "digest": "sha256:1676564ba23ee5f2dd38c404e67f841875a920ed72d8bfa27b020fe1cffb55dc",
+      "id": 14693274221,
+      "name": "f3-f3-5-attempt-1",
+      "run": 44869027245,
+      "sha": "ac77ff328406b4404de205c4ce62266ac0b181b8"
+    },
+    {
+      "bytes": 7486,
+      "digest": "sha256:782a82291c3fcf4ef68ea37c4a53fea1fa9c4c172d9e6d269284a279dd8aec4d",
+      "id": 14694092995,
+      "name": "f3-f3-6-attempt-1",
+      "run": 44869027245,
+      "sha": "ac77ff328406b4404de205c4ce62266ac0b181b8"
+    },
+    {
+      "bytes": 5877,
+      "digest": "sha256:3d8c705bf51ee5d805f99ed12a75c9e2f4b26f9b3a8d3d845c1b1a5592fa49bf",
+      "id": 14694109151,
+      "name": "f3-f3-7-attempt-1",
+      "run": 44869027245,
+      "sha": "ac77ff328406b4404de205c4ce62266ac0b181b8"
+    },
+    {
+      "bytes": 6243,
+      "digest": "sha256:1fcdf3395f1ef4667f639f0909fa30397f072bf5bb389b9e5131b2253f0a1ac7",
+      "id": 14693599056,
+      "name": "f3-f3-8-attempt-1",
+      "run": 44869027245,
+      "sha": "ac77ff328406b4404de205c4ce62266ac0b181b8"
+    },
+    {
+      "bytes": 7389,
+      "digest": "sha256:2c186f693a95c6de059c80a8bdecc65817ddc72321456a884438e270a2db5b49",
+      "id": 14693302459,
+      "name": "f3-stock-1-attempt-1",
+      "run": 44869027245,
+      "sha": "ac77ff328406b4404de205c4ce62266ac0b181b8"
+    },
+    {
+      "bytes": 6653,
+      "digest": "sha256:165b90411bb88a19f2af2fa851c4ed86d89310b82654b99ab81397ae98e17ef8",
+      "id": 14694501625,
+      "name": "f3-stock-2-attempt-1",
+      "run": 44869027245,
+      "sha": "ac77ff328406b4404de205c4ce62266ac0b181b8"
+    },
+    {
+      "bytes": 6739,
+      "digest": "sha256:a35c25e0087516f3abb718faafd7783aeb0d47ebc366df04f448ef2c780beb5e",
+      "id": 14694255544,
+      "name": "f3-stock-3-attempt-1",
+      "run": 44869027245,
+      "sha": "ac77ff328406b4404de205c4ce62266ac0b181b8"
+    },
+    {
+      "bytes": 7558,
+      "digest": "sha256:19620957bb9eac185487d0984c1f69907e0e815e0f7d55e0f6d569629cd52c89",
+      "id": 14693974221,
+      "name": "f3-stock-4-attempt-1",
+      "run": 44869027245,
+      "sha": "ac77ff328406b4404de205c4ce62266ac0b181b8"
+    },
+    {
+      "bytes": 6620,
+      "digest": "sha256:9f5a5138dd614f8c54c05349c8640af219fd6a657a5fec3939c2dec9626433e9",
+      "id": 14693694440,
+      "name": "f3-stock-5-attempt-1",
+      "run": 44869027245,
+      "sha": "ac77ff328406b4404de205c4ce62266ac0b181b8"
+    },
+    {
+      "bytes": 6802,
+      "digest": "sha256:b04ee4d3d7dd78a26a25bb832fe97433441603cf1e21c34b79030af7f50867e0",
+      "id": 14694237211,
+      "name": "f3-stock-6-attempt-1",
+      "run": 44869027245,
+      "sha": "ac77ff328406b4404de205c4ce62266ac0b181b8"
+    },
+    {
+      "bytes": 5697,
+      "digest": "sha256:e470a80d6e193d03149998e64cae8bbb79dd55b51a77ca6042fee2336edc1f68",
+      "id": 14693182296,
+      "name": "f3-stock-7-attempt-1",
+      "run": 44869027245,
+      "sha": "ac77ff328406b4404de205c4ce62266ac0b181b8"
+    },
+    {
+      "bytes": 6703,
+      "digest": "sha256:684bcdc98f0956086473c1219ab9fc9c3e04a4a53a8dc8c4acb657f9173129fe",
+      "id": 14694351311,
+      "name": "f3-stock-8-attempt-1",
+      "run": 44869027245,
+      "sha": "ac77ff328406b4404de205c4ce62266ac0b181b8"
+    },
+    {
+      "bytes": 10245,
+      "digest": "sha256:bac8e7dd80954a3419186df7386f8a0b5dbfb63aaf1a817d9aa11474c04e2cb0",
+      "id": 14693674073,
+      "name": "f4-child-1-attempt-1",
+      "run": 44868991744,
+      "sha": "e24bbea34b7ddbd80ce6456ebbb2aaf40749c97b"
+    },
+    {
+      "bytes": 9271,
+      "digest": "sha256:a908f335624e0cc1da013922cf1e27e8380c5066953fb7427ecbd95a3223ae88",
+      "id": 14693399748,
+      "name": "f4-child-2-attempt-1",
+      "run": 44868991744,
+      "sha": "e24bbea34b7ddbd80ce6456ebbb2aaf40749c97b"
+    },
+    {
+      "bytes": 9705,
+      "digest": "sha256:8ee0fa4aa16bd969eb435aeb3835e24d7a8d166c1938a3a14f9cc7e6d119a3d2",
+      "id": 14693258276,
+      "name": "f4-child-3-attempt-1",
+      "run": 44868991744,
+      "sha": "e24bbea34b7ddbd80ce6456ebbb2aaf40749c97b"
+    },
+    {
+      "bytes": 9702,
+      "digest": "sha256:c425c4c643d73be764f549d72f06afe0360f727e8e1d751bd2f65a492cfddc69",
+      "id": 14694355945,
+      "name": "f4-child-4-attempt-1",
+      "run": 44868991744,
+      "sha": "e24bbea34b7ddbd80ce6456ebbb2aaf40749c97b"
+    },
+    {
+      "bytes": 9711,
+      "digest": "sha256:22bcb7362a6cfb9b7eab0e78d6e450c1f4a6b0aa64af94fd77cf79317ddb14ad",
+      "id": 14693873366,
+      "name": "f4-child-5-attempt-1",
+      "run": 44868991744,
+      "sha": "e24bbea34b7ddbd80ce6456ebbb2aaf40749c97b"
+    },
+    {
+      "bytes": 9300,
+      "digest": "sha256:d3aafa9547b2f39d1f2f3a5829e236b6ecc74682cdaa6fa3791fc19769067e59",
+      "id": 14693908622,
+      "name": "f4-child-6-attempt-1",
+      "run": 44868991744,
+      "sha": "e24bbea34b7ddbd80ce6456ebbb2aaf40749c97b"
+    },
+    {
+      "bytes": 8346,
+      "digest": "sha256:c605ec078fe5eebdc95fbc6b26814f2f8fa325ed177e0863118fa1e8924a5bc3",
+      "id": 14694055760,
+      "name": "f4-child-7-attempt-1",
+      "run": 44868991744,
+      "sha": "e24bbea34b7ddbd80ce6456ebbb2aaf40749c97b"
+    },
+    {
+      "bytes": 9050,
+      "digest": "sha256:c103db6cd9594f37c61b5e93eea79a24b18c5a909cc9f7e0fba820e0d358dcee",
+      "id": 14693829267,
+      "name": "f4-child-8-attempt-1",
+      "run": 44868991744,
+      "sha": "e24bbea34b7ddbd80ce6456ebbb2aaf40749c97b"
+    }
+  ],
+  "events": {
+    "child": {
+      "member_inspection_events": 0,
+      "supplied_example_repair_events": 0,
+      "tasks_with_inspection_event": 0
+    },
+    "f3": {
+      "member_inspection_events": 106,
+      "supplied_example_repair_events": 0,
+      "tasks_with_inspection_event": 30
+    },
+    "stock": {
+      "member_inspection_events": 0,
+      "supplied_example_repair_events": 0,
+      "tasks_with_inspection_event": 0
+    }
+  },
+  "grade_source": "Unchanged training/exam.py fixed held-out task grades after independent reexecution on the retained G55 body",
+  "kind_rule": "at least two of three graded tasks",
+  "kinds_passed": {
+    "child": 0,
+    "f3": 1,
+    "stock": 0
+  },
+  "member_delivery": {
+    "child": {
+      "any_checked_member_right": 5,
+      "body_right_without_a_logged_right_member": [],
+      "checked_member_right_but_body_failed": [
+        "x_h_edit_0",
+        "x_h_sim_0",
+        "x_h_tab_topn_2"
+      ]
+    },
+    "f3": {
+      "any_checked_member_right": 6,
+      "body_right_without_a_logged_right_member": [],
+      "checked_member_right_but_body_failed": [
+        "x_h_sim_0",
+        "x_h_sim_2"
+      ]
+    },
+    "stock": {
+      "any_checked_member_right": 9,
+      "body_right_without_a_logged_right_member": [],
+      "checked_member_right_but_body_failed": [
+        "x_h_edit_0",
+        "x_h_edit_2",
+        "x_h_quotes_2",
+        "x_h_sim_0",
+        "x_h_sim_2",
+        "x_h_tab_topn_0"
+      ]
+    }
+  },
+  "paired_changes": {
+    "f3": {
+      "gained": [
+        "x_h_edit_0",
+        "x_h_edit_2",
+        "x_h_tab_dates_0"
+      ],
+      "lost": [
+        "x_h_tab_topn_2",
+        "x_h_two_1"
+      ],
+      "net": 1
+    },
+    "f4": {
+      "gained": [
+        "x_h_edit_2",
+        "x_h_sim_2"
+      ],
+      "lost": [
+        "x_h_edit_1",
+        "x_h_tab_topn_2",
+        "x_h_two_1"
+      ],
+      "net": -1
+    }
+  },
+  "per_task": {
+    "x_h_edit_0": {
+      "child": {
+        "artifact_id": 14693674073,
+        "attempt": 1,
+        "inspections": 0,
+        "kind": "h_edit",
+        "members": [
+          {
+            "ok": false,
+            "seat": 1,
+            "worker": "t80+g55trunk"
+          },
+          {
+            "ok": true,
+            "seat": 2,
+            "worker": "t80+g55data"
+          },
+          {
+            "ok": false,
+            "seat": 3,
+            "worker": "t80+g55data2"
+          }
+        ],
+        "official_note": "",
+        "official_seconds": 94,
+        "ok": false,
+        "shard": 1,
+        "wasi_example_repair": 0
+      },
+      "f3": {
+        "artifact_id": 14693882513,
+        "attempt": 1,
+        "inspections": 3,
+        "kind": "h_edit",
+        "members": [
+          {
+            "ok": true,
+            "seat": 1,
+            "worker": "t80+g55trunk"
+          },
+          {
+            "ok": false,
+            "seat": 2,
+            "worker": "t80+g55data"
+          },
+          {
+            "ok": true,
+            "seat": 3,
+            "worker": "t80+g55data2"
+          }
+        ],
+        "official_note": "",
+        "official_seconds": 168,
+        "ok": true,
+        "shard": 1,
+        "wasi_example_repair": 0
+      },
+      "stock": {
+        "artifact_id": 14693302459,
+        "attempt": 1,
+        "inspections": 0,
+        "kind": "h_edit",
+        "members": [
+          {
+            "ok": false,
+            "seat": 1,
+            "worker": "t80+g55trunk"
+          },
+          {
+            "ok": false,
+            "seat": 2,
+            "worker": "t80+g55data"
+          },
+          {
+            "ok": true,
+            "seat": 3,
+            "worker": "t80+g55data2"
+          }
+        ],
+        "official_note": "",
+        "official_seconds": 186,
+        "ok": false,
+        "shard": 1,
+        "wasi_example_repair": 0
+      }
+    },
+    "x_h_edit_1": {
+      "child": {
+        "artifact_id": 14693399748,
+        "attempt": 1,
+        "inspections": 0,
+        "kind": "h_edit",
+        "members": [
+          {
+            "ok": false,
+            "seat": 1,
+            "worker": "t80+g55trunk"
+          },
+          {
+            "ok": false,
+            "seat": 2,
+            "worker": "t80+g55data"
+          },
+          {
+            "ok": false,
+            "seat": 3,
+            "worker": "t80+g55data2"
+          }
+        ],
+        "official_note": "",
+        "official_seconds": 154,
+        "ok": false,
+        "shard": 2,
+        "wasi_example_repair": 0
+      },
+      "f3": {
+        "artifact_id": 14693094197,
+        "attempt": 1,
+        "inspections": 4,
+        "kind": "h_edit",
+        "members": [
+          {
+            "ok": true,
+            "seat": 1,
+            "worker": "t80+g55trunk"
+          },
+          {
+            "ok": false,
+            "seat": 2,
+            "worker": "t80+g55data"
+          },
+          {
+            "ok": false,
+            "seat": 3,
+            "worker": "t80+g55data2"
+          },
+          {
+            "ok": true,
+            "seat": 4,
+            "worker": "t80+g53data2"
+          }
+        ],
+        "official_note": "",
+        "official_seconds": 141,
+        "ok": true,
+        "shard": 2,
+        "wasi_example_repair": 0
+      },
+      "stock": {
+        "artifact_id": 14694501625,
+        "attempt": 1,
+        "inspections": 0,
+        "kind": "h_edit",
+        "members": [
+          {
+            "ok": false,
+            "seat": 1,
+            "worker": "t80+g55trunk"
+          },
+          {
+            "ok": true,
+            "seat": 2,
+            "worker": "t80+g55data"
+          },
+          {
+            "ok": true,
+            "seat": 3,
+            "worker": "t80+g55data2"
+          }
+        ],
+        "official_note": "",
+        "official_seconds": 97,
+        "ok": true,
+        "shard": 2,
+        "wasi_example_repair": 0
+      }
+    },
+    "x_h_edit_2": {
+      "child": {
+        "artifact_id": 14693258276,
+        "attempt": 1,
+        "inspections": 0,
+        "kind": "h_edit",
+        "members": [
+          {
+            "ok": false,
+            "seat": 1,
+            "worker": "t80+g55trunk"
+          },
+          {
+            "ok": true,
+            "seat": 2,
+            "worker": "t80+g55data"
+          },
+          {
+            "ok": true,
+            "seat": 3,
+            "worker": "t80+g55data2"
+          }
+        ],
+        "official_note": "",
+        "official_seconds": 93,
+        "ok": true,
+        "shard": 3,
+        "wasi_example_repair": 0
+      },
+      "f3": {
+        "artifact_id": 14694108244,
+        "attempt": 1,
+        "inspections": 2,
+        "kind": "h_edit",
+        "members": [
+          {
+            "ok": true,
+            "seat": 1,
+            "worker": "t80+g55trunk"
+          },
+          {
+            "ok": true,
+            "seat": 2,
+            "worker": "t80+g55data"
+          }
+        ],
+        "official_note": "",
+        "official_seconds": 80,
+        "ok": true,
+        "shard": 3,
+        "wasi_example_repair": 0
+      },
+      "stock": {
+        "artifact_id": 14694255544,
+        "attempt": 1,
+        "inspections": 0,
+        "kind": "h_edit",
+        "members": [
+          {
+            "ok": false,
+            "seat": 1,
+            "worker": "t80+g55trunk"
+          },
+          {
+            "ok": false,
+            "seat": 2,
+            "worker": "t80+g55data"
+          },
+          {
+            "ok": true,
+            "seat": 3,
+            "worker": "t80+g55data2"
+          }
+        ],
+        "official_note": "",
+        "official_seconds": 195,
+        "ok": false,
+        "shard": 3,
+        "wasi_example_repair": 0
+      }
+    },
+    "x_h_prog_queue_0": {
+      "child": {
+        "artifact_id": 14694355945,
+        "attempt": 1,
+        "inspections": 0,
+        "kind": "h_prog_queue",
+        "members": [
+          {
+            "ok": false,
+            "seat": 1,
+            "worker": "t80+g55trunk"
+          }
+        ],
+        "official_note": "timed out after 900 s",
+        "official_seconds": 900,
+        "ok": false,
+        "shard": 4,
+        "wasi_example_repair": 0
+      },
+      "f3": {
+        "artifact_id": 14694588118,
+        "attempt": 1,
+        "inspections": 5,
+        "kind": "h_prog_queue",
+        "members": [
+          {
+            "ok": false,
+            "seat": 1,
+            "worker": "t80+g55trunk"
+          },
+          {
+            "ok": false,
+            "seat": 2,
+            "worker": "t80+g55data"
+          },
+          {
+            "ok": false,
+            "seat": 3,
+            "worker": "t80+g55data2"
+          },
+          {
+            "ok": false,
+            "seat": 4,
+            "worker": "t80+g53data2"
+          },
+          {
+            "ok": false,
+            "seat": 5,
+            "worker": "t80+g53data"
+          }
+        ],
+        "official_note": "",
+        "official_seconds": 608,
+        "ok": false,
+        "shard": 4,
+        "wasi_example_repair": 0
+      },
+      "stock": {
+        "artifact_id": 14693974221,
+        "attempt": 1,
+        "inspections": 0,
+        "kind": "h_prog_queue",
+        "members": [
+          {
+            "ok": false,
+            "seat": 1,
+            "worker": "t80+g55trunk"
+          },
+          {
+            "ok": false,
+            "seat": 2,
+            "worker": "t80+g55data"
+          },
+          {
+            "ok": false,
+            "seat": 3,
+            "worker": "t80+g55data2"
+          }
+        ],
+        "official_note": "",
+        "official_seconds": 408,
+        "ok": false,
+        "shard": 4,
+        "wasi_example_repair": 0
+      }
+    },
+    "x_h_prog_queue_1": {
+      "child": {
+        "artifact_id": 14693873366,
+        "attempt": 1,
+        "inspections": 0,
+        "kind": "h_prog_queue",
+        "members": [],
+        "official_note": "timed out after 900 s",
+        "official_seconds": 901,
+        "ok": false,
+        "shard": 5,
+        "wasi_example_repair": 0
+      },
+      "f3": {
+        "artifact_id": 14693274221,
+        "attempt": 1,
+        "inspections": 3,
+        "kind": "h_prog_queue",
+        "members": [
+          {
+            "ok": false,
+            "seat": 1,
+            "worker": "t80+g55trunk"
+          },
+          {
+            "ok": false,
+            "seat": 2,
+            "worker": "t80+g55data"
+          },
+          {
+            "ok": false,
+            "seat": 3,
+            "worker": "t80+g55data2"
+          }
+        ],
+        "official_note": "",
+        "official_seconds": 363,
+        "ok": false,
+        "shard": 5,
+        "wasi_example_repair": 0
+      },
+      "stock": {
+        "artifact_id": 14693694440,
+        "attempt": 1,
+        "inspections": 0,
+        "kind": "h_prog_queue",
+        "members": [],
+        "official_note": "timed out after 900 s",
+        "official_seconds": 901,
+        "ok": false,
+        "shard": 5,
+        "wasi_example_repair": 0
+      }
+    },
+    "x_h_prog_queue_2": {
+      "child": {
+        "artifact_id": 14693908622,
+        "attempt": 1,
+        "inspections": 0,
+        "kind": "h_prog_queue",
+        "members": [],
+        "official_note": "timed out after 900 s",
+        "official_seconds": 900,
+        "ok": false,
+        "shard": 6,
+        "wasi_example_repair": 0
+      },
+      "f3": {
+        "artifact_id": 14694092995,
+        "attempt": 1,
+        "inspections": 3,
+        "kind": "h_prog_queue",
+        "members": [
+          {
+            "ok": false,
+            "seat": 1,
+            "worker": "t80+g55trunk"
+          },
+          {
+            "ok": false,
+            "seat": 2,
+            "worker": "t80+g55data"
+          },
+          {
+            "ok": false,
+            "seat": 3,
+            "worker": "t80+g55data2"
+          }
+        ],
+        "official_note": "",
+        "official_seconds": 358,
+        "ok": false,
+        "shard": 6,
+        "wasi_example_repair": 0
+      },
+      "stock": {
+        "artifact_id": 14694237211,
+        "attempt": 1,
+        "inspections": 0,
+        "kind": "h_prog_queue",
+        "members": [],
+        "official_note": "timed out after 900 s",
+        "official_seconds": 900,
+        "ok": false,
+        "shard": 6,
+        "wasi_example_repair": 0
+      }
+    },
+    "x_h_prog_wrap_0": {
+      "child": {
+        "artifact_id": 14694055760,
+        "attempt": 1,
+        "inspections": 0,
+        "kind": "h_prog_wrap",
+        "members": [
+          {
+            "ok": false,
+            "seat": 1,
+            "worker": "t80+g55trunk"
+          },
+          {
+            "ok": false,
+            "seat": 2,
+            "worker": "t80+g55code2"
+          },
+          {
+            "ok": false,
+            "seat": 3,
+            "worker": "t80+g55code"
+          },
+          {
+            "ok": false,
+            "seat": 4,
+            "worker": "t80+g53code"
+          }
+        ],
+        "official_note": "",
+        "official_seconds": 324,
+        "ok": false,
+        "shard": 7,
+        "wasi_example_repair": 0
+      },
+      "f3": {
+        "artifact_id": 14694109151,
+        "attempt": 1,
+        "inspections": 3,
+        "kind": "h_prog_wrap",
+        "members": [
+          {
+            "ok": false,
+            "seat": 1,
+            "worker": "t80+g55trunk"
+          },
+          {
+            "ok": false,
+            "seat": 2,
+            "worker": "t80+g55code2"
+          },
+          {
+            "ok": false,
+            "seat": 3,
+            "worker": "t80+g55code"
+          }
+        ],
+        "official_note": "",
+        "official_seconds": 328,
+        "ok": false,
+        "shard": 7,
+        "wasi_example_repair": 0
+      },
+      "stock": {
+        "artifact_id": 14693182296,
+        "attempt": 1,
+        "inspections": 0,
+        "kind": "h_prog_wrap",
+        "members": [
+          {
+            "ok": false,
+            "seat": 1,
+            "worker": "t80+g55trunk"
+          },
+          {
+            "ok": false,
+            "seat": 2,
+            "worker": "t80+g55code2"
+          }
+        ],
+        "official_note": "",
+        "official_seconds": 57,
+        "ok": false,
+        "shard": 7,
+        "wasi_example_repair": 0
+      }
+    },
+    "x_h_prog_wrap_1": {
+      "child": {
+        "artifact_id": 14693829267,
+        "attempt": 1,
+        "inspections": 0,
+        "kind": "h_prog_wrap",
+        "members": [
+          {
+            "ok": false,
+            "seat": 1,
+            "worker": "t80+g55trunk"
+          },
+          {
+            "ok": false,
+            "seat": 2,
+            "worker": "t80+g55code2"
+          },
+          {
+            "ok": false,
+            "seat": 3,
+            "worker": "t80+g55code"
+          },
+          {
+            "ok": false,
+            "seat": 4,
+            "worker": "t80+g53code"
+          }
+        ],
+        "official_note": "",
+        "official_seconds": 647,
+        "ok": false,
+        "shard": 8,
+        "wasi_example_repair": 0
+      },
+      "f3": {
+        "artifact_id": 14693599056,
+        "attempt": 1,
+        "inspections": 5,
+        "kind": "h_prog_wrap",
+        "members": [
+          {
+            "ok": false,
+            "seat": 1,
+            "worker": "t80+g55trunk"
+          },
+          {
+            "ok": false,
+            "seat": 2,
+            "worker": "t80+g55code2"
+          },
+          {
+            "ok": false,
+            "seat": 3,
+            "worker": "t80+g55code"
+          },
+          {
+            "ok": false,
+            "seat": 4,
+            "worker": "t80+g53code"
+          }
+        ],
+        "official_note": "timed out after 900 s",
+        "official_seconds": 901,
+        "ok": false,
+        "shard": 8,
+        "wasi_example_repair": 0
+      },
+      "stock": {
+        "artifact_id": 14694351311,
+        "attempt": 1,
+        "inspections": 0,
+        "kind": "h_prog_wrap",
+        "members": [
+          {
+            "ok": false,
+            "seat": 1,
+            "worker": "t80+g55trunk"
+          },
+          {
+            "ok": false,
+            "seat": 2,
+            "worker": "t80+g55code2"
+          },
+          {
+            "ok": false,
+            "seat": 3,
+            "worker": "t80+g55code"
+          },
+          {
+            "ok": false,
+            "seat": 4,
+            "worker": "t80+g53code"
+          }
+        ],
+        "official_note": "",
+        "official_seconds": 416,
+        "ok": false,
+        "shard": 8,
+        "wasi_example_repair": 0
+      }
+    },
+    "x_h_prog_wrap_2": {
+      "child": {
+        "artifact_id": 14693674073,
+        "attempt": 1,
+        "inspections": 0,
+        "kind": "h_prog_wrap",
+        "members": [
+          {
+            "ok": false,
+            "seat": 1,
+            "worker": "t80+g55trunk"
+          },
+          {
+            "ok": false,
+            "seat": 2,
+            "worker": "t80+g55code2"
+          }
+        ],
+        "official_note": "",
+        "official_seconds": 311,
+        "ok": false,
+        "shard": 1,
+        "wasi_example_repair": 0
+      },
+      "f3": {
+        "artifact_id": 14693882513,
+        "attempt": 1,
+        "inspections": 4,
+        "kind": "h_prog_wrap",
+        "members": [
+          {
+            "ok": false,
+            "seat": 1,
+            "worker": "t80+g55trunk"
+          },
+          {
+            "ok": false,
+            "seat": 2,
+            "worker": "t80+g55code2"
+          },
+          {
+            "ok": false,
+            "seat": 3,
+            "worker": "t80+g55code"
+          }
+        ],
+        "official_note": "timed out after 900 s",
+        "official_seconds": 901,
+        "ok": false,
+        "shard": 1,
+        "wasi_example_repair": 0
+      },
+      "stock": {
+        "artifact_id": 14693302459,
+        "attempt": 1,
+        "inspections": 0,
+        "kind": "h_prog_wrap",
+        "members": [
+          {
+            "ok": false,
+            "seat": 1,
+            "worker": "t80+g55trunk"
+          },
+          {
+            "ok": false,
+            "seat": 2,
+            "worker": "t80+g55code2"
+          },
+          {
+            "ok": false,
+            "seat": 3,
+            "worker": "t80+g55code"
+          }
+        ],
+        "official_note": "",
+        "official_seconds": 282,
+        "ok": false,
+        "shard": 1,
+        "wasi_example_repair": 0
+      }
+    },
+    "x_h_quotes_0": {
+      "child": {
+        "artifact_id": 14693399748,
+        "attempt": 1,
+        "inspections": 0,
+        "kind": "h_quotes",
+        "members": [
+          {
+            "ok": false,
+            "seat": 1,
+            "worker": "t80+g55trunk"
+          },
+          {
+            "ok": false,
+            "seat": 2,
+            "worker": "t80+g55data"
+          }
+        ],
+        "official_note": "timed out after 900 s",
+        "official_seconds": 901,
+        "ok": false,
+        "shard": 2,
+        "wasi_example_repair": 0
+      },
+      "f3": {
+        "artifact_id": 14693094197,
+        "attempt": 1,
+        "inspections": 3,
+        "kind": "h_quotes",
+        "members": [
+          {
+            "ok": false,
+            "seat": 1,
+            "worker": "t80+g55trunk"
+          },
+          {
+            "ok": false,
+            "seat": 2,
+            "worker": "t80+g55data"
+          },
+          {
+            "ok": false,
+            "seat": 3,
+            "worker": "t80+g55data2"
+          }
+        ],
+        "official_note": "",
+        "official_seconds": 244,
+        "ok": false,
+        "shard": 2,
+        "wasi_example_repair": 0
+      },
+      "stock": {
+        "artifact_id": 14694501625,
+        "attempt": 1,
+        "inspections": 0,
+        "kind": "h_quotes",
+        "members": [
+          {
+            "ok": false,
+            "seat": 1,
+            "worker": "t80+g55trunk"
+          },
+          {
+            "ok": false,
+            "seat": 2,
+            "worker": "t80+g55data"
+          },
+          {
+            "ok": false,
+            "seat": 3,
+            "worker": "t80+g55data2"
+          }
+        ],
+        "official_note": "",
+        "official_seconds": 410,
+        "ok": false,
+        "shard": 2,
+        "wasi_example_repair": 0
+      }
+    },
+    "x_h_quotes_1": {
+      "child": {
+        "artifact_id": 14693258276,
+        "attempt": 1,
+        "inspections": 0,
+        "kind": "h_quotes",
+        "members": [
+          {
+            "ok": false,
+            "seat": 1,
+            "worker": "t80+g55trunk"
+          },
+          {
+            "ok": false,
+            "seat": 2,
+            "worker": "t80+g55data"
+          }
+        ],
+        "official_note": "timed out after 900 s",
+        "official_seconds": 901,
+        "ok": false,
+        "shard": 3,
+        "wasi_example_repair": 0
+      },
+      "f3": {
+        "artifact_id": 14694108244,
+        "attempt": 1,
+        "inspections": 5,
+        "kind": "h_quotes",
+        "members": [
+          {
+            "ok": false,
+            "seat": 1,
+            "worker": "t80+g55trunk"
+          },
+          {
+            "ok": false,
+            "seat": 2,
+            "worker": "t80+g55data"
+          },
+          {
+            "ok": false,
+            "seat": 3,
+            "worker": "t80+g55data2"
+          },
+          {
+            "ok": false,
+            "seat": 4,
+            "worker": "t80+g53data2"
+          },
+          {
+            "ok": false,
+            "seat": 5,
+            "worker": "t80+g53data"
+          }
+        ],
+        "official_note": "",
+        "official_seconds": 696,
+        "ok": false,
+        "shard": 3,
+        "wasi_example_repair": 0
+      },
+      "stock": {
+        "artifact_id": 14694255544,
+        "attempt": 1,
+        "inspections": 0,
+        "kind": "h_quotes",
+        "members": [
+          {
+            "ok": false,
+            "seat": 1,
+            "worker": "t80+g55trunk"
+          },
+          {
+            "ok": false,
+            "seat": 2,
+            "worker": "t80+g55data"
+          },
+          {
+            "ok": false,
+            "seat": 3,
+            "worker": "t80+g55data2"
+          }
+        ],
+        "official_note": "",
+        "official_seconds": 371,
+        "ok": false,
+        "shard": 3,
+        "wasi_example_repair": 0
+      }
+    },
+    "x_h_quotes_2": {
+      "child": {
+        "artifact_id": 14694355945,
+        "attempt": 1,
+        "inspections": 0,
+        "kind": "h_quotes",
+        "members": [
+          {
+            "ok": false,
+            "seat": 1,
+            "worker": "t80+g55trunk"
+          },
+          {
+            "ok": false,
+            "seat": 2,
+            "worker": "t80+g55data"
+          },
+          {
+            "ok": false,
+            "seat": 3,
+            "worker": "t80+g55data2"
+          }
+        ],
+        "official_note": "",
+        "official_seconds": 521,
+        "ok": false,
+        "shard": 4,
+        "wasi_example_repair": 0
+      },
+      "f3": {
+        "artifact_id": 14694588118,
+        "attempt": 1,
+        "inspections": 5,
+        "kind": "h_quotes",
+        "members": [
+          {
+            "ok": false,
+            "seat": 1,
+            "worker": "t80+g55trunk"
+          },
+          {
+            "ok": false,
+            "seat": 2,
+            "worker": "t80+g55data"
+          },
+          {
+            "ok": false,
+            "seat": 3,
+            "worker": "t80+g55data2"
+          },
+          {
+            "ok": false,
+            "seat": 4,
+            "worker": "t80+g53data2"
+          }
+        ],
+        "official_note": "timed out after 900 s",
+        "official_seconds": 901,
+        "ok": false,
+        "shard": 4,
+        "wasi_example_repair": 0
+      },
+      "stock": {
+        "artifact_id": 14693974221,
+        "attempt": 1,
+        "inspections": 0,
+        "kind": "h_quotes",
+        "members": [
+          {
+            "ok": false,
+            "seat": 1,
+            "worker": "t80+g55trunk"
+          },
+          {
+            "ok": false,
+            "seat": 2,
+            "worker": "t80+g55data"
+          },
+          {
+            "ok": false,
+            "seat": 3,
+            "worker": "t80+g55data2"
+          },
+          {
+            "ok": true,
+            "seat": 4,
+            "worker": "t80+g53data2"
+          }
+        ],
+        "official_note": "timed out after 900 s",
+        "official_seconds": 901,
+        "ok": false,
+        "shard": 4,
+        "wasi_example_repair": 0
+      }
+    },
+    "x_h_sim_0": {
+      "child": {
+        "artifact_id": 14693873366,
+        "attempt": 1,
+        "inspections": 0,
+        "kind": "h_sim",
+        "members": [
+          {
+            "ok": false,
+            "seat": 1,
+            "worker": "t80+g55trunk"
+          },
+          {
+            "ok": true,
+            "seat": 2,
+            "worker": "t80+g55code2"
+          },
+          {
+            "ok": false,
+            "seat": 3,
+            "worker": "t80+g55code"
+          }
+        ],
+        "official_note": "",
+        "official_seconds": 152,
+        "ok": false,
+        "shard": 5,
+        "wasi_example_repair": 0
+      },
+      "f3": {
+        "artifact_id": 14693274221,
+        "attempt": 1,
+        "inspections": 3,
+        "kind": "h_sim",
+        "members": [
+          {
+            "ok": false,
+            "seat": 1,
+            "worker": "t80+g55trunk"
+          },
+          {
+            "ok": false,
+            "seat": 2,
+            "worker": "t80+g55code2"
+          },
+          {
+            "ok": true,
+            "seat": 3,
+            "worker": "t80+g55code"
+          }
+        ],
+        "official_note": "",
+        "official_seconds": 151,
+        "ok": false,
+        "shard": 5,
+        "wasi_example_repair": 0
+      },
+      "stock": {
+        "artifact_id": 14693694440,
+        "attempt": 1,
+        "inspections": 0,
+        "kind": "h_sim",
+        "members": [
+          {
+            "ok": false,
+            "seat": 1,
+            "worker": "t80+g55trunk"
+          },
+          {
+            "ok": true,
+            "seat": 2,
+            "worker": "t80+g55code2"
+          },
+          {
+            "ok": false,
+            "seat": 3,
+            "worker": "t80+g55code"
+          }
+        ],
+        "official_note": "",
+        "official_seconds": 164,
+        "ok": false,
+        "shard": 5,
+        "wasi_example_repair": 0
+      }
+    },
+    "x_h_sim_1": {
+      "child": {
+        "artifact_id": 14693908622,
+        "attempt": 1,
+        "inspections": 0,
+        "kind": "h_sim",
+        "members": [
+          {
+            "ok": false,
+            "seat": 1,
+            "worker": "t80+g55trunk"
+          },
+          {
+            "ok": false,
+            "seat": 2,
+            "worker": "t80+g55code2"
+          },
+          {
+            "ok": false,
+            "seat": 3,
+            "worker": "t80+g55code"
+          }
+        ],
+        "official_note": "",
+        "official_seconds": 223,
+        "ok": false,
+        "shard": 6,
+        "wasi_example_repair": 0
+      },
+      "f3": {
+        "artifact_id": 14694092995,
+        "attempt": 1,
+        "inspections": 3,
+        "kind": "h_sim",
+        "members": [
+          {
+            "ok": false,
+            "seat": 1,
+            "worker": "t80+g55trunk"
+          },
+          {
+            "ok": false,
+            "seat": 2,
+            "worker": "t80+g55code2"
+          },
+          {
+            "ok": false,
+            "seat": 3,
+            "worker": "t80+g55code"
+          }
+        ],
+        "official_note": "",
+        "official_seconds": 112,
+        "ok": false,
+        "shard": 6,
+        "wasi_example_repair": 0
+      },
+      "stock": {
+        "artifact_id": 14694237211,
+        "attempt": 1,
+        "inspections": 0,
+        "kind": "h_sim",
+        "members": [
+          {
+            "ok": false,
+            "seat": 1,
+            "worker": "t80+g55trunk"
+          },
+          {
+            "ok": false,
+            "seat": 2,
+            "worker": "t80+g55code2"
+          },
+          {
+            "ok": false,
+            "seat": 3,
+            "worker": "t80+g55code"
+          },
+          {
+            "ok": false,
+            "seat": 4,
+            "worker": "t80+g53code"
+          },
+          {
+            "ok": false,
+            "seat": 5,
+            "worker": "t80+g53code2"
+          }
+        ],
+        "official_note": "",
+        "official_seconds": 291,
+        "ok": false,
+        "shard": 6,
+        "wasi_example_repair": 0
+      }
+    },
+    "x_h_sim_2": {
+      "child": {
+        "artifact_id": 14694055760,
+        "attempt": 1,
+        "inspections": 0,
+        "kind": "h_sim",
+        "members": [
+          {
+            "ok": true,
+            "seat": 1,
+            "worker": "t80+g55trunk"
+          },
+          {
+            "ok": true,
+            "seat": 2,
+            "worker": "t80+g55code2"
+          }
+        ],
+        "official_note": "",
+        "official_seconds": 66,
+        "ok": true,
+        "shard": 7,
+        "wasi_example_repair": 0
+      },
+      "f3": {
+        "artifact_id": 14694109151,
+        "attempt": 1,
+        "inspections": 3,
+        "kind": "h_sim",
+        "members": [
+          {
+            "ok": true,
+            "seat": 1,
+            "worker": "t80+g55trunk"
+          },
+          {
+            "ok": false,
+            "seat": 2,
+            "worker": "t80+g55code2"
+          },
+          {
+            "ok": false,
+            "seat": 3,
+            "worker": "t80+g55code"
+          }
+        ],
+        "official_note": "",
+        "official_seconds": 139,
+        "ok": false,
+        "shard": 7,
+        "wasi_example_repair": 0
+      },
+      "stock": {
+        "artifact_id": 14693182296,
+        "attempt": 1,
+        "inspections": 0,
+        "kind": "h_sim",
+        "members": [
+          {
+            "ok": true,
+            "seat": 1,
+            "worker": "t80+g55trunk"
+          },
+          {
+            "ok": false,
+            "seat": 2,
+            "worker": "t80+g55code2"
+          },
+          {
+            "ok": false,
+            "seat": 3,
+            "worker": "t80+g55code"
+          }
+        ],
+        "official_note": "",
+        "official_seconds": 65,
+        "ok": false,
+        "shard": 7,
+        "wasi_example_repair": 0
+      }
+    },
+    "x_h_tab_dates_0": {
+      "child": {
+        "artifact_id": 14693829267,
+        "attempt": 1,
+        "inspections": 0,
+        "kind": "h_tab_dates",
+        "members": [
+          {
+            "ok": false,
+            "seat": 1,
+            "worker": "t80+g55trunk"
+          },
+          {
+            "ok": false,
+            "seat": 2,
+            "worker": "t80+g55code2"
+          },
+          {
+            "ok": false,
+            "seat": 3,
+            "worker": "t80+g55code"
+          },
+          {
+            "ok": false,
+            "seat": 4,
+            "worker": "t80+g53code"
+          },
+          {
+            "ok": false,
+            "seat": 5,
+            "worker": "t80+g53code2"
+          }
+        ],
+        "official_note": "",
+        "official_seconds": 824,
+        "ok": false,
+        "shard": 8,
+        "wasi_example_repair": 0
+      },
+      "f3": {
+        "artifact_id": 14693599056,
+        "attempt": 1,
+        "inspections": 3,
+        "kind": "h_tab_dates",
+        "members": [
+          {
+            "ok": true,
+            "seat": 1,
+            "worker": "t80+g55trunk"
+          },
+          {
+            "ok": false,
+            "seat": 2,
+            "worker": "t80+g55code2"
+          },
+          {
+            "ok": true,
+            "seat": 3,
+            "worker": "t80+g55code"
+          }
+        ],
+        "official_note": "",
+        "official_seconds": 260,
+        "ok": true,
+        "shard": 8,
+        "wasi_example_repair": 0
+      },
+      "stock": {
+        "artifact_id": 14694351311,
+        "attempt": 1,
+        "inspections": 0,
+        "kind": "h_tab_dates",
+        "members": [
+          {
+            "ok": false,
+            "seat": 1,
+            "worker": "t80+g55trunk"
+          },
+          {
+            "ok": false,
+            "seat": 2,
+            "worker": "t80+g55code2"
+          },
+          {
+            "ok": false,
+            "seat": 3,
+            "worker": "t80+g55code"
+          },
+          {
+            "ok": false,
+            "seat": 4,
+            "worker": "t80+g53code"
+          },
+          {
+            "ok": false,
+            "seat": 5,
+            "worker": "t80+g53code2"
+          }
+        ],
+        "official_note": "",
+        "official_seconds": 367,
+        "ok": false,
+        "shard": 8,
+        "wasi_example_repair": 0
+      }
+    },
+    "x_h_tab_dates_1": {
+      "child": {
+        "artifact_id": 14693674073,
+        "attempt": 1,
+        "inspections": 0,
+        "kind": "h_tab_dates",
+        "members": [
+          {
+            "ok": false,
+            "seat": 1,
+            "worker": "t80+g55trunk"
+          },
+          {
+            "ok": false,
+            "seat": 2,
+            "worker": "t80+g55code2"
+          },
+          {
+            "ok": false,
+            "seat": 3,
+            "worker": "t80+g55code"
+          }
+        ],
+        "official_note": "",
+        "official_seconds": 549,
+        "ok": false,
+        "shard": 1,
+        "wasi_example_repair": 0
+      },
+      "f3": {
+        "artifact_id": 14693882513,
+        "attempt": 1,
+        "inspections": 4,
+        "kind": "h_tab_dates",
+        "members": [
+          {
+            "ok": false,
+            "seat": 1,
+            "worker": "t80+g55trunk"
+          },
+          {
+            "ok": false,
+            "seat": 2,
+            "worker": "t80+g55code2"
+          },
+          {
+            "ok": false,
+            "seat": 3,
+            "worker": "t80+g55code"
+          },
+          {
+            "ok": false,
+            "seat": 4,
+            "worker": "t80+g53code"
+          }
+        ],
+        "official_note": "",
+        "official_seconds": 491,
+        "ok": false,
+        "shard": 1,
+        "wasi_example_repair": 0
+      },
+      "stock": {
+        "artifact_id": 14693302459,
+        "attempt": 1,
+        "inspections": 0,
+        "kind": "h_tab_dates",
+        "members": [
+          {
+            "ok": false,
+            "seat": 1,
+            "worker": "t80+g55trunk"
+          },
+          {
+            "ok": false,
+            "seat": 2,
+            "worker": "t80+g55code2"
+          },
+          {
+            "ok": false,
+            "seat": 3,
+            "worker": "t80+g55code"
+          }
+        ],
+        "official_note": "",
+        "official_seconds": 241,
+        "ok": false,
+        "shard": 1,
+        "wasi_example_repair": 0
+      }
+    },
+    "x_h_tab_dates_2": {
+      "child": {
+        "artifact_id": 14693399748,
+        "attempt": 1,
+        "inspections": 0,
+        "kind": "h_tab_dates",
+        "members": [
+          {
+            "ok": false,
+            "seat": 1,
+            "worker": "t80+g55trunk"
+          },
+          {
+            "ok": false,
+            "seat": 2,
+            "worker": "t80+g55code2"
+          }
+        ],
+        "official_note": "",
+        "official_seconds": 92,
+        "ok": false,
+        "shard": 2,
+        "wasi_example_repair": 0
+      },
+      "f3": {
+        "artifact_id": 14693094197,
+        "attempt": 1,
+        "inspections": 5,
+        "kind": "h_tab_dates",
+        "members": [
+          {
+            "ok": false,
+            "seat": 1,
+            "worker": "t80+g55trunk"
+          },
+          {
+            "ok": false,
+            "seat": 2,
+            "worker": "t80+g55code2"
+          },
+          {
+            "ok": false,
+            "seat": 3,
+            "worker": "t80+g55code"
+          },
+          {
+            "ok": false,
+            "seat": 4,
+            "worker": "t80+g53code"
+          },
+          {
+            "ok": false,
+            "seat": 5,
+            "worker": "t80+g53code2"
+          }
+        ],
+        "official_note": "",
+        "official_seconds": 275,
+        "ok": false,
+        "shard": 2,
+        "wasi_example_repair": 0
+      },
+      "stock": {
+        "artifact_id": 14694501625,
+        "attempt": 1,
+        "inspections": 0,
+        "kind": "h_tab_dates",
+        "members": [
+          {
+            "ok": false,
+            "seat": 1,
+            "worker": "t80+g55trunk"
+          },
+          {
+            "ok": false,
+            "seat": 2,
+            "worker": "t80+g55code2"
+          }
+        ],
+        "official_note": "",
+        "official_seconds": 59,
+        "ok": false,
+        "shard": 2,
+        "wasi_example_repair": 0
+      }
+    },
+    "x_h_tab_topn_0": {
+      "child": {
+        "artifact_id": 14693258276,
+        "attempt": 1,
+        "inspections": 0,
+        "kind": "h_tab_topn",
+        "members": [
+          {
+            "ok": false,
+            "seat": 1,
+            "worker": "t80+g55trunk"
+          },
+          {
+            "ok": false,
+            "seat": 2,
+            "worker": "t80+g55data"
+          },
+          {
+            "ok": false,
+            "seat": 3,
+            "worker": "t80+g55data2"
+          }
+        ],
+        "official_note": "",
+        "official_seconds": 139,
+        "ok": false,
+        "shard": 3,
+        "wasi_example_repair": 0
+      },
+      "f3": {
+        "artifact_id": 14694108244,
+        "attempt": 1,
+        "inspections": 5,
+        "kind": "h_tab_topn",
+        "members": [
+          {
+            "ok": false,
+            "seat": 1,
+            "worker": "t80+g55trunk"
+          },
+          {
+            "ok": false,
+            "seat": 2,
+            "worker": "t80+g55data"
+          },
+          {
+            "ok": false,
+            "seat": 3,
+            "worker": "t80+g55data2"
+          },
+          {
+            "ok": false,
+            "seat": 4,
+            "worker": "t80+g53data2"
+          },
+          {
+            "ok": false,
+            "seat": 5,
+            "worker": "t80+g53data"
+          }
+        ],
+        "official_note": "",
+        "official_seconds": 395,
+        "ok": false,
+        "shard": 3,
+        "wasi_example_repair": 0
+      },
+      "stock": {
+        "artifact_id": 14694255544,
+        "attempt": 1,
+        "inspections": 0,
+        "kind": "h_tab_topn",
+        "members": [
+          {
+            "ok": true,
+            "seat": 1,
+            "worker": "t80+g55trunk"
+          },
+          {
+            "ok": false,
+            "seat": 2,
+            "worker": "t80+g55data"
+          },
+          {
+            "ok": false,
+            "seat": 3,
+            "worker": "t80+g55data2"
+          }
+        ],
+        "official_note": "",
+        "official_seconds": 381,
+        "ok": false,
+        "shard": 3,
+        "wasi_example_repair": 0
+      }
+    },
+    "x_h_tab_topn_1": {
+      "child": {
+        "artifact_id": 14694355945,
+        "attempt": 1,
+        "inspections": 0,
+        "kind": "h_tab_topn",
+        "members": [
+          {
+            "ok": false,
+            "seat": 1,
+            "worker": "t80+g55trunk"
+          },
+          {
+            "ok": false,
+            "seat": 2,
+            "worker": "t80+g55data"
+          },
+          {
+            "ok": false,
+            "seat": 3,
+            "worker": "t80+g55data2"
+          }
+        ],
+        "official_note": "",
+        "official_seconds": 429,
+        "ok": false,
+        "shard": 4,
+        "wasi_example_repair": 0
+      },
+      "f3": {
+        "artifact_id": 14694588118,
+        "attempt": 1,
+        "inspections": 3,
+        "kind": "h_tab_topn",
+        "members": [
+          {
+            "ok": false,
+            "seat": 1,
+            "worker": "t80+g55trunk"
+          },
+          {
+            "ok": false,
+            "seat": 2,
+            "worker": "t80+g55data"
+          },
+          {
+            "ok": false,
+            "seat": 3,
+            "worker": "t80+g55data2"
+          }
+        ],
+        "official_note": "",
+        "official_seconds": 238,
+        "ok": false,
+        "shard": 4,
+        "wasi_example_repair": 0
+      },
+      "stock": {
+        "artifact_id": 14693974221,
+        "attempt": 1,
+        "inspections": 0,
+        "kind": "h_tab_topn",
+        "members": [
+          {
+            "ok": false,
+            "seat": 1,
+            "worker": "t80+g55trunk"
+          },
+          {
+            "ok": false,
+            "seat": 2,
+            "worker": "t80+g55data"
+          },
+          {
+            "ok": false,
+            "seat": 3,
+            "worker": "t80+g55data2"
+          },
+          {
+            "ok": false,
+            "seat": 4,
+            "worker": "t80+g53data2"
+          }
+        ],
+        "official_note": "",
+        "official_seconds": 344,
+        "ok": false,
+        "shard": 4,
+        "wasi_example_repair": 0
+      }
+    },
+    "x_h_tab_topn_2": {
+      "child": {
+        "artifact_id": 14693873366,
+        "attempt": 1,
+        "inspections": 0,
+        "kind": "h_tab_topn",
+        "members": [
+          {
+            "ok": false,
+            "seat": 1,
+            "worker": "t80+g55trunk"
+          },
+          {
+            "ok": true,
+            "seat": 2,
+            "worker": "t80+g55data"
+          },
+          {
+            "ok": false,
+            "seat": 3,
+            "worker": "t80+g55data2"
+          }
+        ],
+        "official_note": "",
+        "official_seconds": 186,
+        "ok": false,
+        "shard": 5,
+        "wasi_example_repair": 0
+      },
+      "f3": {
+        "artifact_id": 14693274221,
+        "attempt": 1,
+        "inspections": 3,
+        "kind": "h_tab_topn",
+        "members": [
+          {
+            "ok": false,
+            "seat": 1,
+            "worker": "t80+g55trunk"
+          },
+          {
+            "ok": false,
+            "seat": 2,
+            "worker": "t80+g55data"
+          },
+          {
+            "ok": false,
+            "seat": 3,
+            "worker": "t80+g55data2"
+          }
+        ],
+        "official_note": "",
+        "official_seconds": 530,
+        "ok": false,
+        "shard": 5,
+        "wasi_example_repair": 0
+      },
+      "stock": {
+        "artifact_id": 14693694440,
+        "attempt": 1,
+        "inspections": 0,
+        "kind": "h_tab_topn",
+        "members": [
+          {
+            "ok": true,
+            "seat": 1,
+            "worker": "t80+g55trunk"
+          },
+          {
+            "ok": true,
+            "seat": 2,
+            "worker": "t80+g55data"
+          }
+        ],
+        "official_note": "",
+        "official_seconds": 95,
+        "ok": true,
+        "shard": 5,
+        "wasi_example_repair": 0
+      }
+    },
+    "x_h_two_0": {
+      "child": {
+        "artifact_id": 14693908622,
+        "attempt": 1,
+        "inspections": 0,
+        "kind": "h_two",
+        "members": [
+          {
+            "ok": false,
+            "seat": 1,
+            "worker": "t80+g55trunk"
+          },
+          {
+            "ok": false,
+            "seat": 2,
+            "worker": "t80+g55code2"
+          },
+          {
+            "ok": false,
+            "seat": 3,
+            "worker": "t80+g55code"
+          }
+        ],
+        "official_note": "",
+        "official_seconds": 286,
+        "ok": false,
+        "shard": 6,
+        "wasi_example_repair": 0
+      },
+      "f3": {
+        "artifact_id": 14694092995,
+        "attempt": 1,
+        "inspections": 5,
+        "kind": "h_two",
+        "members": [
+          {
+            "ok": false,
+            "seat": 1,
+            "worker": "t80+g55trunk"
+          },
+          {
+            "ok": false,
+            "seat": 2,
+            "worker": "t80+g55code2"
+          },
+          {
+            "ok": false,
+            "seat": 3,
+            "worker": "t80+g55code"
+          },
+          {
+            "ok": false,
+            "seat": 4,
+            "worker": "t80+g53code"
+          }
+        ],
+        "official_note": "timed out after 900 s",
+        "official_seconds": 901,
+        "ok": false,
+        "shard": 6,
+        "wasi_example_repair": 0
+      },
+      "stock": {
+        "artifact_id": 14694237211,
+        "attempt": 1,
+        "inspections": 0,
+        "kind": "h_two",
+        "members": [
+          {
+            "ok": false,
+            "seat": 1,
+            "worker": "t80+g55trunk"
+          },
+          {
+            "ok": false,
+            "seat": 2,
+            "worker": "t80+g55code2"
+          }
+        ],
+        "official_note": "",
+        "official_seconds": 84,
+        "ok": false,
+        "shard": 6,
+        "wasi_example_repair": 0
+      }
+    },
+    "x_h_two_1": {
+      "child": {
+        "artifact_id": 14694055760,
+        "attempt": 1,
+        "inspections": 0,
+        "kind": "h_two",
+        "members": [
+          {
+            "ok": false,
+            "seat": 1,
+            "worker": "t80+g55trunk"
+          },
+          {
+            "ok": false,
+            "seat": 2,
+            "worker": "t80+g55code2"
+          }
+        ],
+        "official_note": "",
+        "official_seconds": 125,
+        "ok": false,
+        "shard": 7,
+        "wasi_example_repair": 0
+      },
+      "f3": {
+        "artifact_id": 14694109151,
+        "attempt": 1,
+        "inspections": 3,
+        "kind": "h_two",
+        "members": [
+          {
+            "ok": false,
+            "seat": 1,
+            "worker": "t80+g55trunk"
+          },
+          {
+            "ok": false,
+            "seat": 2,
+            "worker": "t80+g55code2"
+          },
+          {
+            "ok": false,
+            "seat": 3,
+            "worker": "t80+g55code"
+          }
+        ],
+        "official_note": "",
+        "official_seconds": 390,
+        "ok": false,
+        "shard": 7,
+        "wasi_example_repair": 0
+      },
+      "stock": {
+        "artifact_id": 14693182296,
+        "attempt": 1,
+        "inspections": 0,
+        "kind": "h_two",
+        "members": [
+          {
+            "ok": false,
+            "seat": 1,
+            "worker": "t80+g55trunk"
+          },
+          {
+            "ok": false,
+            "seat": 2,
+            "worker": "t80+g55code2"
+          },
+          {
+            "ok": false,
+            "seat": 3,
+            "worker": "t80+g55code"
+          },
+          {
+            "ok": true,
+            "seat": 4,
+            "worker": "t80+g53code"
+          }
+        ],
+        "official_note": "",
+        "official_seconds": 550,
+        "ok": true,
+        "shard": 7,
+        "wasi_example_repair": 0
+      }
+    },
+    "x_h_two_2": {
+      "child": {
+        "artifact_id": 14693829267,
+        "attempt": 1,
+        "inspections": 0,
+        "kind": "h_two",
+        "members": [
+          {
+            "ok": false,
+            "seat": 1,
+            "worker": "t80+g55trunk"
+          },
+          {
+            "ok": false,
+            "seat": 2,
+            "worker": "t80+g55code2"
+          },
+          {
+            "ok": false,
+            "seat": 3,
+            "worker": "t80+g55code"
+          }
+        ],
+        "official_note": "",
+        "official_seconds": 271,
+        "ok": false,
+        "shard": 8,
+        "wasi_example_repair": 0
+      },
+      "f3": {
+        "artifact_id": 14693599056,
+        "attempt": 1,
+        "inspections": 2,
+        "kind": "h_two",
+        "members": [
+          {
+            "ok": false,
+            "seat": 1,
+            "worker": "t80+g55trunk"
+          },
+          {
+            "ok": false,
+            "seat": 2,
+            "worker": "t80+g55code2"
+          }
+        ],
+        "official_note": "",
+        "official_seconds": 157,
+        "ok": false,
+        "shard": 8,
+        "wasi_example_repair": 0
+      },
+      "stock": {
+        "artifact_id": 14694351311,
+        "attempt": 1,
+        "inspections": 0,
+        "kind": "h_two",
+        "members": [
+          {
+            "ok": false,
+            "seat": 1,
+            "worker": "t80+g55trunk"
+          },
+          {
+            "ok": false,
+            "seat": 2,
+            "worker": "t80+g55code2"
+          },
+          {
+            "ok": false,
+            "seat": 3,
+            "worker": "t80+g55code"
+          },
+          {
+            "ok": false,
+            "seat": 4,
+            "worker": "t80+g53code"
+          },
+          {
+            "ok": false,
+            "seat": 5,
+            "worker": "t80+g53code2"
+          }
+        ],
+        "official_note": "",
+        "official_seconds": 443,
+        "ok": false,
+        "shard": 8,
+        "wasi_example_repair": 0
+      }
+    },
+    "x_h_txt_ini_0": {
+      "child": {
+        "artifact_id": 14693674073,
+        "attempt": 1,
+        "inspections": 0,
+        "kind": "h_txt_ini",
+        "members": [
+          {
+            "ok": false,
+            "seat": 1,
+            "worker": "t80+g55trunk"
+          },
+          {
+            "ok": false,
+            "seat": 2,
+            "worker": "t80+g55data"
+          },
+          {
+            "ok": false,
+            "seat": 3,
+            "worker": "t80+g55data2"
+          },
+          {
+            "ok": false,
+            "seat": 4,
+            "worker": "t80+g53data2"
+          },
+          {
+            "ok": false,
+            "seat": 5,
+            "worker": "t80+g53data"
+          }
+        ],
+        "official_note": "",
+        "official_seconds": 554,
+        "ok": false,
+        "shard": 1,
+        "wasi_example_repair": 0
+      },
+      "f3": {
+        "artifact_id": 14693882513,
+        "attempt": 1,
+        "inspections": 2,
+        "kind": "h_txt_ini",
+        "members": [
+          {
+            "ok": false,
+            "seat": 1,
+            "worker": "t80+g55trunk"
+          },
+          {
+            "ok": false,
+            "seat": 2,
+            "worker": "t80+g55data"
+          }
+        ],
+        "official_note": "",
+        "official_seconds": 92,
+        "ok": false,
+        "shard": 1,
+        "wasi_example_repair": 0
+      },
+      "stock": {
+        "artifact_id": 14693302459,
+        "attempt": 1,
+        "inspections": 0,
+        "kind": "h_txt_ini",
+        "members": [
+          {
+            "ok": false,
+            "seat": 1,
+            "worker": "t80+g55trunk"
+          },
+          {
+            "ok": false,
+            "seat": 2,
+            "worker": "t80+g55data"
+          },
+          {
+            "ok": false,
+            "seat": 3,
+            "worker": "t80+g55data2"
+          }
+        ],
+        "official_note": "",
+        "official_seconds": 261,
+        "ok": false,
+        "shard": 1,
+        "wasi_example_repair": 0
+      }
+    },
+    "x_h_txt_ini_1": {
+      "child": {
+        "artifact_id": 14693399748,
+        "attempt": 1,
+        "inspections": 0,
+        "kind": "h_txt_ini",
+        "members": [
+          {
+            "ok": false,
+            "seat": 1,
+            "worker": "t80+g55trunk"
+          },
+          {
+            "ok": false,
+            "seat": 2,
+            "worker": "t80+g55data"
+          },
+          {
+            "ok": false,
+            "seat": 3,
+            "worker": "t80+g55data2"
+          }
+        ],
+        "official_note": "",
+        "official_seconds": 395,
+        "ok": false,
+        "shard": 2,
+        "wasi_example_repair": 0
+      },
+      "f3": {
+        "artifact_id": 14693094197,
+        "attempt": 1,
+        "inspections": 5,
+        "kind": "h_txt_ini",
+        "members": [
+          {
+            "ok": false,
+            "seat": 1,
+            "worker": "t80+g55trunk"
+          },
+          {
+            "ok": false,
+            "seat": 2,
+            "worker": "t80+g55data"
+          },
+          {
+            "ok": false,
+            "seat": 3,
+            "worker": "t80+g55data2"
+          },
+          {
+            "ok": false,
+            "seat": 4,
+            "worker": "t80+g53data2"
+          },
+          {
+            "ok": false,
+            "seat": 5,
+            "worker": "t80+g53data"
+          }
+        ],
+        "official_note": "",
+        "official_seconds": 212,
+        "ok": false,
+        "shard": 2,
+        "wasi_example_repair": 0
+      },
+      "stock": {
+        "artifact_id": 14694501625,
+        "attempt": 1,
+        "inspections": 0,
+        "kind": "h_txt_ini",
+        "members": [
+          {
+            "ok": false,
+            "seat": 1,
+            "worker": "t80+g55trunk"
+          },
+          {
+            "ok": false,
+            "seat": 2,
+            "worker": "t80+g55data"
+          }
+        ],
+        "official_note": "timed out after 900 s",
+        "official_seconds": 901,
+        "ok": false,
+        "shard": 2,
+        "wasi_example_repair": 0
+      }
+    },
+    "x_h_txt_ini_2": {
+      "child": {
+        "artifact_id": 14693258276,
+        "attempt": 1,
+        "inspections": 0,
+        "kind": "h_txt_ini",
+        "members": [
+          {
+            "ok": false,
+            "seat": 1,
+            "worker": "t80+g55trunk"
+          },
+          {
+            "ok": false,
+            "seat": 2,
+            "worker": "t80+g55data"
+          },
+          {
+            "ok": false,
+            "seat": 3,
+            "worker": "t80+g55data2"
+          },
+          {
+            "ok": false,
+            "seat": 4,
+            "worker": "t80+g53data2"
+          },
+          {
+            "ok": false,
+            "seat": 5,
+            "worker": "t80+g53data"
+          }
+        ],
+        "official_note": "",
+        "official_seconds": 259,
+        "ok": false,
+        "shard": 3,
+        "wasi_example_repair": 0
+      },
+      "f3": {
+        "artifact_id": 14694108244,
+        "attempt": 1,
+        "inspections": 4,
+        "kind": "h_txt_ini",
+        "members": [
+          {
+            "ok": false,
+            "seat": 1,
+            "worker": "t80+g55trunk"
+          },
+          {
+            "ok": false,
+            "seat": 2,
+            "worker": "t80+g55data"
+          },
+          {
+            "ok": false,
+            "seat": 3,
+            "worker": "t80+g55data2"
+          },
+          {
+            "ok": false,
+            "seat": 4,
+            "worker": "t80+g53data2"
+          }
+        ],
+        "official_note": "",
+        "official_seconds": 504,
+        "ok": false,
+        "shard": 3,
+        "wasi_example_repair": 0
+      },
+      "stock": {
+        "artifact_id": 14694255544,
+        "attempt": 1,
+        "inspections": 0,
+        "kind": "h_txt_ini",
+        "members": [
+          {
+            "ok": false,
+            "seat": 1,
+            "worker": "t80+g55trunk"
+          },
+          {
+            "ok": false,
+            "seat": 2,
+            "worker": "t80+g55data"
+          },
+          {
+            "ok": false,
+            "seat": 3,
+            "worker": "t80+g55data2"
+          }
+        ],
+        "official_note": "",
+        "official_seconds": 347,
+        "ok": false,
+        "shard": 3,
+        "wasi_example_repair": 0
+      }
+    },
+    "x_h_txt_redact_0": {
+      "child": {
+        "artifact_id": 14694355945,
+        "attempt": 1,
+        "inspections": 0,
+        "kind": "h_txt_redact",
+        "members": [
+          {
+            "ok": false,
+            "seat": 1,
+            "worker": "t80+g55trunk"
+          },
+          {
+            "ok": false,
+            "seat": 2,
+            "worker": "t80+g55code2"
+          }
+        ],
+        "official_note": "",
+        "official_seconds": 112,
+        "ok": false,
+        "shard": 4,
+        "wasi_example_repair": 0
+      },
+      "f3": {
+        "artifact_id": 14694588118,
+        "attempt": 1,
+        "inspections": 3,
+        "kind": "h_txt_redact",
+        "members": [
+          {
+            "ok": false,
+            "seat": 1,
+            "worker": "t80+g55trunk"
+          },
+          {
+            "ok": false,
+            "seat": 2,
+            "worker": "t80+g55code2"
+          },
+          {
+            "ok": false,
+            "seat": 3,
+            "worker": "t80+g55code"
+          }
+        ],
+        "official_note": "",
+        "official_seconds": 305,
+        "ok": false,
+        "shard": 4,
+        "wasi_example_repair": 0
+      },
+      "stock": {
+        "artifact_id": 14693974221,
+        "attempt": 1,
+        "inspections": 0,
+        "kind": "h_txt_redact",
+        "members": [
+          {
+            "ok": false,
+            "seat": 1,
+            "worker": "t80+g55trunk"
+          },
+          {
+            "ok": false,
+            "seat": 2,
+            "worker": "t80+g55code2"
+          },
+          {
+            "ok": false,
+            "seat": 3,
+            "worker": "t80+g55code"
+          },
+          {
+            "ok": false,
+            "seat": 4,
+            "worker": "t80+g53code"
+          },
+          {
+            "ok": false,
+            "seat": 5,
+            "worker": "t80+g53code2"
+          }
+        ],
+        "official_note": "",
+        "official_seconds": 171,
+        "ok": false,
+        "shard": 4,
+        "wasi_example_repair": 0
+      }
+    },
+    "x_h_txt_redact_1": {
+      "child": {
+        "artifact_id": 14693873366,
+        "attempt": 1,
+        "inspections": 0,
+        "kind": "h_txt_redact",
+        "members": [
+          {
+            "ok": false,
+            "seat": 1,
+            "worker": "t80+g55trunk"
+          },
+          {
+            "ok": false,
+            "seat": 2,
+            "worker": "t80+g55code2"
+          },
+          {
+            "ok": false,
+            "seat": 3,
+            "worker": "t80+g55code"
+          },
+          {
+            "ok": false,
+            "seat": 4,
+            "worker": "t80+g53code"
+          },
+          {
+            "ok": false,
+            "seat": 5,
+            "worker": "t80+g53code2"
+          }
+        ],
+        "official_note": "",
+        "official_seconds": 884,
+        "ok": false,
+        "shard": 5,
+        "wasi_example_repair": 0
+      },
+      "f3": {
+        "artifact_id": 14693274221,
+        "attempt": 1,
+        "inspections": 2,
+        "kind": "h_txt_redact",
+        "members": [
+          {
+            "ok": false,
+            "seat": 1,
+            "worker": "t80+g55trunk"
+          }
+        ],
+        "official_note": "timed out after 900 s",
+        "official_seconds": 901,
+        "ok": false,
+        "shard": 5,
+        "wasi_example_repair": 0
+      },
+      "stock": {
+        "artifact_id": 14693694440,
+        "attempt": 1,
+        "inspections": 0,
+        "kind": "h_txt_redact",
+        "members": [
+          {
+            "ok": false,
+            "seat": 1,
+            "worker": "t80+g55trunk"
+          },
+          {
+            "ok": false,
+            "seat": 2,
+            "worker": "t80+g55code2"
+          },
+          {
+            "ok": false,
+            "seat": 3,
+            "worker": "t80+g55code"
+          }
+        ],
+        "official_note": "",
+        "official_seconds": 405,
+        "ok": false,
+        "shard": 5,
+        "wasi_example_repair": 0
+      }
+    },
+    "x_h_txt_redact_2": {
+      "child": {
+        "artifact_id": 14693908622,
+        "attempt": 1,
+        "inspections": 0,
+        "kind": "h_txt_redact",
+        "members": [],
+        "official_note": "timed out after 900 s",
+        "official_seconds": 901,
+        "ok": false,
+        "shard": 6,
+        "wasi_example_repair": 0
+      },
+      "f3": {
+        "artifact_id": 14694092995,
+        "attempt": 1,
+        "inspections": 3,
+        "kind": "h_txt_redact",
+        "members": [
+          {
+            "ok": false,
+            "seat": 1,
+            "worker": "t80+g55trunk"
+          },
+          {
+            "ok": false,
+            "seat": 2,
+            "worker": "t80+g55code2"
+          },
+          {
+            "ok": false,
+            "seat": 3,
+            "worker": "t80+g55code"
+          }
+        ],
+        "official_note": "",
+        "official_seconds": 207,
+        "ok": false,
+        "shard": 6,
+        "wasi_example_repair": 0
+      },
+      "stock": {
+        "artifact_id": 14694237211,
+        "attempt": 1,
+        "inspections": 0,
+        "kind": "h_txt_redact",
+        "members": [
+          {
+            "ok": false,
+            "seat": 1,
+            "worker": "t80+g55trunk"
+          },
+          {
+            "ok": false,
+            "seat": 2,
+            "worker": "t80+g55code2"
+          },
+          {
+            "ok": false,
+            "seat": 3,
+            "worker": "t80+g55code"
+          },
+          {
+            "ok": false,
+            "seat": 4,
+            "worker": "t80+g53code"
+          }
+        ],
+        "official_note": "",
+        "official_seconds": 420,
+        "ok": false,
+        "shard": 6,
+        "wasi_example_repair": 0
+      }
+    }
+  },
+  "registered_tasks": 30,
+  "right_and_total_by_kind": {
+    "child": {
+      "h_edit": [
+        1,
+        3
+      ],
+      "h_prog_queue": [
+        0,
+        3
+      ],
+      "h_prog_wrap": [
+        0,
+        3
+      ],
+      "h_quotes": [
+        0,
+        3
+      ],
+      "h_sim": [
+        1,
+        3
+      ],
+      "h_tab_dates": [
+        0,
+        3
+      ],
+      "h_tab_topn": [
+        0,
+        3
+      ],
+      "h_two": [
+        0,
+        3
+      ],
+      "h_txt_ini": [
+        0,
+        3
+      ],
+      "h_txt_redact": [
+        0,
+        3
+      ]
+    },
+    "f3": {
+      "h_edit": [
+        3,
+        3
+      ],
+      "h_prog_queue": [
+        0,
+        3
+      ],
+      "h_prog_wrap": [
+        0,
+        3
+      ],
+      "h_quotes": [
+        0,
+        3
+      ],
+      "h_sim": [
+        0,
+        3
+      ],
+      "h_tab_dates": [
+        1,
+        3
+      ],
+      "h_tab_topn": [
+        0,
+        3
+      ],
+      "h_two": [
+        0,
+        3
+      ],
+      "h_txt_ini": [
+        0,
+        3
+      ],
+      "h_txt_redact": [
+        0,
+        3
+      ]
+    },
+    "stock": {
+      "h_edit": [
+        1,
+        3
+      ],
+      "h_prog_queue": [
+        0,
+        3
+      ],
+      "h_prog_wrap": [
+        0,
+        3
+      ],
+      "h_quotes": [
+        0,
+        3
+      ],
+      "h_sim": [
+        0,
+        3
+      ],
+      "h_tab_dates": [
+        0,
+        3
+      ],
+      "h_tab_topn": [
+        1,
+        3
+      ],
+      "h_two": [
+        1,
+        3
+      ],
+      "h_txt_ini": [
+        0,
+        3
+      ],
+      "h_txt_redact": [
+        0,
+        3
+      ]
+    }
+  },
+  "runs": {
+    "child": {
+      "id": 44868991744,
+      "sha": "e24bbea34b7ddbd80ce6456ebbb2aaf40749c97b"
+    },
+    "stock_and_f3": {
+      "id": 44869027245,
+      "sha": "ac77ff328406b4404de205c4ce62266ac0b181b8"
+    }
+  },
+  "tasks_passed": {
+    "child": 2,
+    "f3": 4,
+    "stock": 3
+  }
+}
