@@ -21,6 +21,8 @@ def main():
         parser.add_argument("--" + name, type=Path, required=True)
     parser.add_argument("--familiar-index", type=Path, required=True)
     parser.add_argument("--cutoff-repair", action="store_true", help="run the separate post-trial recovery condition")
+    parser.add_argument("--resume-stdout-from", type=Path,
+                        help="measure a separate CSV continuation from its frozen first native reply")
     parser.add_argument("--resume", action="store_true", help="resume a complete prefix after releasing the CPU")
     parser.add_argument("--arms-this-session", type=int, help="checkpoint and release the server after this many arms")
     args = parser.parse_args()
@@ -37,12 +39,24 @@ def main():
     selected = "x_h_edit_0"
     question = exam._made(kinds.get("h_edit").make, "held:h_edit:0")
     cases = [("cold-chain", panel.NOVEL["cold-chain"]), (selected, question[2])]
-    directives = (1,) if args.cutoff_repair else (0, 1)
+    prefix = None
+    if args.resume_stdout_from:
+        if args.cutoff_repair or args.resume:
+            parser.error("the matched stdout experiment takes its own fresh output file")
+        base_sha = generate.file_hash(args.resume_stdout_from)
+        if base_sha != "c402019834f294033dc181249d620cc4342dd59b5c5d05cb79fe2a4decd065e0":
+            raise ValueError("expected the frozen original four-arm receipt")
+        frozen = json.loads(args.resume_stdout_from.read_bytes())
+        prefix = next(row for row in frozen["arms"] if row["id"] == selected and row["inspect"] == "1")
+        cases = [cases[1]]
+    directives = (1,) if args.cutoff_repair or prefix else (0, 1)
     treatments = [(ident, task, str(enabled)) for ident, task in cases for enabled in directives]
     settings = {"max_tokens": 192, "temperature": 0., "top_p": 1., "top_k": 0, "cache_prompt": False,
                 "seed": 8103, "chat_template_kwargs": {"enable_thinking": False}}
     record = {"familiarity_index_sha256": index_sha, "assets": generate.ASSETS, "sampling": settings, "turn_limit": 3,
               "seat": "t80+g55trunk", "affinity": sorted(os.sched_getaffinity(0)), "arms": []}
+    if prefix:
+        record.update(resume_stdout=True, prefix_source_sha256=base_sha)
     if args.cutoff_repair:
         record["cutoff_repair"] = True
     if args.resume:
@@ -90,6 +104,13 @@ def main():
             calls = []
             def ask(who, endpoint, cell, path, body, cap):
                 assert path == "/v1/chat/completions" and cell == ("g55trunk", ())
+                if prefix and not calls:
+                    first = prefix["calls"][0]
+                    if body["messages"] != prefix["messages"][:2] or cap != first["token_cap"]:
+                        raise ValueError("the first request differs from the frozen native control")
+                    calls.append(dict(first, origin="frozen native control"))
+                    return {"choices": [{"message": {"content": first["response"]},
+                                         "finish_reason": first["finish"]}], "usage": first["usage"]}
                 start, prev = time.monotonic(), generate.cpu(proc.pid)
                 payload = dict(settings, messages=body["messages"], max_tokens=cap)
                 reply = generate.call(endpoint + path, payload)
@@ -100,7 +121,8 @@ def main():
                 return reply
             with (TemporaryDirectory() as root, patch.dict(os.environ, {"HIVE_ASSERT_FIRST": flag,
                                                                      "HIVE_FAMILIAR_TASKS": str(args.familiar_index),
-                                                                     "HIVE_CUTOFF_REPAIR": str(int(args.cutoff_repair))}),
+                                                                     "HIVE_CUTOFF_REPAIR": str(int(args.cutoff_repair)),
+                                                                     "HIVE_CUTOFF_CONTINUE": str(int(bool(prefix)))}),
                   patch.object(solo.ternary, "up", return_value=url), patch.object(solo.ternary, "_ask", ask),
                   patch.object(solo, "LONG", 192), patch.object(solo, "TURNS", 3),
                   patch.object(solo, "solved", return_value=[])):
