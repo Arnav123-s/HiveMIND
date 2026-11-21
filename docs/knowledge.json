@@ -1410,6 +1410,36 @@
    "talk": 7.8,
    "hours": 5.57,
    "why": "dropped: 48 against 51; after 48 of 64 (easy 32 of 32, hard 16 of 32), before 51 of 64 (easy 32 of 32, hard 19 of 32) on 8 seeds"
+  },
+  {
+   "id": "gen-g57",
+   "generation": "g57",
+   "when": "2026-11-21 05:03",
+   "verdict": "kept",
+   "after": [
+    49,
+    64
+   ],
+   "before": [
+    48,
+    64
+   ],
+   "hard": [
+    17,
+    25
+   ],
+   "easy": [
+    32,
+    32
+   ],
+   "held_out": [
+    0,
+    7
+   ],
+   "first_try": 0.72,
+   "talk": 8.0,
+   "hours": 6.72,
+   "why": "kept: 49 against 48; after 49 of 64 (easy 32 of 32, hard 17 of 32), before 48 of 64 (easy 32 of 32, hard 16 of 32) on 8 seeds; the fixed held-out exam: after 3 of 29, before 1 of 29"
   }
  ]
 }

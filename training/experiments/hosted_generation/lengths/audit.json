@@ -1,0 +1,272 @@
+{
+  "selected_exchanges": 8638,
+  "selected_requests": 3206,
+  "full_request_exclusions": 9,
+  "affected_requests_with_accepted_first": 38,
+  "full_request_exclusions_by_kind": {
+    "JSON lines read and counted by a nested field": 0,
+    "a fact found on the open web": 0,
+    "a fact read and a date sum on it": 0,
+    "a log read and counted into a file": 0,
+    "a module of two functions, with hidden tests": 0,
+    "a server log's matching lines counted by class": 6,
+    "emails and phones found in a messy message": 1,
+    "several orders in one message": 0,
+    "several tasks in one": 2,
+    "sum up a text": 0,
+    "the regions of a grid, with hidden tests": 0
+  },
+  "multiplicity": {
+    "2": 4,
+    "3": 4,
+    "8": 124,
+    "20": 25
+  },
+  "artifact_sha256": "1ed79413eac8503636dfb10afd4592a6f1a68fe89cbc60a84927fde17e4f9e7d",
+  "rows_jsonl_sha256": "f799c6879e65f9c9847d64df8b47f35e75efc5ef02812de8d7ba239b330236bc",
+  "training_source_sha256": "3ab91466a8ef729a2e57d5d6da31466b02c89aa733fb9850e2c7e0650b6f46a3",
+  "tokenizer": {
+    "tokenizer.json": "aeb13307a71acd8fe81861d94ad54ab689df773318809eed3cbe794b4492dae4",
+    "tokenizer_config.json": "443bfa629eb16387a12edbf92a76f6a6f10b2af3b53d87ba1550adfcf45f7fa0",
+    "chat_template.jinja": "30a75d10e60b57e2f260420163dd59720dacf9f63b9a8de070d65dd80a7b30f7"
+  },
+  "cap": 1152,
+  "total": {
+    "exchanges": 157,
+    "distinct_requests": 81,
+    "slice_presentations": 1512
+  },
+  "per_slice": [
+    {
+      "job": "train (g58sources2, sources2, sources, g53sources, 1, 2, cell)",
+      "job_id": 136718591564,
+      "selected": 4683,
+      "excluded": 78,
+      "hosted_log": 78
+    },
+    {
+      "job": "train (g58sources, sources, sources, g53sources2, 0, 3, cell)",
+      "job_id": 136718591568,
+      "selected": 3336,
+      "excluded": 71,
+      "hosted_log": 71
+    },
+    {
+      "job": "train (g58words, words, words, g53words, 0, 2, cell)",
+      "job_id": 136718591571,
+      "selected": 4639,
+      "excluded": 98,
+      "hosted_log": 98
+    },
+    {
+      "job": "train (g58data, data, data, g53data2, 1, 2, cell)",
+      "job_id": 136718591575,
+      "selected": 4686,
+      "excluded": 77,
+      "hosted_log": 77
+    },
+    {
+      "job": "train (g58code, code, code, g53code, 2, 3, cell)",
+      "job_id": 136718591577,
+      "selected": 3389,
+      "excluded": 62,
+      "hosted_log": 62
+    },
+    {
+      "job": "train (g58sources, sources, sources, g53sources2, 2, 3, cell)",
+      "job_id": 136718591580,
+      "selected": 3387,
+      "excluded": 61,
+      "hosted_log": 61
+    },
+    {
+      "job": "train (g58sources2, sources2, sources, g53sources, 0, 2, cell)",
+      "job_id": 136718591595,
+      "selected": 4637,
+      "excluded": 98,
+      "hosted_log": 98
+    },
+    {
+      "job": "train (g58data2, data2, data, g53data, 1, 3, cell)",
+      "job_id": 136718591597,
+      "selected": 3328,
+      "excluded": 69,
+      "hosted_log": 69
+    },
+    {
+      "job": "train (g58data, data, data, g53data2, 0, 2, cell)",
+      "job_id": 136718591599,
+      "selected": 4640,
+      "excluded": 97,
+      "hosted_log": 97
+    },
+    {
+      "job": "train (g58code2, code2, code, g53code2, 0, 2, cell)",
+      "job_id": 136718591601,
+      "selected": 4642,
+      "excluded": 99,
+      "hosted_log": 99
+    },
+    {
+      "job": "train (g58words, words, words, g53words, 1, 2, cell)",
+      "job_id": 136718591607,
+      "selected": 4685,
+      "excluded": 78,
+      "hosted_log": 78
+    },
+    {
+      "job": "train (g58code2, code2, code, g53code2, 1, 2, cell)",
+      "job_id": 136718591609,
+      "selected": 4688,
+      "excluded": 79,
+      "hosted_log": 79
+    },
+    {
+      "job": "train (g58words2, words2, words, g53words2, 1, 3, cell)",
+      "job_id": 136718591612,
+      "selected": 3333,
+      "excluded": 70,
+      "hosted_log": 70
+    },
+    {
+      "job": "train (g58words2, words2, words, g53words2, 0, 3, cell)",
+      "job_id": 136718591625,
+      "selected": 3340,
+      "excluded": 71,
+      "hosted_log": 71
+    },
+    {
+      "job": "train (g58data2, data2, data, g53data, 2, 3, cell)",
+      "job_id": 136718591630,
+      "selected": 3386,
+      "excluded": 60,
+      "hosted_log": 60
+    },
+    {
+      "job": "train (g58words2, words2, words, g53words2, 2, 3, cell)",
+      "job_id": 136718591632,
+      "selected": 3391,
+      "excluded": 61,
+      "hosted_log": 61
+    },
+    {
+      "job": "train (g58code, code, code, g53code, 0, 3, cell)",
+      "job_id": 136718591634,
+      "selected": 3338,
+      "excluded": 72,
+      "hosted_log": 72
+    },
+    {
+      "job": "train (g58data2, data2, data, g53data, 0, 3, cell)",
+      "job_id": 136718591661,
+      "selected": 3335,
+      "excluded": 70,
+      "hosted_log": 70
+    },
+    {
+      "job": "train (g58code, code, code, g53code, 1, 3, cell)",
+      "job_id": 136718591666,
+      "selected": 3331,
+      "excluded": 71,
+      "hosted_log": 71
+    },
+    {
+      "job": "train (g58sources, sources, sources, g53sources2, 1, 3, cell)",
+      "job_id": 136718591695,
+      "selected": 3329,
+      "excluded": 70,
+      "hosted_log": 70
+    }
+  ],
+  "by_kind": {
+    "JSON lines read and counted by a nested field": {
+      "exchanges": 1,
+      "distinct_requests": 1,
+      "slice_presentations": 2
+    },
+    "a fact found on the open web": {
+      "exchanges": 4,
+      "distinct_requests": 1,
+      "slice_presentations": 32
+    },
+    "a fact read and a date sum on it": {
+      "exchanges": 2,
+      "distinct_requests": 2,
+      "slice_presentations": 16
+    },
+    "a log read and counted into a file": {
+      "exchanges": 28,
+      "distinct_requests": 26,
+      "slice_presentations": 231
+    },
+    "a module of two functions, with hidden tests": {
+      "exchanges": 10,
+      "distinct_requests": 3,
+      "slice_presentations": 92
+    },
+    "a server log's matching lines counted by class": {
+      "exchanges": 12,
+      "distinct_requests": 6,
+      "slice_presentations": 96
+    },
+    "emails and phones found in a messy message": {
+      "exchanges": 4,
+      "distinct_requests": 1,
+      "slice_presentations": 32
+    },
+    "several orders in one message": {
+      "exchanges": 1,
+      "distinct_requests": 1,
+      "slice_presentations": 8
+    },
+    "several tasks in one": {
+      "exchanges": 73,
+      "distinct_requests": 29,
+      "slice_presentations": 796
+    },
+    "sum up a text": {
+      "exchanges": 1,
+      "distinct_requests": 1,
+      "slice_presentations": 8
+    },
+    "the regions of a grid, with hidden tests": {
+      "exchanges": 21,
+      "distinct_requests": 10,
+      "slice_presentations": 199
+    }
+  },
+  "by_type": {
+    "done": {
+      "exchanges": 19,
+      "distinct_requests": 13,
+      "slice_presentations": 152
+    },
+    "first": {
+      "exchanges": 71,
+      "distinct_requests": 58,
+      "slice_presentations": 580
+    },
+    "fix": {
+      "exchanges": 35,
+      "distinct_requests": 25,
+      "slice_presentations": 280
+    },
+    "mend": {
+      "exchanges": 32,
+      "distinct_requests": 26,
+      "slice_presentations": 500
+    }
+  },
+  "current_generation": {
+    "exchanges": 1,
+    "distinct_requests": 1,
+    "slice_presentations": 20
+  },
+  "parent_mends": {
+    "exchanges": 32,
+    "distinct_requests": 26,
+    "slice_presentations": 500
+  },
+  "minimum_raw_tokens": 1155,
+  "maximum_raw_tokens": 2872
+}
