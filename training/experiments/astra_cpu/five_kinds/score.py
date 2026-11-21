@@ -1,5 +1,6 @@
 """Join frozen row identities to actual update, admission and source-check receipts."""
 import argparse
+import hashlib
 import json
 from pathlib import Path
 
@@ -9,7 +10,7 @@ from safetensors import safe_open
 HERE=Path(__file__).resolve().parent
 
 
-def score(run):
+def score(run, start_gguf=None):
     selected=json.loads((HERE/"selection.json").read_text())
     receipts=json.loads((run/"result.json").read_text())
     assert receipts["torch_inputs"]["rows"]==selected["rows_sha256"]
@@ -37,7 +38,12 @@ def score(run):
             changed+=int(np.count_nonzero(delta));values+=x.size
             changed_tensors+=int(np.any(delta))
             difference+=float(np.sum(delta*delta))
-    return dict(covered=sum(r["finished_updates"]>=1 for r in by_kind),requested=len(by_kind),
+    artifacts = {"inherited_safetensors": hashlib.sha256(start.read_bytes()).hexdigest(),
+                 "trained_safetensors": hashlib.sha256(end.read_bytes()).hexdigest(),
+                 "trained_gguf": receipts["adapter_sha256"]}
+    if start_gguf is not None:
+        artifacts["inherited_gguf"] = hashlib.sha256(start_gguf.read_bytes()).hexdigest()
+    return dict(artifacts=artifacts,covered=sum(r["finished_updates"]>=1 for r in by_kind),requested=len(by_kind),
                 completed_updates=receipts["training"]["steps"],skipped_passes=receipts["training"]["memory"]["rows_skipped"],
                 changed_values=changed,total_values=values,changed_tensors=changed_tensors,update_squared_norm=difference,
                 per_kind=by_kind,raw=receipts)
@@ -46,4 +52,6 @@ def score(run):
 if __name__=="__main__":
     ap=argparse.ArgumentParser(description=__doc__)
     ap.add_argument("run",type=Path)
-    print(json.dumps(score(ap.parse_args().run),indent=2))
+    ap.add_argument("--start-gguf",type=Path)
+    args=ap.parse_args()
+    print(json.dumps(score(args.run,args.start_gguf),indent=2))
