@@ -25,7 +25,7 @@ def _portable(source):
     functions = {node.name for node in tree.body if isinstance(node, ast.FunctionDef)}
     local = {node.arg for node in ast.walk(tree) if isinstance(node, ast.arg)}
     local.update(node.id for node in ast.walk(tree) if isinstance(node, ast.Name) and isinstance(node.ctx, ast.Store))
-    if any(not isinstance(node, (ast.FunctionDef, ast.Assign, ast.Expr)) for node in tree.body):
+    if any(not isinstance(node, (ast.FunctionDef, ast.Assign, ast.Expr, ast.Pass)) for node in tree.body):
         return False
     for node in ast.walk(tree):
         if isinstance(node, (ast.Import, ast.ImportFrom, ast.ClassDef, ast.Global, ast.Nonlocal,
@@ -41,13 +41,23 @@ def _portable(source):
                 continue
             if not isinstance(fn, ast.Attribute) or fn.attr not in methods:
                 return False
-    return bool(functions)
+    # A literal-only module can also conclusively lack a requested function.
+    return bool(functions) or not any(isinstance(node, ast.Call) for node in ast.walk(tree))
 
 
 class ModuleChecks:
-    def __init__(self, name, examples):
+    def __init__(self, name, examples, task=""):
         self.name = name
         self.examples = examples
+        # Only the opening request for this exact file can declare an export. A test
+        # may also call a builtin or a helper from outside the requested module.
+        declaration = re.match(
+            r"(?i:(?:please[ \t]+)?(?:write|create|save|make)[ \t]+"
+            r"(?:(?:(?:a|the)[ \t]+)?(?:python[ \t]+)?(?:file|module)[ \t]+(?:(?:named|called)[ \t]+)?)?)"
+            rf"[`'\"]?{re.escape(name)}[`'\"]?"
+            r"(?i:[ \t]+(?:containing|with|defining|providing)[ \t]+(?:(?:a|the)[ \t]+)?(?:public[ \t]+)?function[ \t]+)"
+            r"`?([a-zA-Z]\w*)[ \t]*\(", task.lstrip())
+        self.declared_function = declaration.group(1) if declaration else None
         self.runner = saved.guest()
         self.previous = None
         self.feedback = ""
@@ -69,7 +79,9 @@ class ModuleChecks:
             wrapper = ("_module = {'__name__': 'hive_public_module'}\n"
                        f"exec({source!r}, _module)\n"
                        "def solve(sample):\n"
-                       "    fn = _module[sample[0]]\n"
+                       "    fn = _module.get(sample[0])\n"
+                       "    if not callable(fn):\n"
+                       "        return {} if '__getattr__' in _module else {'missing_callable': True}\n"
                        "    try:\n        value = fn(*sample[1])\n"
                        "    except (ValueError, TypeError, IndexError, KeyError, ZeroDivisionError) as error:\n"
                        "        return {'raised': type(error).__name__}\n"
@@ -89,6 +101,9 @@ class ModuleChecks:
             observed = row.get("value")
             if not isinstance(observed, dict):
                 continue  # Missing runtime dependencies and unsupported modules give no contrary evidence.
+            if observed.get("missing_callable") and name == self.declared_function:
+                self.feedback = f"The task requested the function {name} in {self.name}. The saved module does not provide that callable."
+                break
             if "raised" in observed or ("result" in observed and observed["result"] != want):
                 got = "raised " + observed["raised"] if "raised" in observed else "returned " + repr(observed["result"])[:120]
                 args_text = ", ".join(map(repr, args))[:300]

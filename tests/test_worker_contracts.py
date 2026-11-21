@@ -145,6 +145,44 @@ def test_disproved_peer_cannot_confirm_a_single_survivor():
     assert solo.agreeing([bad, plausible], EXAMPLES) == []
 
 
+def test_missing_callable_requires_an_independent_module_declaration(tmp_path, monkeypatch):
+    import json
+    import subprocess
+    import sys
+    from training.experiments.fieldwork.guest import BOOT
+    from team import saved
+    from team.public_examples import ModuleChecks
+
+    # Run only these test fixtures with fieldwork's actual error and result framing.
+    class FixtureGuest:
+        def run(self, program, inputs):
+            payload = json.dumps({"program": program, "inputs": inputs})
+            out = subprocess.check_output([sys.executable, "-I", "-c", "least_squares=None\n" + BOOT],
+                                          input=payload, text=True)
+            return json.loads(out), 0, 0
+
+    monkeypatch.setattr(saved, "guest", FixtureGuest)
+    path = tmp_path / "answers.py"
+
+    def issue(task, source):
+        path.write_text(source)
+        return ModuleChecks(path.name, module_examples(task, [path.name]), task).issue(tmp_path)
+
+    for source in ("def other(xs): return len(xs)", "count = 7", "pass", '"A placeholder"'):
+        assert "does not provide that callable" in issue(EXAMPLES, source)
+    for source in ("count = len", "def count(xs): return len(xs)", "from somewhere import count",
+                   "broken = 1/0", "def __getattr__(name): return len"):
+        assert issue(EXAMPLES, source) == ""
+    assert not issue(EXAMPLES.replace("function count(xs)", "function unrelated(xs)"), "pass")
+    assert not issue(EXAMPLES.replace("assert count(", "assert len("), "pass")
+    assert not issue("Here is a previous request:\n" + EXAMPLES, "pass")
+
+    monkeypatch.setenv("HIVE_ASSERT_FIRST", "1")
+    failed, _ = worker(EXAMPLES, ["open('answers.py','w').write('pass')\nprint('ready')"], tmp_path, monkeypatch)
+    assert failed["supplied_test_failed"] and failed["delivery"]["issues"]["answers.py"]
+    assert not solo.agreeing([failed, {"answer": "ready"}], EXAMPLES)
+
+
 def test_reread_directive_forgets_the_previous_representation(origin, tmp_path, monkeypatch):
     base, server = origin
     monkeypatch.setenv("HIVE_HTTP_CACHE", "1")
@@ -156,3 +194,66 @@ def test_reread_directive_forgets_the_previous_representation(origin, tmp_path, 
                                ("print(requests.get(u).text)", "3")):
             assert run_python(prefix + code, tmp_path)["stdout"].strip() == expected
     assert server.visits["/reread"] == 3
+
+
+def test_missing_freshness_on_new_variant_invalidates_prior_public_variant(origin, tmp_path, monkeypatch):
+    base, server = origin
+    monkeypatch.setenv("HIVE_HTTP_CACHE", "1")
+    with member_http("Read cursor pages"):
+        for cursor, public in ((1, True), (2, False), (1, False)):
+            server.public_feed = public
+            program = f"import requests\nprint(requests.get({base + '/feed'!r}, headers={{'X-Cursor': {str(cursor)!r}}}).text)"
+            result = run_python(program, tmp_path)
+            assert result["returncode"] == 0 and "authors" in result["stdout"]
+    assert server.visits["/feed"] == 3
+
+
+def test_prepared_sends_preserve_transport_and_bytes_headers(tmp_path, monkeypatch):
+    from email.utils import formatdate
+    from io import BytesIO
+    from pathlib import Path
+
+    import requests
+    from requests.adapters import HTTPAdapter
+    from urllib3._collections import HTTPHeaderDict
+    from urllib3.response import HTTPResponse
+
+    monkeypatch.syspath_prepend(str(Path(__file__).resolve().parents[1] / "team/tools/program_hooks"))
+    from page_cache import install
+
+    calls = []
+    def transport(adapter, request, **settings):
+        route = "proxy" if settings["proxies"] else "verified" if settings["verify"] else "unverified"
+        calls.append(route)
+        raw = HTTPResponse(body=BytesIO(route.encode()), status=200, reason="OK", preload_content=False,
+                           headers=HTTPHeaderDict({"Date": formatdate(usegmt=True), "Cache-Control": "public, max-age=60"}))
+        return adapter.build_response(request, raw)
+
+    monkeypatch.setattr(HTTPAdapter, "send", transport)
+    monkeypatch.setattr(requests.Session, "send", requests.Session.send)  # Restore the installed hook after the test.
+    install(str(tmp_path / "pages.sqlite"))
+    with requests.Session() as session:
+        session.trust_env = False
+        first = "https://origin.invalid/first"
+        prepared = session.prepare_request(requests.Request("GET", first))
+        assert session.get(first).text == session.get(first).text == "verified"
+        assert calls == ["verified"]
+
+        session.proxies = {"https": "http://proxy.invalid"}
+        assert session.send(prepared).text == "proxy"
+        session.proxies.clear()
+        session.stream = True
+        streamed = session.send(prepared)
+        assert streamed.raw.read() == b"verified"
+        session.stream = False
+
+        second = "https://origin.invalid/second"
+        prepared = session.prepare_request(requests.Request("GET", second))
+        session.verify = False
+        assert session.send(prepared).text == "unverified"
+        session.verify = True
+        assert session.get(second).text == "verified"
+
+        for _ in range(2):
+            assert session.get(first, headers={"Accept": b"application/json"}).text == "verified"
+        assert calls == ["verified", "proxy", "verified", "unverified", "verified", "verified", "verified"]
