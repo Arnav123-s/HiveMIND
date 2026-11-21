@@ -1,0 +1,12 @@
+{
+  "file": "t80-hint-dream.gguf",
+  "source_ref": "df9317a688e2a6a2461fb664c393ec9b8311cce4",
+  "sha256": "fffbb3692c8f1202b7df14014c8e515f77799f000428fe3fbd906f5b11f7490b",
+  "parent_sha256": "72913f1c566638f2177574178f1d6925cde956a92b35af06795e7598c5729036",
+  "stock_workflow_sha": "ac77ff328406b4404de205c4ce62266ac0b181b8",
+  "training_rows_sha256": "7430c3bd2df8cd2e9c0dfcea95104d60f628cbfe0e4b47af31fffae3b1427e3b",
+  "candidate_safetensors_sha256": "802ba6d89d648aaf6d0ad6dab821985e98feb4ba8ff923d89d991bc9b7ec45c7",
+  "training_source_parent_sha256": "6d2b50f593941b73e564286a3889768948bf539fec5517c6b884cd2c390d0ab0",
+  "admitted": 4,
+  "optimizer_steps": 4
+}
