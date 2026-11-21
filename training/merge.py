@@ -119,6 +119,29 @@ def gguf(folder, base, name, out_dir=None):
     return out
 
 
+def slice_observations(metas):
+    """Separate per-run experimental measurements from the legacy first-slice summary."""
+    fields = ("plateau", "loss_chunk_tokens")
+    memory_fields = ("row_modes", "mode_changes", "checkpoint_cost_per_piece_mb",
+                     "checkpoint_formula_per_piece_mb", "training_max_len", "evaluation_max_len")
+    observations = []
+    for position, item in enumerate(metas):
+        values = {k: item[k] for k in fields if k in item}
+        memory = {k: item["memory"][k] for k in memory_fields if k in item.get("memory", {})}
+        if memory:
+            values["memory"] = memory
+        if values:
+            observations.append({"shard": item.get("shard") or f"input-{position + 1}", **values})
+    meta = dict(metas[0]) if metas else {}
+    for k in fields:
+        meta.pop(k, None)
+    if "memory" in meta:
+        meta["memory"] = {k: v for k, v in meta["memory"].items() if k not in memory_fields}
+    if observations:
+        meta["slice_observations"] = observations
+    return meta
+
+
 def main(argv):
     opt = lambda k, d: type(d)(argv[argv.index(k) + 1]) if k in argv else d  # noqa: E731
     flags = {"--rank", "--weights", "--pull", "--base", "--name", "--out-dir"}
@@ -140,18 +163,26 @@ def main(argv):
         return 0
     if argv[:1] == ["join"] and len(files) >= 2:
         folder, paths = files[0], files[1:]
+        # Legacy slices used the hash assignment; a freshly balanced slice covers different rows.
+        # Validate the records before loading weights or writing a partially joined child.
+        metas, policies = [], set()
+        for path in paths:
+            record = Path(path).with_suffix(".json")
+            if record.exists():
+                m = json.loads(record.read_text())
+                metas.append(m)
+                policies.add(m.get("shard_policy", "hash"))
+            else:
+                policies.add("hash")
+        if len(policies) != 1 or not policies <= {"cost", "hash"}:
+            raise ValueError(f"Cannot join training slices with incompatible shard policies: {policies}")
         rank = opt("--rank", 16)
         edit, least = merge([load(p) for p in paths], None, rank)
         base, name = opt("--base", ""), opt("--name", "")
         from training.grow import UNPACKED
         write(edit, folder, UNPACKED.get(base, base), rank)
-        metas = []
-        for p in paths:  # each slice's own record lies beside its edit
-            m = Path(p).with_suffix(".json")
-            if m.exists():
-                metas.append(json.loads(m.read_text()))
-        meta = dict(metas[0]) if metas else {}
-        meta |= {"slices": len(paths), "least_energy_kept": round(least, 4), "shard": "",
+        meta = slice_observations(metas)
+        meta |= {"slices": len(paths), "shard_policy": policies.pop(), "least_energy_kept": round(least, 4), "shard": "",
                  "steps": sum(m.get("steps") or 0 for m in metas), "used": sum(m.get("used") or 0 for m in metas),
                  "rows": sum(m.get("rows") or 0 for m in metas), "read": sum(m.get("read") or 0 for m in metas),
                  "judged": sum(m.get("judged") or 0 for m in metas), "seconds": max([m.get("seconds") or 0 for m in metas] or [0])}

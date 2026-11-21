@@ -1,0 +1,26 @@
+{
+  "archive_rows_sha256": "a7738ee21886d9ca1d1b24cc59c2cd489ccfde6cbaee079648cc630e66a94139",
+  "excluded_held_tasks": 58,
+  "rows": [
+    {
+      "size": "short",
+      "target": 300,
+      "task": "Give me a one-sentence summary of this: The Ridgeway swimming pool, built in 1985, was closed in March for repairs after inspectors found cracks in two support beams. The city expects the work to take 8 months and cost 5.1 million dollars. Until it reopens, visitors are sent to the Harbour Road entrance, says the city engineer Lena Hartmann.",
+      "kind": "sum up a text",
+      "who": "t80+g55trunk",
+      "full_tokens": 198,
+      "answer_tokens": 29,
+      "row_sha256": "7ec28c230dc3dae718a346c7eaf229bea7045fb73fad3a355ea67737e5e20078"
+    },
+    {
+      "size": "long",
+      "target": 475,
+      "task": "Here is a text:\nThe bridge is closed until the end of May there quietly. Bring warm things, e.g. a coat and boots there. The museum on St. Mark's Square opens at nine. What a day it was there. Dr. Nadia measured 14.8 litres of rain in one night! Ms. Kofi paid 2.1 dollars for a map of the old town again quietly.\nSplit it into sentences. A sentence ends with '.', '!' or '?' followed by a space or by the end of the text, except that these abbreviations never end one: Dr., Mr., Ms., St., e.g., approx. (and a decimal point inside a number does not either). A word is anything between spaces. How many sentences are there, which one has the most words (counting from 1), and how many words does it have? Answer in three lines: 'sentences: ', 'longest: ', 'words: '.",
+      "kind": "several tasks in one",
+      "who": "t80+g51words2",
+      "full_tokens": 475,
+      "answer_tokens": 188,
+      "row_sha256": "bedf70b61294b8e91ad45d7e22ebd658cad2dad3a599a021b89e401cf88cb652"
+    }
+  ]
+}

@@ -206,7 +206,7 @@ def _cell_tar(name):
     return buf.getvalue()
 
 
-def _run(tmp_path, name, shard, n, release, wait="3"):
+def _run(tmp_path, name, shard, n, release, wait="3", clock="auto", policy="hash", plateau="off"):
     import os
     import subprocess
     import sys
@@ -229,6 +229,7 @@ def _run(tmp_path, name, shard, n, release, wait="3"):
         (shim / exe).write_text(stand_in)
         (shim / exe).chmod(0o755)
     env = dict(os.environ, PATH=f"{shim}:{os.environ['PATH']}", DNA="t80", GEN="g40", NAME=name, ORGAN="code", P="", VERSUS="",
+               HIVE_TRAIN_MIN="170" if clock == "auto" else clock, TRAIN_PROFILE=clock, HIVE_SHARD_POLICY=policy, HIVE_TRAIN_PLATEAU=plateau,
                SHARD=str(shard), N=str(n), GITHUB_REPOSITORY="x/y", GITHUB_STEP_SUMMARY=str(work / "summary"),
                HIVE_COLAB_LOCAL=str(release), HIVE_COLAB_POLL="0")
     p = subprocess.run(["bash", "-e", "-c", _step_text(wait)], cwd=work, env=env, capture_output=True, text=True)
@@ -263,6 +264,19 @@ def test_the_step_other_slices_stand_aside_once_the_order_exists(tmp_path):
     (release / "colab-order-g40-g40sources.json").write_text("{}")
     p, calls, _ = _run(tmp_path, "g40sources", 1, 2, release)
     assert p.returncode == 0 and "stands aside" in p.stdout and "is ordered from the notebook" in p.stdout and not calls
+
+
+@pytest.mark.parametrize("clock,policy,plateau", [
+    ("85", "hash", "off"), ("110", "hash", "off"), ("170", "hash", "off"),
+    ("auto", "cost", "off"), ("auto", "hash", "observe"), ("auto", "hash", "stop"),
+])
+def test_explicit_cpu_trials_use_the_requested_clock_even_with_a_live_notebook(tmp_path, clock, policy, plateau):
+    release = tmp_path / "release"
+    _alive(release, 0)
+    p, calls, work = _run(tmp_path, "g40sources", 0, 2, release, clock=clock, policy=policy, plateau=plateau)
+    assert p.returncode == 0, p.stdout + p.stderr
+    assert "--shard 0/2 " in calls and calls.split()[calls.split().index("--minutes") + 1] == ("170" if clock == "auto" else clock)
+    assert not (work / "out" / "whole").exists() and not (release / "colab-order-g40-g40sources.json").exists()
 
 
 def test_the_step_waits_the_window_then_trains_as_always_with_no_order_and_no_notebook(tmp_path):

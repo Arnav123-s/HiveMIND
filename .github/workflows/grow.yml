@@ -51,6 +51,21 @@ on:
       epochs:
         description: "Passes over the rows when training, at the most (the time given cuts them; a child starts from its parent and needs few)"
         default: "2"
+      train_minutes:
+        description: "One-run training budget per slice. Auto keeps 170 minutes with the usual notebook option. Select a number for a CPU-only run."
+        type: choice
+        default: "auto"
+        options: ["auto", "85", "110", "170"]
+      shard_policy:
+        description: "Assign old rows to CPU slices for this run. Hash is the current rule."
+        type: choice
+        default: "hash"
+        options: ["hash", "cost"]
+      train_plateau:
+        description: "Observe or stop on a training-loss plateau in CPU slices for this run."
+        type: choice
+        default: "off"
+        options: ["off", "observe", "stop"]
       dna:
         description: "The body's ternary model: t17 (1.7B, 0.43 GB packed), t40 (4B, 1.0 GB) or t80 (8B, 2.2 GB); t40 and t80 train with the DNA held ternary (--int8-base)"
         default: "t80"
@@ -188,6 +203,8 @@ jobs:
     timeout-minutes: 330
     strategy:
       fail-fast: false
+      # A custom practice matrix still leaves room for all eight dreams. With dreams disabled all 20 slots are free.
+      max-parallel: ${{ format('{0}', inputs.dreams) == '0' && 20 || 12 }}
       matrix:
         # 12 runners of 8 tasks: a stage lasts as long as its slowest runner, and 20 jobs run at once for free (these
         # 12 and the 8 dream runners beside them)
@@ -423,6 +440,10 @@ jobs:
       children: ${{ steps.plan.outputs.children }}
       grow: ${{ steps.plan.outputs.grow }}
       slices: ${{ steps.plan.outputs.slices }}
+      train_minutes: ${{ steps.budget.outputs.minutes }}
+      chunk_tokens: ${{ steps.budget.outputs.chunk_tokens }}
+      train_step_timeout: ${{ steps.budget.outputs.step_timeout }}
+      train_job_timeout: ${{ steps.budget.outputs.job_timeout }}
     steps:
       - uses: actions/checkout@v4
       - name: Which cells have children this generation
@@ -464,12 +485,29 @@ jobs:
           echo "slices=$(echo "$OUT" | head -1)" >> "$GITHUB_OUTPUT"
           echo "$OUT" | tail -1 | tee -a "$GITHUB_STEP_SUMMARY"
           test "$C" != "[]"
+      - name: Set the training clock for this run
+        id: budget
+        env:
+          PROFILE: ${{ inputs.train_minutes || 'auto' }}
+          CHUNK_TOKENS: ${{ vars.HIVE_CHUNK_CE || '0' }}
+        run: |
+          case "$PROFILE" in
+            auto) minutes=170; CHUNK_TOKENS=0 ;;
+            85|110|170) minutes=$PROFILE ;;
+            *) echo "::error::unknown training clock"; exit 1 ;;
+          esac
+          [[ "$CHUNK_TOKENS" =~ ^(0|[1-9][0-9]*)$ ]] || { echo "::error::HIVE_CHUNK_CE must be a nonnegative whole number of tokens"; exit 1; }
+          echo "minutes=$minutes" >> "$GITHUB_OUTPUT"
+          echo "chunk_tokens=$CHUNK_TOKENS" >> "$GITHUB_OUTPUT"
+          echo "step_timeout=$(( minutes + 30 ))" >> "$GITHUB_OUTPUT"
+          echo "job_timeout=$(( minutes + 55 ))" >> "$GITHUB_OUTPUT"
+          echo "Training clock: $minutes minutes per slice (selection: $PROFILE, loss chunk tokens: $CHUNK_TOKENS)" >> "$GITHUB_STEP_SUMMARY"
 
   train:
     needs: [gather, plan]
     if: ${{ !cancelled() && needs.gather.result == 'success' && needs.plan.result == 'success' && !inputs.bench && !inputs.cells_from_run }}
     runs-on: ubuntu-latest
-    timeout-minutes: 225  # setup (about 10), then "Grow the cell" (its own limit below, 200), then the upload (about 10); a row that stalls ends the job itself (grow.train)
+    timeout-minutes: ${{ fromJSON(needs.plan.outputs.train_job_timeout) }}  # another 25 minutes for setup and upload
     permissions:
       contents: write  # the order to the owner's Colab notebook, and its answer, pass through the release (training/colab.py)
       actions: read
@@ -499,12 +537,19 @@ jobs:
           name: all-rows
           path: got
       - name: Grow the cell
-        # training stops at its budget (MIN, 170 minutes from the step's start) and saves; up to 30 minutes more are allowed
+        # training stops at its selected budget and saves; up to 30 minutes more are allowed
         # for the last row (10), the lessons' second measure (5) and the GGUF (held to 20 minutes past the budget,
         # grow.gguf_seconds), then the step is ended so a stuck slice costs the generation minutes, not hours (g51: one
         # slice ran 220 minutes; g56: two ran past the job's limit and were lost, a step of 185 plus a setup was over 200)
-        timeout-minutes: 200
+        timeout-minutes: ${{ fromJSON(needs.plan.outputs.train_step_timeout) }}
         env:
+          HIVE_TRAIN_MIN: ${{ needs.plan.outputs.train_minutes }}
+          HIVE_CHUNK_CE: ${{ needs.plan.outputs.chunk_tokens }}
+          TRAIN_PROFILE: ${{ inputs.train_minutes || 'auto' }}
+          HIVE_SHARD_POLICY: ${{ inputs.shard_policy || 'hash' }}
+          HIVE_TRAIN_PLATEAU: ${{ inputs.train_plateau || 'off' }}
+          # Optional row checkpointing is confined to runs with an explicit numeric CPU clock.
+          HIVE_ROW_CHECKPOINT: ${{ inputs.train_minutes && inputs.train_minutes != 'auto' && vars.HIVE_ROW_CHECKPOINT == '1' && '1' || '0' }}
           VERSUS: ${{ matrix.variant == 'versus' && inputs.versus || '' }}
           GH_TOKEN: ${{ github.token }}
           SHARD: ${{ matrix.slice.shard }}
@@ -538,7 +583,7 @@ jobs:
           # a GPU, when the owner's Colab notebook is there (training/colab.py, colab/hive_gpu.ipynb): the child is grown on it
           # in minutes. With no notebook, or no cell back within 90 minutes, this runner trains it as always, in the time left.
           [[ "$N" =~ ^[1-8]$ && "$SHARD" =~ ^[0-7]$ && "$SHARD" -lt "$N" ]] || { echo "::error::not a slice: $SHARD of $N"; exit 1; }
-          COLAB=""; MIN=170; WHOLE=""
+          COLAB=""; MIN=$HIVE_TRAIN_MIN; WHOLE=""
           mkdir -p out
           # The notebook grows one child at a time and a child waits for it 90 minutes, so it is offered only K children
           # (repository variable HIVE_COLAB_CHILDREN, 1 unless set; 0: none), a different organ each generation, each
@@ -549,7 +594,8 @@ jobs:
           PICK=$(python3 -c "import json, sys; c = [x['name'] for x in json.loads(sys.argv[1])]; n, k, r = sys.argv[2], int(sys.argv[3]), int(sys.argv[4]); print(1 if n in c and (c.index(n) - r) % len(c) < k else '')" '${{ needs.plan.outputs.children }}' "$NAME" "$K" "${{ github.run_number }}")
           CM=$(( K > 0 ? 70 / K : 60 )); [ "$CM" -gt 60 ] && CM=60; [ "$CM" -lt 15 ] && CM=15
           T0=$(date +%s)
-          if [ -n "$PICK" ] && [ -z "$VERSUS" ] && [ -z "${{ inputs.ternary == '1' && 'x' || '' }}${{ inputs.foresee }}${{ inputs.pairs }}${{ inputs.slow }}" ]; then
+          # Opt-in CPU measurements use the same hardware even when a notebook happens to be online.
+          if [ "$TRAIN_PROFILE/$HIVE_SHARD_POLICY/$HIVE_TRAIN_PLATEAU" = auto/hash/off ] && [ -n "$PICK" ] && [ -z "$VERSUS" ] && [ -z "${{ inputs.ternary == '1' && 'x' || '' }}${{ inputs.foresee }}${{ inputs.pairs }}${{ inputs.slow }}" ]; then
             # The owner may start the notebook any time during practice (g42's came up 13 minutes after training began,
             # and each job had looked once, at its start): every slice of the child offered waits up to CW minutes
             # (repository variable HIVE_COLAB_WAIT, 15 unless set), one line a minute; a notebook not seen in 12 hours is
@@ -568,7 +614,7 @@ jobs:
                 python3 training/colab.py wait --gen "$GEN" --name "$NAME" --minutes 90 --out colab_out && COLAB=$(( ($(date +%s) - T1) / 60 ))
               fi
             fi
-            MIN=$(( 170 - ($(date +%s) - T0) / 60 )); [ "$MIN" -lt 60 ] && MIN=60
+            MIN=$(( HIVE_TRAIN_MIN - ($(date +%s) - T0) / 60 )); [ "$MIN" -lt 60 ] && MIN=60
           fi
           if [ -n "$COLAB" ]; then
             # the cell's record marked (grown_on colab, the GPU, minutes from order to cell) and printed for the read
