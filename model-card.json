@@ -1,0 +1,21 @@
+{
+  "parent_sha256": "6d2b50f593941b73e564286a3889768948bf539fec5517c6b884cd2c390d0ab0",
+  "rows_sha256": "7430c3bd2df8cd2e9c0dfcea95104d60f628cbfe0e4b47af31fffae3b1427e3b",
+  "gguf_sha256": "fffbb3692c8f1202b7df14014c8e515f77799f000428fe3fbd906f5b11f7490b",
+  "safetensors_sha256": "802ba6d89d648aaf6d0ad6dab821985e98feb4ba8ff923d89d991bc9b7ec45c7",
+  "source_sha256": {
+    "hive-f4-native-first": "fca82582c10abb8524153bbe3ae0fb39baf3f71d8484b29b1d605e4f9a925341",
+    "hive-f4-native-confirmation": "0be3806ca27ed02777edac272132e3122e59d34f382f9823292813e985e5fab3"
+  },
+  "rank": 32,
+  "layers": [
+    22,
+    35
+  ],
+  "base": "prism-ml/Ternary-Bonsai-8B-unpacked",
+  "admitted": 4,
+  "steps": 4,
+  "changed_tensors": 196,
+  "bytes": 73835264,
+  "file": "t80-hint-dream.gguf"
+}
