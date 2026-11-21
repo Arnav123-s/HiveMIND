@@ -21,6 +21,10 @@ An explicit page list begins with “Using requests, fetch each of these URLs:�
 
 The cache keys all eligible request headers, recognizes an explicitly varied X-Cursor selector and accepts `Cache-Control: public, max-age=N` with a valid date. Its limit is 32 entries, 1 MiB and 60 seconds. The native Requests path bypasses streaming, proxies, custom transports, credentials, encoded bodies and ambiguous freshness policies. The URI, headers, conditional requests and origin time determine whether an actual web task can save any fetches.
 
+## Official held-out result
+
+The retained G55 body passed 4/30 tasks with F3 and 3/30 under stock settings. F3 gained three answers and lost two, for a net increase of one against the target of four. It passed all three CSV editing tasks and one of ten kinds. The separately fitted F4 child passed 2/30 and zero of ten kinds. [Complete official results](official/README.md)
+
 ## Native worker results
 
 The G55 trunk missed the cold-chain file in both conditions. The stock worker printed the correct count of 3 and wrote temperature/code pairs. The task asks for lot codes ordered by descending rise and then by code. The inspect worker reached the 192-token limit on all three turns and produced no file. Stock used 100, 123 and 2 output tokens. This local pilot uses the first-program study’s token budget. The normal multi-member exam has a longer worker output allowance. [Raw worker turns and files](native.json)
