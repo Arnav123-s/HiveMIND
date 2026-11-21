@@ -1462,11 +1462,11 @@ def train(rows_file, name, base="t17", epochs=2.0, rank=16, lr=2e-4, max_len=115
         cpu = "?"
     if int8_base:
         from training import ternary_base
-        log(f"this machine: {cpu}, {os.cpu_count()} threads; trained in {'16' if half else '32'}-bit numbers", flush=True)
+        log(f"this machine: {cpu}, {torch.get_num_threads()} threads; trained in {'16' if half else '32'}-bit numbers", flush=True)
     elif gpu:
         log(f"this machine: {torch.cuda.get_device_name(0)} ({torch.cuda.get_device_properties(0).total_memory / 2**30:.0f} GB), trained on the GPU", flush=True)
     else:
-        log(f"this machine: {cpu}, {os.cpu_count()} threads", flush=True)
+        log(f"this machine: {cpu}, {torch.get_num_threads()} threads", flush=True)
     beat = {"t": time.time(), "what": "its first row", "on": True}
 
     def watch():
