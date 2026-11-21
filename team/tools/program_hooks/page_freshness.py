@@ -39,4 +39,3 @@ def freshness(response, wall, delay):
         return None
     initial_age = max(apparent_age, int(age) + delay)
     return int(maximum[0]), initial_age
-
