@@ -1,5 +1,5 @@
-name: G55 paired worker contract exam
-run-name: G55 fixed held-out tasks with stock and F3 workers
+name: G55 synthetic-dream candidate exam
+run-name: G55 fixed held-out tasks with the F4 trained trunk
 
 on:
   workflow_dispatch:
@@ -14,17 +14,16 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        mode: [stock, f3]
         shard: [1, 2, 3, 4, 5, 6, 7, 8]
     env:
       HIVE_LIGHT: "1"
       AGENT_TEAM_SOLO: "2"
       AGENT_TEAM_SOLO_ALONE: "1"
-      HIVE_ASSERT_FIRST: ${{ matrix.mode == 'f3' && '1' || '0' }}
-      HIVE_PAGE_CHECKS: ${{ matrix.mode == 'f3' && '1' || '0' }}
-      HIVE_HTTP_CACHE: ${{ matrix.mode == 'f3' && '1' || '0' }}
+      HIVE_ASSERT_FIRST: "0"
+      HIVE_PAGE_CHECKS: "0"
+      HIVE_HTTP_CACHE: "0"
       SHARD: ${{ matrix.shard }}
-      ARM: ${{ matrix.mode }}
+      ARM: child
     steps:
       - uses: actions/checkout@v4
         with:
@@ -49,7 +48,16 @@ jobs:
           python -c "from team.ternary import weights; print(weights('t80'))" > evidence/base-path.txt
           BASE_PATH=$(tail -1 evidence/base-path.txt)
           echo "1376f942aa90e60f7b570c1d81b3916fea1315ff85aa1c4d19006af68fb4b922  $BASE_PATH" | sha256sum --check
-          cp training/experiments/astra_orders/worker_contracts/g55-contemporaneous.sha256 evidence/adapters.sha256
+          STUDY=training/experiments/astra_orders/worker_contracts
+          cp "$STUDY/f4-adapter.json" evidence/f4-adapter.json
+          EXPECTED=$(jq -er '.sha256 | select(test("^[a-f0-9]{64}$"))' evidence/f4-adapter.json)
+          REF=$(jq -er '.source_ref | select(test("^[a-f0-9]{40}$"))' evidence/f4-adapter.json)
+          test "$(jq -er '.file' evidence/f4-adapter.json)" = 't80-hint-dream.gguf'
+          curl --fail --show-error --location --retry 3 "https://raw.githubusercontent.com/${GITHUB_REPOSITORY}/${REF}/t80-hint-dream.gguf" -o "$RUNNER_TEMP/f4-trunk.gguf"
+          echo "$EXPECTED  $RUNNER_TEMP/f4-trunk.gguf" | sha256sum --check
+          install -m 644 "$RUNNER_TEMP/f4-trunk.gguf" 'cells/members/t80+g55trunk.gguf'
+          python "$STUDY/f4_manifest.py" > evidence/adapters.sha256
+          sha256sum --check evidence/adapters.sha256
           sha256sum "$HIVE_FAMILIAR_TASKS" > evidence/familiar-index.sha256
           sha256sum cells/body.json cells/studied.json > evidence/roster.sha256
           python -c "import os, json, platform; print(json.dumps({k:os.environ.get(k) for k in ('GITHUB_SHA','GITHUB_RUN_ID','ARM','SHARD','HIVE_MEMBERS','AGENT_TEAM_SOLO','HIVE_ASSERT_FIRST','HIVE_PAGE_CHECKS','HIVE_HTTP_CACHE')} | {'machine':platform.machine()}, indent=2))" > evidence/assignment.json
@@ -73,10 +81,11 @@ jobs:
                   dest.parent.mkdir(parents=True, exist_ok=True)
                   shutil.copyfile(file, dest)
           PY
+          if [ -f "evidence/held_${SHARD}.json" ]; then (cd evidence && sha256sum "held_${SHARD}.json" > held.sha256); fi
       - uses: actions/upload-artifact@v4
         if: always()
         with:
-          name: f3-${{ matrix.mode }}-${{ matrix.shard }}-attempt-${{ github.run_attempt }}
+          name: f4-child-${{ matrix.shard }}-attempt-${{ github.run_attempt }}
           path: evidence/
           if-no-files-found: error
           retention-days: 14
