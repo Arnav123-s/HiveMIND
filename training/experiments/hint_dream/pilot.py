@@ -95,7 +95,7 @@ def run(args):
                     raw = ask(member, hint_dream.messages(prompt))
                     grade, _ = hint_dream.grade(raw, spec, guest)
                     row = None
-                    report = {"spec":spec.seed, "kind":spec.kind, "member":member, "blind":grade}
+                    report = {"spec":spec.seed, "kind":spec.kind, "arm":"B" if args.candidate_sha else "A", "blind":grade}
                 else:
                     row, report = hint_dream.trial(spec, member, ask, guest, all_pairs=True,
                                                   format_hint=args.panel == "confirmation")
