@@ -213,6 +213,7 @@ def _run(tmp_path, name, shard, n, release, wait="3", clock="auto", policy="hash
     import tempfile
     root = Path(__file__).resolve().parents[1]
     work = Path(tempfile.mkdtemp(dir=tmp_path))
+    (work / "scripts").symlink_to(root / "scripts")  # the step runs scripts/capped_run.sh
     (work / "cells").mkdir()
     (work / "cells" / "body.json").write_text(json.dumps({"dna": "t80", "trunk": ""}))
     (work / "got").mkdir()

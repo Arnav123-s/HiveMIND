@@ -933,11 +933,12 @@ class _RowCheckpoints:
             self.enabled = enabled
 
 
-def _cgroup_limits():
-    """Finite v2 limits for this process and its ancestors in a standard Linux cgroup mount."""
-    root = Path("/sys/fs/cgroup")
+def _cgroup_limits(root=None, membership=None):
+    """Finite v2 limits (memory.max and memory.high; "max" is none) for this process and its ancestors in a standard
+    Linux cgroup mount. The paths can be given, so a test needs no real cgroup."""
+    root = Path("/sys/fs/cgroup") if root is None else root
     try:
-        line = next(x for x in Path("/proc/self/cgroup").read_text().splitlines() if x.startswith("0::"))
+        line = next(x for x in (Path("/proc/self/cgroup") if membership is None else membership).read_text().splitlines() if x.startswith("0::"))
         leaf = root / line[3:].lstrip("/")
         if ".." in leaf.parts or not leaf.is_dir():
             leaf = root  # A namespace may expose the effective cgroup as the mount root.
@@ -945,12 +946,13 @@ def _cgroup_limits():
         for folder in (leaf, *leaf.parents):
             if root != folder and root not in folder.parents:
                 break
-            try:
-                limit = (folder / "memory.max").read_text().strip()
-                if limit != "max":
-                    limits.append((folder / "memory.current", int(limit)))
-            except (OSError, ValueError):
-                continue  # A root without a memory controller must not erase a known child limit.
+            for name in ("memory.max", "memory.high"):  # the runner's cap (scripts/capped_run.sh) sets both
+                try:
+                    limit = (folder / name).read_text().strip()
+                    if limit != "max":
+                        limits.append((folder / "memory.current", int(limit)))
+                except (OSError, ValueError):
+                    continue  # A root without a memory controller must not erase a known child limit.
         return limits
     except (OSError, ValueError, StopIteration):
         return []
