@@ -649,6 +649,7 @@ def _member(task, n, board, guard, work, temperature, who, also, required_urls):
                           f"imports {saved[:-3]}, calls the functions as the TASK asks, and prints each value it asks for."}]
             continue
         delivery = deliverables.inspect(task, work, names) if names and res["returncode"] == 0 else None
+        issue = ""
         if delivery is not None and module_checks and not delivery["issues"]:
             issue = module_checks.issue(work)
             if issue:
@@ -674,6 +675,8 @@ def _member(task, n, board, guard, work, temperature, who, also, required_urls):
             continue
         if res["returncode"] == 0 and out:
             candidate = {"answer": out[-3000:], "program": code}
+            if issue:
+                candidate["supplied_test_failed"] = True
             feedback = ""
             if delivery is not None:
                 candidate["delivery"] = delivery
@@ -783,6 +786,12 @@ def headings(task, t, n, board, guard):
             delivery = deliverables.inspect(task, work, names)
             if delivery["issues"]:
                 return
+            if os.environ.get("HIVE_ASSERT_FIRST") == "1":
+                from .public_examples import ModuleChecks, module_examples
+                examples = module_examples(task, names)
+                if examples and ModuleChecks(names[0], examples).issue(work):
+                    return
+            t.pop("supplied_test_failed", None)
             t.update(work=str(work), delivery=delivery)
         t.update(answer=out[-3000:], program=code, turns=t["turns"] + 1)
 
@@ -842,7 +851,8 @@ def together(x, y, task):
 
 def agreeing(tries, task):
     """The pairs of members whose tries agree (together()), the earlier member first."""
-    return [(x, y) for i, x in enumerate(tries) for y in tries[i + 1:] if together(x, y, task)]
+    usable = [t for t in tries if not t.get("supplied_test_failed")]
+    return [(x, y) for i, x in enumerate(usable) for y in usable[i + 1:] if together(x, y, task)]
 
 
 def _winner(tries, pairs, task):

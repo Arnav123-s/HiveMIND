@@ -26,6 +26,10 @@ def install(path):
         method, url = request.method, request.url
         if method not in ("GET", "HEAD", "OPTIONS"):
             _forget(path)
+            try:
+                return original(session, request, **kwargs)
+            finally:
+                _forget(path)
         if method != "GET":
             return original(session, request, **kwargs)
         headers = {k.lower(): v for k, v in request.headers.items()}
@@ -38,13 +42,15 @@ def install(path):
                 or (parts.scheme == "https" and kwargs.get("verify", True) is not True)
                 or kwargs.get("proxies") or session.cert
                 or session.auth or session.cookies or any(request.hooks.values())
-                or parts.scheme not in ("http", "https") or parts.query or parts.username is not None
+                or parts.scheme not in ("http", "https") or parts.query or parts.fragment or parts.username is not None
                 or headers.keys() - (STANDARD | {"x-cursor"}) or headers.keys() & BYPASS):
             return original(session, request, **kwargs)
         key = hashlib.sha256(json.dumps([url, sorted(headers.items())]).encode()).hexdigest()
         started = time.monotonic()
+        epoch = None
         try:
             with _store(path) as db:
+                epoch = db.execute("SELECT generation FROM version").fetchone()[0]
                 found = db.execute("SELECT status, reason, headers, body, aged, received FROM pages "
                                    "WHERE key=? AND expires>?", (key, started)).fetchone()
         except (sqlite3.Error, OSError):
@@ -62,7 +68,7 @@ def install(path):
         response = original(session, request, **kwargs)
         received = time.monotonic()
         lifetime = freshness(response, time.time(), received - started)
-        if not lifetime or response.history or response.url != url:
+        if epoch is None or not lifetime or response.history or response.url != url:
             return response
         # Read the body only after Requests has consumed it normally. Unsupported encodings pass through.
         if response.headers.get("Content-Encoding", "identity").lower() != "identity":
@@ -78,6 +84,9 @@ def install(path):
             return response
         try:
             with _store(path) as db:
+                db.execute("BEGIN IMMEDIATE")
+                if db.execute("SELECT generation FROM version").fetchone()[0] != epoch:
+                    return response  # A request invalidated the cache during this origin fetch.
                 db.execute("DELETE FROM pages WHERE expires<=? OR key=?", (received, key))
                 db.execute("INSERT INTO pages VALUES(?,?,?,?,?,?,?,?,?,?,?)",
                            (key, url, response.status_code, response.reason, encoded_fields, response.content,
@@ -102,6 +111,9 @@ def _store(path):
         with db:
             db.execute("CREATE TABLE IF NOT EXISTS pages (key TEXT PRIMARY KEY, url, status, reason, headers, body,"
                        " aged, received, expires, size, born)")
+            db.execute("CREATE TABLE IF NOT EXISTS version (id INTEGER PRIMARY KEY, generation INTEGER NOT NULL)")
+            db.execute("INSERT OR IGNORE INTO version VALUES(1,0)")
+            db.commit()
             yield db
     finally:
         db.close()
@@ -110,6 +122,7 @@ def _store(path):
 def _forget(path, url=None):
     try:
         with _store(path) as db:
+            db.execute("UPDATE version SET generation=generation+1")
             if url is None:
                 db.execute("DELETE FROM pages")
             else:

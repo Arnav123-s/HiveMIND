@@ -77,10 +77,11 @@ class ModuleChecks:
                        "    if json.loads(json.dumps(value, allow_nan=False)) != value: return {}\n"
                        "    return {'result': value}\n")
             outputs, _, _ = self.runner.run(wrapper, [[name, args] for name, args, _ in self.examples])
+        except (OSError, ValueError, RuntimeError, UnicodeError, RecursionError):
+            return ""
         except Exception as exc:
-            # An unavailable SDK or WASI runtime failure is inconclusive, including a corrupt local SDK.
-            from wasmtime import WasmtimeError
-            if isinstance(exc, (OSError, ValueError, RuntimeError, UnicodeError, RecursionError, WasmtimeError)):
+            # Wasmtime can also fail while opening the optional SDK, before the guest receives any input.
+            if type(exc).__module__.startswith("wasmtime."):
                 return ""
             raise
         self.previous, self.feedback = raw, ""

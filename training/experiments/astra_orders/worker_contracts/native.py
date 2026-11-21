@@ -19,7 +19,11 @@ def main():
     parser = argparse.ArgumentParser(description=__doc__)
     for name in ("runtime", "model", "lora", "out", "log"):
         parser.add_argument("--" + name, type=Path, required=True)
+    parser.add_argument("--familiar-index", type=Path, required=True)
     args = parser.parse_args()
+    index_sha = generate.file_hash(args.familiar_index)
+    if index_sha != "6379846f333435ea1818a5821822b208f26d28da13a4f3ff4fb69983647418e6":
+        raise ValueError("expected the frozen G55 checked task text index")
     if args.out.exists():
         raise FileExistsError(args.out)
     for name, digest in generate.ASSETS.items():
@@ -31,7 +35,7 @@ def main():
     treatments = [(ident, task, str(enabled)) for ident, task in cases for enabled in (0, 1)]
     settings = {"max_tokens": 192, "temperature": 0., "top_p": 1., "top_k": 0, "cache_prompt": False,
                 "seed": 8103, "chat_template_kwargs": {"enable_thinking": False}}
-    record = {"assets": generate.ASSETS, "sampling": settings, "turn_limit": 3,
+    record = {"familiarity_index_sha256": index_sha, "assets": generate.ASSETS, "sampling": settings, "turn_limit": 3,
               "seat": "t80+g55trunk", "affinity": sorted(os.sched_getaffinity(0)), "arms": []}
     with socket.socket() as probe:
         probe.bind(("127.0.0.1", 0))
@@ -66,7 +70,8 @@ def main():
                               "usage": reply["usage"], "wall_s": round(time.monotonic() - start, 3),
                               "cpu_s": round(generate.cpu(proc.pid) - prev, 3)})
                 return calls[-1]["response"]
-            with (TemporaryDirectory() as root, patch.dict(os.environ, {"HIVE_ASSERT_FIRST": flag}),
+            with (TemporaryDirectory() as root, patch.dict(os.environ, {"HIVE_ASSERT_FIRST": flag,
+                                                                     "HIVE_FAMILIAR_TASKS": str(args.familiar_index)}),
                   patch.object(solo.ternary, "chat", chat), patch.object(solo, "TURNS", 3),
                   patch.object(solo, "solved", return_value=[])):
                 work = Path(root) / "work"

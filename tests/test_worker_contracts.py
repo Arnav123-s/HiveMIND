@@ -1,4 +1,3 @@
-import json
 from collections import Counter
 from http.server import HTTPServer
 from threading import Thread
@@ -48,9 +47,11 @@ def origin(monkeypatch):
         server.server_close()
 
 
-def test_same_address_can_hold_five_cursor_pages_across_worker_turns(origin, tmp_path, monkeypatch):
+@pytest.mark.parametrize("reuse", [False, True])
+def test_same_address_can_hold_five_cursor_pages_across_worker_turns(origin, tmp_path, monkeypatch, reuse):
     base, server = origin
-    monkeypatch.setenv("HIVE_HTTP_CACHE", "1")
+    monkeypatch.setenv("HIVE_HTTP_CACHE", str(int(reuse)))
+    monkeypatch.setenv("HIVE_PAGE_CHECKS", "1")
     task = "Use the first 5 pages of the feed to count its authors. Print their counts."
     prog = ("import requests\nfrom collections import Counter\ncounts = Counter()\nfor i in range(1,6):\n"
             f"    page = requests.get({base + '/feed'!r}, headers={{'X-Cursor':str(i)}})\n"
@@ -59,8 +60,8 @@ def test_same_address_can_hold_five_cursor_pages_across_worker_turns(origin, tmp
         result, board = worker(task, [prog, prog + "\n# second traversal"], tmp_path / str(idx), monkeypatch)
         assert result["answer"] == "{'Ada': 2, 'Lin': 4, 'Mei': 1, 'Ros': 2}"
         assert [e[-1] for e in board.events if e[1] == "http"] == [
-            "HIVE-URLS: 1 hits=0 covered=", "HIVE-URLS: 1 hits=5 covered="]
-        assert server.visits["/feed"] == 5 * (idx + 1)
+            "HIVE-URLS: 1 hits=0 covered=", f"HIVE-URLS: 1 hits={5 if reuse else 0} covered="]
+        assert server.visits["/feed"] == (5 if reuse else 10) * (idx + 1)
 
 
 def test_worker_observes_only_a_literal_required_list(origin, tmp_path, monkeypatch):
@@ -136,3 +137,22 @@ def test_wasi_counterexample_reaches_the_next_worker_turn(tmp_path, monkeypatch)
     assert not result["delivery"]["issues"]
     assert result["answer"] == "ready"
     assert (tmp_path / "answers.py").read_text() == "def count(xs): return len(xs)"
+
+
+def test_disproved_peer_cannot_confirm_a_single_survivor():
+    bad = {"answer": "ready", "supplied_test_failed": True}
+    plausible = {"answer": "ready"}
+    assert solo.agreeing([bad, plausible], EXAMPLES) == []
+
+
+def test_reread_directive_forgets_the_previous_representation(origin, tmp_path, monkeypatch):
+    base, server = origin
+    monkeypatch.setenv("HIVE_HTTP_CACHE", "1")
+    prefix = f"import requests\nu = {base + '/reread'!r}\n"
+    with member_http("Read twice"):
+        for code, expected in (("print(requests.get(u).text)", "1"),
+                               ("print(requests.get(u).text)", "1"),
+                               ("print(requests.get(u, headers={'Cache-Control':'no-cache'}).text)", "2"),
+                               ("print(requests.get(u).text)", "3")):
+            assert run_python(prefix + code, tmp_path)["stdout"].strip() == expected
+    assert server.visits["/reread"] == 3
