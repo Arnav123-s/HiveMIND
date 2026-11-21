@@ -36,7 +36,8 @@ def build_and_use(bank, sdk):
     bad = [True, False, 3.0, "3", LOW - 1, HIGH + 1, None]
     invalid = [{"n": value} for value in bad] + [{}, {"n": 3, "other": None}]
     failures, _, _ = runner.run(source, invalid)
-    if passed != len(checks) or not all(r.get("error","").startswith("ValueError:") for r in failures):
+    rejected = sum(r.get("error", "").startswith("ValueError:") for r in failures)
+    if passed != len(checks) or len(failures) != len(invalid) or rejected != len(invalid):
         raise ValueError("wrapped method failed its contract")
     row = dict(task="prime_integer", description="Check whether the given integer is a prime number in the verified range.",
                source=source, digest=fingerprint(source), validation=passed)
