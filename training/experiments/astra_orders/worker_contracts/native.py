@@ -46,8 +46,9 @@ def main():
         previous = json.loads(args.out.read_bytes())
         if bool(previous.get("cutoff_repair")) != args.cutoff_repair:
             raise ValueError("the saved repair condition differs")
-        if any(previous.get(k) != value for k, value in record.items() if k != "arms"):
-            raise ValueError("the saved protocol differs")
+        if (any(previous.get(k) != value for k, value in record.items() if k not in {"arms", "affinity"})
+                or len(previous["affinity"]) != len(record["affinity"])):
+            raise ValueError("the saved protocol or reserved CPU count differs")
         prefix = [(row["id"], row["inspect"]) for row in previous["arms"]]
         if prefix != [(ident, flag) for ident, _, flag in treatments][:len(prefix)]:
             raise ValueError("the saved arms are not a complete prefix")
@@ -61,7 +62,8 @@ def main():
     flags = ["-ngl", "0", "-c", "2048", "-t", "2", "-tb", "2", "-rtr", "-b", "128", "-ub", "128",
              "--parallel", "1", "--threads-http", "2", "--port", str(port), "--host", "127.0.0.1", "--jinja"]
     if "flags" in record:
-        record.setdefault("resumptions", []).append({"first_index": len(record["arms"]), "flags": flags})
+        record.setdefault("resumptions", []).append({"first_index": len(record["arms"]), "flags": flags,
+                                                     "affinity": sorted(os.sched_getaffinity(0))})
     else:
         record["flags"] = flags
     with args.log.open("wb") as log, ExitStack() as cleanup:
@@ -110,7 +112,8 @@ def main():
                 assert 1 <= len(calls) <= 3 and sum(c["usage"]["completion_tokens"] for c in calls) <= 576
                 record["arms"].append({"id": ident, "inspect": flag, "ok": grade[0], "reason": grade[1],
                                        "files": files, "calls": calls, "messages": result["messages"],
-                                       "answer": result["answer"], "turns": result["turns"]})
+                                       "answer": result["answer"], "turns": result["turns"],
+                                       "affinity": sorted(os.sched_getaffinity(0))})
                 generate.save(args.out, record)
                 print(ident, flag, grade, flush=True)
         record["complete"] = True
