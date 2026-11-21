@@ -4,9 +4,9 @@
 
 This page is drawn by the hive itself at the end of every generation (`training/progress.py`, run by the workflow's record step). Hover a point in a graph for its numbers.
 
-**Now:** generation g57 of the 8B body passed 49 of 64 exam tasks (77%). The best so far on this DNA: g41, 58 of 64 (91%).
+**Now:** generation g59 of the 8B body passed 49 of 64 exam tasks (77%). The best so far on this DNA: g41, 58 of 64 (91%).
 
-**Talk:** generation g57 sat the talk exam (seed 30000057): 8.0 of 10 (32 of 40 messages right: route 8 of 10, fact 8 of 10, earlier 9 of 10, time 7 of 10). The bar: 8 of 10.
+**Talk:** generation g59 sat the talk exam (seed 30000059): 7.5 of 10 (30 of 40 messages right: route 7 of 10, fact 9 of 10, earlier 8 of 10, time 6 of 10). The bar: 8 of 10.
 
 ![The share of exam tasks the body passed, each generation](progress/score.svg)
 
@@ -26,18 +26,18 @@ This page is drawn by the hive itself at the end of every generation (`training/
 
 Its read, with the next piece: [reads/latest.md](reads/latest.md).
 
-Generations that stand on less (marked red in the split graph): g41: 1 of 20 train slices lost; g42: 2 of 20 train slices lost; g44: 2 of 20 train slices lost; g45: 1 of 20 train slices lost; g47: 2 of 20 train slices lost; g48: 1 of 20 train slices lost; g49: 2 of 20 train slices lost; g50: 3 of 20 train slices lost; g51: 2 of 20 train slices lost; g52: 3 of 20 train slices lost; g53: 3 of 20 train slices lost; g54: 3 of 20 train slices lost; g56: 2 of 20 train slices lost; g57: 4 of 20 train slices lost.
+Generations that stand on less (marked red in the split graph): g41: 1 of 20 train slices lost; g42: 2 of 20 train slices lost; g44: 2 of 20 train slices lost; g45: 1 of 20 train slices lost; g47: 2 of 20 train slices lost; g48: 1 of 20 train slices lost; g49: 2 of 20 train slices lost; g50: 3 of 20 train slices lost; g51: 2 of 20 train slices lost; g52: 3 of 20 train slices lost; g53: 3 of 20 train slices lost; g54: 3 of 20 train slices lost; g56: 2 of 20 train slices lost; g57: 4 of 20 train slices lost; g59: 2 of 20 train slices lost.
 
 ## Where it practises most next
 
 Practice draws each kind of task by how close the body is to passing it half the time: a kind always passed is learned, one never passed has no right program to learn from yet. Most drawn next:
 
-- several tasks in one
 - the regions of a grid, with hidden tests
-- an order of tasks by their dependencies, with hidden tests
-- a cache that forgets the least recently used, with hidden tests
-- a server log's matching lines counted by class
+- a class with rules, with hidden tests
+- several tasks in one
 - a text split into sentences
+- the blanks of a table filled by a rule
+- a cache that forgets the least recently used, with hidden tests
 
 ## How hard its lessons are now
 

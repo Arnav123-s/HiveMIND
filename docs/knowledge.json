@@ -1385,6 +1385,36 @@
    "talk": 8.0,
    "hours": 6.72,
    "why": "kept: 49 against 48; after 49 of 64 (easy 32 of 32, hard 17 of 32), before 48 of 64 (easy 32 of 32, hard 16 of 32) on 8 seeds; the fixed held-out exam: after 3 of 29, before 1 of 29"
+  },
+  {
+   "id": "gen-g59",
+   "generation": "g59",
+   "when": "2026-11-21 11:47",
+   "verdict": "kept",
+   "after": [
+    49,
+    64
+   ],
+   "before": [
+    47,
+    64
+   ],
+   "hard": [
+    15,
+    23
+   ],
+   "easy": [
+    32,
+    32
+   ],
+   "held_out": [
+    2,
+    9
+   ],
+   "first_try": 0.52,
+   "talk": 7.5,
+   "hours": 6.42,
+   "why": "kept: 49 against 47; after 49 of 64 (easy 32 of 32, hard 17 of 32), before 47 of 64 (easy 32 of 32, hard 15 of 32) on 8 seeds; the fixed held-out exam: after 2 of 28, before 3 of 28"
   }
  ]
 }
