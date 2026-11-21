@@ -20,6 +20,19 @@ The grader runs each first program with writable access to its own task director
 
 ## Reproduction
 
+The exact five-update adapter is available as a 39,887,616-byte GGUF on the artifact branch. It loads beside the existing T80 base in the repository's CPU `llama-server` using `--lora t80-native-five.gguf`. Its SHA-256 is `99dc4d80a397ff307a89ecdb177fcca71aa6918c5a0f9f18e5570fde6ec6924f`. [Download the tested adapter](https://raw.githubusercontent.com/Arnav123-s/HiveMIND/e3c31661531953f4e4f65de4fd57f8ed27997ca2/training/experiments/astra_cpu/five_kinds/weights/t80-native-five.gguf)
+
+To export the exact starting comparison after reproducing training, set `FIVE_RUN` to the five-step run's scratch directory, `T80_SNAPSHOT` to the unpacked base model directory and `IK_LLAMA` to the repository's pinned ik_llama.cpp checkout. The starting GGUF SHA-256 is `b603c9395c82838c28831a491d8fc8b48dd09e8bf26c158573724807bef2b3f4`.
+
+```sh
+baseline_export=$(mktemp -d)
+mkdir "$baseline_export/t80+astrastudy"
+cp "$FIVE_RUN/grow/t80+astrastudy/adapter_config.json" "$baseline_export/t80+astrastudy/"
+cp "$FIVE_RUN/grow/t80+astrastudy.start.safetensors" "$baseline_export/t80+astrastudy/adapter_model.safetensors"
+START_GGUF="$baseline_export/parent.gguf"
+python "$IK_LLAMA/convert_lora_to_gguf.py" --base "$T80_SNAPSHOT" --outfile "$START_GGUF" --outtype f16 "$baseline_export/t80+astrastudy"
+```
+
 Use the same repository environment, native binary, T80 GGUF, WASI SDK, starting adapter and five-update adapter as the [training run](../README.md). The native runner checks its runtime, model, panel and LoRA hashes, starts a fresh single-adapter server for each arm and checks that its scale is one. The raw native receipts include the exact generation settings, response lengths and finish reasons. Supply real local asset paths in these commands.
 
 ```sh
