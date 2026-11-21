@@ -1,0 +1,144 @@
+{
+  "source_sha256": "e6ad4dbb020ab520822068e3631e7319638dd81a00fad97c5f30669675df0782",
+  "artifact_id": 14482488264,
+  "source_run": 44371926721,
+  "task": "h20000483_00",
+  "cases": [
+    {
+      "operation": "tokens",
+      "text": "21 @( 4 *3 )- 6",
+      "expected": [
+        "21",
+        "@",
+        "(",
+        "4",
+        "*",
+        "3",
+        ")",
+        "-",
+        "6"
+      ]
+    },
+    {
+      "operation": "evaluate",
+      "text": "7 * 3 @ 2 + 1",
+      "expected": 15
+    },
+    {
+      "operation": "evaluate",
+      "text": "(7 * 3) @ 2 + 1",
+      "expected": 3
+    },
+    {
+      "operation": "evaluate",
+      "text": "13 - 4 - 2",
+      "expected": 7
+    }
+  ],
+  "candidates": [
+    {
+      "member": 1,
+      "file": "exam_20000483_mixed/h20000483_00/members/work/member1_2.py",
+      "sha256": "c6532781eccf6d33fb4bba1fc43e2c6d9d1e25f355da4207a3e8c7223e26e86d",
+      "actual": [
+        {
+          "value": [
+            "21",
+            "@",
+            "(",
+            "4",
+            "*",
+            "3",
+            ")",
+            "-",
+            "6"
+          ]
+        },
+        {
+          "error": "TypeError: eval() arg 1 must be a string, bytes or code object"
+        },
+        {
+          "error": "TypeError: eval() arg 1 must be a string, bytes or code object"
+        },
+        {
+          "error": "TypeError: eval() arg 1 must be a string, bytes or code object"
+        }
+      ],
+      "passed": [
+        true,
+        false,
+        false,
+        false
+      ],
+      "fuel": 1026930639,
+      "seconds": 0.48136479500317364
+    },
+    {
+      "member": 2,
+      "file": "exam_20000483_mixed/h20000483_00/members/member2/member2_3.py",
+      "sha256": "9dda8b20e47c0f00764b8cf49649203bca34ab4083a3e7f5c76656fefacfc918",
+      "actual": [
+        {
+          "value": [
+            "21",
+            "@",
+            "(",
+            "4",
+            "*",
+            "3",
+            ")",
+            "-",
+            "6"
+          ]
+        },
+        {
+          "value": 15
+        },
+        {
+          "value": 3
+        },
+        {
+          "value": 7
+        }
+      ],
+      "passed": [
+        true,
+        true,
+        true,
+        true
+      ],
+      "fuel": 1025783395,
+      "seconds": 0.3563313010017737
+    },
+    {
+      "member": 3,
+      "file": "exam_20000483_mixed/h20000483_00/members/member3/member3_3.py",
+      "sha256": "ffbe3d9039d73b1cdb8e1c743cb2d283dff4bdd29b2e3c369b35100fbc20c3b8",
+      "actual": [
+        {
+          "error": "SyntaxError: iterable unpacking cannot be used in comprehension (<string>, line 25)"
+        },
+        {
+          "error": "SyntaxError: iterable unpacking cannot be used in comprehension (<string>, line 25)"
+        },
+        {
+          "error": "SyntaxError: iterable unpacking cannot be used in comprehension (<string>, line 25)"
+        },
+        {
+          "error": "SyntaxError: iterable unpacking cannot be used in comprehension (<string>, line 25)"
+        }
+      ],
+      "passed": [
+        false,
+        false,
+        false,
+        false
+      ],
+      "fuel": 1028215846,
+      "seconds": 0.3710019049976836
+    }
+  ],
+  "selected": [
+    2
+  ]
+}

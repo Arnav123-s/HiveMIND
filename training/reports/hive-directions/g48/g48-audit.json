@@ -1,0 +1,3164 @@
+{
+ "by_arm": {
+  "after": {
+   "joint": {
+    "all": {
+     "both": 53,
+     "delivery_only": 0,
+     "member_only": 4,
+     "neither": 7
+    },
+    "easy": {
+     "both": 32,
+     "delivery_only": 0,
+     "member_only": 0,
+     "neither": 0
+    },
+    "hard": {
+     "both": 21,
+     "delivery_only": 0,
+     "member_only": 4,
+     "neither": 7
+    }
+   },
+   "missed_correct_member": [
+    {
+     "final_excerpt": "Not confirmed: the members that worked this out independently did not agree, so no answer is given.",
+     "finding": "no bank.py saved",
+     "id": "h20000481_01",
+     "kind": "a class with rules, with hidden tests",
+     "passing": [
+      "t80+g48code2"
+     ]
+    },
+    {
+     "final_excerpt": "Not confirmed: the members that worked this out independently did not agree, so no answer is given.",
+     "finding": "no calc.py saved",
+     "id": "h20000483_00",
+     "kind": "a parser for a tiny language, with hidden tests",
+     "passing": [
+      "t80+g48code2"
+     ]
+    },
+    {
+     "final_excerpt": "Not confirmed: the members that worked this out independently did not agree, so no answer is given.",
+     "finding": "no bank.py saved",
+     "id": "h20000483_02",
+     "kind": "a class with rules, with hidden tests",
+     "passing": [
+      "t80+g48code2"
+     ]
+    },
+    {
+     "final_excerpt": "Not confirmed: the members that worked this out independently did not agree, so no answer is given.",
+     "finding": "no change.csv saved",
+     "id": "h20000488_01",
+     "kind": "the percent change between two columns, rounded by a rule",
+     "passing": [
+      "t80+g48data"
+     ]
+    }
+   ],
+   "workers": {
+    "t80+g48code": {
+     "failed_where_final_passed": 1,
+     "graded_seats": 9,
+     "passed": 1,
+     "passed_where_final_failed": 0
+    },
+    "t80+g48code2": {
+     "failed_where_final_passed": 0,
+     "graded_seats": 32,
+     "passed": 28,
+     "passed_where_final_failed": 3
+    },
+    "t80+g48data": {
+     "failed_where_final_passed": 1,
+     "graded_seats": 14,
+     "passed": 10,
+     "passed_where_final_failed": 1
+    },
+    "t80+g48data2": {
+     "failed_where_final_passed": 0,
+     "graded_seats": 4,
+     "passed": 0,
+     "passed_where_final_failed": 0
+    },
+    "t80+g48sources": {
+     "failed_where_final_passed": 0,
+     "graded_seats": 9,
+     "passed": 9,
+     "passed_where_final_failed": 0
+    },
+    "t80+g48sources2": {
+     "failed_where_final_passed": 0,
+     "graded_seats": 2,
+     "passed": 2,
+     "passed_where_final_failed": 0
+    },
+    "t80+g48trunk": {
+     "failed_where_final_passed": 1,
+     "graded_seats": 64,
+     "passed": 52,
+     "passed_where_final_failed": 0
+    },
+    "t80+g48words2": {
+     "failed_where_final_passed": 0,
+     "graded_seats": 9,
+     "passed": 9,
+     "passed_where_final_failed": 0
+    }
+   }
+  },
+  "before": {
+   "joint": {
+    "all": {
+     "both": 53,
+     "delivery_only": 0,
+     "member_only": 1,
+     "neither": 10
+    },
+    "easy": {
+     "both": 32,
+     "delivery_only": 0,
+     "member_only": 0,
+     "neither": 0
+    },
+    "hard": {
+     "both": 21,
+     "delivery_only": 0,
+     "member_only": 1,
+     "neither": 10
+    }
+   },
+   "missed_correct_member": [
+    {
+     "final_excerpt": "{'pack': 0, 'bench': 0, 'tag': 0, 'build': 1, 'ship': 1, 'docs': 2, 'sign': 1}\n['bench', 'bench', 'bench', 'bench', 'bench', 'benc",
+     "finding": "19 of 61 hidden tests pass; first failure ['order', [{'deploy': ['lint'], 'pack': ['bench'], 'bench': ['deploy'], 'sign': [], 'lint': []}], ['sign', 'lint', 'deploy', 'bench', 'pack'], ['lint', 'deploy', 'bench', 'bench'",
+     "id": "h20000486_02",
+     "kind": "an order of tasks by their dependencies, with hidden tests",
+     "passing": [
+      "t80+g47data2"
+     ]
+    }
+   ],
+   "workers": {
+    "t80+g45words": {
+     "failed_where_final_passed": 0,
+     "graded_seats": 1,
+     "passed": 0,
+     "passed_where_final_failed": 0
+    },
+    "t80+g47code": {
+     "failed_where_final_passed": 0,
+     "graded_seats": 8,
+     "passed": 2,
+     "passed_where_final_failed": 0
+    },
+    "t80+g47code2": {
+     "failed_where_final_passed": 1,
+     "graded_seats": 32,
+     "passed": 24,
+     "passed_where_final_failed": 0
+    },
+    "t80+g47data": {
+     "failed_where_final_passed": 0,
+     "graded_seats": 4,
+     "passed": 2,
+     "passed_where_final_failed": 0
+    },
+    "t80+g47data2": {
+     "failed_where_final_passed": 1,
+     "graded_seats": 14,
+     "passed": 11,
+     "passed_where_final_failed": 1
+    },
+    "t80+g47sources": {
+     "failed_where_final_passed": 0,
+     "graded_seats": 1,
+     "passed": 1,
+     "passed_where_final_failed": 0
+    },
+    "t80+g47sources2": {
+     "failed_where_final_passed": 0,
+     "graded_seats": 9,
+     "passed": 9,
+     "passed_where_final_failed": 0
+    },
+    "t80+g47trunk": {
+     "failed_where_final_passed": 2,
+     "graded_seats": 64,
+     "passed": 51,
+     "passed_where_final_failed": 0
+    },
+    "t80+g47words": {
+     "failed_where_final_passed": 0,
+     "graded_seats": 9,
+     "passed": 8,
+     "passed_where_final_failed": 0
+    }
+   }
+  }
+ },
+ "exam_commit": "b2133163c40a10d5c8dee8a3debf9a30b1a2aa38",
+ "job_grades": {
+  "after": {
+   "e20000481_00": {
+    "field": "knowledge",
+    "final": true,
+    "final_excerpt": null,
+    "finding": "133 is not prime; the answer says not prime",
+    "graded_members": [
+     {
+      "passed": true,
+      "seat": 1,
+      "who": "t80+g48trunk"
+     },
+     {
+      "passed": true,
+      "seat": 2,
+      "who": "t80+g48code2"
+     }
+    ],
+    "kind": "a thing to know",
+    "prompt_sha256": "a657ea67c2ccadaa83f3f592b37b8c150a89bd2720fb4827484391d43963f1be",
+    "seed": 20000481
+   },
+   "e20000481_01": {
+    "field": "code",
+    "final": true,
+    "final_excerpt": null,
+    "finding": "wants 4; the answer's numbers: [4.0]",
+    "graded_members": [
+     {
+      "passed": true,
+      "seat": 1,
+      "who": "t80+g48trunk"
+     },
+     {
+      "passed": true,
+      "seat": 2,
+      "who": "t80+g48code2"
+     }
+    ],
+    "kind": "write and run a program",
+    "prompt_sha256": "2fa555767c148daddb6cbabeffcf3f419f5df0b866f8b63918f4eee0d37c30ad",
+    "seed": 20000481
+   },
+   "e20000481_02": {
+    "field": "live facts",
+    "final": true,
+    "final_excerpt": null,
+    "finding": "latest requests 2.34.2 in the answer",
+    "graded_members": [
+     {
+      "passed": true,
+      "seat": 1,
+      "who": "t80+g48trunk"
+     },
+     {
+      "passed": true,
+      "seat": 2,
+      "who": "t80+g48sources"
+     }
+    ],
+    "kind": "a fact read from a source",
+    "prompt_sha256": "a2ddadffdf33fe81d34df449cf759816596904ca41f5209f934057e76adea6b8",
+    "seed": 20000481
+   },
+   "e20000481_03": {
+    "field": "dates",
+    "final": true,
+    "final_excerpt": null,
+    "finding": "1 sentences, 1 lines",
+    "graded_members": [
+     {
+      "passed": true,
+      "seat": 1,
+      "who": "t80+g48trunk"
+     },
+     {
+      "passed": true,
+      "seat": 2,
+      "who": "t80+g48code2"
+     }
+    ],
+    "kind": "the weekday of a date",
+    "prompt_sha256": "07954b3542add0dd88078af8000a8bb1c54e0e77f6a1d9943593c8d8479d104a",
+    "seed": 20000481
+   },
+   "e20000482_00": {
+    "field": "knowledge",
+    "final": true,
+    "final_excerpt": null,
+    "finding": "symbol Fe and atomic number 26 in the answer: True",
+    "graded_members": [
+     {
+      "passed": true,
+      "seat": 1,
+      "who": "t80+g48trunk"
+     },
+     {
+      "passed": true,
+      "seat": 2,
+      "who": "t80+g48code2"
+     }
+    ],
+    "kind": "a thing to know",
+    "prompt_sha256": "a3852d1b262f64a70469388f7599ddc021ea049ef9c86f2d7df98f7444e23f07",
+    "seed": 20000482
+   },
+   "e20000482_01": {
+    "field": "live facts",
+    "final": true,
+    "final_excerpt": null,
+    "finding": "latest pillow 13.0.0 in the answer",
+    "graded_members": [
+     {
+      "passed": true,
+      "seat": 1,
+      "who": "t80+g48trunk"
+     },
+     {
+      "passed": true,
+      "seat": 2,
+      "who": "t80+g48sources"
+     }
+    ],
+    "kind": "a fact read from a source",
+    "prompt_sha256": "6b955fc0d37ad1f18fc96221715bcdf0b2f2286e54216c71dda904392900c727",
+    "seed": 20000482
+   },
+   "e20000482_02": {
+    "field": "knowledge",
+    "final": true,
+    "final_excerpt": null,
+    "finding": "wants 14; the answer's numbers: [14.0]",
+    "graded_members": [
+     {
+      "passed": true,
+      "seat": 1,
+      "who": "t80+g48trunk"
+     },
+     {
+      "passed": true,
+      "seat": 2,
+      "who": "t80+g48code2"
+     }
+    ],
+    "kind": "a thing to know",
+    "prompt_sha256": "c1af0b511efeb9a1d8612f8b87864056a20f41b4ecbedb8045fe76638652e863",
+    "seed": 20000482
+   },
+   "e20000482_03": {
+    "field": "writing",
+    "final": true,
+    "final_excerpt": null,
+    "finding": "1 sentence(s); names the bridge and the closing or the repairs: True",
+    "graded_members": [
+     {
+      "passed": true,
+      "seat": 1,
+      "who": "t80+g48trunk"
+     },
+     {
+      "passed": true,
+      "seat": 2,
+      "who": "t80+g48words2"
+     }
+    ],
+    "kind": "sum up a text",
+    "prompt_sha256": "1e7193b5439c2285e5800d21bf9734a07f6c6d75654c5068d6ab36679952f648",
+    "seed": 20000482
+   },
+   "e20000483_00": {
+    "field": "code",
+    "final": true,
+    "final_excerpt": null,
+    "finding": "wants 5; the answer's numbers: [5.0]",
+    "graded_members": [
+     {
+      "passed": true,
+      "seat": 1,
+      "who": "t80+g48trunk"
+     },
+     {
+      "passed": true,
+      "seat": 2,
+      "who": "t80+g48code2"
+     }
+    ],
+    "kind": "write and run a program",
+    "prompt_sha256": "bc9c664e4f1ec2726b06ed7d7abce3f4c7918890b1a72b6420307acb0b94f9ba",
+    "seed": 20000483
+   },
+   "e20000483_01": {
+    "field": "understanding",
+    "final": true,
+    "final_excerpt": null,
+    "finding": "three labelled answers ['A', 'B', 'C']; each right: True",
+    "graded_members": [
+     {
+      "passed": true,
+      "seat": 1,
+      "who": "t80+g48trunk"
+     },
+     {
+      "passed": true,
+      "seat": 2,
+      "who": "t80+g48words2"
+     }
+    ],
+    "kind": "several orders in one message",
+    "prompt_sha256": "44e1400a346a5e130079f613b109227147966d9114f58f112ab896d79aaff47d",
+    "seed": 20000483
+   },
+   "e20000483_02": {
+    "field": "websites",
+    "final": true,
+    "final_excerpt": null,
+    "finding": "CSV has 11/11 prices of the Philosophy page",
+    "graded_members": [
+     {
+      "passed": true,
+      "seat": 1,
+      "who": "t80+g48trunk"
+     },
+     {
+      "passed": true,
+      "seat": 2,
+      "who": "t80+g48sources"
+     }
+    ],
+    "kind": "scrape a page to a file",
+    "prompt_sha256": "da96bbc49fffadb16a226941820b825dab66e70d2dae1dd67255fe7a9d1f0196",
+    "seed": 20000483
+   },
+   "e20000483_03": {
+    "field": "live facts",
+    "final": true,
+    "final_excerpt": null,
+    "finding": "licence mit in the answer",
+    "graded_members": [
+     {
+      "passed": true,
+      "seat": 1,
+      "who": "t80+g48trunk"
+     },
+     {
+      "passed": true,
+      "seat": 2,
+      "who": "t80+g48sources"
+     }
+    ],
+    "kind": "a fact read from a source",
+    "prompt_sha256": "a3bdf1e1013122eea00d3739b65c403fc7c25b42c09f1549567ec4251661a32f",
+    "seed": 20000483
+   },
+   "e20000484_00": {
+    "field": "websites",
+    "final": true,
+    "final_excerpt": null,
+    "finding": "CSV has 5/5 prices of the Biography page",
+    "graded_members": [
+     {
+      "passed": true,
+      "seat": 1,
+      "who": "t80+g48trunk"
+     },
+     {
+      "passed": true,
+      "seat": 2,
+      "who": "t80+g48sources"
+     },
+     {
+      "passed": true,
+      "seat": 3,
+      "who": "t80+g48sources2"
+     }
+    ],
+    "kind": "scrape a page to a file",
+    "prompt_sha256": "53128cc537c97ca04778ff972ca57d38946c1b738c59f2c456431dea39fb6448",
+    "seed": 20000484
+   },
+   "e20000484_01": {
+    "field": "instructions",
+    "final": true,
+    "final_excerpt": null,
+    "finding": "2 sentences (two asked); speaks of ('salt',): True",
+    "graded_members": [
+     {
+      "passed": true,
+      "seat": 1,
+      "who": "t80+g48trunk"
+     },
+     {
+      "passed": true,
+      "seat": 2,
+      "who": "t80+g48words2"
+     }
+    ],
+    "kind": "follow a form to the letter",
+    "prompt_sha256": "2c4ea9fdf0e5980a4743c003ab3cdbc21a406c9242a105b3372f36235627207a",
+    "seed": 20000484
+   },
+   "e20000484_02": {
+    "field": "dates",
+    "final": true,
+    "final_excerpt": null,
+    "finding": "wants 164; the answer's numbers: [164.0]",
+    "graded_members": [
+     {
+      "passed": true,
+      "seat": 1,
+      "who": "t80+g48trunk"
+     },
+     {
+      "passed": true,
+      "seat": 2,
+      "who": "t80+g48code2"
+     }
+    ],
+    "kind": "days between two dates",
+    "prompt_sha256": "402b7af6c63d3bb109b3ce6f85ec9511a4953286b4f2bac358873d56770a1f70",
+    "seed": 20000484
+   },
+   "e20000484_03": {
+    "field": "given data",
+    "final": true,
+    "final_excerpt": null,
+    "finding": "1 sentences, 2 lines; wants 228; the answer's numbers: [228.0]",
+    "graded_members": [
+     {
+      "passed": true,
+      "seat": 1,
+      "who": "t80+g48trunk"
+     },
+     {
+      "passed": true,
+      "seat": 2,
+      "who": "t80+g48code2"
+     }
+    ],
+    "kind": "reason over a small table",
+    "prompt_sha256": "9ef81106352d552cbd6f5d73957f4de7c9c194493d62b151923c737d56cc5122",
+    "seed": 20000484
+   },
+   "e20000485_00": {
+    "field": "units",
+    "final": true,
+    "final_excerpt": null,
+    "finding": "wants 107.6; the answer's numbers: [107.6]",
+    "graded_members": [
+     {
+      "passed": true,
+      "seat": 1,
+      "who": "t80+g48trunk"
+     },
+     {
+      "passed": true,
+      "seat": 2,
+      "who": "t80+g48code2"
+     }
+    ],
+    "kind": "a unit conversion",
+    "prompt_sha256": "c082e0298565b33133a2393b3854f74577522182b113799e1ad153693ed17664",
+    "seed": 20000485
+   },
+   "e20000485_01": {
+    "field": "languages",
+    "final": true,
+    "final_excerpt": null,
+    "finding": "place, hour and day in French: [True, True, True]; the English word left in: False",
+    "graded_members": [
+     {
+      "passed": true,
+      "seat": 1,
+      "who": "t80+g48trunk"
+     },
+     {
+      "passed": true,
+      "seat": 2,
+      "who": "t80+g48words2"
+     }
+    ],
+    "kind": "translate a sentence",
+    "prompt_sha256": "17704a5c9b635201ee44822e52c2f34f3b2b1db4446e854f305e29a115d19407",
+    "seed": 20000485
+   },
+   "e20000485_02": {
+    "field": "code",
+    "final": true,
+    "final_excerpt": null,
+    "finding": "wants 3; the answer's numbers: [3.0]",
+    "graded_members": [
+     {
+      "passed": true,
+      "seat": 1,
+      "who": "t80+g48trunk"
+     },
+     {
+      "passed": true,
+      "seat": 2,
+      "who": "t80+g48code2"
+     }
+    ],
+    "kind": "write and run a program",
+    "prompt_sha256": "72bb4320ca26c5ff00a82121092f15aaefb669f4406b44ca7edfa75cc77c5a70",
+    "seed": 20000485
+   },
+   "e20000485_03": {
+    "field": "dates",
+    "final": true,
+    "final_excerpt": null,
+    "finding": "1 sentences, 1 lines",
+    "graded_members": [
+     {
+      "passed": true,
+      "seat": 1,
+      "who": "t80+g48trunk"
+     },
+     {
+      "passed": true,
+      "seat": 2,
+      "who": "t80+g48code2"
+     }
+    ],
+    "kind": "the weekday of a date",
+    "prompt_sha256": "3e4ef6c4ef78879a20693fce07ba2495589c12de603cae922a60946400c9c29e",
+    "seed": 20000485
+   },
+   "e20000486_00": {
+    "field": "websites",
+    "final": true,
+    "final_excerpt": null,
+    "finding": "born September 30, 1928: in the answer True",
+    "graded_members": [
+     {
+      "passed": true,
+      "seat": 1,
+      "who": "t80+g48trunk"
+     },
+     {
+      "passed": true,
+      "seat": 2,
+      "who": "t80+g48sources"
+     }
+    ],
+    "kind": "operate a website",
+    "prompt_sha256": "098c0352a34ec707b4c6143d1adbe6e60ed9b8c2ca5363858166b499a39ce477",
+    "seed": 20000486
+   },
+   "e20000486_01": {
+    "field": "code",
+    "final": true,
+    "final_excerpt": null,
+    "finding": "wants 4; the answer's numbers: [4.0]",
+    "graded_members": [
+     {
+      "passed": true,
+      "seat": 1,
+      "who": "t80+g48trunk"
+     },
+     {
+      "passed": true,
+      "seat": 2,
+      "who": "t80+g48code2"
+     }
+    ],
+    "kind": "write and run a program",
+    "prompt_sha256": "a6e69dbad854a40af105e5449a94b09d3c655768f808af4eea75b21b6f7e244e",
+    "seed": 20000486
+   },
+   "e20000486_02": {
+    "field": "units",
+    "final": true,
+    "final_excerpt": null,
+    "finding": "wants 11.8; the answer's numbers: [11.8]",
+    "graded_members": [
+     {
+      "passed": true,
+      "seat": 1,
+      "who": "t80+g48trunk"
+     },
+     {
+      "passed": true,
+      "seat": 2,
+      "who": "t80+g48code2"
+     }
+    ],
+    "kind": "a unit conversion",
+    "prompt_sha256": "3426e0ea9a6c728464cc8caf1eae54f2d6b2a65175b393a00b37390fe06009e3",
+    "seed": 20000486
+   },
+   "e20000486_03": {
+    "field": "understanding",
+    "final": true,
+    "final_excerpt": null,
+    "finding": "three labelled answers ['A', 'B', 'C']; each right: True",
+    "graded_members": [
+     {
+      "passed": true,
+      "seat": 1,
+      "who": "t80+g48trunk"
+     },
+     {
+      "passed": true,
+      "seat": 2,
+      "who": "t80+g48words2"
+     }
+    ],
+    "kind": "several orders in one message",
+    "prompt_sha256": "6ba14ba41566caffe65c0811e69d189b2f6b098990c90108921153dae98ffc9d",
+    "seed": 20000486
+   },
+   "e20000487_00": {
+    "field": "live facts",
+    "final": true,
+    "final_excerpt": null,
+    "finding": "latest numpy 2.5.5 in the answer",
+    "graded_members": [
+     {
+      "passed": true,
+      "seat": 1,
+      "who": "t80+g48trunk"
+     },
+     {
+      "passed": true,
+      "seat": 2,
+      "who": "t80+g48sources"
+     }
+    ],
+    "kind": "a fact read from a source",
+    "prompt_sha256": "2e3a836ffb87af4b076002b89f4741e5406ec191597881e44c64250b72790039",
+    "seed": 20000487
+   },
+   "e20000487_01": {
+    "field": "knowledge",
+    "final": true,
+    "final_excerpt": null,
+    "finding": "1 sentences, 1 lines",
+    "graded_members": [
+     {
+      "passed": true,
+      "seat": 1,
+      "who": "t80+g48trunk"
+     },
+     {
+      "passed": true,
+      "seat": 2,
+      "who": "t80+g48words2"
+     }
+    ],
+    "kind": "a thing to know",
+    "prompt_sha256": "68059df1094306e0352726ac962848f78c29cf4ac099619a18a631a218a1c7bf",
+    "seed": 20000487
+   },
+   "e20000487_02": {
+    "field": "websites",
+    "final": true,
+    "final_excerpt": null,
+    "finding": "CSV has 14/14 prices of the Science page",
+    "graded_members": [
+     {
+      "passed": true,
+      "seat": 1,
+      "who": "t80+g48trunk"
+     },
+     {
+      "passed": true,
+      "seat": 2,
+      "who": "t80+g48sources"
+     },
+     {
+      "passed": true,
+      "seat": 3,
+      "who": "t80+g48sources2"
+     }
+    ],
+    "kind": "scrape a page to a file",
+    "prompt_sha256": "72411aae777df4ce5ca690ebc155acaf2e84aea034b8ead7111fd448b233424b",
+    "seed": 20000487
+   },
+   "e20000487_03": {
+    "field": "knowledge",
+    "final": true,
+    "final_excerpt": null,
+    "finding": "wants 756; the answer's numbers: [756.0, 110.0]; wants 110; the answer's numbers: [756.0, 110.0]",
+    "graded_members": [
+     {
+      "passed": true,
+      "seat": 1,
+      "who": "t80+g48trunk"
+     },
+     {
+      "passed": true,
+      "seat": 2,
+      "who": "t80+g48code2"
+     }
+    ],
+    "kind": "a thing to know",
+    "prompt_sha256": "e985e99d26cdefdf7a7997163f03044dc28051062aec6b4be4138026a668aa2f",
+    "seed": 20000487
+   },
+   "e20000488_00": {
+    "field": "websites",
+    "final": true,
+    "final_excerpt": null,
+    "finding": "born September 30, 1928: in the answer True",
+    "graded_members": [
+     {
+      "passed": true,
+      "seat": 1,
+      "who": "t80+g48trunk"
+     },
+     {
+      "passed": true,
+      "seat": 2,
+      "who": "t80+g48sources"
+     }
+    ],
+    "kind": "operate a website",
+    "prompt_sha256": "098c0352a34ec707b4c6143d1adbe6e60ed9b8c2ca5363858166b499a39ce477",
+    "seed": 20000488
+   },
+   "e20000488_01": {
+    "field": "understanding",
+    "final": true,
+    "final_excerpt": null,
+    "finding": "three labelled answers ['A', 'B', 'C']; each right: True",
+    "graded_members": [
+     {
+      "passed": true,
+      "seat": 1,
+      "who": "t80+g48trunk"
+     },
+     {
+      "passed": true,
+      "seat": 2,
+      "who": "t80+g48words2"
+     }
+    ],
+    "kind": "several orders in one message",
+    "prompt_sha256": "7c5aab77cc7656f78fdf70bd415ac09d4c20dfaed2d23216505178337999f11e",
+    "seed": 20000488
+   },
+   "e20000488_02": {
+    "field": "given data",
+    "final": true,
+    "final_excerpt": null,
+    "finding": "1 sentences, 2 lines; wants 181; the answer's numbers: [181.0]",
+    "graded_members": [
+     {
+      "passed": true,
+      "seat": 1,
+      "who": "t80+g48trunk"
+     },
+     {
+      "passed": true,
+      "seat": 2,
+      "who": "t80+g48code2"
+     }
+    ],
+    "kind": "reason over a small table",
+    "prompt_sha256": "bb4e96a506a53000e3b0fc06446e442b15296e787e925b7416b90be13b8b1094",
+    "seed": 20000488
+   },
+   "e20000488_03": {
+    "field": "writing",
+    "final": true,
+    "final_excerpt": null,
+    "finding": "1 sentence(s); names the library and the closing or the repairs: True",
+    "graded_members": [
+     {
+      "passed": true,
+      "seat": 1,
+      "who": "t80+g48trunk"
+     },
+     {
+      "passed": true,
+      "seat": 2,
+      "who": "t80+g48words2"
+     }
+    ],
+    "kind": "sum up a text",
+    "prompt_sha256": "3db94d17c3588e8c83b41a2d1ed5c053e0406c2e0e6c702faaac428567e9cca2",
+    "seed": 20000488
+   },
+   "h20000481_00": {
+    "field": "hard: tables",
+    "final": true,
+    "final_excerpt": null,
+    "finding": "wide.csv: wants [['alpha', 52, 64, 35], ['delta', 0, 27, 10], ['echo', 20, 43, 69]]..., the month Nov named; got [['alpha', '52', '64', '35'], ['delta', '0', '27', '10'], ['echo', '20', '43', '69']]: True",
+    "graded_members": [
+     {
+      "passed": true,
+      "seat": 1,
+      "who": "t80+g48trunk"
+     },
+     {
+      "passed": true,
+      "seat": 2,
+      "who": "t80+g48data"
+     }
+    ],
+    "kind": "a long table turned wide",
+    "prompt_sha256": "5045a857c0f688b1099ab350508371b67401e990263e11b39894b04fe7f59361",
+    "seed": 20000481
+   },
+   "h20000481_01": {
+    "field": "programs",
+    "final": false,
+    "final_excerpt": "Not confirmed: the members that worked this out independently did not agree, so no answer is given.",
+    "finding": "no bank.py saved",
+    "graded_members": [
+     {
+      "passed": false,
+      "seat": 1,
+      "who": "t80+g48trunk"
+     },
+     {
+      "passed": true,
+      "seat": 2,
+      "who": "t80+g48code2"
+     },
+     {
+      "passed": false,
+      "seat": 3,
+      "who": "t80+g48code"
+     }
+    ],
+    "kind": "a class with rules, with hidden tests",
+    "prompt_sha256": "bebaef5574d240df135af6de42f58d58d57fc483c774a607475c9e766f857ecf",
+    "seed": 20000481
+   },
+   "h20000481_02": {
+    "field": "hard: tables",
+    "final": true,
+    "final_excerpt": null,
+    "finding": "deduped.csv: 7 rows against 7 wanted, the same: True; 7 removed in the answer: True",
+    "graded_members": [
+     {
+      "passed": true,
+      "seat": 1,
+      "who": "t80+g48trunk"
+     },
+     {
+      "passed": true,
+      "seat": 2,
+      "who": "t80+g48code2"
+     }
+    ],
+    "kind": "a table cut to one row a key, the latest kept",
+    "prompt_sha256": "e415eda58f279486f929c3fb1fb40d6056d5ce0388394eb4ce9365c6f09be1af",
+    "seed": 20000481
+   },
+   "h20000481_03": {
+    "field": "hard: search",
+    "final": true,
+    "final_excerpt": null,
+    "finding": "wants 5762",
+    "graded_members": [
+     {
+      "passed": true,
+      "seat": 1,
+      "who": "t80+g48trunk"
+     },
+     {
+      "passed": true,
+      "seat": 2,
+      "who": "t80+g48code2"
+     }
+    ],
+    "kind": "a number with given properties",
+    "prompt_sha256": "2ee3865ecc50d04741290dc9f99cccce846ddd71734f41825cac447752133aa2",
+    "seed": 20000481
+   },
+   "h20000482_00": {
+    "field": "programs",
+    "final": false,
+    "final_excerpt": null,
+    "finding": "no calc.py saved",
+    "graded_members": [
+     {
+      "passed": false,
+      "seat": 1,
+      "who": "t80+g48trunk"
+     },
+     {
+      "passed": false,
+      "seat": 2,
+      "who": "t80+g48code2"
+     },
+     {
+      "passed": false,
+      "seat": 3,
+      "who": "t80+g48code"
+     }
+    ],
+    "kind": "a parser for a tiny language, with hidden tests",
+    "prompt_sha256": "1454e9d372616d4234f2f9a6f615fc23bf12843578f8f73c84178f18cb18b587",
+    "seed": 20000482
+   },
+   "h20000482_01": {
+    "field": "hard: tables",
+    "final": false,
+    "final_excerpt": null,
+    "finding": "no top.csv saved",
+    "graded_members": [
+     {
+      "passed": false,
+      "seat": 1,
+      "who": "t80+g48trunk"
+     },
+     {
+      "passed": false,
+      "seat": 2,
+      "who": "t80+g48data"
+     },
+     {
+      "passed": false,
+      "seat": 3,
+      "who": "t80+g48data2"
+     }
+    ],
+    "kind": "the top rows of each group ranked",
+    "prompt_sha256": "11508f56ee80e1b771e8f8e7e4e0c1ec95a6af79c44cbe15ad21214eb7635b01",
+    "seed": 20000482
+   },
+   "h20000482_02": {
+    "field": "hard: text",
+    "final": true,
+    "final_excerpt": null,
+    "finding": "wants sentences: 7; that line's numbers: [7.0]; wants longest: 1; that line's numbers: [1.0]; wants words: 13; that line's numbers: [13.0]",
+    "graded_members": [
+     {
+      "passed": true,
+      "seat": 1,
+      "who": "t80+g48trunk"
+     },
+     {
+      "passed": true,
+      "seat": 2,
+      "who": "t80+g48words2"
+     }
+    ],
+    "kind": "a text split into sentences",
+    "prompt_sha256": "7efa8945f52feb3b07b6dcaef3d65f9ecb834b6a96bef94816ab08c5aafee13c",
+    "seed": 20000482
+   },
+   "h20000482_03": {
+    "field": "hard: tables",
+    "final": true,
+    "final_excerpt": null,
+    "finding": "totals.csv: wants [('east', 2169.75), ('west', 647.75), ('central', 628.75)], largest east named; got [['east', '2169.75', '216.97'], ['west', '647.75', '215.92'], ['central', '628.75', '157.19']]: True",
+    "graded_members": [
+     {
+      "passed": true,
+      "seat": 1,
+      "who": "t80+g48trunk"
+     },
+     {
+      "passed": true,
+      "seat": 2,
+      "who": "t80+g48data"
+     }
+    ],
+    "kind": "a table grouped, each group's total and mean saved",
+    "prompt_sha256": "22f4c9ee958da7589ab66c5604b25b056b6908387acffe204d86d74649ed4c1c",
+    "seed": 20000482
+   },
+   "h20000483_00": {
+    "field": "programs",
+    "final": false,
+    "final_excerpt": "Not confirmed: the members that worked this out independently did not agree, so no answer is given.",
+    "finding": "no calc.py saved",
+    "graded_members": [
+     {
+      "passed": false,
+      "seat": 1,
+      "who": "t80+g48trunk"
+     },
+     {
+      "passed": true,
+      "seat": 2,
+      "who": "t80+g48code2"
+     },
+     {
+      "passed": false,
+      "seat": 3,
+      "who": "t80+g48code"
+     }
+    ],
+    "kind": "a parser for a tiny language, with hidden tests",
+    "prompt_sha256": "577a57966e898bf5a111ce10bf43fb471db2457dafd04c30be5f3bb97424142a",
+    "seed": 20000483
+   },
+   "h20000483_01": {
+    "field": "hard: tables",
+    "final": true,
+    "final_excerpt": null,
+    "finding": "current.csv: 6 rows against 6 wanted, the same: True; 7 removed in the answer: True",
+    "graded_members": [
+     {
+      "passed": true,
+      "seat": 1,
+      "who": "t80+g48trunk"
+     },
+     {
+      "passed": true,
+      "seat": 2,
+      "who": "t80+g48code2"
+     }
+    ],
+    "kind": "a table cut to one row a key, the latest kept",
+    "prompt_sha256": "47dd8fbcc2a6c42875497702a3296819c5b5f18f861de674bcf1f68e690cd7a1",
+    "seed": 20000483
+   },
+   "h20000483_02": {
+    "field": "programs",
+    "final": false,
+    "final_excerpt": "Not confirmed: the members that worked this out independently did not agree, so no answer is given.",
+    "finding": "no bank.py saved",
+    "graded_members": [
+     {
+      "passed": false,
+      "seat": 1,
+      "who": "t80+g48trunk"
+     },
+     {
+      "passed": true,
+      "seat": 2,
+      "who": "t80+g48code2"
+     },
+     {
+      "passed": false,
+      "seat": 3,
+      "who": "t80+g48code"
+     }
+    ],
+    "kind": "a class with rules, with hidden tests",
+    "prompt_sha256": "80c4d0c51277742780a0fd897528159301cf4e52328b70a94c40f3510f22c5d1",
+    "seed": 20000483
+   },
+   "h20000483_03": {
+    "field": "hard: given data",
+    "final": true,
+    "final_excerpt": null,
+    "finding": "Sofia spent most (566.0), total 1471.75, 3 of notebook; all in the answer: True",
+    "graded_members": [
+     {
+      "passed": true,
+      "seat": 1,
+      "who": "t80+g48trunk"
+     },
+     {
+      "passed": true,
+      "seat": 2,
+      "who": "t80+g48data"
+     }
+    ],
+    "kind": "a join over two small tables",
+    "prompt_sha256": "7cf9299afa8b90fec291491124b3140ba09a5b98980f284b372aa86c3d23e3f6",
+    "seed": 20000483
+   },
+   "h20000484_00": {
+    "field": "hard: files",
+    "final": false,
+    "final_excerpt": null,
+    "finding": "no people.csv saved",
+    "graded_members": [
+     {
+      "passed": false,
+      "seat": 1,
+      "who": "t80+g48trunk"
+     },
+     {
+      "passed": false,
+      "seat": 2,
+      "who": "t80+g48data"
+     },
+     {
+      "passed": false,
+      "seat": 3,
+      "who": "t80+g48data2"
+     }
+    ],
+    "kind": "a file given in the task, edited to a specification",
+    "prompt_sha256": "3e6bfec3ad4ffa73d2ba0a432da143ab77e1fcefe1ff0758dd05750b7c121788",
+    "seed": 20000484
+   },
+   "h20000484_01": {
+    "field": "hard: plans",
+    "final": true,
+    "final_excerpt": null,
+    "finding": "versions.md has 3 rows; the 3 packages in order with version and date: True",
+    "graded_members": [
+     {
+      "passed": true,
+      "seat": 1,
+      "who": "t80+g48trunk"
+     },
+     {
+      "passed": true,
+      "seat": 2,
+      "who": "t80+g48data"
+     }
+    ],
+    "kind": "several facts fetched and laid out as a file",
+    "prompt_sha256": "a7e676c640fff1ce50a89f39e415d99cfc9d768fd4a9426e7e25cbd91c9fb3e4",
+    "seed": 20000484
+   },
+   "h20000484_02": {
+    "field": "hard: files",
+    "final": true,
+    "final_excerpt": null,
+    "finding": "errors.json {'auth': 4, 'billing': 4, 'search': 1, 'mail': 2} against {'auth': 4, 'billing': 4, 'search': 1, 'mail': 2}; the hour 10 in the answer: True",
+    "graded_members": [
+     {
+      "passed": true,
+      "seat": 1,
+      "who": "t80+g48trunk"
+     },
+     {
+      "passed": true,
+      "seat": 2,
+      "who": "t80+g48code2"
+     }
+    ],
+    "kind": "a log read and counted into a file",
+    "prompt_sha256": "57bea3e33208bbd23741c60706fc450507cbbdc21e61fee29eca25f5477feb9a",
+    "seed": 20000484
+   },
+   "h20000484_03": {
+    "field": "hard: code",
+    "final": true,
+    "final_excerpt": null,
+    "finding": "50 of 50 hidden tests pass; the values asked for ([[5, 12583], 20]) in the answer: True",
+    "graded_members": [
+     {
+      "passed": true,
+      "seat": 1,
+      "who": "t80+g48trunk"
+     },
+     {
+      "passed": true,
+      "seat": 2,
+      "who": "t80+g48code2"
+     }
+    ],
+    "kind": "a module of two functions, with hidden tests",
+    "prompt_sha256": "29e0f3c24139e88792224a4384a41a669b10348afa81e0bcac2b47d2f906df7d",
+    "seed": 20000484
+   },
+   "h20000485_00": {
+    "field": "hard: files",
+    "final": false,
+    "final_excerpt": null,
+    "finding": "no people.csv saved",
+    "graded_members": [
+     {
+      "passed": false,
+      "seat": 1,
+      "who": "t80+g48trunk"
+     },
+     {
+      "passed": false,
+      "seat": 2,
+      "who": "t80+g48data"
+     },
+     {
+      "passed": false,
+      "seat": 3,
+      "who": "t80+g48data2"
+     }
+    ],
+    "kind": "a file given in the task, edited to a specification",
+    "prompt_sha256": "8dc7778255ae1e7cb00539848cf90fdfb7d6d586c9845ef670a6f7ff6033de98",
+    "seed": 20000485
+   },
+   "h20000485_01": {
+    "field": "programs",
+    "final": true,
+    "final_excerpt": null,
+    "finding": "319 of 319 hidden tests pass; the values asked for ([566]) in the answer: True",
+    "graded_members": [
+     {
+      "passed": false,
+      "seat": 1,
+      "who": "t80+g48trunk"
+     },
+     {
+      "passed": true,
+      "seat": 2,
+      "who": "t80+g48code2"
+     },
+     {
+      "passed": false,
+      "seat": 3,
+      "who": "t80+g48code"
+     }
+    ],
+    "kind": "a class with rules, with hidden tests",
+    "prompt_sha256": "00337284d1b0c65b3507874f4f8b688c15fbfd1d566454ee3739657a42ffac7e",
+    "seed": 20000485
+   },
+   "h20000485_02": {
+    "field": "hard: code",
+    "final": true,
+    "final_excerpt": null,
+    "finding": "50 of 50 hidden tests pass; the values asked for (['1o2e', 89921]) in the answer: True",
+    "graded_members": [
+     {
+      "passed": true,
+      "seat": 1,
+      "who": "t80+g48trunk"
+     },
+     {
+      "passed": true,
+      "seat": 2,
+      "who": "t80+g48code2"
+     }
+    ],
+    "kind": "a module of two functions, with hidden tests",
+    "prompt_sha256": "ee4693114b41d7fcb20ba669bff4be89623658c9cf6cc4cd6613c8a82139f716",
+    "seed": 20000485
+   },
+   "h20000485_03": {
+    "field": "programs",
+    "final": false,
+    "final_excerpt": null,
+    "finding": "no calc.py saved",
+    "graded_members": [
+     {
+      "passed": false,
+      "seat": 1,
+      "who": "t80+g48trunk"
+     },
+     {
+      "passed": false,
+      "seat": 2,
+      "who": "t80+g48code2"
+     },
+     {
+      "passed": false,
+      "seat": 3,
+      "who": "t80+g48code"
+     }
+    ],
+    "kind": "a parser for a tiny language, with hidden tests",
+    "prompt_sha256": "53bba86b21ef5a08a68a3561f34ee17ab6980ef1de23eb30e102af32f7b33821",
+    "seed": 20000485
+   },
+   "h20000486_00": {
+    "field": "hard: code",
+    "final": true,
+    "final_excerpt": null,
+    "finding": "50 of 50 hidden tests pass; the values asked for ([[2, 2, 2, 2, 13, 647], 4]) in the answer: True",
+    "graded_members": [
+     {
+      "passed": true,
+      "seat": 1,
+      "who": "t80+g48trunk"
+     },
+     {
+      "passed": true,
+      "seat": 2,
+      "who": "t80+g48code2"
+     },
+     {
+      "passed": true,
+      "seat": 3,
+      "who": "t80+g48code"
+     }
+    ],
+    "kind": "a module of two functions, with hidden tests",
+    "prompt_sha256": "9d491a8a72d455e4a262ed74995e675d677efd42690703699cd32cc63d63a855",
+    "seed": 20000486
+   },
+   "h20000486_01": {
+    "field": "hard: tables",
+    "final": true,
+    "final_excerpt": null,
+    "finding": "summary.csv: wants [('north', 1336.25), ('west', 394), ('south', 356.25)], largest north named; got [['north', '1336.25', '222.71'], ['west', '394.0', '394.0'], ['south', '356.25', '89.06']]: True",
+    "graded_members": [
+     {
+      "passed": true,
+      "seat": 1,
+      "who": "t80+g48trunk"
+     },
+     {
+      "passed": true,
+      "seat": 2,
+      "who": "t80+g48data"
+     }
+    ],
+    "kind": "a table grouped, each group's total and mean saved",
+    "prompt_sha256": "e8189c480a6289a46af2ef6b6de8e42b704705b98ced84dbff006f49fb7ecfa6",
+    "seed": 20000486
+   },
+   "h20000486_02": {
+    "field": "programs",
+    "final": true,
+    "final_excerpt": null,
+    "finding": "61 of 61 hidden tests pass; the values asked for ([['tag', 'pack', 'bench', 'sign', 'ship', 'docs', 'build']]) in the answer: True",
+    "graded_members": [
+     {
+      "passed": true,
+      "seat": 1,
+      "who": "t80+g48trunk"
+     },
+     {
+      "passed": false,
+      "seat": 2,
+      "who": "t80+g48data"
+     }
+    ],
+    "kind": "an order of tasks by their dependencies, with hidden tests",
+    "prompt_sha256": "623444b2329e976b4a242975e44a75bd1bfbd61a6eb1da0407aa1c9c17e9d20f",
+    "seed": 20000486
+   },
+   "h20000486_03": {
+    "field": "hard: plans",
+    "final": true,
+    "final_excerpt": null,
+    "finding": "versions.md has 3 rows; the 3 packages in order with version and date: True",
+    "graded_members": [
+     {
+      "passed": true,
+      "seat": 1,
+      "who": "t80+g48trunk"
+     },
+     {
+      "passed": true,
+      "seat": 2,
+      "who": "t80+g48data"
+     }
+    ],
+    "kind": "several facts fetched and laid out as a file",
+    "prompt_sha256": "d54c34f6678378b7ad73135a7a34cac96dd62d7dafd52323ea6fe3371a7800e4",
+    "seed": 20000486
+   },
+   "h20000487_00": {
+    "field": "hard: tables",
+    "final": true,
+    "final_excerpt": null,
+    "finding": "current.csv: 5 rows against 5 wanted, the same: True; 5 removed in the answer: True",
+    "graded_members": [
+     {
+      "passed": true,
+      "seat": 1,
+      "who": "t80+g48trunk"
+     },
+     {
+      "passed": true,
+      "seat": 2,
+      "who": "t80+g48code2"
+     }
+    ],
+    "kind": "a table cut to one row a key, the latest kept",
+    "prompt_sha256": "48aa5761b07b9eaeaf16369e8bceffc7f1f5288de10366d8c2d236ff70b19934",
+    "seed": 20000487
+   },
+   "h20000487_01": {
+    "field": "hard: tables",
+    "final": true,
+    "final_excerpt": null,
+    "finding": "summary.csv: wants [('south', 1042.75), ('north', 977), ('west', 579.5)], largest south named; got [['south', '1042.75', '208.55'], ['north', '977.0', '244.25'], ['west', '579.5', '289.75']]: True",
+    "graded_members": [
+     {
+      "passed": true,
+      "seat": 1,
+      "who": "t80+g48trunk"
+     },
+     {
+      "passed": true,
+      "seat": 2,
+      "who": "t80+g48data"
+     }
+    ],
+    "kind": "a table grouped, each group's total and mean saved",
+    "prompt_sha256": "314f97e8f29eeb4d240697ea438630164d62424d25df1ac7ae24e7f03f0a85a5",
+    "seed": 20000487
+   },
+   "h20000487_02": {
+    "field": "hard: live facts",
+    "final": false,
+    "final_excerpt": null,
+    "finding": "ruff 2026-11-12, fastapi 2026-11-18: fastapi is later by 6 days; in the answer: False",
+    "graded_members": [
+     {
+      "passed": false,
+      "seat": 1,
+      "who": "t80+g48trunk"
+     },
+     {
+      "passed": false,
+      "seat": 2,
+      "who": "t80+g48code2"
+     },
+     {
+      "passed": false,
+      "seat": 3,
+      "who": "t80+g48code"
+     }
+    ],
+    "kind": "two facts from two sources, combined",
+    "prompt_sha256": "f64d82534cf027338f7cae5cfdc54b596b427ed9e4f8db0c7f62b269a4ed2dd6",
+    "seed": 20000487
+   },
+   "h20000487_03": {
+    "field": "hard: tables",
+    "final": true,
+    "final_excerpt": null,
+    "finding": "wide.csv: wants [['Harbor', 25, 21, 12, 79], ['Hill', 16, 41, 45, 28], ['Lake', 0, 33, 80, 0]]..., the month Jul named; got [['Harbor', '25', '21', '12', '79'], ['Hill', '16', '41', '45', '28'], ['Lake', '0', '33', '80',",
+    "graded_members": [
+     {
+      "passed": true,
+      "seat": 1,
+      "who": "t80+g48trunk"
+     },
+     {
+      "passed": true,
+      "seat": 2,
+      "who": "t80+g48data"
+     }
+    ],
+    "kind": "a long table turned wide",
+    "prompt_sha256": "4938567ea2ba94da9d68f589144a728ecbd726cce6696ff22b186df3c4f7ccfc",
+    "seed": 20000487
+   },
+   "h20000488_00": {
+    "field": "programs",
+    "final": false,
+    "final_excerpt": null,
+    "finding": "no grid.py saved",
+    "graded_members": [
+     {
+      "passed": false,
+      "seat": 1,
+      "who": "t80+g48trunk"
+     },
+     {
+      "passed": false,
+      "seat": 2,
+      "who": "t80+g48code2"
+     },
+     {
+      "passed": false,
+      "seat": 3,
+      "who": "t80+g48code"
+     }
+    ],
+    "kind": "the regions of a grid, with hidden tests",
+    "prompt_sha256": "9a9ab4a33d1b35ae086be69a84fca15f4caf39b5fa41d2938d609221c3adbee7",
+    "seed": 20000488
+   },
+   "h20000488_01": {
+    "field": "hard: tables",
+    "final": false,
+    "final_excerpt": "Not confirmed: the members that worked this out independently did not agree, so no answer is given.",
+    "finding": "no change.csv saved",
+    "graded_members": [
+     {
+      "passed": false,
+      "seat": 1,
+      "who": "t80+g48trunk"
+     },
+     {
+      "passed": true,
+      "seat": 2,
+      "who": "t80+g48data"
+     },
+     {
+      "passed": false,
+      "seat": 3,
+      "who": "t80+g48data2"
+     }
+    ],
+    "kind": "the percent change between two columns, rounded by a rule",
+    "prompt_sha256": "0ab7a1f0c72b59d6b48debd27bc83c11ce8385cfb8838290a314f226d39cc4b9",
+    "seed": 20000488
+   },
+   "h20000488_02": {
+    "field": "hard: tables",
+    "final": true,
+    "final_excerpt": null,
+    "finding": "by_group.csv: wants [('west', 1367.25), ('east', 1339.25), ('north', 1312.75)], largest west named; got [['west', '1367.25', '227.88'], ['east', '1339.25', '267.85'], ['north', '1312.75', '262.55']]: True",
+    "graded_members": [
+     {
+      "passed": true,
+      "seat": 1,
+      "who": "t80+g48trunk"
+     },
+     {
+      "passed": true,
+      "seat": 2,
+      "who": "t80+g48data"
+     }
+    ],
+    "kind": "a table grouped, each group's total and mean saved",
+    "prompt_sha256": "a9697a02aa65f4feb135b46bd6b56506329b211d8189ec88705f064bc0edd12b",
+    "seed": 20000488
+   },
+   "h20000488_03": {
+    "field": "hard: tables",
+    "final": true,
+    "final_excerpt": null,
+    "finding": "latest.csv: 7 rows against 7 wanted, the same: True; 7 removed in the answer: True",
+    "graded_members": [
+     {
+      "passed": true,
+      "seat": 1,
+      "who": "t80+g48trunk"
+     },
+     {
+      "passed": true,
+      "seat": 2,
+      "who": "t80+g48code2"
+     }
+    ],
+    "kind": "a table cut to one row a key, the latest kept",
+    "prompt_sha256": "21a3ecfebdeeae68ba22f7e03d0c7a13040263c13c8c09023fc581703a77ce50",
+    "seed": 20000488
+   }
+  },
+  "before": {
+   "e20000481_00": {
+    "field": "knowledge",
+    "final": true,
+    "final_excerpt": null,
+    "finding": "133 is not prime; the answer says not prime",
+    "graded_members": [
+     {
+      "passed": true,
+      "seat": 1,
+      "who": "t80+g47trunk"
+     },
+     {
+      "passed": true,
+      "seat": 2,
+      "who": "t80+g47code2"
+     }
+    ],
+    "kind": "a thing to know",
+    "prompt_sha256": "a657ea67c2ccadaa83f3f592b37b8c150a89bd2720fb4827484391d43963f1be",
+    "seed": 20000481
+   },
+   "e20000481_01": {
+    "field": "code",
+    "final": true,
+    "final_excerpt": null,
+    "finding": "wants 4; the answer's numbers: [4.0]",
+    "graded_members": [
+     {
+      "passed": true,
+      "seat": 1,
+      "who": "t80+g47trunk"
+     },
+     {
+      "passed": true,
+      "seat": 2,
+      "who": "t80+g47code2"
+     }
+    ],
+    "kind": "write and run a program",
+    "prompt_sha256": "2fa555767c148daddb6cbabeffcf3f419f5df0b866f8b63918f4eee0d37c30ad",
+    "seed": 20000481
+   },
+   "e20000481_02": {
+    "field": "live facts",
+    "final": true,
+    "final_excerpt": null,
+    "finding": "latest requests 2.34.2 in the answer",
+    "graded_members": [
+     {
+      "passed": true,
+      "seat": 1,
+      "who": "t80+g47trunk"
+     },
+     {
+      "passed": true,
+      "seat": 2,
+      "who": "t80+g47sources2"
+     }
+    ],
+    "kind": "a fact read from a source",
+    "prompt_sha256": "a2ddadffdf33fe81d34df449cf759816596904ca41f5209f934057e76adea6b8",
+    "seed": 20000481
+   },
+   "e20000481_03": {
+    "field": "dates",
+    "final": true,
+    "final_excerpt": null,
+    "finding": "1 sentences, 1 lines",
+    "graded_members": [
+     {
+      "passed": true,
+      "seat": 1,
+      "who": "t80+g47trunk"
+     },
+     {
+      "passed": true,
+      "seat": 2,
+      "who": "t80+g47code2"
+     }
+    ],
+    "kind": "the weekday of a date",
+    "prompt_sha256": "07954b3542add0dd88078af8000a8bb1c54e0e77f6a1d9943593c8d8479d104a",
+    "seed": 20000481
+   },
+   "e20000482_00": {
+    "field": "knowledge",
+    "final": true,
+    "final_excerpt": null,
+    "finding": "symbol Fe and atomic number 26 in the answer: True",
+    "graded_members": [
+     {
+      "passed": true,
+      "seat": 1,
+      "who": "t80+g47trunk"
+     },
+     {
+      "passed": true,
+      "seat": 2,
+      "who": "t80+g47code2"
+     }
+    ],
+    "kind": "a thing to know",
+    "prompt_sha256": "a3852d1b262f64a70469388f7599ddc021ea049ef9c86f2d7df98f7444e23f07",
+    "seed": 20000482
+   },
+   "e20000482_01": {
+    "field": "live facts",
+    "final": true,
+    "final_excerpt": null,
+    "finding": "latest pillow 13.0.0 in the answer",
+    "graded_members": [
+     {
+      "passed": true,
+      "seat": 1,
+      "who": "t80+g47trunk"
+     },
+     {
+      "passed": true,
+      "seat": 2,
+      "who": "t80+g47sources2"
+     }
+    ],
+    "kind": "a fact read from a source",
+    "prompt_sha256": "6b955fc0d37ad1f18fc96221715bcdf0b2f2286e54216c71dda904392900c727",
+    "seed": 20000482
+   },
+   "e20000482_02": {
+    "field": "knowledge",
+    "final": true,
+    "final_excerpt": null,
+    "finding": "wants 14; the answer's numbers: [14.0]",
+    "graded_members": [
+     {
+      "passed": true,
+      "seat": 1,
+      "who": "t80+g47trunk"
+     },
+     {
+      "passed": true,
+      "seat": 2,
+      "who": "t80+g47code2"
+     }
+    ],
+    "kind": "a thing to know",
+    "prompt_sha256": "c1af0b511efeb9a1d8612f8b87864056a20f41b4ecbedb8045fe76638652e863",
+    "seed": 20000482
+   },
+   "e20000482_03": {
+    "field": "writing",
+    "final": true,
+    "final_excerpt": null,
+    "finding": "1 sentence(s); names the bridge and the closing or the repairs: True",
+    "graded_members": [
+     {
+      "passed": true,
+      "seat": 1,
+      "who": "t80+g47trunk"
+     },
+     {
+      "passed": true,
+      "seat": 2,
+      "who": "t80+g47words"
+     }
+    ],
+    "kind": "sum up a text",
+    "prompt_sha256": "1e7193b5439c2285e5800d21bf9734a07f6c6d75654c5068d6ab36679952f648",
+    "seed": 20000482
+   },
+   "e20000483_00": {
+    "field": "code",
+    "final": true,
+    "final_excerpt": null,
+    "finding": "wants 5; the answer's numbers: [5.0]",
+    "graded_members": [
+     {
+      "passed": true,
+      "seat": 1,
+      "who": "t80+g47trunk"
+     },
+     {
+      "passed": true,
+      "seat": 2,
+      "who": "t80+g47code2"
+     }
+    ],
+    "kind": "write and run a program",
+    "prompt_sha256": "bc9c664e4f1ec2726b06ed7d7abce3f4c7918890b1a72b6420307acb0b94f9ba",
+    "seed": 20000483
+   },
+   "e20000483_01": {
+    "field": "understanding",
+    "final": true,
+    "final_excerpt": null,
+    "finding": "three labelled answers ['A', 'B', 'C']; each right: True",
+    "graded_members": [
+     {
+      "passed": true,
+      "seat": 1,
+      "who": "t80+g47trunk"
+     },
+     {
+      "passed": true,
+      "seat": 2,
+      "who": "t80+g47words"
+     }
+    ],
+    "kind": "several orders in one message",
+    "prompt_sha256": "44e1400a346a5e130079f613b109227147966d9114f58f112ab896d79aaff47d",
+    "seed": 20000483
+   },
+   "e20000483_02": {
+    "field": "websites",
+    "final": true,
+    "final_excerpt": null,
+    "finding": "CSV has 11/11 prices of the Philosophy page",
+    "graded_members": [
+     {
+      "passed": true,
+      "seat": 1,
+      "who": "t80+g47trunk"
+     },
+     {
+      "passed": true,
+      "seat": 2,
+      "who": "t80+g47sources2"
+     }
+    ],
+    "kind": "scrape a page to a file",
+    "prompt_sha256": "da96bbc49fffadb16a226941820b825dab66e70d2dae1dd67255fe7a9d1f0196",
+    "seed": 20000483
+   },
+   "e20000483_03": {
+    "field": "live facts",
+    "final": true,
+    "final_excerpt": null,
+    "finding": "licence mit in the answer",
+    "graded_members": [
+     {
+      "passed": true,
+      "seat": 1,
+      "who": "t80+g47trunk"
+     },
+     {
+      "passed": true,
+      "seat": 2,
+      "who": "t80+g47sources2"
+     }
+    ],
+    "kind": "a fact read from a source",
+    "prompt_sha256": "a3bdf1e1013122eea00d3739b65c403fc7c25b42c09f1549567ec4251661a32f",
+    "seed": 20000483
+   },
+   "e20000484_00": {
+    "field": "websites",
+    "final": true,
+    "final_excerpt": null,
+    "finding": "CSV has 5/5 prices of the Biography page",
+    "graded_members": [
+     {
+      "passed": true,
+      "seat": 1,
+      "who": "t80+g47trunk"
+     },
+     {
+      "passed": true,
+      "seat": 2,
+      "who": "t80+g47sources2"
+     },
+     {
+      "passed": true,
+      "seat": 3,
+      "who": "t80+g47sources"
+     }
+    ],
+    "kind": "scrape a page to a file",
+    "prompt_sha256": "53128cc537c97ca04778ff972ca57d38946c1b738c59f2c456431dea39fb6448",
+    "seed": 20000484
+   },
+   "e20000484_01": {
+    "field": "instructions",
+    "final": true,
+    "final_excerpt": null,
+    "finding": "2 sentences (two asked); speaks of ('salt',): True",
+    "graded_members": [
+     {
+      "passed": true,
+      "seat": 1,
+      "who": "t80+g47trunk"
+     },
+     {
+      "passed": true,
+      "seat": 2,
+      "who": "t80+g47words"
+     }
+    ],
+    "kind": "follow a form to the letter",
+    "prompt_sha256": "2c4ea9fdf0e5980a4743c003ab3cdbc21a406c9242a105b3372f36235627207a",
+    "seed": 20000484
+   },
+   "e20000484_02": {
+    "field": "dates",
+    "final": true,
+    "final_excerpt": null,
+    "finding": "wants 164; the answer's numbers: [164.0]",
+    "graded_members": [
+     {
+      "passed": true,
+      "seat": 1,
+      "who": "t80+g47trunk"
+     },
+     {
+      "passed": true,
+      "seat": 2,
+      "who": "t80+g47code2"
+     }
+    ],
+    "kind": "days between two dates",
+    "prompt_sha256": "402b7af6c63d3bb109b3ce6f85ec9511a4953286b4f2bac358873d56770a1f70",
+    "seed": 20000484
+   },
+   "e20000484_03": {
+    "field": "given data",
+    "final": true,
+    "final_excerpt": null,
+    "finding": "1 sentences, 2 lines; wants 228; the answer's numbers: [228.0]",
+    "graded_members": [
+     {
+      "passed": true,
+      "seat": 1,
+      "who": "t80+g47trunk"
+     },
+     {
+      "passed": true,
+      "seat": 2,
+      "who": "t80+g47code2"
+     }
+    ],
+    "kind": "reason over a small table",
+    "prompt_sha256": "9ef81106352d552cbd6f5d73957f4de7c9c194493d62b151923c737d56cc5122",
+    "seed": 20000484
+   },
+   "e20000485_00": {
+    "field": "units",
+    "final": true,
+    "final_excerpt": null,
+    "finding": "wants 107.6; the answer's numbers: [107.6]",
+    "graded_members": [
+     {
+      "passed": true,
+      "seat": 1,
+      "who": "t80+g47trunk"
+     },
+     {
+      "passed": true,
+      "seat": 2,
+      "who": "t80+g47code2"
+     }
+    ],
+    "kind": "a unit conversion",
+    "prompt_sha256": "c082e0298565b33133a2393b3854f74577522182b113799e1ad153693ed17664",
+    "seed": 20000485
+   },
+   "e20000485_01": {
+    "field": "languages",
+    "final": true,
+    "final_excerpt": null,
+    "finding": "place, hour and day in French: [True, True, True]; the English word left in: False",
+    "graded_members": [
+     {
+      "passed": true,
+      "seat": 1,
+      "who": "t80+g47trunk"
+     },
+     {
+      "passed": true,
+      "seat": 2,
+      "who": "t80+g47words"
+     }
+    ],
+    "kind": "translate a sentence",
+    "prompt_sha256": "17704a5c9b635201ee44822e52c2f34f3b2b1db4446e854f305e29a115d19407",
+    "seed": 20000485
+   },
+   "e20000485_02": {
+    "field": "code",
+    "final": true,
+    "final_excerpt": null,
+    "finding": "wants 3; the answer's numbers: [3.0]",
+    "graded_members": [
+     {
+      "passed": true,
+      "seat": 1,
+      "who": "t80+g47trunk"
+     },
+     {
+      "passed": true,
+      "seat": 2,
+      "who": "t80+g47code2"
+     }
+    ],
+    "kind": "write and run a program",
+    "prompt_sha256": "72bb4320ca26c5ff00a82121092f15aaefb669f4406b44ca7edfa75cc77c5a70",
+    "seed": 20000485
+   },
+   "e20000485_03": {
+    "field": "dates",
+    "final": true,
+    "final_excerpt": null,
+    "finding": "1 sentences, 1 lines",
+    "graded_members": [
+     {
+      "passed": true,
+      "seat": 1,
+      "who": "t80+g47trunk"
+     },
+     {
+      "passed": true,
+      "seat": 2,
+      "who": "t80+g47code2"
+     }
+    ],
+    "kind": "the weekday of a date",
+    "prompt_sha256": "3e4ef6c4ef78879a20693fce07ba2495589c12de603cae922a60946400c9c29e",
+    "seed": 20000485
+   },
+   "e20000486_00": {
+    "field": "websites",
+    "final": true,
+    "final_excerpt": null,
+    "finding": "born September 30, 1928: in the answer True",
+    "graded_members": [
+     {
+      "passed": true,
+      "seat": 1,
+      "who": "t80+g47trunk"
+     },
+     {
+      "passed": true,
+      "seat": 2,
+      "who": "t80+g47sources2"
+     }
+    ],
+    "kind": "operate a website",
+    "prompt_sha256": "098c0352a34ec707b4c6143d1adbe6e60ed9b8c2ca5363858166b499a39ce477",
+    "seed": 20000486
+   },
+   "e20000486_01": {
+    "field": "code",
+    "final": true,
+    "final_excerpt": null,
+    "finding": "wants 4; the answer's numbers: [4.0]",
+    "graded_members": [
+     {
+      "passed": true,
+      "seat": 1,
+      "who": "t80+g47trunk"
+     },
+     {
+      "passed": true,
+      "seat": 2,
+      "who": "t80+g47code2"
+     }
+    ],
+    "kind": "write and run a program",
+    "prompt_sha256": "a6e69dbad854a40af105e5449a94b09d3c655768f808af4eea75b21b6f7e244e",
+    "seed": 20000486
+   },
+   "e20000486_02": {
+    "field": "units",
+    "final": true,
+    "final_excerpt": null,
+    "finding": "wants 11.8; the answer's numbers: [11.8]",
+    "graded_members": [
+     {
+      "passed": true,
+      "seat": 1,
+      "who": "t80+g47trunk"
+     },
+     {
+      "passed": true,
+      "seat": 2,
+      "who": "t80+g47code2"
+     }
+    ],
+    "kind": "a unit conversion",
+    "prompt_sha256": "3426e0ea9a6c728464cc8caf1eae54f2d6b2a65175b393a00b37390fe06009e3",
+    "seed": 20000486
+   },
+   "e20000486_03": {
+    "field": "understanding",
+    "final": true,
+    "final_excerpt": null,
+    "finding": "three labelled answers ['A', 'B', 'C']; each right: True",
+    "graded_members": [
+     {
+      "passed": true,
+      "seat": 1,
+      "who": "t80+g47trunk"
+     },
+     {
+      "passed": true,
+      "seat": 2,
+      "who": "t80+g47words"
+     }
+    ],
+    "kind": "several orders in one message",
+    "prompt_sha256": "6ba14ba41566caffe65c0811e69d189b2f6b098990c90108921153dae98ffc9d",
+    "seed": 20000486
+   },
+   "e20000487_00": {
+    "field": "live facts",
+    "final": true,
+    "final_excerpt": null,
+    "finding": "latest numpy 2.5.5 in the answer",
+    "graded_members": [
+     {
+      "passed": true,
+      "seat": 1,
+      "who": "t80+g47trunk"
+     },
+     {
+      "passed": true,
+      "seat": 2,
+      "who": "t80+g47sources2"
+     }
+    ],
+    "kind": "a fact read from a source",
+    "prompt_sha256": "2e3a836ffb87af4b076002b89f4741e5406ec191597881e44c64250b72790039",
+    "seed": 20000487
+   },
+   "e20000487_01": {
+    "field": "knowledge",
+    "final": true,
+    "final_excerpt": null,
+    "finding": "1 sentences, 1 lines",
+    "graded_members": [
+     {
+      "passed": true,
+      "seat": 1,
+      "who": "t80+g47trunk"
+     },
+     {
+      "passed": true,
+      "seat": 2,
+      "who": "t80+g47words"
+     }
+    ],
+    "kind": "a thing to know",
+    "prompt_sha256": "68059df1094306e0352726ac962848f78c29cf4ac099619a18a631a218a1c7bf",
+    "seed": 20000487
+   },
+   "e20000487_02": {
+    "field": "websites",
+    "final": true,
+    "final_excerpt": null,
+    "finding": "CSV has 14/14 prices of the Science page",
+    "graded_members": [
+     {
+      "passed": true,
+      "seat": 1,
+      "who": "t80+g47trunk"
+     },
+     {
+      "passed": true,
+      "seat": 2,
+      "who": "t80+g47sources2"
+     }
+    ],
+    "kind": "scrape a page to a file",
+    "prompt_sha256": "72411aae777df4ce5ca690ebc155acaf2e84aea034b8ead7111fd448b233424b",
+    "seed": 20000487
+   },
+   "e20000487_03": {
+    "field": "knowledge",
+    "final": true,
+    "final_excerpt": null,
+    "finding": "wants 756; the answer's numbers: [756.0, 110.0]; wants 110; the answer's numbers: [756.0, 110.0]",
+    "graded_members": [
+     {
+      "passed": true,
+      "seat": 1,
+      "who": "t80+g47trunk"
+     },
+     {
+      "passed": true,
+      "seat": 2,
+      "who": "t80+g47code2"
+     }
+    ],
+    "kind": "a thing to know",
+    "prompt_sha256": "e985e99d26cdefdf7a7997163f03044dc28051062aec6b4be4138026a668aa2f",
+    "seed": 20000487
+   },
+   "e20000488_00": {
+    "field": "websites",
+    "final": true,
+    "final_excerpt": null,
+    "finding": "born September 30, 1928: in the answer True",
+    "graded_members": [
+     {
+      "passed": true,
+      "seat": 1,
+      "who": "t80+g47trunk"
+     },
+     {
+      "passed": true,
+      "seat": 2,
+      "who": "t80+g47sources2"
+     }
+    ],
+    "kind": "operate a website",
+    "prompt_sha256": "098c0352a34ec707b4c6143d1adbe6e60ed9b8c2ca5363858166b499a39ce477",
+    "seed": 20000488
+   },
+   "e20000488_01": {
+    "field": "understanding",
+    "final": true,
+    "final_excerpt": null,
+    "finding": "three labelled answers ['A', 'B', 'C']; each right: True",
+    "graded_members": [
+     {
+      "passed": true,
+      "seat": 1,
+      "who": "t80+g47trunk"
+     },
+     {
+      "passed": true,
+      "seat": 2,
+      "who": "t80+g47words"
+     }
+    ],
+    "kind": "several orders in one message",
+    "prompt_sha256": "7c5aab77cc7656f78fdf70bd415ac09d4c20dfaed2d23216505178337999f11e",
+    "seed": 20000488
+   },
+   "e20000488_02": {
+    "field": "given data",
+    "final": true,
+    "final_excerpt": null,
+    "finding": "1 sentences, 2 lines; wants 181; the answer's numbers: [181.0]",
+    "graded_members": [
+     {
+      "passed": true,
+      "seat": 1,
+      "who": "t80+g47trunk"
+     },
+     {
+      "passed": true,
+      "seat": 2,
+      "who": "t80+g47code2"
+     }
+    ],
+    "kind": "reason over a small table",
+    "prompt_sha256": "bb4e96a506a53000e3b0fc06446e442b15296e787e925b7416b90be13b8b1094",
+    "seed": 20000488
+   },
+   "e20000488_03": {
+    "field": "writing",
+    "final": true,
+    "final_excerpt": null,
+    "finding": "1 sentence(s); names the library and the closing or the repairs: True",
+    "graded_members": [
+     {
+      "passed": true,
+      "seat": 1,
+      "who": "t80+g47trunk"
+     },
+     {
+      "passed": true,
+      "seat": 2,
+      "who": "t80+g47words"
+     }
+    ],
+    "kind": "sum up a text",
+    "prompt_sha256": "3db94d17c3588e8c83b41a2d1ed5c053e0406c2e0e6c702faaac428567e9cca2",
+    "seed": 20000488
+   },
+   "h20000481_00": {
+    "field": "hard: tables",
+    "final": true,
+    "final_excerpt": null,
+    "finding": "wide.csv: wants [['alpha', 52, 64, 35], ['delta', 0, 27, 10], ['echo', 20, 43, 69]]..., the month Nov named; got [['alpha', '52', '64', '35'], ['delta', '0', '27', '10'], ['echo', '20', '43', '69']]: True",
+    "graded_members": [
+     {
+      "passed": false,
+      "seat": 1,
+      "who": "t80+g47trunk"
+     },
+     {
+      "passed": true,
+      "seat": 2,
+      "who": "t80+g47data2"
+     },
+     {
+      "passed": true,
+      "seat": 3,
+      "who": "t80+g47data"
+     }
+    ],
+    "kind": "a long table turned wide",
+    "prompt_sha256": "5045a857c0f688b1099ab350508371b67401e990263e11b39894b04fe7f59361",
+    "seed": 20000481
+   },
+   "h20000481_01": {
+    "field": "programs",
+    "final": false,
+    "final_excerpt": null,
+    "finding": "no bank.py saved",
+    "graded_members": [
+     {
+      "passed": false,
+      "seat": 1,
+      "who": "t80+g47trunk"
+     },
+     {
+      "passed": false,
+      "seat": 2,
+      "who": "t80+g47code2"
+     },
+     {
+      "passed": false,
+      "seat": 3,
+      "who": "t80+g47code"
+     }
+    ],
+    "kind": "a class with rules, with hidden tests",
+    "prompt_sha256": "bebaef5574d240df135af6de42f58d58d57fc483c774a607475c9e766f857ecf",
+    "seed": 20000481
+   },
+   "h20000481_02": {
+    "field": "hard: tables",
+    "final": true,
+    "final_excerpt": null,
+    "finding": "deduped.csv: 7 rows against 7 wanted, the same: True; 7 removed in the answer: True",
+    "graded_members": [
+     {
+      "passed": true,
+      "seat": 1,
+      "who": "t80+g47trunk"
+     },
+     {
+      "passed": true,
+      "seat": 2,
+      "who": "t80+g47code2"
+     }
+    ],
+    "kind": "a table cut to one row a key, the latest kept",
+    "prompt_sha256": "e415eda58f279486f929c3fb1fb40d6056d5ce0388394eb4ce9365c6f09be1af",
+    "seed": 20000481
+   },
+   "h20000481_03": {
+    "field": "hard: search",
+    "final": true,
+    "final_excerpt": null,
+    "finding": "wants 5762",
+    "graded_members": [
+     {
+      "passed": true,
+      "seat": 1,
+      "who": "t80+g47trunk"
+     },
+     {
+      "passed": true,
+      "seat": 2,
+      "who": "t80+g47code2"
+     }
+    ],
+    "kind": "a number with given properties",
+    "prompt_sha256": "2ee3865ecc50d04741290dc9f99cccce846ddd71734f41825cac447752133aa2",
+    "seed": 20000481
+   },
+   "h20000482_00": {
+    "field": "programs",
+    "final": false,
+    "final_excerpt": null,
+    "finding": "no calc.py saved",
+    "graded_members": [
+     {
+      "passed": false,
+      "seat": 1,
+      "who": "t80+g47trunk"
+     },
+     {
+      "passed": false,
+      "seat": 2,
+      "who": "t80+g47code2"
+     },
+     {
+      "passed": false,
+      "seat": 3,
+      "who": "t80+g47code"
+     }
+    ],
+    "kind": "a parser for a tiny language, with hidden tests",
+    "prompt_sha256": "1454e9d372616d4234f2f9a6f615fc23bf12843578f8f73c84178f18cb18b587",
+    "seed": 20000482
+   },
+   "h20000482_01": {
+    "field": "hard: tables",
+    "final": false,
+    "final_excerpt": null,
+    "finding": "no top.csv saved",
+    "graded_members": [
+     {
+      "passed": false,
+      "seat": 1,
+      "who": "t80+g47trunk"
+     },
+     {
+      "passed": false,
+      "seat": 2,
+      "who": "t80+g47data2"
+     },
+     {
+      "passed": false,
+      "seat": 3,
+      "who": "t80+g47data"
+     }
+    ],
+    "kind": "the top rows of each group ranked",
+    "prompt_sha256": "11508f56ee80e1b771e8f8e7e4e0c1ec95a6af79c44cbe15ad21214eb7635b01",
+    "seed": 20000482
+   },
+   "h20000482_02": {
+    "field": "hard: text",
+    "final": false,
+    "final_excerpt": null,
+    "finding": "wants sentences: 7; that line's numbers: [13.0]; wants longest: 1; that line's numbers: []; wants words: 13; that line's numbers: [13.0]",
+    "graded_members": [
+     {
+      "passed": false,
+      "seat": 1,
+      "who": "t80+g47trunk"
+     },
+     {
+      "passed": false,
+      "seat": 2,
+      "who": "t80+g47words"
+     },
+     {
+      "passed": false,
+      "seat": 3,
+      "who": "t80+g45words"
+     }
+    ],
+    "kind": "a text split into sentences",
+    "prompt_sha256": "7efa8945f52feb3b07b6dcaef3d65f9ecb834b6a96bef94816ab08c5aafee13c",
+    "seed": 20000482
+   },
+   "h20000482_03": {
+    "field": "hard: tables",
+    "final": true,
+    "final_excerpt": null,
+    "finding": "totals.csv: wants [('east', 2169.75), ('west', 647.75), ('central', 628.75)], largest east named; got [['east', '2169.75', '216.97'], ['west', '647.75', '215.92'], ['central', '628.75', '157.19']]: True",
+    "graded_members": [
+     {
+      "passed": true,
+      "seat": 1,
+      "who": "t80+g47trunk"
+     },
+     {
+      "passed": true,
+      "seat": 2,
+      "who": "t80+g47data2"
+     }
+    ],
+    "kind": "a table grouped, each group's total and mean saved",
+    "prompt_sha256": "22f4c9ee958da7589ab66c5604b25b056b6908387acffe204d86d74649ed4c1c",
+    "seed": 20000482
+   },
+   "h20000483_00": {
+    "field": "programs",
+    "final": false,
+    "final_excerpt": null,
+    "finding": "no calc.py saved",
+    "graded_members": [
+     {
+      "passed": false,
+      "seat": 1,
+      "who": "t80+g47trunk"
+     },
+     {
+      "passed": false,
+      "seat": 2,
+      "who": "t80+g47code2"
+     }
+    ],
+    "kind": "a parser for a tiny language, with hidden tests",
+    "prompt_sha256": "577a57966e898bf5a111ce10bf43fb471db2457dafd04c30be5f3bb97424142a",
+    "seed": 20000483
+   },
+   "h20000483_01": {
+    "field": "hard: tables",
+    "final": true,
+    "final_excerpt": null,
+    "finding": "current.csv: 6 rows against 6 wanted, the same: True; 7 removed in the answer: True",
+    "graded_members": [
+     {
+      "passed": true,
+      "seat": 1,
+      "who": "t80+g47trunk"
+     },
+     {
+      "passed": true,
+      "seat": 2,
+      "who": "t80+g47code2"
+     }
+    ],
+    "kind": "a table cut to one row a key, the latest kept",
+    "prompt_sha256": "47dd8fbcc2a6c42875497702a3296819c5b5f18f861de674bcf1f68e690cd7a1",
+    "seed": 20000483
+   },
+   "h20000483_02": {
+    "field": "programs",
+    "final": false,
+    "final_excerpt": null,
+    "finding": "no bank.py saved",
+    "graded_members": [
+     {
+      "passed": false,
+      "seat": 1,
+      "who": "t80+g47trunk"
+     },
+     {
+      "passed": false,
+      "seat": 2,
+      "who": "t80+g47code2"
+     },
+     {
+      "passed": false,
+      "seat": 3,
+      "who": "t80+g47code"
+     }
+    ],
+    "kind": "a class with rules, with hidden tests",
+    "prompt_sha256": "80c4d0c51277742780a0fd897528159301cf4e52328b70a94c40f3510f22c5d1",
+    "seed": 20000483
+   },
+   "h20000483_03": {
+    "field": "hard: given data",
+    "final": true,
+    "final_excerpt": null,
+    "finding": "Sofia spent most (566.0), total 1471.75, 3 of notebook; all in the answer: True",
+    "graded_members": [
+     {
+      "passed": true,
+      "seat": 1,
+      "who": "t80+g47trunk"
+     },
+     {
+      "passed": true,
+      "seat": 2,
+      "who": "t80+g47data2"
+     }
+    ],
+    "kind": "a join over two small tables",
+    "prompt_sha256": "7cf9299afa8b90fec291491124b3140ba09a5b98980f284b372aa86c3d23e3f6",
+    "seed": 20000483
+   },
+   "h20000484_00": {
+    "field": "hard: files",
+    "final": true,
+    "final_excerpt": null,
+    "finding": "people.csv: heading right True, 5 rows against 5 wanted, the same and counted in the answer: True",
+    "graded_members": [
+     {
+      "passed": true,
+      "seat": 1,
+      "who": "t80+g47trunk"
+     },
+     {
+      "passed": false,
+      "seat": 2,
+      "who": "t80+g47data2"
+     }
+    ],
+    "kind": "a file given in the task, edited to a specification",
+    "prompt_sha256": "3e6bfec3ad4ffa73d2ba0a432da143ab77e1fcefe1ff0758dd05750b7c121788",
+    "seed": 20000484
+   },
+   "h20000484_01": {
+    "field": "hard: plans",
+    "final": true,
+    "final_excerpt": null,
+    "finding": "versions.md has 3 rows; the 3 packages in order with version and date: True",
+    "graded_members": [
+     {
+      "passed": true,
+      "seat": 1,
+      "who": "t80+g47trunk"
+     },
+     {
+      "passed": true,
+      "seat": 2,
+      "who": "t80+g47data2"
+     }
+    ],
+    "kind": "several facts fetched and laid out as a file",
+    "prompt_sha256": "a7e676c640fff1ce50a89f39e415d99cfc9d768fd4a9426e7e25cbd91c9fb3e4",
+    "seed": 20000484
+   },
+   "h20000484_02": {
+    "field": "hard: files",
+    "final": true,
+    "final_excerpt": null,
+    "finding": "errors.json {'auth': 4, 'billing': 4, 'search': 1, 'mail': 2} against {'auth': 4, 'billing': 4, 'search': 1, 'mail': 2}; the hour 10 in the answer: True",
+    "graded_members": [
+     {
+      "passed": true,
+      "seat": 1,
+      "who": "t80+g47trunk"
+     },
+     {
+      "passed": true,
+      "seat": 2,
+      "who": "t80+g47code2"
+     }
+    ],
+    "kind": "a log read and counted into a file",
+    "prompt_sha256": "57bea3e33208bbd23741c60706fc450507cbbdc21e61fee29eca25f5477feb9a",
+    "seed": 20000484
+   },
+   "h20000484_03": {
+    "field": "hard: code",
+    "final": true,
+    "final_excerpt": null,
+    "finding": "50 of 50 hidden tests pass; the values asked for ([[5, 12583], 20]) in the answer: True",
+    "graded_members": [
+     {
+      "passed": true,
+      "seat": 1,
+      "who": "t80+g47trunk"
+     },
+     {
+      "passed": true,
+      "seat": 2,
+      "who": "t80+g47code2"
+     }
+    ],
+    "kind": "a module of two functions, with hidden tests",
+    "prompt_sha256": "29e0f3c24139e88792224a4384a41a669b10348afa81e0bcac2b47d2f906df7d",
+    "seed": 20000484
+   },
+   "h20000485_00": {
+    "field": "hard: files",
+    "final": false,
+    "final_excerpt": null,
+    "finding": "no people.csv saved",
+    "graded_members": [
+     {
+      "passed": false,
+      "seat": 1,
+      "who": "t80+g47trunk"
+     },
+     {
+      "passed": false,
+      "seat": 2,
+      "who": "t80+g47data2"
+     },
+     {
+      "passed": false,
+      "seat": 3,
+      "who": "t80+g47data"
+     }
+    ],
+    "kind": "a file given in the task, edited to a specification",
+    "prompt_sha256": "8dc7778255ae1e7cb00539848cf90fdfb7d6d586c9845ef670a6f7ff6033de98",
+    "seed": 20000485
+   },
+   "h20000485_01": {
+    "field": "programs",
+    "final": false,
+    "final_excerpt": null,
+    "finding": "no bank.py saved",
+    "graded_members": [
+     {
+      "passed": false,
+      "seat": 1,
+      "who": "t80+g47trunk"
+     },
+     {
+      "passed": false,
+      "seat": 2,
+      "who": "t80+g47code2"
+     },
+     {
+      "passed": false,
+      "seat": 3,
+      "who": "t80+g47code"
+     }
+    ],
+    "kind": "a class with rules, with hidden tests",
+    "prompt_sha256": "00337284d1b0c65b3507874f4f8b688c15fbfd1d566454ee3739657a42ffac7e",
+    "seed": 20000485
+   },
+   "h20000485_02": {
+    "field": "hard: code",
+    "final": true,
+    "final_excerpt": null,
+    "finding": "50 of 50 hidden tests pass; the values asked for (['1o2e', 89921]) in the answer: True",
+    "graded_members": [
+     {
+      "passed": true,
+      "seat": 1,
+      "who": "t80+g47trunk"
+     },
+     {
+      "passed": true,
+      "seat": 2,
+      "who": "t80+g47code2"
+     }
+    ],
+    "kind": "a module of two functions, with hidden tests",
+    "prompt_sha256": "ee4693114b41d7fcb20ba669bff4be89623658c9cf6cc4cd6613c8a82139f716",
+    "seed": 20000485
+   },
+   "h20000485_03": {
+    "field": "programs",
+    "final": false,
+    "final_excerpt": null,
+    "finding": "no calc.py saved",
+    "graded_members": [
+     {
+      "passed": false,
+      "seat": 1,
+      "who": "t80+g47trunk"
+     },
+     {
+      "passed": false,
+      "seat": 2,
+      "who": "t80+g47code2"
+     },
+     {
+      "passed": false,
+      "seat": 3,
+      "who": "t80+g47code"
+     }
+    ],
+    "kind": "a parser for a tiny language, with hidden tests",
+    "prompt_sha256": "53bba86b21ef5a08a68a3561f34ee17ab6980ef1de23eb30e102af32f7b33821",
+    "seed": 20000485
+   },
+   "h20000486_00": {
+    "field": "hard: code",
+    "final": true,
+    "final_excerpt": null,
+    "finding": "50 of 50 hidden tests pass; the values asked for ([[2, 2, 2, 2, 13, 647], 4]) in the answer: True",
+    "graded_members": [
+     {
+      "passed": true,
+      "seat": 1,
+      "who": "t80+g47trunk"
+     },
+     {
+      "passed": true,
+      "seat": 2,
+      "who": "t80+g47code2"
+     }
+    ],
+    "kind": "a module of two functions, with hidden tests",
+    "prompt_sha256": "9d491a8a72d455e4a262ed74995e675d677efd42690703699cd32cc63d63a855",
+    "seed": 20000486
+   },
+   "h20000486_01": {
+    "field": "hard: tables",
+    "final": true,
+    "final_excerpt": null,
+    "finding": "summary.csv: wants [('north', 1336.25), ('west', 394), ('south', 356.25)], largest north named; got [['north', '1336.25', '222.71'], ['west', '394.0', '394.0'], ['south', '356.25', '89.06']]: True",
+    "graded_members": [
+     {
+      "passed": true,
+      "seat": 1,
+      "who": "t80+g47trunk"
+     },
+     {
+      "passed": true,
+      "seat": 2,
+      "who": "t80+g47data2"
+     }
+    ],
+    "kind": "a table grouped, each group's total and mean saved",
+    "prompt_sha256": "e8189c480a6289a46af2ef6b6de8e42b704705b98ced84dbff006f49fb7ecfa6",
+    "seed": 20000486
+   },
+   "h20000486_02": {
+    "field": "programs",
+    "final": false,
+    "final_excerpt": "{'pack': 0, 'bench': 0, 'tag': 0, 'build': 1, 'ship': 1, 'docs': 2, 'sign': 1}\n['bench', 'bench', 'bench', 'bench', 'bench', 'benc",
+    "finding": "19 of 61 hidden tests pass; first failure ['order', [{'deploy': ['lint'], 'pack': ['bench'], 'bench': ['deploy'], 'sign': [], 'lint': []}], ['sign', 'lint', 'deploy', 'bench', 'pack'], ['lint', 'deploy', 'bench', 'bench'",
+    "graded_members": [
+     {
+      "passed": false,
+      "seat": 1,
+      "who": "t80+g47trunk"
+     },
+     {
+      "passed": true,
+      "seat": 2,
+      "who": "t80+g47data2"
+     }
+    ],
+    "kind": "an order of tasks by their dependencies, with hidden tests",
+    "prompt_sha256": "623444b2329e976b4a242975e44a75bd1bfbd61a6eb1da0407aa1c9c17e9d20f",
+    "seed": 20000486
+   },
+   "h20000486_03": {
+    "field": "hard: plans",
+    "final": true,
+    "final_excerpt": null,
+    "finding": "versions.md has 3 rows; the 3 packages in order with version and date: True",
+    "graded_members": [
+     {
+      "passed": true,
+      "seat": 1,
+      "who": "t80+g47trunk"
+     },
+     {
+      "passed": true,
+      "seat": 2,
+      "who": "t80+g47data2"
+     }
+    ],
+    "kind": "several facts fetched and laid out as a file",
+    "prompt_sha256": "d54c34f6678378b7ad73135a7a34cac96dd62d7dafd52323ea6fe3371a7800e4",
+    "seed": 20000486
+   },
+   "h20000487_00": {
+    "field": "hard: tables",
+    "final": true,
+    "final_excerpt": null,
+    "finding": "current.csv: 5 rows against 5 wanted, the same: True; 5 removed in the answer: True",
+    "graded_members": [
+     {
+      "passed": true,
+      "seat": 1,
+      "who": "t80+g47trunk"
+     },
+     {
+      "passed": true,
+      "seat": 2,
+      "who": "t80+g47code2"
+     }
+    ],
+    "kind": "a table cut to one row a key, the latest kept",
+    "prompt_sha256": "48aa5761b07b9eaeaf16369e8bceffc7f1f5288de10366d8c2d236ff70b19934",
+    "seed": 20000487
+   },
+   "h20000487_01": {
+    "field": "hard: tables",
+    "final": true,
+    "final_excerpt": null,
+    "finding": "summary.csv: wants [('south', 1042.75), ('north', 977), ('west', 579.5)], largest south named; got [['south', '1042.75', '208.55'], ['north', '977.0', '244.25'], ['west', '579.5', '289.75']]: True",
+    "graded_members": [
+     {
+      "passed": true,
+      "seat": 1,
+      "who": "t80+g47trunk"
+     },
+     {
+      "passed": true,
+      "seat": 2,
+      "who": "t80+g47data2"
+     }
+    ],
+    "kind": "a table grouped, each group's total and mean saved",
+    "prompt_sha256": "314f97e8f29eeb4d240697ea438630164d62424d25df1ac7ae24e7f03f0a85a5",
+    "seed": 20000487
+   },
+   "h20000487_02": {
+    "field": "hard: live facts",
+    "final": false,
+    "final_excerpt": null,
+    "finding": "ruff 2026-11-12, fastapi 2026-11-18: fastapi is later by 6 days; in the answer: False",
+    "graded_members": [
+     {
+      "passed": false,
+      "seat": 1,
+      "who": "t80+g47trunk"
+     },
+     {
+      "passed": false,
+      "seat": 2,
+      "who": "t80+g47code2"
+     },
+     {
+      "passed": false,
+      "seat": 3,
+      "who": "t80+g47code"
+     }
+    ],
+    "kind": "two facts from two sources, combined",
+    "prompt_sha256": "f64d82534cf027338f7cae5cfdc54b596b427ed9e4f8db0c7f62b269a4ed2dd6",
+    "seed": 20000487
+   },
+   "h20000487_03": {
+    "field": "hard: tables",
+    "final": true,
+    "final_excerpt": null,
+    "finding": "wide.csv: wants [['Harbor', 25, 21, 12, 79], ['Hill', 16, 41, 45, 28], ['Lake', 0, 33, 80, 0]]..., the month Jul named; got [['Harbor', '25', '21', '12', '79'], ['Hill', '16', '41', '45', '28'], ['Lake', '0', '33', '80',",
+    "graded_members": [
+     {
+      "passed": true,
+      "seat": 1,
+      "who": "t80+g47trunk"
+     },
+     {
+      "passed": true,
+      "seat": 2,
+      "who": "t80+g47data2"
+     },
+     {
+      "passed": true,
+      "seat": 3,
+      "who": "t80+g47data"
+     }
+    ],
+    "kind": "a long table turned wide",
+    "prompt_sha256": "4938567ea2ba94da9d68f589144a728ecbd726cce6696ff22b186df3c4f7ccfc",
+    "seed": 20000487
+   },
+   "h20000488_00": {
+    "field": "programs",
+    "final": true,
+    "final_excerpt": null,
+    "finding": "92 of 92 hidden tests pass; the values asked for ([2, 20]) in the answer: True",
+    "graded_members": [
+     {
+      "passed": false,
+      "seat": 1,
+      "who": "t80+g47trunk"
+     },
+     {
+      "passed": true,
+      "seat": 2,
+      "who": "t80+g47code2"
+     },
+     {
+      "passed": true,
+      "seat": 3,
+      "who": "t80+g47code"
+     }
+    ],
+    "kind": "the regions of a grid, with hidden tests",
+    "prompt_sha256": "9a9ab4a33d1b35ae086be69a84fca15f4caf39b5fa41d2938d609221c3adbee7",
+    "seed": 20000488
+   },
+   "h20000488_01": {
+    "field": "hard: tables",
+    "final": true,
+    "final_excerpt": null,
+    "finding": "change.csv: 5 rows against 5, the rows that differ (got, wanted) []; milk named: True",
+    "graded_members": [
+     {
+      "passed": true,
+      "seat": 1,
+      "who": "t80+g47trunk"
+     },
+     {
+      "passed": true,
+      "seat": 2,
+      "who": "t80+g47data2"
+     }
+    ],
+    "kind": "the percent change between two columns, rounded by a rule",
+    "prompt_sha256": "0ab7a1f0c72b59d6b48debd27bc83c11ce8385cfb8838290a314f226d39cc4b9",
+    "seed": 20000488
+   },
+   "h20000488_02": {
+    "field": "hard: tables",
+    "final": true,
+    "final_excerpt": null,
+    "finding": "by_group.csv: wants [('west', 1367.25), ('east', 1339.25), ('north', 1312.75)], largest west named; got [['west', '1367.25', '227.88'], ['east', '1339.25', '267.85'], ['north', '1312.75', '262.55']]: True",
+    "graded_members": [
+     {
+      "passed": true,
+      "seat": 1,
+      "who": "t80+g47trunk"
+     },
+     {
+      "passed": true,
+      "seat": 2,
+      "who": "t80+g47data2"
+     }
+    ],
+    "kind": "a table grouped, each group's total and mean saved",
+    "prompt_sha256": "a9697a02aa65f4feb135b46bd6b56506329b211d8189ec88705f064bc0edd12b",
+    "seed": 20000488
+   },
+   "h20000488_03": {
+    "field": "hard: tables",
+    "final": true,
+    "final_excerpt": null,
+    "finding": "latest.csv: 7 rows against 7 wanted, the same: True; 7 removed in the answer: True",
+    "graded_members": [
+     {
+      "passed": true,
+      "seat": 1,
+      "who": "t80+g47trunk"
+     },
+     {
+      "passed": false,
+      "seat": 2,
+      "who": "t80+g47code2"
+     },
+     {
+      "passed": true,
+      "seat": 3,
+      "who": "t80+g47code"
+     }
+    ],
+    "kind": "a table cut to one row a key, the latest kept",
+    "prompt_sha256": "21a3ecfebdeeae68ba22f7e03d0c7a13040263c13c8c09023fc581703a77ce50",
+    "seed": 20000488
+   }
+  }
+ },
+ "listed_rosters": {
+  "after": [
+   "t80+g39code",
+   "t80+g44code",
+   "t80+g44code2",
+   "t80+g44data",
+   "t80+g44data2",
+   "t80+g44sources",
+   "t80+g44sources2",
+   "t80+g44words",
+   "t80+g44words2",
+   "t80+g45code",
+   "t80+g45code2",
+   "t80+g45data",
+   "t80+g45data2",
+   "t80+g45sources",
+   "t80+g45sources2",
+   "t80+g45words",
+   "t80+g45words2",
+   "t80+g47code",
+   "t80+g47code2",
+   "t80+g47data",
+   "t80+g47data2",
+   "t80+g47sources",
+   "t80+g47sources2",
+   "t80+g47words",
+   "t80+g48code",
+   "t80+g48code2",
+   "t80+g48data",
+   "t80+g48data2",
+   "t80+g48sources",
+   "t80+g48sources2",
+   "t80+g48trunk",
+   "t80+g48words",
+   "t80+g48words2"
+  ],
+  "before": [
+   "t80+g47trunk",
+   "t80+g39code",
+   "t80+g44sources",
+   "t80+g44sources2",
+   "t80+g44code",
+   "t80+g44code2",
+   "t80+g44data",
+   "t80+g44data2",
+   "t80+g44words",
+   "t80+g44words2",
+   "t80+g45sources",
+   "t80+g45sources2",
+   "t80+g45code",
+   "t80+g45code2",
+   "t80+g45data",
+   "t80+g45data2",
+   "t80+g45words",
+   "t80+g45words2",
+   "t80+g47sources",
+   "t80+g47sources2",
+   "t80+g47code",
+   "t80+g47code2",
+   "t80+g47data",
+   "t80+g47data2",
+   "t80+g47words"
+  ]
+ },
+ "paired_deliveries": {
+  "discordant_jobs": [
+   {
+    "id": "h20000482_02",
+    "kind": "a text split into sentences",
+    "passed": "after"
+   },
+   {
+    "id": "h20000484_00",
+    "kind": "a file given in the task, edited to a specification",
+    "passed": "before"
+   },
+   {
+    "id": "h20000485_01",
+    "kind": "a class with rules, with hidden tests",
+    "passed": "after"
+   },
+   {
+    "id": "h20000486_02",
+    "kind": "an order of tasks by their dependencies, with hidden tests",
+    "passed": "after"
+   },
+   {
+    "id": "h20000488_00",
+    "kind": "the regions of a grid, with hidden tests",
+    "passed": "before"
+   },
+   {
+    "id": "h20000488_01",
+    "kind": "the percent change between two columns, rounded by a rule",
+    "passed": "before"
+   }
+  ],
+  "outcomes": {
+   "all": {
+    "after_only": 3,
+    "before_only": 3,
+    "both": 50,
+    "neither": 8
+   },
+   "easy": {
+    "after_only": 0,
+    "before_only": 0,
+    "both": 32,
+    "neither": 0
+   },
+   "hard": {
+    "after_only": 3,
+    "before_only": 3,
+    "both": 18,
+    "neither": 8
+   }
+  }
+ },
+ "record_commit": "1414d49243987ea58c5913af251c39e104d77b68",
+ "run": 44371926721,
+ "source_manifest": "g48-manifest.json"
+}

@@ -1,0 +1,13 @@
+{
+  "checkout": "1414d49243987ea58c5913af251c39e104d77b68",
+  "wasmtime": "36.0.0",
+  "python": "3.12.14",
+  "artifacts": {
+    "adapter.py": "9c6c7eeb4fa6be9d8e4d5ddf17a1f7fa01466ce2b4b700bde1caa6f9783be58c",
+    "cases.json": "03fe5e2b8ef983999be8a03f68bdf6d94a339f4ca0ea20c757f459c92a364073",
+    "compare.py": "589174b3c094f4afc35f530d73b7fb8cf6fa23f05d9fa4018cacc5afa5f9c0f5",
+    "protocol.md": "b61649fed657098da936d380ca4b788cd6d8cdd99420f6ee08d0e3688f3de9a1",
+    "observed.json": "0e8d5eef4df0909b0c8b4689e9778e2fa802452c6c1928c077c791f3833b54e6",
+    "README.md": "fc7cce3b517ecd2ce0a87e1bf58ae5cd9b317db7219f4c734ecad10954235aaf"
+  }
+}

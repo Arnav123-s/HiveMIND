@@ -1,0 +1,354 @@
+[
+  {
+    "group": "plain",
+    "id": "p1",
+    "expected": "depot_shipping_fee",
+    "target": 340,
+    "actual": "depot_shipping_fee",
+    "value": 340,
+    "input": {
+      "grams": [
+        275
+      ]
+    },
+    "correct": true
+  },
+  {
+    "group": "plain",
+    "id": "p2",
+    "expected": "depot_shipping_fee",
+    "target": 700,
+    "actual": "depot_shipping_fee",
+    "value": 700,
+    "input": {
+      "grams": [
+        100,
+        501,
+        1000
+      ]
+    },
+    "correct": true
+  },
+  {
+    "group": "plain",
+    "id": "p3",
+    "expected": "invoice_tax",
+    "target": 6,
+    "actual": "invoice_tax",
+    "value": 6,
+    "input": {
+      "lines": [
+        40,
+        80
+      ]
+    },
+    "correct": true
+  },
+  {
+    "group": "plain",
+    "id": "p4",
+    "expected": "depot_shipping_fee",
+    "target": 0,
+    "actual": "depot_shipping_fee",
+    "value": 0,
+    "input": {
+      "grams": []
+    },
+    "correct": true
+  },
+  {
+    "group": "plain",
+    "id": "p5",
+    "expected": "depot_shipping_fee",
+    "target": 520,
+    "actual": "depot_shipping_fee",
+    "value": 520,
+    "input": {
+      "grams": [
+        150,
+        550
+      ]
+    },
+    "correct": true
+  },
+  {
+    "group": "plain",
+    "id": "p6",
+    "expected": "ambiguous",
+    "target": null,
+    "actual": "ambiguous",
+    "value": null,
+    "input": {
+      "lines": [
+        11,
+        11
+      ]
+    },
+    "correct": true
+  },
+  {
+    "group": "context",
+    "id": "c1",
+    "expected": "depot_shipping_fee",
+    "target": 520,
+    "actual": "depot_shipping_fee",
+    "value": 700,
+    "input": {
+      "grams": [
+        801,
+        410,
+        820
+      ]
+    },
+    "correct": false
+  },
+  {
+    "group": "context",
+    "id": "c2",
+    "expected": "invoice_tax",
+    "target": 9,
+    "actual": "invoice_tax",
+    "value": 46,
+    "input": {
+      "lines": [
+        741,
+        60,
+        120
+      ]
+    },
+    "correct": false
+  },
+  {
+    "group": "context",
+    "id": "c3",
+    "expected": "depot_shipping_fee",
+    "target": 520,
+    "actual": "depot_shipping_fee",
+    "value": 430,
+    "input": {
+      "grams": [
+        3,
+        300
+      ]
+    },
+    "correct": false
+  },
+  {
+    "group": "context",
+    "id": "c4",
+    "expected": "depot_shipping_fee",
+    "target": 430,
+    "actual": "missing",
+    "value": null,
+    "input": null,
+    "correct": false
+  },
+  {
+    "group": "context",
+    "id": "c5",
+    "expected": "invoice_tax",
+    "target": 12,
+    "actual": "missing",
+    "value": null,
+    "input": null,
+    "correct": false
+  },
+  {
+    "group": "context",
+    "id": "c6",
+    "expected": "invoice_tax",
+    "target": 1,
+    "actual": "ambiguous",
+    "value": null,
+    "input": {
+      "lines": [
+        11,
+        11
+      ]
+    },
+    "correct": false
+  },
+  {
+    "group": "offtask",
+    "id": "o1",
+    "expected": "fallback",
+    "target": null,
+    "actual": "depot_shipping_fee",
+    "value": 520,
+    "input": {
+      "grams": [
+        625,
+        375
+      ]
+    },
+    "correct": false
+  },
+  {
+    "group": "offtask",
+    "id": "o2",
+    "expected": "fallback",
+    "target": null,
+    "actual": "depot_shipping_fee",
+    "value": 520,
+    "input": {
+      "grams": [
+        520,
+        340
+      ]
+    },
+    "correct": false
+  },
+  {
+    "group": "offtask",
+    "id": "o3",
+    "expected": "fallback",
+    "target": null,
+    "actual": "invoice_tax",
+    "value": 11,
+    "input": {
+      "lines": [
+        40,
+        80,
+        100
+      ]
+    },
+    "correct": false
+  },
+  {
+    "group": "offtask",
+    "id": "o4",
+    "expected": "fallback",
+    "target": null,
+    "actual": "missing",
+    "value": null,
+    "input": null,
+    "correct": false
+  },
+  {
+    "group": "offtask",
+    "id": "o5",
+    "expected": "fallback",
+    "target": null,
+    "actual": "fallback",
+    "value": null,
+    "input": null,
+    "correct": true
+  },
+  {
+    "group": "offtask",
+    "id": "o6",
+    "expected": "fallback",
+    "target": null,
+    "actual": "fallback",
+    "value": null,
+    "input": null,
+    "correct": true
+  },
+  {
+    "group": "boundaries",
+    "id": "b1",
+    "expected": "decline",
+    "target": null,
+    "actual": "depot_shipping_fee",
+    "value": 340,
+    "input": {
+      "grams": [
+        3
+      ]
+    },
+    "correct": false
+  },
+  {
+    "group": "boundaries",
+    "id": "b2",
+    "expected": "decline",
+    "target": null,
+    "actual": "depot_shipping_fee",
+    "value": 520,
+    "input": {
+      "grams": [
+        450,
+        950
+      ]
+    },
+    "correct": false
+  },
+  {
+    "group": "boundaries",
+    "id": "b3",
+    "expected": "fallback",
+    "target": null,
+    "actual": "depot_shipping_fee",
+    "value": 520,
+    "input": {
+      "grams": [
+        125,
+        625
+      ]
+    },
+    "correct": false
+  },
+  {
+    "group": "boundaries",
+    "id": "b4",
+    "expected": "fallback",
+    "target": null,
+    "actual": "depot_shipping_fee",
+    "value": 430,
+    "input": {
+      "grams": [
+        125,
+        300
+      ]
+    },
+    "correct": false
+  },
+  {
+    "group": "boundaries",
+    "id": "b5",
+    "expected": "decline",
+    "target": null,
+    "actual": "depot_shipping_fee",
+    "value": 250,
+    "input": {
+      "grams": [
+        -4
+      ]
+    },
+    "correct": false
+  },
+  {
+    "group": "boundaries",
+    "id": "b6",
+    "expected": "decline",
+    "target": null,
+    "actual": "depot_shipping_fee",
+    "value": 357.0,
+    "input": {
+      "grams": [
+        100.5
+      ]
+    },
+    "correct": false
+  },
+  {
+    "group": "talk",
+    "id": "t1",
+    "expected": "talk",
+    "target": null,
+    "actual": "talk",
+    "value": null,
+    "input": null,
+    "correct": true
+  },
+  {
+    "group": "talk",
+    "id": "t2",
+    "expected": "routing-model",
+    "target": null,
+    "actual": "routing-model",
+    "value": null,
+    "input": null,
+    "correct": true
+  }
+]

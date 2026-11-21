@@ -1,0 +1,37 @@
+import re
+
+P = {"+": 2, "-": 2, "*": 4, '@': 6}
+
+
+def tokens(t):
+    return re.findall(r"\d+|\S", t)
+
+
+def evaluate(t, m=0):
+    if type(t) == str:
+        t = tokens(t)[::-1]
+    x = t.pop()
+    if x == "(":
+        a = evaluate(t)
+        t.pop()
+    else:
+        a = int(x)
+    while t and P.get(t[-1], 0) > m:
+        o = t.pop()
+        b = evaluate(t, P[o])
+        if o == "+":
+            a = a + b
+        elif o == "-":
+            a = a - b
+        elif o == "*":
+            a = a * b
+        else:
+            a = min(a, b)
+    return a
+
+
+if __name__ == "__main__":
+    import shutil
+    shutil.copy(__file__, 'calc.py')
+    assert evaluate('(2+3)*4') == 20
+    print(evaluate('13 @ 10'))

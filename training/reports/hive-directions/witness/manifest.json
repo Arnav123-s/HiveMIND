@@ -1,0 +1,36 @@
+{
+  "repository": "Arnav123-s/HiveMIND",
+  "run": 44371926721,
+  "revision": "b2133163c40a10d5c8dee8a3debf9a30b1a2aa38",
+  "artifact": "gate-work-after-3",
+  "artifact_id": 14482488264,
+  "archive_bytes": 54592,
+  "archive_sha256": "e6ad4dbb020ab520822068e3631e7319638dd81a00fad97c5f30669675df0782",
+  "task": "h20000483_00",
+  "rule": "Last numbered saved attempt for each worker, selected by the unique pass of all four fixed contract probes.",
+  "candidates": [
+    {
+      "member": 1,
+      "local": "candidates/member1.source.txt",
+      "archive_entry": "exam_20000483_mixed/h20000483_00/members/work/member1_2.py",
+      "sha256": "c6532781eccf6d33fb4bba1fc43e2c6d9d1e25f355da4207a3e8c7223e26e86d"
+    },
+    {
+      "member": 2,
+      "local": "candidates/member2.source.txt",
+      "archive_entry": "exam_20000483_mixed/h20000483_00/members/member2/member2_3.py",
+      "sha256": "9dda8b20e47c0f00764b8cf49649203bca34ab4083a3e7f5c76656fefacfc918"
+    },
+    {
+      "member": 3,
+      "local": "candidates/member3.source.txt",
+      "archive_entry": "exam_20000483_mixed/h20000483_00/members/member3/member3_3.py",
+      "sha256": "ffbe3d9039d73b1cdb8e1c743cb2d283dff4bdd29b2e3c369b35100fbc20c3b8"
+    }
+  ],
+  "task_file": {
+    "local": "task.md",
+    "archive_entry": "exam_20000483_mixed/h20000483_00/members/TASK.md",
+    "sha256": "d50b9bdc634252a5a0023910312d62970da2cfa8bf721d266a2505caf5ca2135"
+  }
+}
