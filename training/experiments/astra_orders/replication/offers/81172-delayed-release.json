@@ -1,0 +1,140 @@
+{
+  "affinity": [
+    3,
+    4
+  ],
+  "assets_sha256": {
+    "lora": "72913f1c566638f2177574178f1d6925cde956a92b35af06795e7598c5729036",
+    "model": "1376f942aa90e60f7b570c1d81b3916fea1315ff85aa1c4d19006af68fb4b922",
+    "runtime": "0dc642d61dc39d51a8b5da348c43ba19d29f720b2a3ac790e0019351239da3b2"
+  },
+  "calls": [
+    {
+      "arm": "short",
+      "finish_reason": "stop",
+      "id": "81172-delayed-release",
+      "raw": "```python\nbookings = [('lily', 6, 3), ('elm', 16, 8), ('reed', 17, 6), ('iris', 21, 7), ('moss', 25, 7)]\ncurrent_minute = 0\ntotal_waiting = 0\n\nfor label, requested, duration in bookings:\n    start = max(current_minute, requested)\n    total_waiting += start - requested\n    current_minute = start + duration\n\nprint(total_waiting)\nprint(current_minute - 1)\n```",
+      "server_cpu_s": 66.87,
+      "system_sha256": "a8dffa17962272cb60a4992e0670c6efc236e0e62046c833860fd86e1dc7bc7d",
+      "usage": {
+        "completion_tokens": 116,
+        "prompt_tokens": 201,
+        "prompt_tokens_details": {
+          "cached_tokens": 0
+        },
+        "total_tokens": 317
+      },
+      "wall_s": 35.36
+    },
+    {
+      "arm": "short2",
+      "finish_reason": "stop",
+      "id": "81172-delayed-release",
+      "raw": "```python\nbookings = [('lily', 6, 3), ('elm', 16, 8), ('reed', 17, 6), ('iris', 21, 7), ('moss', 25, 7)]\ncurrent_time = 0\ntotal_waiting = 0\n\nfor label, requested, duration in bookings:\n    start_time = max(current_time, requested)\n    total_waiting += start_time - requested\n    current_time = start_time + duration\n\nprint(total_waiting)\nprint(current_time)\n```",
+      "sampling_override": {
+        "seed": 8103,
+        "temperature": 0.7,
+        "top_k": 20,
+        "top_p": 0.8
+      },
+      "server_cpu_s": 88.95,
+      "system_sha256": "a8dffa17962272cb60a4992e0670c6efc236e0e62046c833860fd86e1dc7bc7d",
+      "usage": {
+        "completion_tokens": 116,
+        "prompt_tokens": 201,
+        "prompt_tokens_details": {
+          "cached_tokens": 0
+        },
+        "total_tokens": 317
+      },
+      "wall_s": 56.619
+    },
+    {
+      "arm": "greedy2",
+      "finish_reason": "stop",
+      "id": "81172-delayed-release",
+      "raw": "```python\nbookings = [(\"lily\", 6, 3), (\"elm\", 16, 8), (\"reed\", 17, 6), (\"iris\", 21, 7), (\"moss\", 25, 7)]\ncurrent_minute = 0\ntotal_waiting = 0\n\nfor label, requested, duration in bookings:\n    start = max(current_minute, requested)\n    total_waiting += start - requested\n    current_minute = start + duration\n\nprint(total_waiting)\nprint(current_minute)\n```",
+      "server_cpu_s": 131.83,
+      "system_sha256": "94973f5bf8e1968d6c709be3071fd8000a0bf1ae700490e3e40e5a213dbea04c",
+      "usage": {
+        "completion_tokens": 113,
+        "prompt_tokens": 505,
+        "prompt_tokens_details": {
+          "cached_tokens": 0
+        },
+        "total_tokens": 618
+      },
+      "wall_s": 85.908
+    },
+    {
+      "arm": "short3",
+      "finish_reason": "stop",
+      "id": "81172-delayed-release",
+      "raw": "```python\nbookings = [\n    (\"lily\", 6, 3),\n    (\"elm\", 16, 8),\n    (\"reed\", 17, 6),\n    (\"iris\", 21, 7),\n    (\"moss\", 25, 7)\n]\n\ncurrent_time = 0\ntotal_waiting = 0\n\nfor label, requested, duration in bookings:\n    start = max(current_time, requested)\n    end = start + duration\n    total_waiting += (start - requested)\n    current_time = end\n\nprint(total_waiting)\nprint(current_time)\n```",
+      "sampling_override": {
+        "seed": 8104,
+        "temperature": 0.7,
+        "top_k": 20,
+        "top_p": 0.8
+      },
+      "server_cpu_s": 90.32,
+      "system_sha256": "a8dffa17962272cb60a4992e0670c6efc236e0e62046c833860fd86e1dc7bc7d",
+      "usage": {
+        "completion_tokens": 126,
+        "prompt_tokens": 201,
+        "prompt_tokens_details": {
+          "cached_tokens": 0
+        },
+        "total_tokens": 327
+      },
+      "wall_s": 58.143
+    }
+  ],
+  "complete": true,
+  "inputs_sha256": "0b307fa20ab55c4a4cfdae856be3d3d29485dc1829abffd35aaca08e2c5888ac",
+  "load_seconds": 9.056,
+  "lora_adapters": [
+    {
+      "id": 0,
+      "path": "/tmp/hive-astra-orders-assets/t80.g55trunk.gguf",
+      "scale": 1.0
+    }
+  ],
+  "native_flags": [
+    "-ngl",
+    "0",
+    "-c",
+    "2048",
+    "-t",
+    "2",
+    "-tb",
+    "2",
+    "-rtr",
+    "-b",
+    "128",
+    "-ub",
+    "128",
+    "--parallel",
+    "1",
+    "--threads-http",
+    "2",
+    "--port",
+    "41137",
+    "--host",
+    "127.0.0.1",
+    "--jinja"
+  ],
+  "sampling": {
+    "cache_prompt": false,
+    "chat_template_kwargs": {
+      "enable_thinking": false
+    },
+    "max_tokens": 192,
+    "seed": 8103,
+    "temperature": 0.0,
+    "top_k": 0,
+    "top_p": 1.0
+  },
+  "utc_finished": "2026-11-21T03:30:40.153285+00:00",
+  "utc_start": "2026-11-21T03:26:35.018908+00:00"
+}
