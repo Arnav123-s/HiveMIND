@@ -789,12 +789,14 @@ jobs:
         env:
           DIVERSE: ${{ vars.HIVE_DIVERSE_ORDERS || '0' }}
           ASSERT_FIRST: ${{ vars.HIVE_ASSERT_FIRST || '0' }}
+          DIVERSE_GREEDY: ${{ vars.HIVE_DIVERSE_GREEDY || '0' }}
         run: |
           file="$RUNNER_TEMP/checked-wording/familiar-tasks.json"
           test -s "$file"
           sha256sum "$file" >> "$GITHUB_STEP_SUMMARY"
           echo "HIVE_FAMILIAR_TASKS=$file" >> "$GITHUB_ENV"
           echo "HIVE_DIVERSE_ORDERS=$DIVERSE" >> "$GITHUB_ENV"
+          echo "HIVE_DIVERSE_GREEDY=$DIVERSE_GREEDY" >> "$GITHUB_ENV"
           echo "HIVE_ASSERT_FIRST=$ASSERT_FIRST" >> "$GITHUB_ENV"
       - name: Who sits (the arm)
         id: who

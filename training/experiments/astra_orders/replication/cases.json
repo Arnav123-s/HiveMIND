@@ -1,0 +1,194 @@
+[
+  {
+    "id": "81171-cold-chain",
+    "family": "cold-chain",
+    "seed": 81171,
+    "task": "This is the receiving log chiller.csv:\nlot,arrival_c,departure_c\nA2,6,4\nB6,8,15\nB3,8,14\nJ3,5,10\nM1,4,11\nFor the warehouse, write drift.json containing the lot codes whose departure is at least 6 degrees warmer than arrival. The file must be a JSON array sorted by largest temperature rise first, breaking equal rises by lot code. Print only the number of selected lots.",
+    "user": "TASK: This is the receiving log chiller.csv:\nlot,arrival_c,departure_c\nA2,6,4\nB6,8,15\nB3,8,14\nJ3,5,10\nM1,4,11\nFor the warehouse, write drift.json containing the lot codes whose departure is at least 6 degrees warmer than arrival. The file must be a JSON array sorted by largest temperature rise first, breaking equal rises by lot code. Print only the number of selected lots.\n\nThe data this TASK gives is saved for you as a file in the current folder: chiller.csv (6 lines, CSV text: read it with the csv module (delimiter ','), it is not JSON). Read it from there in your program (open the file) as the kind of text it is. Do not type the data out again by hand.",
+    "familiarity": 0.071429,
+    "familiar": false,
+    "payload": {
+      "data": [
+        [
+          "A2",
+          6,
+          4
+        ],
+        [
+          "B6",
+          8,
+          15
+        ],
+        [
+          "B3",
+          8,
+          14
+        ],
+        [
+          "J3",
+          5,
+          10
+        ],
+        [
+          "M1",
+          4,
+          11
+        ]
+      ],
+      "threshold": 6
+    }
+  },
+  {
+    "id": "81171-delayed-release",
+    "family": "delayed-release",
+    "seed": 81171,
+    "task": "The equipment desk has one shared calibration stand. A booking starts at its requested minute or when the prior booking ends, whichever is later. Process these (label, requested minute, duration) bookings in order: (ash, 7, 7), (fern, 8, 4), (iris, 11, 5), (reed, 22, 5), (lily, 26, 7). Print total waiting minutes across bookings, then the final exit minute, as two plain integers on separate lines.",
+    "user": "TASK: The equipment desk has one shared calibration stand. A booking starts at its requested minute or when the prior booking ends, whichever is later. Process these (label, requested minute, duration) bookings in order: (ash, 7, 7), (fern, 8, 4), (iris, 11, 5), (reed, 22, 5), (lily, 26, 7). Print total waiting minutes across bookings, then the final exit minute, as two plain integers on separate lines.",
+    "familiarity": 0.111111,
+    "familiar": false,
+    "payload": {
+      "bookings": [
+        [
+          "ash",
+          7,
+          7
+        ],
+        [
+          "fern",
+          8,
+          4
+        ],
+        [
+          "iris",
+          11,
+          5
+        ],
+        [
+          "reed",
+          22,
+          5
+        ],
+        [
+          "lily",
+          26,
+          7
+        ]
+      ]
+    }
+  },
+  {
+    "id": "81171-careful-meter",
+    "family": "careful-meter",
+    "seed": 81171,
+    "task": "A 4-bit pulse counter in a test fixture wraps to zero after 15. Successive readings are 14, 10, 1, 5, 0. There was at most one wrap between readings and the counter only moves forward. Create pulses.json as a JSON array of the four pulse increments in order. Print only their sum.",
+    "user": "TASK: A 4-bit pulse counter in a test fixture wraps to zero after 15. Successive readings are 14, 10, 1, 5, 0. There was at most one wrap between readings and the counter only moves forward. Create pulses.json as a JSON array of the four pulse increments in order. Print only their sum.",
+    "familiarity": 0.079365,
+    "familiar": false,
+    "payload": {
+      "bits": 4,
+      "readings": [
+        14,
+        10,
+        1,
+        5,
+        0
+      ]
+    }
+  },
+  {
+    "id": "81172-cold-chain",
+    "family": "cold-chain",
+    "seed": 81172,
+    "task": "This is the receiving log chiller.csv:\nlot,arrival_c,departure_c\nM6,6,12\nQ3,1,5\nM2,9,15\nA6,7,5\nB4,9,14\nFor the warehouse, write drift.json containing the lot codes whose departure is at least 5 degrees warmer than arrival. The file must be a JSON array sorted by largest temperature rise first, breaking equal rises by lot code. Print only the number of selected lots.",
+    "user": "TASK: This is the receiving log chiller.csv:\nlot,arrival_c,departure_c\nM6,6,12\nQ3,1,5\nM2,9,15\nA6,7,5\nB4,9,14\nFor the warehouse, write drift.json containing the lot codes whose departure is at least 5 degrees warmer than arrival. The file must be a JSON array sorted by largest temperature rise first, breaking equal rises by lot code. Print only the number of selected lots.\n\nThe data this TASK gives is saved for you as a file in the current folder: chiller.csv (6 lines, CSV text: read it with the csv module (delimiter ','), it is not JSON). Read it from there in your program (open the file) as the kind of text it is. Do not type the data out again by hand.",
+    "familiarity": 0.071429,
+    "familiar": false,
+    "payload": {
+      "data": [
+        [
+          "M6",
+          6,
+          12
+        ],
+        [
+          "Q3",
+          1,
+          5
+        ],
+        [
+          "M2",
+          9,
+          15
+        ],
+        [
+          "A6",
+          7,
+          5
+        ],
+        [
+          "B4",
+          9,
+          14
+        ]
+      ],
+      "threshold": 5
+    }
+  },
+  {
+    "id": "81172-delayed-release",
+    "family": "delayed-release",
+    "seed": 81172,
+    "task": "The equipment desk has one shared calibration stand. A booking starts at its requested minute or when the prior booking ends, whichever is later. Process these (label, requested minute, duration) bookings in order: (lily, 6, 3), (elm, 16, 8), (reed, 17, 6), (iris, 21, 7), (moss, 25, 7). Print total waiting minutes across bookings, then the final exit minute, as two plain integers on separate lines.",
+    "user": "TASK: The equipment desk has one shared calibration stand. A booking starts at its requested minute or when the prior booking ends, whichever is later. Process these (label, requested minute, duration) bookings in order: (lily, 6, 3), (elm, 16, 8), (reed, 17, 6), (iris, 21, 7), (moss, 25, 7). Print total waiting minutes across bookings, then the final exit minute, as two plain integers on separate lines.",
+    "familiarity": 0.111111,
+    "familiar": false,
+    "payload": {
+      "bookings": [
+        [
+          "lily",
+          6,
+          3
+        ],
+        [
+          "elm",
+          16,
+          8
+        ],
+        [
+          "reed",
+          17,
+          6
+        ],
+        [
+          "iris",
+          21,
+          7
+        ],
+        [
+          "moss",
+          25,
+          7
+        ]
+      ]
+    }
+  },
+  {
+    "id": "81172-careful-meter",
+    "family": "careful-meter",
+    "seed": 81172,
+    "task": "A 5-bit pulse counter in a test fixture wraps to zero after 31. Successive readings are 30, 22, 20, 31, 14. There was at most one wrap between readings and the counter only moves forward. Create pulses.json as a JSON array of the four pulse increments in order. Print only their sum.",
+    "user": "TASK: A 5-bit pulse counter in a test fixture wraps to zero after 31. Successive readings are 30, 22, 20, 31, 14. There was at most one wrap between readings and the counter only moves forward. Create pulses.json as a JSON array of the four pulse increments in order. Print only their sum.",
+    "familiarity": 0.078125,
+    "familiar": false,
+    "payload": {
+      "bits": 5,
+      "readings": [
+        30,
+        22,
+        20,
+        31,
+        14
+      ]
+    }
+  }
+]
