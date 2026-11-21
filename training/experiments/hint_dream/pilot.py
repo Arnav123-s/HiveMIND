@@ -34,9 +34,26 @@ def save(path, obj):
     tmp.replace(path)
 
 
+def check_transfer_manifest(specs):
+    manifest = json.loads(Path(__file__).with_name("transfer-manifest.json").read_text())
+    def digest(obj):
+        raw = json.dumps(obj, ensure_ascii=False, sort_keys=True, separators=(",", ":")).encode()
+        return hashlib.sha256(raw).hexdigest()
+    actual = []
+    for spec in specs:
+        prompt, _ = hint_dream.instructions(spec)
+        suites = [hint_dream.examples(spec, split) for split in ("check", "audit")]
+        actual.append({"spec": spec.seed, "prompt_sha256": digest(hint_dream.messages(prompt)),
+                       "suite_sha256": digest(suites)})
+    if actual != manifest["case_order"]:
+        raise ValueError("Transfer prompts or sealed suites differ from preregistration")
+
+
 def run(args):
     seed, indexes = PANELS[args.panel]
     specs = list(hint_dream.draw(seed, max(indexes) + 1))
+    if args.panel == "transfer":
+        check_transfer_manifest([specs[i] for i in indexes])
     expected_assets = dict(ASSETS)
     if args.candidate_sha:
         if args.panel != "transfer":
