@@ -25,3 +25,5 @@ Practice and dream already overlap, including all of practice on G55 and G56. As
 ## Other waves in the handoff
 
 Nine complete G45–G55 comparisons supplied 576 matched fresh exams. Neither the frozen sequential rule nor a bound that could guarantee the same winner stopped a single comparison early. The fixed exam can also overturn a fresh tie. The audit traces which prediction, verification and retention mechanisms already exist and what evidence could distinguish new ones. [Ticket audit and paired data](handoff_audit/README.md)
+
+The retention study traced verified examples to their original workers. Practice ran before each new body was trained. All 20 workers offered on 235 later requests were absent from the chooser's earlier success records. Without a profile for either worker it selected the first one and scored 176/235, while ordinary multi-worker delivery scored 180/235. Replaying earlier solutions at a fixed 4:1 ratio also failed to show a consistent advantage on an independent, smaller program-ranking test. [Practice records, chooser and replay experiments](https://github.com/Arnav123-s/HiveMIND/pull/132)
