@@ -3,6 +3,9 @@
 Not an isolation boundary: code runs as the current user. The guard checks
 the code for deleting, sending and spending before it runs.
 """
+from contextvars import ContextVar
+from contextlib import contextmanager
+import tempfile
 import json
 import os
 import re
@@ -80,6 +83,16 @@ try:
                 raise _rq.exceptions.ConnectionError("the site %s does not exist (no such host): the address was made up. "
                                                      "Start from the site's own first page or an API you know." % host.group(1))
             raise
+        if _tracking and str(method).upper() == "GET" and 200 <= r.status_code < 300:
+            # Count representations by address only for diagnostics. Cursors can share an address.
+            if len(_visited) < 2048:
+                _visited.add(r.url)
+            global _hits
+            _hits += bool(getattr(r, "_hive_public_cache_hit", False))
+            for _resp in [*r.history, r]:
+                _actual = getattr(_resp.request, "url", None)
+                if _actual in _required:
+                    _covered.add(_required.index(_actual))
         _base[0] = r.url
         # a page that does not say its encoding is read as Latin-1 by requests: '£51.77' came out as 'Â£51.77' and
         # float() failed (seen in g28's practice on books.toscrape.com)
@@ -99,8 +112,19 @@ try:
     # A loop meant to walk pages that fetched one page again and again (seen in the pulse of g27: "the first 5 pages",
     # range(1, 6), the same address each time; 8 authors counted where 28 were wanted, and nothing failed)
     _times = {}
+    import os as _henv, json as _hjson
+    _tracking = "HIVE_REQUIRED_GETS" in _henv.environ
+    _required = _hjson.loads(_henv.environ.get("HIVE_REQUIRED_GETS", "[]"))
+    _covered, _hits = set(), 0
+    _visited = set()
+    if _henv.environ.get("HIVE_MEMBER_HTTP_DB"):
+        from page_cache import install as _install_pages
+        _install_pages(_henv.environ["HIVE_MEMBER_HTTP_DB"])
     import atexit as _atexit
     def _same():
+        if _tracking:
+            sys.stderr.write("HIVE-URLS: %d hits=%d covered=%s\\n" %
+                             (len(_visited), _hits, ",".join(str(i) for i in sorted(_covered))))
         u, n = max(_times.items(), key=lambda x: x[1], default=("", 0))
         if n >= 3:
             sys.stderr.write("HIVE-SAME: %s was fetched %d times\\n" % (u, n))
@@ -460,6 +484,30 @@ def _memory(pid):
         return 0
 
 
+_HTTP_RUN = ContextVar("member_http_run", default=None)
+
+
+@contextmanager
+def member_http(task):
+    """Each independent member can reuse fresh public pages between its own program turns."""
+    cache = os.environ.get("HIVE_HTTP_CACHE") == "1"
+    checking = os.environ.get("HIVE_PAGE_CHECKS") == "1"
+    if not cache and not checking:
+        yield None
+        return
+    from ..public_examples import required_gets
+    required = required_gets(task) if checking else ()
+    with tempfile.TemporaryDirectory(prefix="hive-member-http-") as scratch:
+        env = {"HIVE_REQUIRED_GETS": json.dumps(required)}
+        if cache:
+            env["HIVE_MEMBER_HTTP_DB"] = str(Path(scratch) / "pages.sqlite")
+        token = _HTTP_RUN.set(env)
+        try:
+            yield required
+        finally:
+            _HTTP_RUN.reset(token)
+
+
 def run_python(code, workdir, name="main.py", timeout=None, args=()):
     workdir = Path(workdir)
     workdir.mkdir(parents=True, exist_ok=True)
@@ -467,6 +515,7 @@ def run_python(code, workdir, name="main.py", timeout=None, args=()):
     path.write_text(code)
     t0 = time.time()
     env = program_env()
+    env.update(_HTTP_RUN.get() or {})
     HOOK.mkdir(exist_ok=True)
     if not (HOOK / "sitecustomize.py").exists() or (HOOK / "sitecustomize.py").read_text() != _HOOK_SRC:
         (HOOK / "sitecustomize.py").write_text(_HOOK_SRC)
