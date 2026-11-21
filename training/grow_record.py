@@ -442,7 +442,7 @@ def gate(argv):
     same_dna = body.get("dna") == dna
     judged = arms if same_dna else dict(arms, before={"passed": 0, "tasks": 0, "minutes": 0, "unpractised": [0, 0], "seeds": 0})
     keep, why = decide(judged) if cells else (False, "no cell was grown")
-    seeds = []
+    seeds, sequential = [], None
     if grow and cells and not trial:
         # the body multiplies: the paired gate decides it. Before and after sat the same seeds; only the seeds both
         # finished are compared (a seat that died on one side does not count against the other)
@@ -450,6 +450,16 @@ def gate(argv):
         if arms["before"]["seeds"]:
             arms = dict(arms, **pair)
         keep, why = decide(arms, grow=True, held=held)
+        if "--sequential" in argv:
+            from training.gate_look import look
+            # Re-read the artifacts on the recorder. A lost job or a failed download can
+            # produce a short but nondecisive prefix, or no before arm at all.
+            index = argv.index("--sequential")
+            seats, run_number = map(int, argv[index + 1:index + 3])
+            sequential = look(folder, run_number, seats)
+            if "reason" in sequential or (seats < 8 and not sequential["stop"]):
+                keep = False
+                why = "dropped: incomplete sequential gate evidence (" + sequential.get("reason", "boundary not reached") + ")"
     if cells and not same_dna:
         why += f" (a new DNA, {dna}: the body of {body.get('dna')} before it is not the bar)"
     if trial and keep:
@@ -476,6 +486,8 @@ def gate(argv):
             "versus": (os.environ.get("VERSUS_FLAGS", "").strip() if re.fullmatch(FLAGS, os.environ.get("VERSUS_FLAGS", "")) else "?") if arms["versus"]["seeds"] else "",
             "ternary_cells": bool(ternary) and all(ternary), "foresee": bool(foresee) and all(foresee), "pair_steps": pairs, "dna": dna,
             "held_exam": held}
+    if sequential is not None:
+        line["paired"]["sequential"] = sequential
     if grow or arms["before"]["seeds"]:
         line["paired"]["deliveries"] = delivery_changes(folder)
     # practice by its orders (the split of training/practice_arms.py) and its first try on old kinds and K2's new ones

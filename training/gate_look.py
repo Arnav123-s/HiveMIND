@@ -18,10 +18,11 @@ def decisive(gained, lost):
 
 
 def look(folder, run_number, seats):
-    if seats not in (4, 6):
-        raise ValueError("look requires four or six seeds")
+    if seats not in (4, 6, 8):
+        raise ValueError("paired gate requires four, six or eight seeds")
     expected = {f"gate-{arm}-{i}" for i in range(1, seats + 1) for arm in ("before", "after")}
-    if {p.name for p in folder.glob("gate-*")} != expected:
+    observed = {p.name for arm in ("before", "after") for p in folder.glob(f"gate-{arm}-*")}
+    if observed != expected:
         return {"stop": False, "reason": "incomplete or unexpected grade shards"}
     for i in range(1, seats + 1):
         seed = 20_000_000 + run_number * 10 + i
@@ -40,7 +41,7 @@ def look(folder, run_number, seats):
         return {"stop": False, "reason": "missing, duplicate or mismatched task identities"}
     counts = changes["counts"]
     gained, lost = counts["gained"], counts["lost"]
-    return {"stop": decisive(gained, lost), "seats": seats, "gained": gained, "lost": lost}
+    return {"stop": seats < 8 and decisive(gained, lost), "seats": seats, "gained": gained, "lost": lost}
 
 
 if __name__ == "__main__":

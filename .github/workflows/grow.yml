@@ -1018,7 +1018,7 @@ jobs:
     steps: *gate_steps
 
   record:
-    needs: [plan, train, join, merge, gate, gate_5_6, gate_7_8]
+    needs: [plan, train, join, merge, gate, gate_look4, gate_5_6, gate_look6, gate_7_8]
     if: ${{ !cancelled() && needs.plan.result == 'success' && (needs.train.result == 'success' || inputs.cells_from_run || (needs.plan.outputs.grow && needs.train.result != 'skipped')) }}
     runs-on: ubuntu-latest
     permissions:
@@ -1087,11 +1087,16 @@ jobs:
           python3 training/reads.py facts "${{ github.run_id }}" --gate gate --practice-work pw --out facts.json || { echo "::warning::the run's facts could not be read; the record goes on without them"; echo '{}' > facts.json; }
       - name: The record (only numbers and names this repository knows are taken from the other jobs)
         env:
+          STAGED: ${{ needs.plan.outputs.grow && vars.HIVE_GATE_SPRT == '1' && '1' || '0' }}
+          GATE_SEATS: ${{ needs.gate_look4.outputs.stop == '1' && '4' || needs.gate_look6.outputs.stop == '1' && '6' || '8' }}
+          GATE_RUN: ${{ inputs.gate_seeds || github.run_number }}
           VERSUS_FLAGS: ${{ inputs.versus }}
         run: |
           if [ -d tr/trunk ]; then cp tr/trunk/* got/; fi
           mkdir -p prac
-          python3 training/grow_record.py gate gate got "$GEN" --dna "$DNA" --practice prac ${{ (inputs.trial || inputs.versus) && '--trial' || '' }} ${{ needs.plan.outputs.grow && '--grow' || '' }} --facts facts.json --held held | tee -a "$GITHUB_STEP_SUMMARY"
+          check=()
+          if [ "$STAGED" = 1 ]; then check=(--sequential "$GATE_SEATS" "$GATE_RUN"); fi
+          python3 training/grow_record.py gate gate got "$GEN" --dna "$DNA" --practice prac ${{ (inputs.trial || inputs.versus) && '--trial' || '' }} ${{ needs.plan.outputs.grow && '--grow' || '' }} --facts facts.json --held held "${check[@]}" | tee -a "$GITHUB_STEP_SUMMARY"
       - name: Keep the cells and the rows in the release, the numbers and the body in the repository
         env:
           GH_TOKEN: ${{ github.token }}

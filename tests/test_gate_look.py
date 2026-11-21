@@ -69,3 +69,43 @@ def test_future_jobs_only_start_if_previous_look_requested_more():
         assert jobs[tail]["steps"] == initial["steps"]
         assert jobs[tail]["strategy"]["matrix"] == {"arm": ["before", "after"], "seed": seeds, "part": ["fresh"]}
         assert tail in jobs["record"]["needs"]
+
+
+def test_sequential_recorder_rechecks_planned_prefix_before_changing_body(tmp_path, monkeypatch):
+    from training import grow_record
+    from tests.test_paired_gate import _files
+
+    body, records = _files(tmp_path, monkeypatch)
+    before = body.read_bytes()
+    folder, got = tmp_path / "grades", tmp_path / "cells"
+    folder.mkdir()
+    got.mkdir()
+    (got / "t80.g8code.gguf").write_bytes(b"fixture")
+    (got / "t80.g8code.json").write_text('{"rows": 2, "seconds": 15}')
+    args = [str(folder), str(got), "g8", "--dna", "t80", "--grow", "--sequential"]
+    for i in range(1, 5):
+        grades(folder, "before", i, 0)
+        grades(folder, "after", i, 1)
+    grow_record.gate(args + ["4", "99"])
+    assert body.read_bytes() == before and "boundary not reached" in json.loads(records.read_text().splitlines()[-1])["why"]
+    # Even a decisive-looking prefix must not stand in for eight planned pairs.
+    for i in range(1, 5):
+        grades(folder, "after", i, 2)
+    grow_record.gate(args + ["8", "99"])
+    assert body.read_bytes() == before and "incomplete" in json.loads(records.read_text().splitlines()[-1])["why"]
+    (folder / "gate-work-after-1").mkdir()
+    grow_record.gate(args + ["4", "99"])
+    line = json.loads(records.read_text().splitlines()[-1])
+    assert line["kept"] and line["paired"]["sequential"] == {"seats": 4, "stop": True, "gained": 8, "lost": 0}
+
+
+def test_complete_historical_results_retain_actual_decisions_including_fixed_exam():
+    from training import grow_record
+
+    lines = [json.loads(s) for s in grow_record.RECORD.read_text().splitlines()]
+    cohort = [r for r in lines if r["generation"] in {f"g{i}" for i in range(47, 56)} and not r["trial"]]
+    assert len(cohort) == 9
+    for r in cohort:
+        assert grow_record.decide(r["arms"], grow=True, held=r.get("held_exam"))[0] == r["kept"]
+    g52 = next(r for r in cohort if r["generation"] == "g52")
+    assert g52["arms"]["before"]["passed"] == g52["arms"]["after"]["passed"] and not g52["kept"]
