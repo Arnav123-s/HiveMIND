@@ -1,18 +1,20 @@
 """Retain complementary kept bodies by grading their actual trunks on the same four development requests."""
 from functools import lru_cache
 from hashlib import sha256
+from http.client import HTTPException
 from itertools import combinations
 import json
 import os
 from pathlib import Path
 import re
+import shutil
 import sys
 import tempfile
 import urllib.request
 
 ROOT = Path(__file__).resolve().parents[1]
 MAKERS = ("h_prog_calc", "h_tab_group", "h_txt_sentences", "m_percent")
-TRUNK = re.compile(r"(t17|t40|t80)\+(g[1-9]\d{0,5}trunk)")
+TRUNK = re.compile(r"(?P<dna>t17|t40|t80)\+(g(?P<generation>[1-9]\d{0,5})trunk)")
 CELL = re.compile(r"g[1-9]\d{0,5}(?:sources|code|data|words)\d{0,2}")
 DIGEST = re.compile(r"[a-f0-9]{64}")
 
@@ -151,7 +153,7 @@ def retain(existing, incumbent, prior=None):
             "incumbent_solved": len(solved(incumbent)), "joint_solved": score(best)[0], "questions": len(incumbent["results"])}
 
 
-def route(order, organ, archive, directory):
+def route(order, organ, archive, directory, allowed=None):
     """Seat one available archived trunk only for a task organ where matched diagnostics show a gain."""
     bodies = archive.get("bodies", [])
     if (not order or not TRUNK.fullmatch(order[0]) or not isinstance(bodies, list) or not bodies
@@ -165,7 +167,8 @@ def route(order, organ, archive, directory):
         if not isinstance(row, dict) or not isinstance(row.get("results"), dict) or set(row["results"]) != set(now["results"]):
             continue
         actor = row.get("actor", "")
-        if (not isinstance(actor, str) or not TRUNK.fullmatch(actor) or not matches(directory / (actor + ".gguf"), row.get("sha256", ""))):
+        if (not isinstance(actor, str) or not TRUNK.fullmatch(actor) or (allowed is not None and actor not in allowed)
+                or not matches(directory / (actor + ".gguf"), row.get("sha256", ""))):
             continue
         questions = [q for q, r in now["results"].items() if isinstance(r, dict) and r.get("organ") == organ and r.get("ok") is False]
         gain = sum(isinstance(row["results"][q], dict) and row["results"][q].get("ok") is True for q in questions)
@@ -193,24 +196,56 @@ def freeze(folder, body, roster, directory, gen, existing):
 
 def fetch(directory, archive):
     repo = os.environ.get("GITHUB_REPOSITORY", "Arnav123-s/HiveMIND")
-    for row in archive.get("bodies", [])[1:3]:
-        actor = row.get("actor", "")
-        if not TRUNK.fullmatch(actor) or row.get("asset") != asset(actor):
+    available = []
+    bodies = archive.get("bodies")
+    for row in bodies[1:3] if isinstance(bodies, list) else []:
+        if not isinstance(row, dict):
+            continue
+        actor, checksum = row.get("actor"), row.get("sha256")
+        if (not isinstance(actor, str) or not TRUNK.fullmatch(actor) or row.get("asset") != asset(actor)
+                or not isinstance(checksum, str) or not DIGEST.fullmatch(checksum)):
             continue
         path = directory / (actor + ".gguf")
-        if matches(path, row["sha256"]):
-            continue
-        directory.mkdir(exist_ok=True, parents=True)
-        with tempfile.TemporaryDirectory(dir=directory) as tmp:
-            dest = Path(tmp) / "download"
+        if not matches(path, checksum):
             try:
-                urllib.request.urlretrieve(f"https://github.com/{repo}/releases/download/hive-grown/{asset(actor)}", dest)
-                if matches(dest, row["sha256"]):
+                directory.mkdir(exist_ok=True, parents=True)
+                with tempfile.TemporaryDirectory(dir=directory) as tmp:
+                    dest = Path(tmp) / "download"
+                    url = f"https://github.com/{repo}/releases/download/hive-grown/{asset(actor)}"
+                    with urllib.request.urlopen(url, timeout=15) as response, dest.open("wb") as out:
+                        shutil.copyfileobj(response, out)
+                    if not matches(dest, checksum):
+                        print(f"{actor} unavailable: checksum mismatch", file=sys.stderr)
+                        continue
                     dest.replace(path)
-                else:
-                    print(f"{actor} unavailable: checksum mismatch", file=sys.stderr)
-            except OSError as exc:
+            except (OSError, HTTPException) as exc:
                 print(f"{actor} unavailable: {exc}", file=sys.stderr)
+                continue
+        available.append(actor)
+    return available
+
+
+def chat_members(roster, directory, archive):
+    """Extend the workflow's sparse roster only when the archive describes its exact downloaded incumbent."""
+    bodies = archive.get("bodies")
+    if not roster or not isinstance(bodies, list) or not bodies or not isinstance(bodies[0], dict):
+        return roster
+    now = bodies[0]
+    current = TRUNK.fullmatch(roster[0])
+    if (not current or not isinstance(now.get("results"), dict) or not now["results"]
+            or roster[0] != archive.get("incumbent") or roster[0] != now.get("actor")
+            or not matches(directory / (roster[0] + ".gguf"), now.get("sha256"))):
+        return roster
+    # A newer or different DNA trunk in a sparse roster would displace the incumbent during ordinary seating.
+    candidates = []
+    for row in bodies[1:3]:
+        actor = row.get("actor") if isinstance(row, dict) else None
+        match = TRUNK.fullmatch(actor) if isinstance(actor, str) else None
+        if (match and match["dna"] == current["dna"] and int(match["generation"]) < int(current["generation"])
+                and row.get("protocol") == now.get("protocol")
+                and isinstance(row.get("results"), dict) and set(row["results"]) == set(now["results"])):
+            candidates.append(row)
+    return list(dict.fromkeys([*roster, *fetch(directory, {"bodies":[now, *candidates]})]))
 
 
 if __name__ == "__main__":
@@ -219,6 +254,11 @@ if __name__ == "__main__":
     if command == "one":
         from team import solo
         solo.run(panel(int(args[0]))[0], Path(args[1]) / "members", members=1)
+    elif command == "chat-members":
+        roster = [w for w in args[0].split(",") if w]
+        if enabled():
+            roster = chat_members(roster, ternary.ADAPTERS, read(ternary.BODY.parent / "body_archive.json"))
+        print(",".join(roster))
     elif command == "fetch":
         if enabled():
             fetch(ternary.ADAPTERS, read(os.environ.get("HIVE_ARCHIVE_PATH") or ternary.BODY.parent / "body_archive.json"))
