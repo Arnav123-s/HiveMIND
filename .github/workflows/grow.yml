@@ -623,7 +623,9 @@ jobs:
           else
             SLICE=""; if [ -z "$WHOLE" ] && [ "$N" -gt 1 ]; then SLICE="--shard $SHARD/$N"; else touch out/whole; fi
             # a stuck process is also killed from outside, 25 minutes past its budget (SIGKILL 60 s after SIGTERM)
-            timeout -k 60 $(( (MIN + 25) * 60 )) python training/grow.py train $VERSUS $PARENT $TRUNK $SLICE --read "$READ" --judged "$JUDGED" --gen "$GEN" --rows got/rows.jsonl --base "$DNA" --name "$NAME" --lean "$ORGAN" --epochs "$EPOCHS" --minutes "$MIN" ${{ inputs.ternary == '1' && '--ternary' || '' }} ${{ inputs.foresee && '--foresee' || '' }} ${{ inputs.pairs && '--pairs' || '' }} ${{ !inputs.slow && '--layers last14 --no-checkpoint' || '' }} ${{ (env.DNA == 't40' || env.DNA == 't80') && '--int8-base' || '' }} | tee train.txt
+            # inside a memory cap and at low priority (scripts/capped_run.sh): when the trainer outgrows the runner the
+            # kernel kills the trainer, not the runner agent (2-4 of 20 slices a generation were lost to "lost communication")
+            timeout -k 90 $(( (MIN + 25) * 60 + 120 )) scripts/capped_run.sh --timeout $(( (MIN + 25) * 60 )) -- python training/grow.py train $VERSUS $PARENT $TRUNK $SLICE --read "$READ" --judged "$JUDGED" --gen "$GEN" --rows got/rows.jsonl --base "$DNA" --name "$NAME" --lean "$ORGAN" --epochs "$EPOCHS" --minutes "$MIN" ${{ inputs.ternary == '1' && '--ternary' || '' }} ${{ inputs.foresee && '--foresee' || '' }} ${{ inputs.pairs && '--pairs' || '' }} ${{ !inputs.slow && '--layers last14 --no-checkpoint' || '' }} ${{ (env.DNA == 't40' || env.DNA == 't80') && '--int8-base' || '' }} | tee train.txt
             cp "cells/members/$DNA+$NAME.gguf" "out/$DNA.$NAME.gguf" && cp "cells/members/$DNA+$NAME.json" "out/$DNA.$NAME.json"
             cp "runs/grow/$DNA+$NAME/adapter_model.safetensors" "out/$DNA.$NAME.safetensors" || true
           fi
