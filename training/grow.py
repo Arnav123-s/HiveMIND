@@ -728,6 +728,16 @@ def precheck_deadline(started, now, minutes, profile):
     return now + max(0.0, started + minutes * 60 - now) / 4
 
 
+def measure_until(now, minutes, share, floor=120.0):
+    """Clock time after which an ungated measuring phase before training (the raw pieces of `read`, the kept-back lessons'
+    first measure) stops: `share` of the cell's `minutes` from `now`, at least `floor` seconds; 0.0 with no time given.
+    g59: both phases ran with no deadline (57 and 35 minutes of a 170 budget on a swapping runner) and two slices
+    reached the job's limit with the budget gone before one row was trained."""
+    if not minutes:
+        return 0.0
+    return now + max(floor, minutes * 60 * share)
+
+
 def paired_kept_losses(back, before, after):
     """The evaluator visits items in order and may stop between rows. Compare only the common prefix per kind."""
     report = {}
@@ -1428,7 +1438,11 @@ def train(rows_file, name, base="t17", epochs=2.0, rank=16, lr=2e-4, max_len=115
         drawn = raw.draw(3 * read, name + part, lean, log=log)
         scored = []
         model.eval()
+        read_until = measure_until(time.time(), minutes, 0.12)
         for row in drawn:
+            if read_until and time.time() > read_until and len(scored) >= 8:
+                log(f"read: the time for measuring raw pieces is up after {len(scored)} of {len(drawn)}", flush=True)
+                break
             # every piece of a raw text carries the loss, not only an answer's: each one keeps the scores of the whole
             # vocabulary (152 thousand words on the 8B) through the step back. 512 pieces filled a 16 GB machine
             # (2026-11-15), so a raw piece is cut to READ_LEN.
@@ -1512,6 +1526,8 @@ def train(rows_file, name, base="t17", epochs=2.0, rank=16, lr=2e-4, max_len=115
             kept_items.append((back[r["task"]], d[:2]))
     t_kept = time.time()
     until = precheck_deadline(born, t_kept, minutes, os.environ.get("TRAIN_PROFILE", "auto"))
+    cap = measure_until(t_kept, minutes, 0.12)  # the first measure costs the second as much: 12% each, not 35 min each (g59)
+    until = min(until, cap) if until and cap else (until or cap)
     kept_before = kept_loss(model, kept_items, dev, cast, beat, until=until,
                             chunk_tokens=loss_chunk_tokens) if kept_items else {}
     # kept_loss stops between rows, so the sampled items are exactly this prefix in the same order.

@@ -97,3 +97,27 @@ def test_gguf_seconds_fake_clock():
     worst = max(end + 600 + 600, end + 1100 + 180) - born  # row +10, then GGUF held to the wall or 3 minutes after
     assert worst / 60 <= 195
 
+
+
+def test_measure_until_caps_the_ungated_measuring_phases():
+    from training.grow import measure_until
+    assert measure_until(1000.0, 0, 0.12) == 0.0
+    assert measure_until(1000.0, 170, 0.12) == 1000.0 + 170 * 60 * 0.12  # 20.4 minutes, not g59's 57 and 35
+    assert measure_until(1000.0, 1, 0.12) == 1000.0 + 120.0  # a short trial keeps its floor
+
+
+def test_measuring_with_a_fake_clock_ends_inside_the_budget():
+    """g59 timeline on a fake clock: the read measure (one row a minute) and the kept-back first measure (one row a
+    minute) stop at their 12%, so training starts by 41 minutes and the loop's own check then ends it at the budget."""
+    from training.grow import measure_until
+    born, minutes, t = 0.0, 170, 0.0
+    until = measure_until(t, minutes, 0.12)
+    while t <= until:
+        t += 60
+    read_end = t
+    until = measure_until(t, minutes, 0.12)
+    while t <= until:
+        t += 60
+    spare = t - read_end
+    assert t <= 45 * 60 and spare <= 21 * 60
+    assert born + minutes * 60 - spare - t > 100 * 60  # most of the 170 minutes is left for training
