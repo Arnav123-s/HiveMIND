@@ -7,9 +7,12 @@ import hashlib
 import json
 import os
 from pathlib import Path
+import re
+import secrets
+import shutil
 import socket
+import stat
 import subprocess
-from tempfile import TemporaryDirectory
 import time
 from unittest.mock import patch
 
@@ -19,6 +22,9 @@ from training.experiments.astra_orders import generate
 
 HERE = Path(__file__).resolve().parent
 REGISTRATION = "bf8b4d74042bcb037477d661ac43cdb0f9eaded04861fc98bf2c9b3be39f81ee"
+LEGACY_RUNNER = "e8dd600a80b6e757e135dd72a0dae244a2a6220f6d530f33e03b1bfb2fd6ae70"
+LEGACY_JOURNAL = "fb9d175346f79b605d8d3e86ce23a9ab28225dcc325705ddcaf9be244dc61ceb"
+LEGACY_ROOT = "/tmp/tmpt5ib3ei5"
 SEAT = "t80+g55trunk"
 ARMS = ("fixed", "borrow")
 SETTINGS = {"temperature": 0., "top_p": 1., "top_k": 0, "cache_prompt": False, "seed": 8103,
@@ -35,6 +41,55 @@ def utc():
 
 class Pause(Exception):
     """The next genuine model request has not been sent."""
+
+
+def case_roots(run_id, kinds, migrated):
+    if not isinstance(run_id, str) or not re.fullmatch("[0-9a-f]{32}", run_id):
+        raise ValueError("invalid workspace ID")
+    return {k: LEGACY_ROOT if migrated and k == "h_tab_dates" else f"/tmp/hive-f3-{run_id}-{k}" for k in kinds}
+
+
+def migrate(raw, record, config):
+    """Only the published two-call checkpoint can adopt the original traceback's private path."""
+    if (hashlib.sha256(raw).hexdigest() != LEGACY_JOURNAL or record["config"] != (config | {"runner_sha256": LEGACY_RUNNER})
+            or record["config"]["registration_sha256"] != REGISTRATION or record.get("in_flight") or record["complete"]
+            or any(record["arms"].values())):
+        raise ValueError("the run configuration or legacy journal differs")
+    saved = [c for arms in record["calls"].values() for journal in arms.values() for c in journal]
+    if ([c["id"] for c in saved] != ["h_tab_dates/fixed/1", "h_tab_dates/fixed/2"]
+            or any(c["origin"] != "native" or c["source"] != c["id"] for c in saved)):
+        raise ValueError("legacy checkpoint has different sampled calls")
+    feedback = saved[1]["request"]["messages"][-1]
+    if (feedback["role"] != "user" or f'File "{LEGACY_ROOT}/work/member1_1.py", line 23' not in feedback["content"]
+            or "SyntaxError:" not in feedback["content"]):
+        raise ValueError("legacy receipt does not establish the original worker path")
+    if os.path.lexists(LEGACY_ROOT):
+        raise FileExistsError(LEGACY_ROOT)
+    record.update(config=config, migration={"from_runner_sha256": LEGACY_RUNNER, "from_journal_sha256": LEGACY_JOURNAL,
+                                            "retained_calls": [c["id"] for c in saved]})
+
+
+@contextmanager
+def empty_case_root(path):
+    """Create exclusively. Clean entries through the original directory descriptor."""
+    root = Path(path)
+    root.mkdir(mode=0o700)  # An existing directory, file or symlink belongs to someone else.
+    fd = os.open(root, os.O_RDONLY | os.O_DIRECTORY | os.O_NOFOLLOW)
+    try:
+        yield root
+    finally:
+        try:
+            if not os.path.samestat(os.fstat(fd), root.lstat()):
+                raise RuntimeError(f"the trial directory was replaced: {root}")
+            for name in os.listdir(fd):
+                if stat.S_ISDIR(os.stat(name, dir_fd=fd, follow_symlinks=False).st_mode):
+                    shutil.rmtree(name, dir_fd=fd)
+                else:
+                    os.unlink(name, dir_fd=fd)
+            if os.path.samestat(os.fstat(fd), root.lstat()):
+                root.rmdir()
+        finally:
+            os.close(fd)
 
 
 @contextmanager
@@ -129,7 +184,7 @@ def run_arm(args, record, case, grade, arm, url, proc):
 
     flags = dict(ENV, HIVE_FAMILIAR_TASKS=str(args.familiar_index.resolve()), HIVE_CUTOFF_CONTINUE_BORROW=str(int(arm == "borrow")))
     orders = solo.orders
-    with (TemporaryDirectory() as root, patch.dict(os.environ, flags),
+    with (empty_case_root(record["case_roots"][kind]) as root, patch.dict(os.environ, flags),
           patch.object(solo, "orders", side_effect=lambda who: orders(who, today=record["orders_date_utc"])),
           patch.object(solo.ternary, "up", return_value=url), patch.object(solo.ternary, "_ask", side_effect=ask),
           patch.object(solo, "LONG", 192), patch.object(solo, "TURNS", 3), patch.object(solo, "solved", return_value=[])):
@@ -199,9 +254,10 @@ def run(args):
               "familiar_index_sha256": index, "assets": generate.ASSETS, "settings": SETTINGS, "flags": FLAGS,
               "seat": SEAT, "environment": ENV}
     if args.out.exists():
-        record = json.loads(args.out.read_bytes())
+        raw = args.out.read_bytes()
+        record = json.loads(raw)
         if record["config"] != config:
-            raise ValueError("the run configuration differs from the saved journal")
+            migrate(raw, record, config)
         if record.get("in_flight"):
             raise RuntimeError(f"unresolved native call {record['in_flight']['id']}; inspect server logs before retrying")
         if record["complete"]:
@@ -210,6 +266,17 @@ def run(args):
         record = {"config": config, "start_utc": utc(), "orders_date_utc": datetime.now(timezone.utc).strftime("%Y-%m-%d (%A)"),
                   "calls": {k: {a: [] for a in ARMS} for k in grades}, "arms": {k: {} for k in grades},
                   "sessions": [], "complete": False}
+    migrated = "migration" in record
+    if migrated and record["migration"].get("from_journal_sha256") != LEGACY_JOURNAL:
+        raise ValueError("unrecognised original workspace")
+    if "workspace_id" not in record:
+        if any(j for arms in record["calls"].values() for j in arms.values()) and not migrated:
+            raise ValueError("missing original workspace identity")
+        record["workspace_id"] = secrets.token_hex(16)
+        record["case_roots"] = case_roots(record["workspace_id"], grades, migrated)
+        generate.save(args.out, record)
+    if record.get("case_roots") != case_roots(record["workspace_id"], grades, migrated):
+        raise ValueError("unexpected task workspace paths")
     try:
         if args.pause_file.exists():
             raise Pause()
