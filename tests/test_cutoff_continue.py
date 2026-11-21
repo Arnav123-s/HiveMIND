@@ -15,9 +15,10 @@ class Log:
         pass
 
 
-def worker(monkeypatch, tmp_path, *, task=TASK, first=SAVE, reason="length", used=8, follow=True, repair=False):
+def worker(monkeypatch, tmp_path, *, task=TASK, first=SAVE, reason="length", used=8, follow=True, repair=False,
+           borrow=False, limit=8, next_used=5):
     requests = []
-    replies = iter([(first, reason, used), (READ, "stop", 5), ("DONE", "stop", 1)])
+    replies = iter([(first, reason, used), (READ, "stop", next_used), ("DONE", "stop", 1)])
     def generate(member, endpoint, cell, path, body, cap):
         requests.append((cap, deepcopy(body["messages"])))
         code, finish, count = next(replies)
@@ -27,8 +28,12 @@ def worker(monkeypatch, tmp_path, *, task=TASK, first=SAVE, reason="length", use
 
     monkeypatch.setenv("HIVE_CUTOFF_CONTINUE", str(int(follow)))
     monkeypatch.setenv("HIVE_CUTOFF_REPAIR", str(int(repair)))
+    if borrow:
+        monkeypatch.setenv("HIVE_CUTOFF_CONTINUE_BORROW", "1")
+    else:
+        monkeypatch.delenv("HIVE_CUTOFF_CONTINUE_BORROW", raising=False)
     monkeypatch.setattr(solo, "TURNS", 3)
-    monkeypatch.setattr(solo, "LONG", 8)
+    monkeypatch.setattr(solo, "LONG", limit)
     monkeypatch.setattr(ternary, "up", lambda member: "fixture")
     monkeypatch.setattr(ternary, "_ask", generate)
     log = Log()
@@ -60,9 +65,20 @@ def test_continuation_at_measured_cap_reads_the_existing_file(monkeypatch, tmp_p
     {"first": "print("},
 ])
 def test_ineligible_turn_retains_original_worker_message(monkeypatch, tmp_path, change):
-    result, calls = worker(monkeypatch, tmp_path, **change)
+    result, calls = worker(monkeypatch, tmp_path, borrow=True, **change)
     assert "cutoff_saved_file" not in result["hints"] and CUE not in calls[1][1][-1]["content"]
     assert max(cap for cap, _ in calls) == 8
+
+
+@pytest.mark.parametrize(("next_used", "expected_caps"), [
+    (100, [192, 384, 192]), (300, [192, 384, 84]), (384, [192, 384]),
+    (None, [192, 384]), (385, [192, 384]),
+])
+def test_opt_in_borrow_uses_only_remaining_budget(monkeypatch, tmp_path, next_used, expected_caps):
+    result, calls = worker(monkeypatch, tmp_path, borrow=True, limit=192, used=192, next_used=next_used)
+    assert [cap for cap, _ in calls] == expected_caps
+    assert CUE in calls[1][1][-1]["content"]
+    assert result["answer"] == "2" and result["turns"] == len(expected_caps)
 
 
 def test_unchanged_existing_file_cannot_trigger(monkeypatch, tmp_path):

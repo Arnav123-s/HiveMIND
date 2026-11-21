@@ -23,9 +23,13 @@ def main():
     parser.add_argument("--cutoff-repair", action="store_true", help="run the separate post-trial recovery condition")
     parser.add_argument("--resume-stdout-from", type=Path,
                         help="measure a separate CSV continuation from its frozen first native reply")
+    parser.add_argument("--borrow-stdout-budget", action="store_true",
+                        help="separate matched follow-up allowing the continuation to spend remaining tokens")
     parser.add_argument("--resume", action="store_true", help="resume a complete prefix after releasing the CPU")
     parser.add_argument("--arms-this-session", type=int, help="checkpoint and release the server after this many arms")
     args = parser.parse_args()
+    if args.borrow_stdout_budget and not args.resume_stdout_from:
+        parser.error("the extended allowance requires a matched stdout comparison")
     if args.arms_this_session is not None and args.arms_this_session < 1:
         parser.error("--arms-this-session must be positive")
     index_sha = generate.file_hash(args.familiar_index)
@@ -57,6 +61,8 @@ def main():
               "seat": "t80+g55trunk", "affinity": sorted(os.sched_getaffinity(0)), "arms": []}
     if prefix:
         record.update(resume_stdout=True, prefix_source_sha256=base_sha)
+        if args.borrow_stdout_budget:
+            record["borrow_stdout_budget"] = True
     if args.cutoff_repair:
         record["cutoff_repair"] = True
     if args.resume:
@@ -122,7 +128,8 @@ def main():
             with (TemporaryDirectory() as root, patch.dict(os.environ, {"HIVE_ASSERT_FIRST": flag,
                                                                      "HIVE_FAMILIAR_TASKS": str(args.familiar_index),
                                                                      "HIVE_CUTOFF_REPAIR": str(int(args.cutoff_repair)),
-                                                                     "HIVE_CUTOFF_CONTINUE": str(int(bool(prefix)))}),
+                                                                     "HIVE_CUTOFF_CONTINUE": str(int(bool(prefix))),
+                                                                     "HIVE_CUTOFF_CONTINUE_BORROW": str(int(args.borrow_stdout_budget))}),
                   patch.object(solo.ternary, "up", return_value=url), patch.object(solo.ternary, "_ask", ask),
                   patch.object(solo, "LONG", 192), patch.object(solo, "TURNS", 3),
                   patch.object(solo, "solved", return_value=[])):
