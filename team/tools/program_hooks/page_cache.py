@@ -68,16 +68,21 @@ def install(path):
         response = original(session, request, **kwargs)
         received = time.monotonic()
         lifetime = freshness(response, time.time(), received - started)
-        if epoch is None or not lifetime or response.history or response.url != url:
+        if epoch is None:
             return response
-        if "x-cursor" in headers and "x-cursor" not in {h.strip().lower() for h in response.headers.get("Vary", "").split(",")}:
+        vary = {h.strip().lower() for h in response.headers.get("Vary", "").split(",")}
+        if not lifetime or response.history or response.url != url or ("x-cursor" in headers and "x-cursor" not in vary):
+            _forget(path, url)
             return response
         # Read the body only after Requests has consumed it normally. Unsupported encodings pass through.
         if response.headers.get("Content-Encoding", "identity").lower() != "identity":
             return response
         limit, initial_age = lifetime
         ttl = min(60., limit - initial_age)
-        if ttl <= 0 or len(response.content) > MAX_BYTES:
+        if ttl <= 0:
+            _forget(path, url)
+            return response
+        if len(response.content) > MAX_BYTES:
             return response
         fields = [(k, v) for k, v in response.raw.headers.iteritems() if k.lower() not in HOP]
         encoded_fields = json.dumps(fields)

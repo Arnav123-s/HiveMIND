@@ -156,3 +156,15 @@ def test_reread_directive_forgets_the_previous_representation(origin, tmp_path, 
                                ("print(requests.get(u).text)", "3")):
             assert run_python(prefix + code, tmp_path)["stdout"].strip() == expected
     assert server.visits["/reread"] == 3
+
+
+def test_missing_freshness_on_new_variant_invalidates_prior_public_variant(origin, tmp_path, monkeypatch):
+    base, server = origin
+    monkeypatch.setenv("HIVE_HTTP_CACHE", "1")
+    with member_http("Read cursor pages"):
+        for cursor, public in ((1, True), (2, False), (1, False)):
+            server.public_feed = public
+            program = f"import requests\nprint(requests.get({base + '/feed'!r}, headers={{'X-Cursor': {str(cursor)!r}}}).text)"
+            result = run_python(program, tmp_path)
+            assert result["returncode"] == 0 and "authors" in result["stdout"]
+    assert server.visits["/feed"] == 3
