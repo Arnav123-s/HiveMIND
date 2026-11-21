@@ -1,0 +1,35 @@
+[
+  {
+    "group": "practiced_family",
+    "id": "m_percent",
+    "seed": "astra-orders-79911:m_percent",
+    "task": "A printer costs 1360 dollars and the price rises by 10%. What is the new price?"
+  },
+  {
+    "group": "practiced_family",
+    "id": "m_weekday",
+    "seed": "astra-orders-79911:m_weekday",
+    "task": "What day of the week is 17 April 2027?"
+  },
+  {
+    "group": "practiced_family",
+    "id": "m_table",
+    "seed": "astra-orders-79911:m_table",
+    "task": "Daily emails sent in emails: Mon 85, Tue 265, Wed 70, Thu 145, Fri 195. Which day had the most, and what was the daily average?"
+  },
+  {
+    "group": "new_contract",
+    "id": "cold-chain",
+    "task": "This is the receiving log chiller.csv:\nlot,arrival_c,departure_c\nP4,3,7\nQ2,8,3\nA6,1,6\nM8,5,5\nJ7,4,9\nFor the warehouse, write drift.json containing the lot codes whose departure is at least 4 degrees warmer than arrival. The file must be a JSON array sorted by largest temperature rise first, breaking equal rises by lot code. Print only the number of selected lots."
+  },
+  {
+    "group": "new_contract",
+    "id": "delayed-release",
+    "task": "The equipment desk has one shared calibration stand. A booking starts at its requested minute or when the prior booking ends, whichever is later. Process these (label, requested minute, duration) bookings in order: (fern, 8, 7), (moss, 12, 3), (reed, 25, 4), (iris, 27, 5). Print total waiting minutes across bookings, then the final exit minute, as two plain integers on separate lines."
+  },
+  {
+    "group": "new_contract",
+    "id": "careful-meter",
+    "task": "A 5-bit pulse counter in a test fixture wraps to zero after 31. Successive readings are 28, 3, 9, 31, 2. There was at most one wrap between readings and the counter only moves forward. Create pulses.json as a JSON array of the four pulse increments in order. Print only their sum."
+  }
+]

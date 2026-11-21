@@ -1,0 +1,134 @@
+{
+  "extra_native_calls_generated": 18,
+  "new_native_wall_seconds": 1019.9,
+  "new_native_server_cpu_seconds": 1341.97,
+  "new_prompt_tokens": 4990,
+  "new_completion_tokens": 1568,
+  "server_load_seconds": 4.306,
+  "runtimes": {
+    "cpython": {
+      "original_short": 4,
+      "modular_greedy_routed": 5,
+      "policies": {
+        "short2": {
+          "correct": 4,
+          "wrong": 0,
+          "abstain": 2,
+          "calls": 12,
+          "any_correct_among_used": 4,
+          "recorded_call_wall_s": 324.95,
+          "recorded_call_cpu_s": 570.52
+        },
+        "diverse2": {
+          "correct": 4,
+          "wrong": 0,
+          "abstain": 2,
+          "calls": 12,
+          "any_correct_among_used": 4,
+          "recorded_call_wall_s": 479.89,
+          "recorded_call_cpu_s": 726.86
+        },
+        "short3": {
+          "correct": 4,
+          "wrong": 0,
+          "abstain": 2,
+          "calls": 14,
+          "any_correct_among_used": 5,
+          "recorded_call_wall_s": 452.84,
+          "recorded_call_cpu_s": 748.44
+        },
+        "diverse3": {
+          "correct": 4,
+          "wrong": 0,
+          "abstain": 2,
+          "calls": 14,
+          "any_correct_among_used": 5,
+          "recorded_call_wall_s": 607.78,
+          "recorded_call_cpu_s": 904.78
+        }
+      },
+      "exploratory": {
+        "greedy_diverse2": {
+          "correct": 4,
+          "wrong": 0,
+          "abstain": 2,
+          "calls": 12,
+          "any_correct_among_used": 5,
+          "recorded_call_wall_s": 543.57,
+          "recorded_call_cpu_s": 799.05
+        },
+        "greedy_diverse3": {
+          "correct": 5,
+          "wrong": 0,
+          "abstain": 1,
+          "calls": 14,
+          "any_correct_among_used": 5,
+          "recorded_call_wall_s": 671.47,
+          "recorded_call_cpu_s": 976.97
+        }
+      }
+    },
+    "wasi": {
+      "original_short": 4,
+      "modular_greedy_routed": 5,
+      "policies": {
+        "short2": {
+          "correct": 4,
+          "wrong": 0,
+          "abstain": 2,
+          "calls": 12,
+          "any_correct_among_used": 4,
+          "recorded_call_wall_s": 324.95,
+          "recorded_call_cpu_s": 570.52
+        },
+        "diverse2": {
+          "correct": 4,
+          "wrong": 0,
+          "abstain": 2,
+          "calls": 12,
+          "any_correct_among_used": 4,
+          "recorded_call_wall_s": 479.89,
+          "recorded_call_cpu_s": 726.86
+        },
+        "short3": {
+          "correct": 4,
+          "wrong": 0,
+          "abstain": 2,
+          "calls": 14,
+          "any_correct_among_used": 5,
+          "recorded_call_wall_s": 452.84,
+          "recorded_call_cpu_s": 748.44
+        },
+        "diverse3": {
+          "correct": 4,
+          "wrong": 0,
+          "abstain": 2,
+          "calls": 14,
+          "any_correct_among_used": 5,
+          "recorded_call_wall_s": 607.78,
+          "recorded_call_cpu_s": 904.78
+        }
+      },
+      "exploratory": {
+        "greedy_diverse2": {
+          "correct": 4,
+          "wrong": 0,
+          "abstain": 2,
+          "calls": 12,
+          "any_correct_among_used": 5,
+          "recorded_call_wall_s": 543.57,
+          "recorded_call_cpu_s": 799.05
+        },
+        "greedy_diverse3": {
+          "correct": 5,
+          "wrong": 0,
+          "abstain": 1,
+          "calls": 14,
+          "any_correct_among_used": 5,
+          "recorded_call_wall_s": 671.47,
+          "recorded_call_cpu_s": 976.97
+        }
+      }
+    }
+  }
+}

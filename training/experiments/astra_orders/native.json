@@ -1,0 +1,284 @@
+{
+  "affinity": [
+    1,
+    2
+  ],
+  "assets_sha256": {
+    "lora": "72913f1c566638f2177574178f1d6925cde956a92b35af06795e7598c5729036",
+    "model": "1376f942aa90e60f7b570c1d81b3916fea1315ff85aa1c4d19006af68fb4b922",
+    "runtime": "0dc642d61dc39d51a8b5da348c43ba19d29f720b2a3ac790e0019351239da3b2"
+  },
+  "calls": [
+    {
+      "arm": "short",
+      "finish_reason": "stop",
+      "id": "m_percent",
+      "raw": "```python\nprint(1360 * 1.10)\n```",
+      "server_cpu_s": 17.7,
+      "usage": {
+        "completion_tokens": 18,
+        "prompt_tokens": 112,
+        "prompt_tokens_details": {
+          "cached_tokens": 0
+        },
+        "total_tokens": 130
+      },
+      "wall_s": 8.981
+    },
+    {
+      "arm": "full",
+      "finish_reason": "stop",
+      "id": "m_percent",
+      "raw": "```python\nprint(\"1360 * 1.10 = 1496\")\n```",
+      "server_cpu_s": 71.74,
+      "usage": {
+        "completion_tokens": 24,
+        "prompt_tokens": 721,
+        "prompt_tokens_details": {
+          "cached_tokens": 0
+        },
+        "total_tokens": 745
+      },
+      "wall_s": 36.762
+    },
+    {
+      "arm": "full",
+      "finish_reason": "stop",
+      "id": "m_weekday",
+      "raw": "```python\nimport datetime\n\ndate = datetime.datetime(2027, 4, 17)\nday_of_week = date.strftime('%A')\nprint(day_of_week)\n```",
+      "server_cpu_s": 88.8,
+      "usage": {
+        "completion_tokens": 39,
+        "prompt_tokens": 713,
+        "prompt_tokens_details": {
+          "cached_tokens": 0
+        },
+        "total_tokens": 752
+      },
+      "wall_s": 44.917
+    },
+    {
+      "arm": "short",
+      "finish_reason": "stop",
+      "id": "m_weekday",
+      "raw": "```python\nfrom datetime import date\n\ntarget_date = date(2027, 4, 17)\nday_name = target_date.strftime('%A')\nprint(day_name)\n```",
+      "server_cpu_s": 30.58,
+      "usage": {
+        "completion_tokens": 40,
+        "prompt_tokens": 104,
+        "prompt_tokens_details": {
+          "cached_tokens": 0
+        },
+        "total_tokens": 144
+      },
+      "wall_s": 15.918
+    },
+    {
+      "arm": "short",
+      "finish_reason": "stop",
+      "id": "m_table",
+      "raw": "```python\ndays = [\"Mon\", \"Tue\", \"Wed\", \"Thu\", \"Fri\"]\nemails = [85, 265, 70, 145, 195]\n\nmax_day = max(range(len(days)), key=lambda i: emails[i])\naverage = sum(emails) / len(emails)\n\nprint(f\"Day with the most emails: {days[max_day]}\")\nprint(f\"Daily average: {average}\")\n```",
+      "server_cpu_s": 60.51,
+      "usage": {
+        "completion_tokens": 97,
+        "prompt_tokens": 135,
+        "prompt_tokens_details": {
+          "cached_tokens": 0
+        },
+        "total_tokens": 232
+      },
+      "wall_s": 30.912
+    },
+    {
+      "arm": "full",
+      "finish_reason": "stop",
+      "id": "m_table",
+      "raw": "```python\ndays = [\"Mon\", \"Tue\", \"Wed\", \"Thu\", \"Fri\"]\nemails = [85, 265, 70, 145, 195]\n\nmax_day = max(range(len(days)), key=lambda i: emails[i])\naverage = sum(emails) / len(emails)\n\nprint(f\"Day with the most emails: {days[max_day]}\")\nprint(f\"Daily average: {average}\")\n```",
+      "server_cpu_s": 121.05,
+      "usage": {
+        "completion_tokens": 97,
+        "prompt_tokens": 744,
+        "prompt_tokens_details": {
+          "cached_tokens": 0
+        },
+        "total_tokens": 841
+      },
+      "wall_s": 61.277
+    },
+    {
+      "arm": "short",
+      "finish_reason": "stop",
+      "id": "cold-chain",
+      "raw": "```python\nimport csv\n\ndata = []\nfor row in csv.DictReader(open('chiller.csv')):\n    data.append(row)\n\nresult = []\nfor row in data:\n    departure = int(row['departure_c'])\n    arrival = int(row['arrival_c'])\n    rise = departure - arrival\n    if rise >= 4:\n        result.append((rise, row['lot']))\n\nresult.sort(reverse=True, key=lambda x: (x[0], x[1]))\n\nprint(len(result))\n```",
+      "server_cpu_s": 68.63,
+      "usage": {
+        "completion_tokens": 100,
+        "prompt_tokens": 264,
+        "prompt_tokens_details": {
+          "cached_tokens": 0
+        },
+        "total_tokens": 364
+      },
+      "wall_s": 35.256
+    },
+    {
+      "arm": "full",
+      "finish_reason": "stop",
+      "id": "cold-chain",
+      "raw": "```python\nimport csv\nimport json\nfrom datetime import datetime\n\ndata = []\nfor row in csv.DictReader(open('chiller.csv')):\n    data.append(row)\n\ndrift = []\nfor row in data:\n    arrival = float(row['arrival_c'])\n    departure = float(row['departure_c'])\n    rise = departure - arrival\n    if rise >= 4:\n        drift.append((row['lot'], rise))\n\ndrift.sort(key=lambda x: (-x[1], x[0]))\nprint(json.dumps(drift, indent=2))\nprint('1')\n```",
+      "server_cpu_s": 131.92,
+      "usage": {
+        "completion_tokens": 117,
+        "prompt_tokens": 873,
+        "prompt_tokens_details": {
+          "cached_tokens": 0
+        },
+        "total_tokens": 990
+      },
+      "wall_s": 67.2
+    },
+    {
+      "arm": "scaffold",
+      "finish_reason": "stop",
+      "id": "cold-chain",
+      "raw": "```python\nimport csv\nimport json\n\ndata = []\nfor row in csv.DictReader(open('chiller.csv')):\n    data.append(row)\n\nresult = []\nfor row in data:\n    departure = int(row['departure_c'])\n    arrival = int(row['arrival_c'])\n    rise = departure - arrival\n    if rise >= 4:\n        result.append({'lot': row['lot'], 'rise': rise})\n\nresult.sort(key=lambda x: (-x['rise'], x['lot']))\n\nwith open('drift.json', 'w') as f:\n    json.dump(result, f)\n\nprint(len(result))\n```",
+      "server_cpu_s": 80.26,
+      "usage": {
+        "completion_tokens": 125,
+        "prompt_tokens": 309,
+        "prompt_tokens_details": {
+          "cached_tokens": 0
+        },
+        "total_tokens": 434
+      },
+      "wall_s": 41.847
+    },
+    {
+      "arm": "short",
+      "finish_reason": "stop",
+      "id": "delayed-release",
+      "raw": "```python\nbookings = [\n    (\"fern\", 8, 7),\n    (\"moss\", 12, 3),\n    (\"reed\", 25, 4),\n    (\"iris\", 27, 5)\n]\n\ncurrent_time = 0\ntotal_waiting = 0\n\nfor label, requested, duration in bookings:\n    start_time = max(current_time, requested)\n    end_time = start_time + duration\n    total_waiting += (start_time - requested)\n    current_time = end_time\n\nprint(total_waiting)\nprint(current_time)\n```",
+      "server_cpu_s": 72.8,
+      "usage": {
+        "completion_tokens": 119,
+        "prompt_tokens": 190,
+        "prompt_tokens_details": {
+          "cached_tokens": 0
+        },
+        "total_tokens": 309
+      },
+      "wall_s": 36.87
+    },
+    {
+      "arm": "full",
+      "finish_reason": "stop",
+      "id": "delayed-release",
+      "raw": "```python\nimport datetime\n\nbookings = [\n    (\"fern\", 8, 7),\n    (\"moss\", 12, 3),\n    (\"reed\", 25, 4),\n    (\"iris\", 27, 5)\n]\n\ncurrent_time = datetime.datetime(2026, 11, 21)\ntotal_waiting = 0\nexit_time = current_time\n\nfor label, requested, duration in bookings:\n    start = max(current_time, datetime.datetime(2026, 11, 21, hours=requested, minute=0))\n    end = start + datetime.timedelta(minutes=duration)\n    total_waiting += (start - current_time).seconds // 60\n    exit_time = end\n    current_time = end\n\nprint(total_waiting)\nprint(exit_time.hour * 60 + exit_time.minute)\n```",
+      "server_cpu_s": 160.38,
+      "usage": {
+        "completion_tokens": 184,
+        "prompt_tokens": 799,
+        "prompt_tokens_details": {
+          "cached_tokens": 0
+        },
+        "total_tokens": 983
+      },
+      "wall_s": 82.831
+    },
+    {
+      "arm": "scaffold",
+      "finish_reason": "stop",
+      "id": "careful-meter",
+      "raw": "```python\nimport json\n\n# Given data\nreadings = [28, 3, 9, 31, 2]\nwrap = 31\nresult = []\n\n# Calculate the increments between successive readings\nfor i in range(1, len(readings)):\n    prev = readings[i - 1]\n    curr = readings[i]\n    increment = curr - prev\n    if increment < 0:\n        increment += wrap\n    result.append(increment)\n\n# Print the sum of the increments\nprint(sum(result))\n\n# Create pulses.json as a JSON array of the four pulse increments in order\nwith open('pulses.json', 'w') as f:\n    json.dump(result, f)\n```",
+      "server_cpu_s": 81.6,
+      "usage": {
+        "completion_tokens": 148,
+        "prompt_tokens": 207,
+        "prompt_tokens_details": {
+          "cached_tokens": 0
+        },
+        "total_tokens": 355
+      },
+      "wall_s": 41.413
+    },
+    {
+      "arm": "short",
+      "finish_reason": "stop",
+      "id": "careful-meter",
+      "raw": "```python\nimport json\n\n# Given data\nreadings = [28, 3, 9, 31, 2]\npulses = []\n\n# Calculate the increments between successive readings\nfor i in range(1, len(readings)):\n    increment = readings[i] - readings[i-1]\n    pulses.append(increment)\n\n# Create pulses.json\nwith open('pulses.json', 'w') as f:\n    json.dump(pulses, f)\n\n# Print the sum of the increments\nprint(sum(pulses))\n```",
+      "server_cpu_s": 61.97,
+      "usage": {
+        "completion_tokens": 112,
+        "prompt_tokens": 162,
+        "prompt_tokens_details": {
+          "cached_tokens": 0
+        },
+        "total_tokens": 274
+      },
+      "wall_s": 31.311
+    },
+    {
+      "arm": "full",
+      "finish_reason": "stop",
+      "id": "careful-meter",
+      "raw": "```python\nimport requests\nfrom datetime import datetime\n\n# The given readings\nreadings = [\"28\", \"3\", \"9\", \"31\", \"2\"]\n\n# Compute the increments between successive readings\nincrements = []\nfor i in range(1, len(readings)):\n    prev = int(readings[i-1])\n    curr = int(readings[i])\n    # Handle wrap-around\n    if curr < prev:\n        curr += 32  # 5-bit counter wraps to 0 after 31\n    increments.append(curr - prev)\n\n# Create pulses.json as a JSON array of the four pulse increments\nwith open('pulses.json', 'w') as f:\n    f.write('[' + ', '.join(map(str, increments)) + ']')\n\n# Print only their sum\nprint(sum(increments))\n```",
+      "server_cpu_s": 168.47,
+      "usage": {
+        "completion_tokens": 174,
+        "prompt_tokens": 771,
+        "prompt_tokens_details": {
+          "cached_tokens": 0
+        },
+        "total_tokens": 945
+      },
+      "wall_s": 91.311
+    }
+  ],
+  "complete": true,
+  "inputs_sha256": "bf794b51abdbd4206d8df953f84968461435077a0775ba0a6efc385eed4b6062",
+  "load_seconds": 9.621,
+  "lora_adapters": [
+    {
+      "id": 0,
+      "path": "/tmp/hive-astra-orders-assets/t80.g55trunk.gguf",
+      "scale": 1.0
+    }
+  ],
+  "native_flags": [
+    "-ngl",
+    "0",
+    "-c",
+    "2048",
+    "-t",
+    "2",
+    "-tb",
+    "2",
+    "-rtr",
+    "-b",
+    "128",
+    "-ub",
+    "128",
+    "--parallel",
+    "1",
+    "--threads-http",
+    "2",
+    "--port",
+    "57245",
+    "--host",
+    "127.0.0.1",
+    "--jinja"
+  ],
+  "sampling": {
+    "cache_prompt": false,
+    "chat_template_kwargs": {
+      "enable_thinking": false
+    },
+    "max_tokens": 192,
+    "seed": 8103,
+    "temperature": 0.0,
+    "top_k": 0,
+    "top_p": 1.0
+  },
+  "utc_finished": "2026-11-21T00:49:30.880405+00:00",
+  "utc_start": "2026-11-21T00:38:54.422987+00:00"
+}

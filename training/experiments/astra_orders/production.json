@@ -1,0 +1,154 @@
+{
+  "calls": [
+    {
+      "arm": "short",
+      "exit": 0,
+      "files": {},
+      "id": "m_percent",
+      "ok": true,
+      "reason": "wants 1496; the answer's numbers: [1496.0000000000002]",
+      "stderr_last": "",
+      "stdout": "1496.0000000000002\n"
+    },
+    {
+      "arm": "full",
+      "exit": 0,
+      "files": {},
+      "id": "m_percent",
+      "ok": true,
+      "reason": "wants 1496; the answer's numbers: [1360.0, 1.1, 1496.0]",
+      "stderr_last": "",
+      "stdout": "1360 * 1.10 = 1496\n"
+    },
+    {
+      "arm": "full",
+      "exit": 0,
+      "files": {},
+      "id": "m_weekday",
+      "ok": true,
+      "reason": "1 sentences, 1 lines",
+      "stderr_last": "",
+      "stdout": "Saturday\n"
+    },
+    {
+      "arm": "short",
+      "exit": 0,
+      "files": {},
+      "id": "m_weekday",
+      "ok": true,
+      "reason": "1 sentences, 1 lines",
+      "stderr_last": "",
+      "stdout": "Saturday\n"
+    },
+    {
+      "arm": "short",
+      "exit": 0,
+      "files": {},
+      "id": "m_table",
+      "ok": true,
+      "reason": "1 sentences, 2 lines; wants 152; the answer's numbers: [152.0]",
+      "stderr_last": "",
+      "stdout": "Day with the most emails: Tue\nDaily average: 152.0\n"
+    },
+    {
+      "arm": "full",
+      "exit": 0,
+      "files": {},
+      "id": "m_table",
+      "ok": true,
+      "reason": "1 sentences, 2 lines; wants 152; the answer's numbers: [152.0]",
+      "stderr_last": "",
+      "stdout": "Day with the most emails: Tue\nDaily average: 152.0\n"
+    },
+    {
+      "arm": "short",
+      "exit": 0,
+      "files": {},
+      "id": "cold-chain",
+      "ok": false,
+      "reason": "missing or invalid drift.json",
+      "stderr_last": "",
+      "stdout": "3\n"
+    },
+    {
+      "arm": "full",
+      "exit": 0,
+      "files": {},
+      "id": "cold-chain",
+      "ok": false,
+      "reason": "missing or invalid drift.json",
+      "stderr_last": "",
+      "stdout": "[\n  [\n    \"A6\",\n    5.0\n  ],\n  [\n    \"J7\",\n    5.0\n  ],\n  [\n    \"P4\",\n    4.0\n  ]\n]\n1\n"
+    },
+    {
+      "arm": "scaffold",
+      "exit": 0,
+      "files": {
+        "drift.json": "[{\"lot\": \"A6\", \"rise\": 5}, {\"lot\": \"J7\", \"rise\": 5}, {\"lot\": \"P4\", \"rise\": 4}]"
+      },
+      "id": "cold-chain",
+      "ok": false,
+      "reason": "expected drift.json=['A6', 'J7', 'P4'], stdout=3",
+      "stderr_last": "",
+      "stdout": "3\n"
+    },
+    {
+      "arm": "short",
+      "exit": 0,
+      "files": {},
+      "id": "delayed-release",
+      "ok": true,
+      "reason": "expected two lines 5, 34",
+      "stderr_last": "",
+      "stdout": "5\n34\n"
+    },
+    {
+      "arm": "full",
+      "exit": 1,
+      "files": {},
+      "id": "delayed-release",
+      "ok": false,
+      "reason": "expected two lines 5, 34",
+      "stderr_last": "TypeError: 'hours' is an invalid keyword argument for this function",
+      "stdout": ""
+    },
+    {
+      "arm": "scaffold",
+      "exit": 0,
+      "files": {
+        "pulses.json": "[6, 6, 22, 2]"
+      },
+      "id": "careful-meter",
+      "ok": false,
+      "reason": "expected pulses.json=[7, 6, 22, 3], stdout=38",
+      "stderr_last": "",
+      "stdout": "36\n"
+    },
+    {
+      "arm": "short",
+      "exit": 0,
+      "files": {
+        "pulses.json": "[-25, 6, 22, -29]"
+      },
+      "id": "careful-meter",
+      "ok": false,
+      "reason": "expected pulses.json=[7, 6, 22, 3], stdout=38",
+      "stderr_last": "",
+      "stdout": "-26\n"
+    },
+    {
+      "arm": "full",
+      "exit": 0,
+      "files": {
+        "pulses.json": "[7, 6, 22, 3]"
+      },
+      "id": "careful-meter",
+      "ok": true,
+      "reason": "expected pulses.json=[7, 6, 22, 3], stdout=38",
+      "stderr_last": "",
+      "stdout": "38\n"
+    }
+  ],
+  "native_sha256": "0d152f2baf1318f6d781d03742c1414bcb8f1f60ea637e2a8b169c1ace808cb9",
+  "runtime": "normal team.tools.sandbox.run_python from repository venv"
+}

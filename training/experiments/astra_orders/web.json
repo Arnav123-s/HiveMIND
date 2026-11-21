@@ -1,0 +1,633 @@
+{
+  "archive_scope": "eight after-body pulse artifacts",
+  "archived": [
+    {
+      "archive_sha256": "2594598da560a69521dd5b8ec53d2bf26ac7ece98c42da16d2ea2e77fd49f529",
+      "artifact": "gate-after-1.zip",
+      "explicit_count": null,
+      "id": "h20000551_00",
+      "ok": true,
+      "task": "On books.toscrape.com the category 'Historical Fiction' runs over several pages. How many books does it list in total, over all its pages, and what is the price of the cheapest one?",
+      "why": "Historical Fiction: 26 books, the lowest price 16.62; both in the answer: True"
+    },
+    {
+      "archive_sha256": "902774d868b269a3f875fe5e7d96e4cf217e5ee258bbfb5c793ee3e920797d69",
+      "artifact": "gate-after-5.zip",
+      "explicit_count": null,
+      "id": "h20000555_01",
+      "ok": true,
+      "task": "On books.toscrape.com the category 'Fiction' runs over several pages. How many books does it list in total, over all its pages, and what is the price of the cheapest one?",
+      "why": "Fiction: 65 books, the lowest price 10.6; both in the answer: True"
+    },
+    {
+      "archive_sha256": "fdf02a42769a07cf2799bddc93c900e712f93195774e559573c4b38d821cec25",
+      "artifact": "gate-after-6.zip",
+      "explicit_count": 5,
+      "id": "h20000556_00",
+      "ok": false,
+      "task": "Go through the first 5 pages of quotes.toscrape.com and save a file authors.json: one JSON object that maps each author's name to the number of that author's quotes on those pages. Then tell me which author has the most quotes there.",
+      "why": "no authors.json saved"
+    }
+  ],
+  "g55_gate_run": 44728930517,
+  "mirror_expected": {
+    "Ada": 2,
+    "Lin": 4,
+    "Mei": 1,
+    "Ros": 2
+  },
+  "mirror_task": "h20000556_00",
+  "original_network_task": {
+    "archive_sha256": "94b73e0f30c14b8ac7c04bb68184850b705056c0320562ae6433bdbb8a7b12bf",
+    "artifact_id": 14644824529,
+    "attempts": [
+      {
+        "exit": 1,
+        "http_error_signal": false,
+        "member": "member1",
+        "printed": 0,
+        "repeat_url_signal": false,
+        "stderr_last": "StopIteration",
+        "stdout_start": "",
+        "turn": 1
+      },
+      {
+        "exit": 1,
+        "http_error_signal": false,
+        "member": "member1",
+        "printed": 0,
+        "repeat_url_signal": false,
+        "stderr_last": "TypeError: 'NoneType' object is not subscriptable",
+        "stdout_start": "",
+        "turn": 2
+      },
+      {
+        "exit": 0,
+        "http_error_signal": false,
+        "member": "member1",
+        "printed": 4,
+        "repeat_url_signal": false,
+        "stderr_last": "",
+        "stdout_start": "None",
+        "turn": 3
+      },
+      {
+        "exit": 1,
+        "http_error_signal": false,
+        "member": "member1",
+        "printed": 22,
+        "repeat_url_signal": false,
+        "stderr_last": "ValueError: max() iterable argument is empty",
+        "stdout_start": "authors.json saved: {}",
+        "turn": 4
+      },
+      {
+        "exit": 1,
+        "http_error_signal": false,
+        "member": "member1",
+        "printed": 0,
+        "repeat_url_signal": false,
+        "stderr_last": "TypeError: 'enumerate' object is not subscriptable",
+        "stdout_start": "",
+        "turn": 5
+      },
+      {
+        "exit": 1,
+        "http_error_signal": false,
+        "member": "member2",
+        "printed": 0,
+        "repeat_url_signal": false,
+        "stderr_last": "ValueError: there is no address to fetch (it is None): the link the program looked for was not found on the page. Print the page's links (look(r.text)) and pick the one that matches.",
+        "stdout_start": "",
+        "turn": 1
+      },
+      {
+        "exit": 1,
+        "http_error_signal": false,
+        "member": "member2",
+        "printed": 0,
+        "repeat_url_signal": false,
+        "stderr_last": "ValueError: there is no address to fetch (it is None): the link the program looked for was not found on the page. Print the page's links (look(r.text)) and pick the one that matches.",
+        "stdout_start": "",
+        "turn": 2
+      },
+      {
+        "exit": 1,
+        "http_error_signal": false,
+        "member": "member2",
+        "printed": 0,
+        "repeat_url_signal": false,
+        "stderr_last": "ValueError: there is no address to fetch (it is None): the link the program looked for was not found on the page. Print the page's links (look(r.text)) and pick the one that matches.",
+        "stdout_start": "",
+        "turn": 3
+      },
+      {
+        "exit": 1,
+        "http_error_signal": false,
+        "member": "member3",
+        "printed": 0,
+        "repeat_url_signal": false,
+        "stderr_last": "StopIteration",
+        "stdout_start": "",
+        "turn": 1
+      },
+      {
+        "exit": 1,
+        "http_error_signal": false,
+        "member": "member3",
+        "printed": 0,
+        "repeat_url_signal": false,
+        "stderr_last": "StopIteration",
+        "stdout_start": "",
+        "turn": 2
+      },
+      {
+        "exit": 1,
+        "http_error_signal": false,
+        "member": "member3",
+        "printed": 0,
+        "repeat_url_signal": false,
+        "stderr_last": "TypeError: 'NoneType' object is not subscriptable",
+        "stdout_start": "",
+        "turn": 3
+      },
+      {
+        "exit": 1,
+        "http_error_signal": false,
+        "member": "member3",
+        "printed": 0,
+        "repeat_url_signal": false,
+        "stderr_last": "TypeError: 'NoneType' object is not subscriptable",
+        "stdout_start": "",
+        "turn": 4
+      },
+      {
+        "exit": 0,
+        "http_error_signal": false,
+        "member": "member3",
+        "printed": 0,
+        "repeat_url_signal": false,
+        "stderr_last": "",
+        "stdout_start": "",
+        "turn": 5
+      },
+      {
+        "exit": 0,
+        "http_error_signal": false,
+        "member": "member3",
+        "printed": 0,
+        "repeat_url_signal": false,
+        "stderr_last": "",
+        "stdout_start": "",
+        "turn": 6
+      },
+      {
+        "exit": 1,
+        "http_error_signal": false,
+        "member": "member4",
+        "printed": 0,
+        "repeat_url_signal": false,
+        "stderr_last": "SyntaxError: '(' was never closed",
+        "stdout_start": "",
+        "turn": 1
+      },
+      {
+        "exit": 1,
+        "http_error_signal": false,
+        "member": "member4",
+        "printed": 0,
+        "repeat_url_signal": false,
+        "stderr_last": "NameError: name 'p' is not defined",
+        "stdout_start": "",
+        "turn": 2
+      },
+      {
+        "exit": 1,
+        "http_error_signal": false,
+        "member": "member4",
+        "printed": 0,
+        "repeat_url_signal": false,
+        "stderr_last": "TypeError: 'str' object cannot be interpreted as an integer",
+        "stdout_start": "",
+        "turn": 3
+      },
+      {
+        "exit": 0,
+        "http_error_signal": false,
+        "member": "member4",
+        "printed": 15,
+        "repeat_url_signal": false,
+        "stderr_last": "",
+        "stdout_start": "Albert Einstein",
+        "turn": 4
+      },
+      {
+        "exit": 1,
+        "http_error_signal": false,
+        "member": "member4",
+        "printed": 0,
+        "repeat_url_signal": false,
+        "stderr_last": "FileNotFoundError: [Errno 2] No such file or directory: 'authors.json'",
+        "stdout_start": "",
+        "turn": 5
+      },
+      {
+        "exit": 1,
+        "http_error_signal": false,
+        "member": "member4",
+        "printed": 0,
+        "repeat_url_signal": false,
+        "stderr_last": "NameError: name 'json' is not defined. Did you forget to import 'json'?",
+        "stdout_start": "",
+        "turn": 6
+      },
+      {
+        "exit": 1,
+        "http_error_signal": false,
+        "member": "member5",
+        "printed": 0,
+        "repeat_url_signal": false,
+        "stderr_last": "SyntaxError: invalid syntax",
+        "stdout_start": "",
+        "turn": 1
+      },
+      {
+        "exit": 1,
+        "http_error_signal": false,
+        "member": "member5",
+        "printed": 0,
+        "repeat_url_signal": false,
+        "stderr_last": "FileNotFoundError: [Errno 2] No such file or directory: 'quotes.toscrape.com/some/1000.json'",
+        "stdout_start": "",
+        "turn": 2
+      },
+      {
+        "exit": 1,
+        "http_error_signal": false,
+        "member": "member5",
+        "printed": 0,
+        "repeat_url_signal": false,
+        "stderr_last": "TypeError: list indices must be integers or slices, not str",
+        "stdout_start": "",
+        "turn": 3
+      },
+      {
+        "exit": 0,
+        "http_error_signal": false,
+        "member": "member5",
+        "printed": 300,
+        "repeat_url_signal": false,
+        "stderr_last": "",
+        "stdout_start": "\"\\n\\n\\n\\nQuotes to Scrape\\n\\n\\n\\n\\n\\n\\n\\n\\nQuotes to Scrape\\n\\n\\n\\n\\nLogin\\n\\n\\n",
+        "turn": 4
+      },
+      {
+        "exit": 1,
+        "http_error_signal": false,
+        "member": "member5",
+        "printed": 0,
+        "repeat_url_signal": false,
+        "stderr_last": "TypeError: list indices must be integers or slices, not str",
+        "stdout_start": "",
+        "turn": 5
+      },
+      {
+        "exit": 0,
+        "http_error_signal": false,
+        "member": "member5",
+        "printed": 300,
+        "repeat_url_signal": false,
+        "stderr_last": "",
+        "stdout_start": "\"\\n\\n\\n\\nQuotes to Scrape\\n\\n\\n\\n\\n\\n\\n\\n\\nQuotes to Scrape\\n\\n\\n\\n\\nLogin\\n\\n\\n",
+        "turn": 6
+      }
+    ],
+    "exit_counts": {
+      "0": 6,
+      "1": 20
+    },
+    "report": "Not confirmed: the hive could not select a complete file with an independently supported answer.\n\nMember 1: authors.json: the requested file is missing\nMember 2: authors.json: the requested file is missing\nMember 3: authors.json: the requested file is missing\nMember 4: authors.json: the requested file is missing\nMember 5: authors.json: the requested file is missing"
+  },
+  "parser_controls": {
+    "Read several pages.": null,
+    "Read the first 3 paragraphs of one page.": null,
+    "See pages 1 to 7.": 7
+  },
+  "traces": {
+    "cursor_feed": {
+      "cache_hits": 0,
+      "correct": true,
+      "counts": {
+        "Ada": 2,
+        "Lin": 4,
+        "Mei": 1,
+        "Ros": 2
+      },
+      "distinct_urls_fetched": 1,
+      "file_name": "authors.json",
+      "file_sha256": "c8b35980d681bcc246d4455102ace9c87e4dd0dd656d8bf149d476400aaf5110",
+      "prompt_guard_accept": false,
+      "report": "Lin",
+      "requested_pages": 5,
+      "requests": [
+        {
+          "parsed_authors": [
+            "Ada",
+            "Lin"
+          ],
+          "path": "/feed",
+          "request_headers": {
+            "X-Cursor": "1"
+          },
+          "source": "HTTP 200"
+        },
+        {
+          "parsed_authors": [
+            "Lin",
+            "Ros"
+          ],
+          "path": "/feed",
+          "request_headers": {
+            "X-Cursor": "2"
+          },
+          "source": "HTTP 200"
+        },
+        {
+          "parsed_authors": [
+            "Ada"
+          ],
+          "path": "/feed",
+          "request_headers": {
+            "X-Cursor": "3"
+          },
+          "source": "HTTP 200"
+        },
+        {
+          "parsed_authors": [
+            "Ros",
+            "Lin"
+          ],
+          "path": "/feed",
+          "request_headers": {
+            "X-Cursor": "4"
+          },
+          "source": "HTTP 200"
+        },
+        {
+          "parsed_authors": [
+            "Mei",
+            "Lin"
+          ],
+          "path": "/feed",
+          "request_headers": {
+            "X-Cursor": "5"
+          },
+          "source": "HTTP 200"
+        }
+      ]
+    },
+    "distinct_pages": {
+      "cache_hits": 0,
+      "correct": true,
+      "counts": {
+        "Ada": 2,
+        "Lin": 4,
+        "Mei": 1,
+        "Ros": 2
+      },
+      "distinct_urls_fetched": 5,
+      "file_name": "authors.json",
+      "file_sha256": "c8b35980d681bcc246d4455102ace9c87e4dd0dd656d8bf149d476400aaf5110",
+      "prompt_guard_accept": true,
+      "report": "Lin",
+      "requested_pages": 5,
+      "requests": [
+        {
+          "parsed_authors": [
+            "Ada",
+            "Lin"
+          ],
+          "path": "/pages/1",
+          "request_headers": {},
+          "source": "HTTP 200"
+        },
+        {
+          "parsed_authors": [
+            "Lin",
+            "Ros"
+          ],
+          "path": "/pages/2",
+          "request_headers": {},
+          "source": "HTTP 200"
+        },
+        {
+          "parsed_authors": [
+            "Ada"
+          ],
+          "path": "/pages/3",
+          "request_headers": {},
+          "source": "HTTP 200"
+        },
+        {
+          "parsed_authors": [
+            "Ros",
+            "Lin"
+          ],
+          "path": "/pages/4",
+          "request_headers": {},
+          "source": "HTTP 200"
+        },
+        {
+          "parsed_authors": [
+            "Mei",
+            "Lin"
+          ],
+          "path": "/pages/5",
+          "request_headers": {},
+          "source": "HTTP 200"
+        }
+      ]
+    },
+    "page_plus_assets": {
+      "cache_hits": 0,
+      "correct": false,
+      "counts": {
+        "Ada": 1,
+        "Lin": 1
+      },
+      "distinct_urls_fetched": 5,
+      "file_name": "authors.json",
+      "file_sha256": "83bdf3bddb2bb4fe80af71400173e2c4f02eee93f7c0a73d8ad484537996db7b",
+      "prompt_guard_accept": true,
+      "report": "Ada",
+      "requested_pages": 5,
+      "requests": [
+        {
+          "parsed_authors": [
+            "Ada",
+            "Lin"
+          ],
+          "path": "/pages/1",
+          "request_headers": {},
+          "source": "HTTP 200"
+        },
+        {
+          "parsed_authors": [],
+          "path": "/assets/1",
+          "request_headers": {},
+          "source": "HTTP 200"
+        },
+        {
+          "parsed_authors": [],
+          "path": "/assets/2",
+          "request_headers": {},
+          "source": "HTTP 200"
+        },
+        {
+          "parsed_authors": [],
+          "path": "/assets/3",
+          "request_headers": {},
+          "source": "HTTP 200"
+        },
+        {
+          "parsed_authors": [],
+          "path": "/assets/4",
+          "request_headers": {},
+          "source": "HTTP 200"
+        }
+      ]
+    },
+    "repeat_page": {
+      "cache_hits": 0,
+      "correct": false,
+      "counts": {
+        "Ada": 5,
+        "Lin": 5
+      },
+      "distinct_urls_fetched": 1,
+      "file_name": "authors.json",
+      "file_sha256": "8cde946fb89db37e6395cba32a917ffce281c641cd17de38bba8b48b2793bb3d",
+      "prompt_guard_accept": false,
+      "report": "Ada",
+      "requested_pages": 5,
+      "requests": [
+        {
+          "parsed_authors": [
+            "Ada",
+            "Lin"
+          ],
+          "path": "/pages/1",
+          "request_headers": {},
+          "source": "HTTP 200"
+        },
+        {
+          "parsed_authors": [
+            "Ada",
+            "Lin"
+          ],
+          "path": "/pages/1",
+          "request_headers": {},
+          "source": "HTTP 200"
+        },
+        {
+          "parsed_authors": [
+            "Ada",
+            "Lin"
+          ],
+          "path": "/pages/1",
+          "request_headers": {},
+          "source": "HTTP 200"
+        },
+        {
+          "parsed_authors": [
+            "Ada",
+            "Lin"
+          ],
+          "path": "/pages/1",
+          "request_headers": {},
+          "source": "HTTP 200"
+        },
+        {
+          "parsed_authors": [
+            "Ada",
+            "Lin"
+          ],
+          "path": "/pages/1",
+          "request_headers": {},
+          "source": "HTTP 200"
+        }
+      ]
+    }
+  },
+  "url_only_cache": {
+    "cache_hits": 4,
+    "correct": false,
+    "counts": {
+      "Ada": 5,
+      "Lin": 5
+    },
+    "distinct_urls_fetched": 1,
+    "file_name": "authors.json",
+    "file_sha256": "8cde946fb89db37e6395cba32a917ffce281c641cd17de38bba8b48b2793bb3d",
+    "prompt_guard_accept": false,
+    "report": "Ada",
+    "requested_pages": 5,
+    "requests": [
+      {
+        "parsed_authors": [
+          "Ada",
+          "Lin"
+        ],
+        "path": "/feed",
+        "request_headers": {
+          "X-Cursor": "1"
+        },
+        "source": "HTTP 200"
+      },
+      {
+        "parsed_authors": [
+          "Ada",
+          "Lin"
+        ],
+        "path": "/feed",
+        "request_headers": {
+          "X-Cursor": "2"
+        },
+        "source": "URL cache"
+      },
+      {
+        "parsed_authors": [
+          "Ada",
+          "Lin"
+        ],
+        "path": "/feed",
+        "request_headers": {
+          "X-Cursor": "3"
+        },
+        "source": "URL cache"
+      },
+      {
+        "parsed_authors": [
+          "Ada",
+          "Lin"
+        ],
+        "path": "/feed",
+        "request_headers": {
+          "X-Cursor": "4"
+        },
+        "source": "URL cache"
+      },
+      {
+        "parsed_authors": [
+          "Ada",
+          "Lin"
+        ],
+        "path": "/feed",
+        "request_headers": {
+          "X-Cursor": "5"
+        },
+        "source": "URL cache"
+      }
+    ]
+  }
+}

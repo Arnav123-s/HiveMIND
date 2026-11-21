@@ -1,0 +1,64 @@
+{
+  "history_count": 2852,
+  "orders": {
+    "full": "You solve the TASK by writing Python programs. You see the world only through what your programs print.\nReply with ONE complete program in a ```python block and nothing else. It is run and you are shown what it printed.\n- Whatever can be computed, compute: arithmetic, primes, dates, counting, sorting, text handling. Do not look those up.\n- What does not change and you know for certain (a capital city, a chemical symbol, what a word means, a\n  translation, a rule of grammar or of science) needs no source: put it in a string in the program and print it.\n- Only a fact that changes or must be exact (a version, a release date, a price, a population, a date of birth,\n  what a web page says) is read from a source, by the program, never from your memory. APIs are better than pages:\n  https://pypi.org/pypi/NAME/json ([\"info\"][\"version\"]; [\"releases\"][VERSION][0][\"upload_time\"])\n  https://huggingface.co/api/models/OWNER/NAME ([\"cardData\"][\"license\"]; [\"likes\"]; [\"downloads\"]; [\"tags\"] holds \"name:value\")\n  https://en.wikipedia.org/api/rest_v1/page/summary/TITLE   https://hn.algolia.com/api/v1/search?query=WORDS\n  Use requests with timeout=30 and headers={\"User-Agent\": \"hive/1.0\"} (Wikipedia refuses a request without one).\n  If you do not know what a source returns, look first: look(x) is built in. Given JSON data or a requests\n  response it prints the keys, nested; given the text of a web page it prints the page's links and text.\n- A page inside a website is reached from the site's first page (https://...), by finding there the link whose text\n  matches and following it. An inner address written from memory is usually wrong.\n- Dates and differences of dates are worked out with datetime. Today is 2026-11-21 (Saturday).\n- What the program prints is what the user reads. Where the TASK says how the answer must look (a numbered list,\n  labels such as A, B, C, JSON, one word, one sentence, exactly so many items), print exactly that and nothing\n  else. Otherwise print every result the task asks for, each on its own line as \"name: value\". One piece of text\n  (a summary, a translation, a word) is printed alone, as it is.\n- A value that can be computed is computed by the program, never typed in ('garden'[::-1], not 'nedrag'). A file the task asks for is saved in the current folder under the exact name given.\n- Data the TASK gives (a table, a log, a CSV, a list) exists only in the TASK: copy it into the program as a string.\n  There is no file unless your program writes it.\n- Something only you can do (translate, sum up, write): put your text in a string in the program and print it.\n- Never log in, delete, send a message or pay.\nEvery program is complete by itself: it does not use variables of an earlier program.",
+    "short": "You solve the TASK by writing Python programs. Reply with ONE complete program in a ```python block and nothing else. It is run and you are shown what it printed. look(x) is built in: it shows what JSON data or a web page really holds. Today is 2026-11-21 (Saturday)."
+  },
+  "rows": [
+    {
+      "gate": "short",
+      "group": "practiced_family",
+      "id": "m_percent",
+      "jaccard": 0.75,
+      "nearest": "A printer costs 680 dollars and the price rises by 25%. What is the new price?",
+      "scaffold": "",
+      "user": "TASK: A printer costs 1360 dollars and the price rises by 10%. What is the new price?"
+    },
+    {
+      "gate": "short",
+      "group": "practiced_family",
+      "id": "m_weekday",
+      "jaccard": 1.0,
+      "nearest": "What day of the week is 26 April 2027?",
+      "scaffold": "",
+      "user": "TASK: What day of the week is 17 April 2027?"
+    },
+    {
+      "gate": "short",
+      "group": "practiced_family",
+      "id": "m_table",
+      "jaccard": 0.631579,
+      "nearest": "Daily emails sent in emails: Mon 40, Tue 155, Wed 345, Thu 230, Fri 170. Which day had the most, and what was the daily average?",
+      "scaffold": "",
+      "user": "TASK: Daily emails sent in emails: Mon 85, Tue 265, Wed 70, Thu 145, Fri 195. Which day had the most, and what was the daily average?"
+    },
+    {
+      "gate": "full",
+      "group": "new_contract",
+      "id": "cold-chain",
+      "jaccard": 0.071429,
+      "nearest": "Find the smallest whole number greater than 89734 that is divisible by 17 and whose digits add up to 21.",
+      "scaffold": "\n\nI/O pattern from checked work. Substitute this task's filenames, values and rules.\nJSON output: with open(DEST, 'w') as f: json.dump(RESULT, f). Construct the requested JSON shape first.",
+      "user": "TASK: This is the receiving log chiller.csv:\nlot,arrival_c,departure_c\nP4,3,7\nQ2,8,3\nA6,1,6\nM8,5,5\nJ7,4,9\nFor the warehouse, write drift.json containing the lot codes whose departure is at least 4 degrees warmer than arrival. The file must be a JSON array sorted by largest temperature rise first, breaking equal rises by lot code. Print only the number of selected lots.\n\nThe data this TASK gives is saved for you as a file in the current folder: chiller.csv (6 lines, CSV text: read it with the csv module (delimiter ','), it is not JSON). Read it from there in your program (open the file) as the kind of text it is. Do not type the data out again by hand."
+    },
+    {
+      "gate": "full",
+      "group": "new_contract",
+      "id": "delayed-release",
+      "jaccard": 0.112676,
+      "nearest": "Do these 2 things in one program. Print the answers under the headings 'PART A', 'PART B': each heading alone on its own line, and that part's answer on the lines below it, exactly as the part asks for it.\n\nPART A: Explain why the moon has phases in exactly two sentences.\n\nPART B: Do these three things and label the answers A, B and C, each on its own line: first multiply 55 by 7; then write the word 'harvest' backwards; then name the capital of Portugal.",
+      "scaffold": "",
+      "user": "TASK: The equipment desk has one shared calibration stand. A booking starts at its requested minute or when the prior booking ends, whichever is later. Process these (label, requested minute, duration) bookings in order: (fern, 8, 7), (moss, 12, 3), (reed, 25, 4), (iris, 27, 5). Print total waiting minutes across bookings, then the final exit minute, as two plain integers on separate lines."
+    },
+    {
+      "gate": "full",
+      "group": "new_contract",
+      "id": "careful-meter",
+      "jaccard": 0.079365,
+      "nearest": "Do these 2 things in one program. Print the answers under the headings 'PART A', 'PART B': each heading alone on its own line, and that part's answer on the lines below it, exactly as the part asks for it.\n\nPART A: How many days are there from 4 August 2026 to 27 October 2026?\n\nPART B: This Python code should print the product of the two numbers but prints their sum. Fix it and tell me the output:\na, b = 16, 24\nprint(a + b)",
+      "scaffold": "\n\nI/O pattern from checked work. Substitute this task's filenames, values and rules.\nJSON output: with open(DEST, 'w') as f: json.dump(RESULT, f). Construct the requested JSON shape first.",
+      "user": "TASK: A 5-bit pulse counter in a test fixture wraps to zero after 31. Successive readings are 28, 3, 9, 31, 2. There was at most one wrap between readings and the counter only moves forward. Create pulses.json as a JSON array of the four pulse increments in order. Print only their sum."
+    }
+  ],
+  "training_rows_sha256": "c33f707c7120d279c050748a5752067be708687711aa9acc84a4f434208fadfd"
+}

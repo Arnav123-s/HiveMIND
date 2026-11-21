@@ -35,17 +35,19 @@ from pathlib import Path
 
 from . import config, deliverables, llm, stop, ternary
 from .deliverables import wanted
+from .familiarity import familiar
 from .board import Board
 from .guard import Guard
 from .specialists.coder import extract_code
 from .tools.sandbox import give, note, run_python
 
-MEMBER = """You solve the TASK by writing Python programs. You see the world only through what your programs print.
+_MEMBER_START = """You solve the TASK by writing Python programs. You see the world only through what your programs print.
 Reply with ONE complete program in a ```python block and nothing else. It is run and you are shown what it printed.
 - Whatever can be computed, compute: arithmetic, primes, dates, counting, sorting, text handling. Do not look those up.
 - What does not change and you know for certain (a capital city, a chemical symbol, what a word means, a
   translation, a rule of grammar or of science) needs no source: put it in a string in the program and print it.
-- Only a fact that changes or must be exact (a version, a release date, a price, a population, a date of birth,
+"""
+_WEB_ORDERS = """- Only a fact that changes or must be exact (a version, a release date, a price, a population, a date of birth,
   what a web page says) is read from a source, by the program, never from your memory. APIs are better than pages:
   https://pypi.org/pypi/NAME/json (["info"]["version"]; ["releases"][VERSION][0]["upload_time"])
   https://huggingface.co/api/models/OWNER/NAME (["cardData"]["license"]; ["likes"]; ["downloads"]; ["tags"] holds "name:value")
@@ -55,8 +57,10 @@ Reply with ONE complete program in a ```python block and nothing else. It is run
   response it prints the keys, nested; given the text of a web page it prints the page's links and text.
 - A page inside a website is reached from the site's first page (https://...), by finding there the link whose text
   matches and following it. An inner address written from memory is usually wrong.
-- Dates and differences of dates are worked out with datetime. Today is {today}.
-- What the program prints is what the user reads. Where the TASK says how the answer must look (a numbered list,
+"""
+_DATE_ORDERS = """- Dates and differences of dates are worked out with datetime. Today is {today}.
+"""
+_MEMBER_END = """- What the program prints is what the user reads. Where the TASK says how the answer must look (a numbered list,
   labels such as A, B, C, JSON, one word, one sentence, exactly so many items), print exactly that and nothing
   else. Otherwise print every result the task asks for, each on its own line as "name: value". One piece of text
   (a summary, a translation, a word) is printed alone, as it is.
@@ -66,6 +70,7 @@ Reply with ONE complete program in a ```python block and nothing else. It is run
 - Something only you can do (translate, sum up, write): put your text in a string in the program and print it.
 - Never log in, delete, send a message or pay.
 Every program is complete by itself: it does not use variables of an earlier program."""
+MEMBER = _MEMBER_START + _WEB_ORDERS + _DATE_ORDERS + _MEMBER_END
 # A member the hive has taught (a ternary model with a weight edit of its own, "t17+gen3") was trained on the hive's
 # checked work under these few lines: what MEMBER spells out, it has in its weights. Short orders also make its
 # training rows short enough for a 16 GB runner, and its turns faster.
@@ -77,6 +82,33 @@ SHORT = ("You solve the TASK by writing Python programs. Reply with ONE complete
 def orders(who, today=None):
     """The system prompt of the member in a seat: the full orders, or the short ones for a member the hive taught."""
     return (SHORT if "+" in who else MEMBER).format(today=today or time.strftime("%Y-%m-%d (%A)"))
+
+
+_WEB_TASK = re.compile(r"https?://|\b(?:https?|web(?:site|page)?s?|pages?|scrap(?:e|ing)|apis?|online|pypi|wikipedia|hugging\s*face)\b", re.I)
+_DATE_TASK = re.compile(r"\b(?:dates?|calendar|weekdays?|today|tomorrow|yesterday|day of (?:the )?week|"
+                        r"days? (?:before|after|ago)|(?:Mon|Tues|Wednes|Thurs|Fri|Satur|Sun)days?|"
+                        r"(?:19|20)\d\d-\d{2}-\d{2}|(?:January|February|March|April|May|June|July|August|"
+                        r"September|October|November|December)\s+\d{1,4})\b", re.I)
+
+
+def modular_orders(task, today=None):
+    text = _MEMBER_START
+    if _WEB_TASK.search(task):
+        text += _WEB_ORDERS
+    if _DATE_TASK.search(task):
+        text += _DATE_ORDERS
+    return (text + _MEMBER_END).format(today=today or time.strftime("%Y-%m-%d (%A)"))
+
+
+def member_orders(task, n, who, also):
+    """Reserve the second seat's modular prompt for unfamiliar work in a diverse-orders trial."""
+    if also or os.environ.get("HIVE_SHORT_ORDERS") == "1":
+        return orders(who + "+")
+    if os.environ.get("HIVE_FULL_ORDERS") == "1":
+        return orders(who.replace("+", "-"))
+    if os.environ.get("HIVE_DIVERSE_ORDERS") == "1" and n in (1, 2) and not familiar(task):
+        return orders(who + "+") if n == 1 else modular_orders(task)
+    return orders(who)
 
 
 # (For one afternoon this asked more: "... every value asked for, said in words ... if it only shows data you were
@@ -135,6 +167,8 @@ def alike(task, most=2, least=0.3):
         if score >= least and r.get("task") != task[:1500]:
             out.append((bool(r.get("checked")), score, r))
     return [r for _, _, r in sorted(out, key=lambda x: (x[0], x[1]), reverse=True)[:most]]
+
+
 FAILED = re.compile(r"does not exist|not found|could not|couldn't|unable to|failed|\berror\b|no such|is missing|\bunknown\b|not available|\bN/A\b|: None$", re.I | re.M)
 # a search that came back empty where the TASK says there is something (seen in a trial of the g27 exam: a log's
 # lines split and the level read from the wrong place; "No ERROR lines found.", and max() of nothing)
@@ -494,15 +528,11 @@ def stuck_hint(task, code, err):
 def member(task, n, board, guard, work, temperature, who="coder", also=()):
     """One member's whole try. Returns {"answer", "program", "turns"}: the answer is what its last program that ran
     printed ("" when none ran)."""
-    # engrams were written under the short orders too, so a member with any engram on gets them. HIVE_SHORT_ORDERS=1
-    # gives them with no engram: the control that tells an engram's effect from the short orders' own
-    # (training/experiments/memory_stream.py, arm "short")
-    short = also or os.environ.get("HIVE_SHORT_ORDERS", "0") == "1"
-    # HIVE_FULL_ORDERS=1: the full orders even for a taught member (whose name has "+"), the other arm of practice's
-    # split (training/practice_arms.py); never set for the gate or the exams
-    full = not short and os.environ.get("HIVE_FULL_ORDERS", "0") == "1"
-    messages = [{"role": "system", "content": orders(who.replace("+", "-") if full else who + "+" if short else who)},
+    messages = [{"role": "system", "content": member_orders(task, n, who, also)},
                 {"role": "user", "content": f"TASK: {task}"}]
+    if n == 3 and getattr(board, "module_witness", None):
+        messages[-1]["content"] += ("\nEarlier modules returned different results on this permitted call: "
+                                    + board.module_witness + ". Check it against the request before finishing.")
     # Only the first member starts from what the hive solved before; the others start from nothing. Shown to all of
     # them, an old program made them agree by copying it, values and all ("Thursday", "95", "87.8": agreed and
     # wrong, seed 9002). Agreement only checks anything between tries that do not share a source.
@@ -803,6 +833,12 @@ def same_files(x, y, task):
 
 def together(x, y, task):
     """Do two members' tries agree: their printed answers (same()), or the files the TASK asks for (same_files())."""
+    module_pair = "module_check" in x or "module_check" in y
+    if module_pair or x.get("diverse_orders") or y.get("diverse_orders"):
+        if any(not t["answer"] or t.get("delivery", {}).get("issues") for t in (x, y)):
+            return False
+    if module_pair and not all(t.get("module_check", {}).get("checked") for t in (x, y)):
+        return False
     return same(x["answer"], y["answer"], task) or same_files(x, y, task)
 
 
@@ -909,6 +945,10 @@ def _run(task, run_dir=None, approve="never", members=2):
     guard = Guard(board, approve, goal=task, use_model=False)
     work = home / "work"
     names = wanted(task)
+    probe = None
+    if os.environ.get("HIVE_DIFF_EQUIV") == "1" and len(names) == 1 and names[0].endswith(".py"):
+        from .module_witness import Probe
+        probe = Probe(task, names[0])
     tries = []
     agreed = None
     seats = ternary.seating(task)
@@ -948,6 +988,8 @@ def _run(task, run_dir=None, approve="never", members=2):
         finally:
             _CAP["live"] = False
         t["work"] = str(member_work)
+        if os.environ.get("HIVE_DIVERSE_ORDERS") == "1":
+            t["diverse_orders"] = True
         if names:
             checked = deliverables.inspect(task, member_work, names)
             previous = t.get("delivery", {})
@@ -956,6 +998,10 @@ def _run(task, run_dir=None, approve="never", members=2):
             elif previous and previous["byte_hashes"] != checked["byte_hashes"]:
                 checked["issues"]["copy"] = "file changed after the program printed its answer"
             t["delivery"] = checked
+            if probe:
+                t["module_check"] = probe.inspect(member_work, checked["byte_hashes"].get(names[0]))
+                if len(tries) == 1:
+                    board.module_witness = probe.witness(tries[0]["module_check"], t["module_check"])
         tries.append(t)
         board.log(f"member{n}", "answer", t["answer"][:300] or "no answer")
         # the whole exchange is kept: where the task's check later confirms the answer, it is what the hive's own
@@ -968,7 +1014,11 @@ def _run(task, run_dir=None, approve="never", members=2):
             # right or not. Values that agree are no answer the exam can read until one of them carries every heading:
             # each member that agreed without them is asked once more, plainly, the latest first.
             for i in [i for i in reversed(range(len(tries))) if any(tries[i] is x for p in pairs for x in p) and not tries[i].get("asked")]:
+                prior_work = tries[i]["work"]
                 headings(task, tries[i], i + 1, board, guard)
+                if probe and tries[i]["work"] != prior_work:
+                    revised = tries[i]
+                    revised["module_check"] = probe.inspect(revised["work"], revised["delivery"]["byte_hashes"].get(names[0]))
                 (home / f"member{i + 1}.json").write_text(json.dumps(tries[i]))
                 if whole(task, tries[i]["answer"]):
                     break
@@ -1016,8 +1066,10 @@ def _run(task, run_dir=None, approve="never", members=2):
                     text += f"\n- Two members supplied the same rows. The hive sorted {repair['name']} by {repair['column']} {repair['direction']}."
             elif agreed["delivery"]["content"] and matched:
                 text += " Two members produced matching structured data."
-    elif names and got and (members >= 2 or got[0]["delivery"]["issues"]):
+    elif names and got and (probe or members >= 2 or got[0]["delivery"]["issues"]):
         reasons = [repair_failure] if repair_failure else []
+        if probe and not any(t["module_check"]["checked"] for t in tries):
+            reasons.append("The module lacks a passing check over the complete set of calls specified by the request.")
         for i, t in enumerate(tries, 1):
             issues = t["delivery"]["issues"]
             if issues:
@@ -1039,6 +1091,8 @@ def _run(task, run_dir=None, approve="never", members=2):
     witnesses = [i for i, t in enumerate(tries, 1) if agreed and same(t["answer"], agreed["answer"], task)]
     agreeing_members = [i for i in witnesses if not names or (not tries[i - 1]["delivery"]["issues"]
                         and tries[i - 1]["delivery"]["content"] == agreed["delivery"]["content"])]
+    if probe:
+        agreeing_members = [i for i in agreeing_members if tries[i - 1]["module_check"]["checked"]]
     if file_repairs:
         agreeing_members = []  # the user received the helper's sorted copy, not a cell's raw output
     decision = {"agreed": bool(agreed), "who": [t["who"] for t in tries], "agreeing": agreeing_members}
