@@ -1,0 +1,73 @@
+{
+  "explicit_finite_queue_interface": {
+    "complete_domain": true,
+    "matches": 2,
+    "public_calls": 2,
+    "selected": 0,
+    "witness": null
+  },
+  "lookups": [
+    {
+      "archive_id": 14527107867,
+      "complete_domain": false,
+      "matches": 0,
+      "public_calls": 0,
+      "selected": null,
+      "witness": null
+    },
+    {
+      "archive_id": 14527600012,
+      "complete_domain": false,
+      "matches": 0,
+      "public_calls": 0,
+      "selected": null,
+      "witness": null
+    },
+    {
+      "archive_id": 14529355230,
+      "complete_domain": false,
+      "matches": 0,
+      "public_calls": 0,
+      "selected": null,
+      "witness": null
+    },
+    {
+      "archive_id": 14526163174,
+      "complete_domain": false,
+      "matches": 0,
+      "public_calls": 0,
+      "selected": null,
+      "witness": null
+    },
+    {
+      "archive_id": 14587903855,
+      "complete_domain": false,
+      "matches": 0,
+      "public_calls": 0,
+      "selected": null,
+      "witness": null
+    },
+    {
+      "archive_id": 14587642648,
+      "complete_domain": false,
+      "matches": 0,
+      "public_calls": 0,
+      "selected": null,
+      "witness": null
+    }
+  ],
+  "renamed_queue_modules": {
+    "complete_domain": false,
+    "matches": 30,
+    "public_calls": 30,
+    "selected": null,
+    "witness": null
+  },
+  "smallest_observed_input": {
+    "complete_domain": false,
+    "matches": 0,
+    "public_calls": 12,
+    "selected": null,
+    "witness": "size([[1]])"
+  }
+}

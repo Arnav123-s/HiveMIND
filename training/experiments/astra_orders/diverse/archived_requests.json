@@ -1,0 +1,32 @@
+{
+  "14526163174": {
+    "path": "exam_20000508_mixed/h20000508_02/members/TASK.md",
+    "sha256": "0d7bc02b61dccc50037f0e07c44a8caca86a9e1deecc5350b9dc08ded1583212",
+    "task": "Write a Python module and save it as roman.py. It has two functions. 1) to_roman(n) returns the Roman numeral of an integer from 1 to 3999 as a string (to_roman(1994) is 'MCMXCIV'). 2) from_roman(s) returns the integer of a Roman numeral (from_roman('XLII') is 42). Test both yourself before you finish. Then tell me, each on its own line, the value of to_roman(954) and of from_roman('MMMCMXCVII')."
+  },
+  "14527107867": {
+    "path": "exam_20000502_mixed/h20000502_00/members/TASK.md",
+    "sha256": "c7556ba6fd1ea59bf3f5c64d40d03cee0d4b709993eba845dd09c01172fb6ecc",
+    "task": "Write a Python module and save it as durations.py. It has two functions. 1) to_seconds(s) returns the seconds of a duration written with the units h, m and s, any of them left out (to_seconds('1h30m15s') is 5415, to_seconds('45m') is 2700). 2) to_text(n) writes a number of seconds that way, leaving out units that are zero (to_text(5415) is '1h30m15s', to_text(3600) is '1h', to_text(0) is '0s'). Test both yourself before you finish. Then tell me, each on its own line, the value of to_seconds('19h19m37s') and of to_text(0)."
+  },
+  "14527600012": {
+    "path": "exam_20000508_mixed/h20000508_02/members/TASK.md",
+    "sha256": "0d7bc02b61dccc50037f0e07c44a8caca86a9e1deecc5350b9dc08ded1583212",
+    "task": "Write a Python module and save it as roman.py. It has two functions. 1) to_roman(n) returns the Roman numeral of an integer from 1 to 3999 as a string (to_roman(1994) is 'MCMXCIV'). 2) from_roman(s) returns the integer of a Roman numeral (from_roman('XLII') is 42). Test both yourself before you finish. Then tell me, each on its own line, the value of to_roman(954) and of from_roman('MMMCMXCVII')."
+  },
+  "14529355230": {
+    "path": "exam_20000502_mixed/h20000502_00/members/TASK.md",
+    "sha256": "c7556ba6fd1ea59bf3f5c64d40d03cee0d4b709993eba845dd09c01172fb6ecc",
+    "task": "Write a Python module and save it as durations.py. It has two functions. 1) to_seconds(s) returns the seconds of a duration written with the units h, m and s, any of them left out (to_seconds('1h30m15s') is 5415, to_seconds('45m') is 2700). 2) to_text(n) writes a number of seconds that way, leaving out units that are zero (to_text(5415) is '1h30m15s', to_text(3600) is '1h', to_text(0) is '0s'). Test both yourself before you finish. Then tell me, each on its own line, the value of to_seconds('19h19m37s') and of to_text(0)."
+  },
+  "14587642648": {
+    "path": "exam_20000527_mixed/h20000527_03/members/TASK.md",
+    "sha256": "b94c4f0bdad0010b3e866fd172a66768725406ffc07853f4c076c0747872c173",
+    "task": "Write a Python module and save it as durations.py. It has two functions. 1) to_seconds(s) returns the seconds of a duration written with the units h, m and s, any of them left out (to_seconds('1h30m15s') is 5415, to_seconds('45m') is 2700). 2) to_text(n) writes a number of seconds that way, leaving out units that are zero (to_text(5415) is '1h30m15s', to_text(3600) is '1h', to_text(0) is '0s'). Test both yourself before you finish. Then tell me, each on its own line, the value of to_seconds('20h4m28s') and of to_text(60)."
+  },
+  "14587903855": {
+    "path": "exam_20000523_mixed/h20000523_03/members/TASK.md",
+    "sha256": "d810fe1a14b7b30e2ffe44597ff9836a8a6360d34632622df8b36cc7ae970639",
+    "task": "Write a Python module and save it as durations.py. It has two functions. 1) to_seconds(s) returns the seconds of a duration written with the units h, m and s, any of them left out (to_seconds('1h30m15s') is 5415, to_seconds('45m') is 2700). 2) to_text(n) writes a number of seconds that way, leaving out units that are zero (to_text(5415) is '1h30m15s', to_text(3600) is '1h', to_text(0) is '0s'). Test both yourself before you finish. Then tell me, each on its own line, the value of to_seconds('10h3m48s') and of to_text(3600)."
+  }
+}

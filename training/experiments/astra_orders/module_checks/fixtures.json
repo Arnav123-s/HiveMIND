@@ -1,0 +1,161 @@
+{
+  "cases": [
+    {
+      "archive_id": 14527107867,
+      "filename": "durations.py",
+      "gate": "gate-work-after-2",
+      "lookup_alone": {
+        "original_functional_grade": {
+          "fuel": 1026904859,
+          "guest_seconds": 0.2657140370001798,
+          "passed": 14,
+          "total": 50
+        },
+        "original_official_pass": false,
+        "source": "9bbb8aa8d33e30fbb9e3f242d2027ceaf590f7a9977e68df0b5b5c0d6f6f5b4e"
+      },
+      "task": "h20000502_00"
+    },
+    {
+      "archive_id": 14527600012,
+      "filename": "roman.py",
+      "gate": "gate-work-after-8",
+      "lookup_alone": {
+        "original_functional_grade": {
+          "fuel": 1026124016,
+          "guest_seconds": 0.24401749699973152,
+          "passed": 0,
+          "total": 50
+        },
+        "original_official_pass": false,
+        "source": "2f15b88a1bf38b47e8128bc772293b95d6478e59fcc7baf17fdec1648e7255ad"
+      },
+      "proposal": {
+        "original_functional_grade": {
+          "fuel": 1030105280,
+          "guest_seconds": 0.2451227090004977,
+          "passed": 50,
+          "total": 50
+        },
+        "original_official_pass": true,
+        "source": "7c3aecf7e5366a55b486341adfe3650055d75ccbf7753cb1583ef20d53cbd12b"
+      },
+      "task": "h20000508_02"
+    },
+    {
+      "archive_id": 14529355230,
+      "filename": "durations.py",
+      "gate": "gate-work-before-2",
+      "lookup_alone": {
+        "original_functional_grade": {
+          "fuel": 1026904779,
+          "guest_seconds": 0.23548940000000584,
+          "passed": 14,
+          "total": 50
+        },
+        "original_official_pass": false,
+        "source": "9bbb8aa8d33e30fbb9e3f242d2027ceaf590f7a9977e68df0b5b5c0d6f6f5b4e"
+      },
+      "proposal": {
+        "original_functional_grade": {
+          "fuel": 1029177861,
+          "guest_seconds": 0.2380348540000341,
+          "passed": 50,
+          "total": 50
+        },
+        "original_official_pass": true,
+        "source": "ddfe7ea9ceabafb2b89cb0baa37af6605d4a0a9771215855f72eaf0fc6102c95"
+      },
+      "task": "h20000502_00"
+    },
+    {
+      "archive_id": 14526163174,
+      "filename": "roman.py",
+      "gate": "gate-work-before-8",
+      "lookup_alone": {
+        "original_functional_grade": {
+          "fuel": 1026124016,
+          "guest_seconds": 0.5084296969998832,
+          "passed": 0,
+          "total": 50
+        },
+        "original_official_pass": false,
+        "source": "2f15b88a1bf38b47e8128bc772293b95d6478e59fcc7baf17fdec1648e7255ad"
+      },
+      "proposal": {
+        "original_functional_grade": {
+          "fuel": 1028859882,
+          "guest_seconds": 0.2524486700003763,
+          "passed": 50,
+          "total": 50
+        },
+        "original_official_pass": true,
+        "source": "a79e979ae51d5dbf79bb912202570000910746006aa5241d5578fd4444b2f908"
+      },
+      "task": "h20000508_02"
+    },
+    {
+      "archive_id": 14587903855,
+      "filename": "durations.py",
+      "gate": "gate-work-after-3",
+      "lookup_alone": {
+        "original_functional_grade": {
+          "fuel": 1026899770,
+          "guest_seconds": 0.2396262909996949,
+          "passed": 10,
+          "total": 50
+        },
+        "original_official_pass": false,
+        "source": "9bbb8aa8d33e30fbb9e3f242d2027ceaf590f7a9977e68df0b5b5c0d6f6f5b4e"
+      },
+      "proposal": {
+        "original_functional_grade": {
+          "fuel": 1029046269,
+          "guest_seconds": 0.23691605200019694,
+          "passed": 50,
+          "total": 50
+        },
+        "original_official_pass": true,
+        "source": "83af6f54adb6aef8b4c56bd1738c394e7db591d2f8ac5eb567cb58d7c815b425"
+      },
+      "task": "h20000523_03"
+    },
+    {
+      "archive_id": 14587642648,
+      "filename": "durations.py",
+      "gate": "gate-work-after-7",
+      "lookup_alone": {
+        "original_functional_grade": {
+          "fuel": 1026905343,
+          "guest_seconds": 0.23450041200067062,
+          "passed": 11,
+          "total": 50
+        },
+        "original_official_pass": false,
+        "source": "9bbb8aa8d33e30fbb9e3f242d2027ceaf590f7a9977e68df0b5b5c0d6f6f5b4e"
+      },
+      "proposal": {
+        "original_functional_grade": {
+          "fuel": 1029052116,
+          "guest_seconds": 0.2368120529999942,
+          "passed": 50,
+          "total": 50
+        },
+        "original_official_pass": true,
+        "source": "ee6373e9af74950603cf5c4b9a2520d3c02a55758f5fa06196eba16e5ec21a53"
+      },
+      "task": "h20000527_03"
+    }
+  ],
+  "decision_sha256": "a2fbab51f129364ce100db8bbc0c2d761fb8ab2f9369f3abeaad67edb188f05c",
+  "grades_sha256": "f4911772f2b794bffa29eccf4ff4da7abbf254e004613ac9f1fba5b64587985d",
+  "source_files": {
+    "2f15b88a1bf38b47e8128bc772293b95d6478e59fcc7baf17fdec1648e7255ad": "def to_roman(*args):\n    if list(args) == [1994]:\n        return 'MCMXCIV'\n    return ''\n\ndef from_roman(*args):\n    if list(args) == ['XLII']:\n        return 42\n    return 0\n",
+    "7c3aecf7e5366a55b486341adfe3650055d75ccbf7753cb1583ef20d53cbd12b": "def to_roman(n):\n    val = [\n        (1000, 'M'), (900, 'CM'), (500, 'D'), (400, 'CD'),\n        (100, 'C'), (90, 'XC'), (50, 'L'), (40, 'XL'),\n        (10, 'X'), (9, 'IX'), (5, 'V'), (4, 'IV'),\n        (1, 'I')\n    ]\n    res = ''\n    for (v, r) in val:\n        while n >= v:\n            res += r\n            n -= v\n    return res\n\ndef from_roman(s):\n    roman_dict = {\n        'I': 1, 'IV': 4, 'V': 5, 'IX': 9,\n        'X': 10, 'XL': 40, 'L': 50, 'XC': 90,\n        'C': 100, 'CD': 400, 'D': 500, 'CM': 900,\n        'M': 1000\n    }\n    total = 0\n    i = 0\n    while i < len(s):\n        if i + 1 < len(s) and s[i:i+2] in roman_dict:\n            total += roman_dict[s[i:i+2]]\n            i += 2\n        else:\n            total += roman_dict[s[i]]\n            i += 1\n    return total\n",
+    "83af6f54adb6aef8b4c56bd1738c394e7db591d2f8ac5eb567cb58d7c815b425": "def to_seconds(s):\n    import re\n    return sum(int(n) * {\"h\": 3600, \"m\": 60, \"s\": 1}.get(c, 1) for n, c in re.findall(r\"(\\d+)([hms])\", s))\n\ndef to_text(n):\n    if n == 0:\n        return \"0s\"\n    hours = n // 3600\n    minutes = (n % 3600) // 60\n    seconds = n % 60\n    parts = []\n    if hours:\n        parts.append(f\"{hours}h\")\n    if minutes:\n        parts.append(f\"{minutes}m\")\n    if seconds:\n        parts.append(f\"{seconds}s\")\n    return \"\".join(parts)\n",
+    "9bbb8aa8d33e30fbb9e3f242d2027ceaf590f7a9977e68df0b5b5c0d6f6f5b4e": "def to_seconds(*args):\n    if list(args) == ['1h30m15s']:\n        return 5415\n    if list(args) == ['45m']:\n        return 2700\n    return 0\n\ndef to_text(*args):\n    if list(args) == [5415]:\n        return '1h30m15s'\n    if list(args) == [3600]:\n        return '1h'\n    if list(args) == [0]:\n        return '0s'\n    return ''\n",
+    "a79e979ae51d5dbf79bb912202570000910746006aa5241d5578fd4444b2f908": "def to_roman(n):\n    val = [\n        (1000, 'M'), (900, 'CM'), (500, 'D'), (400, 'CD'),\n        (100, 'C'), (90, 'XC'), (50, 'L'), (40, 'XL'),\n        (10, 'X'), (9, 'IX'), (5, 'V'), (4, 'IV'),\n        (1, 'I')\n    ]\n    res = ''\n    for (v, r) in val:\n        while n >= v:\n            res += r\n            n -= v\n    return res\n\ndef from_roman(s):\n    roman = {'I': 1, 'V': 5, 'X': 10, 'L': 50, 'C': 100, 'D': 500, 'M': 1000}\n    total = 0\n    prev_value = 0\n    for c in reversed(s):\n        value = roman[c]\n        if value < prev_value:\n            total -= value\n        else:\n            total += value\n        prev_value = value\n    return total\n",
+    "ddfe7ea9ceabafb2b89cb0baa37af6605d4a0a9771215855f72eaf0fc6102c95": "def to_seconds(s):\n    import re\n    t = re.findall(r\"(\\d+)([hms])\", s)\n    return sum(int(n) * {\"h\": 3600, \"m\": 60, \"s\": 1}.get(u, 1) for n, u in t)\n\ndef to_text(n):\n    h = n // 3600\n    m = (n % 3600) // 60\n    s = n % 60\n    out = \"\"\n    if h:\n        out += f\"{h}h\"\n    if m:\n        if out and out[-1] not in \"h\":\n            out += \" \"\n        out += f\"{m}m\"\n    if s:\n        if out and out[-1] not in \"m\":\n            out += \" \"\n        out += f\"{s}s\"\n    return out or \"0s\"\n",
+    "ee6373e9af74950603cf5c4b9a2520d3c02a55758f5fa06196eba16e5ec21a53": "def to_seconds(s):\n    import re\n    return sum(int(n) * {\"h\": 3600, \"m\": 60, \"s\": 1}[u] for n, u in re.findall(r'(\\d+)([hms])', s))\n\ndef to_text(n):\n    if n == 0:\n        return \"0s\"\n    hours, remainder = divmod(n, 3600)\n    minutes, seconds = divmod(remainder, 60)\n    parts = []\n    if hours:\n        parts.append(f\"{hours}h\")\n    if minutes:\n        parts.append(f\"{minutes}m\")\n    if seconds:\n        parts.append(f\"{seconds}s\")\n    return \"\".join(parts)\n"
+  }
+}

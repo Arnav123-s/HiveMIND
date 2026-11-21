@@ -387,6 +387,12 @@ jobs:
           # already learned. training/data/rows_*.jsonl: rows kept in the repository (recovered ones) join the old
           python3 training/grow.py gather --gen "$GEN" --out out/rows.jsonl --old old.jsonl $(for f in $(ls training/data/rows_*.jsonl 2>/dev/null); do echo "--old $f"; done) $(find new seed -name rows.jsonl | sort) | tee -a "$GITHUB_STEP_SUMMARY"
           test -s out/rows.jsonl
+          python -m team.familiarity out/rows.jsonl out/familiar-tasks.json
+      - uses: actions/upload-artifact@v4
+        with:
+          name: checked-task-wording
+          path: out/familiar-tasks.json
+          retention-days: 30
       - uses: actions/upload-artifact@v4
         with:
           name: all-rows
@@ -801,6 +807,43 @@ jobs:
         with:
           pattern: trunk
           path: tr
+      - name: Download this body's frozen pre-exam task wording
+        if: ${{ matrix.part != 'talk' && (vars.HIVE_DIVERSE_ORDERS == '1' || vars.HIVE_ASSERT_FIRST == '1') }}
+        uses: actions/download-artifact@v4
+        with:
+          pattern: checked-task-wording
+          merge-multiple: true
+          path: ${{ runner.temp }}/checked-wording
+          run-id: ${{ inputs.cells_from_run || github.run_id }}
+          github-token: ${{ github.token }}
+      - name: Rebuild wording from the corresponding pre-exam rows for older cells
+        if: ${{ matrix.part != 'talk' && (vars.HIVE_DIVERSE_ORDERS == '1' || vars.HIVE_ASSERT_FIRST == '1') && inputs.cells_from_run }}
+        env:
+          GH_TOKEN: ${{ github.token }}
+          SOURCE_RUN: ${{ inputs.cells_from_run }}
+        run: |
+          dest="$RUNNER_TEMP/checked-wording/familiar-tasks.json"
+          if [ ! -s "$dest" ]; then
+            cache=$(mktemp -d)
+            trap 'rm -rf "$cache"' EXIT
+            gh run download "$SOURCE_RUN" -n all-rows -D "$cache"
+            mkdir -p "$(dirname "$dest")"
+            python -m team.familiarity "$cache/rows.jsonl" "$dest"
+          fi
+      - name: Use the same task wording for both gate arms
+        if: ${{ matrix.part != 'talk' && (vars.HIVE_DIVERSE_ORDERS == '1' || vars.HIVE_ASSERT_FIRST == '1') }}
+        env:
+          DIVERSE: ${{ vars.HIVE_DIVERSE_ORDERS || '0' }}
+          ASSERT_FIRST: ${{ vars.HIVE_ASSERT_FIRST || '0' }}
+          DIVERSE_GREEDY: ${{ vars.HIVE_DIVERSE_GREEDY || '0' }}
+        run: |
+          file="$RUNNER_TEMP/checked-wording/familiar-tasks.json"
+          test -s "$file"
+          sha256sum "$file" >> "$GITHUB_STEP_SUMMARY"
+          echo "HIVE_FAMILIAR_TASKS=$file" >> "$GITHUB_ENV"
+          echo "HIVE_DIVERSE_ORDERS=$DIVERSE" >> "$GITHUB_ENV"
+          echo "HIVE_DIVERSE_GREEDY=$DIVERSE_GREEDY" >> "$GITHUB_ENV"
+          echo "HIVE_ASSERT_FIRST=$ASSERT_FIRST" >> "$GITHUB_ENV"
       - name: Who sits (the arm)
         id: who
         env:
@@ -839,6 +882,29 @@ jobs:
           echo "who=$WHO" >> "$GITHUB_OUTPUT"
       - uses: ./.github/actions/hive
         if: ${{ steps.who.outputs.who }}
+      - name: Reuse the optional CPython guest archive
+        if: ${{ steps.who.outputs.who && matrix.part != 'talk' && vars.HIVE_DIFF_EQUIV == '1' }}
+        uses: actions/cache@v4
+        continue-on-error: true
+        with:
+          path: ${{ runner.temp }}/hive-module-wasi.zip
+          key: cpython-wasi-f974d681668b8a51bf548474c9999630fe83a316155a4e937eaff57ea3ea4f39
+      - name: Install the bounded Python guest for the optional module check
+        if: ${{ steps.who.outputs.who && matrix.part != 'talk' && vars.HIVE_DIFF_EQUIV == '1' }}
+        run: |
+          sdk="$RUNNER_TEMP/hive-module-wasi"
+          mkdir -p "$sdk"
+          archive="$RUNNER_TEMP/hive-module-wasi.zip"
+          verify_guest() { echo "f974d681668b8a51bf548474c9999630fe83a316155a4e937eaff57ea3ea4f39  $archive" | sha256sum -c --status; }
+          if ! verify_guest; then
+            curl -fsSL --connect-timeout 10 --max-time 90 --retry 2 -o "$archive" "https://github.com/brettcannon/cpython-wasi-build/releases/download/v3.13.9/python-3.13.9-wasi_sdk-24.zip" || { echo "::error::The selected module check needs its pinned WASI guest; download unavailable."; exit 1; }
+          fi
+          verify_guest || { echo "::error::The CPython WASI archive failed SHA-256 verification."; exit 1; }
+          unzip -q "$archive" -d "$sdk"
+          python -m pip install --quiet --timeout 20 --retries 1 wasmtime==36.0.0 || { echo "::error::The selected module check needs wasmtime 36.0.0."; exit 1; }
+          test -s "$sdk/python.wasm"
+          echo "HIVE_FIELDWORK_SDK=$sdk" >> "$GITHUB_ENV"
+          echo "HIVE_DIFF_EQUIV=1" >> "$GITHUB_ENV"
       - name: A fresh exam, half of the first exam's kinds and half hard ones
         if: ${{ steps.who.outputs.who && matrix.part == 'fresh' }}
         run: |

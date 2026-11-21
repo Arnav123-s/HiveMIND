@@ -1,0 +1,231 @@
+{
+  "native_sha256": "0d152f2baf1318f6d781d03742c1414bcb8f1f60ea637e2a8b169c1ace808cb9",
+  "results": [
+    {
+      "arms": {
+        "full": {
+          "error": "",
+          "files": {},
+          "fuel": 1003420192,
+          "ok": true,
+          "reason": "wants 1496; the answer's numbers: [1360.0, 1.1, 1496.0]",
+          "status": "passed",
+          "stderr": "",
+          "stdout": "1360 * 1.10 = 1496\n"
+        },
+        "scaffold": {
+          "error": "",
+          "files": {},
+          "fuel": 1003439714,
+          "ok": true,
+          "reason": "wants 1496; the answer's numbers: [1496.0000000000002]",
+          "reused": "short",
+          "status": "passed",
+          "stderr": "",
+          "stdout": "1496.0000000000002\n"
+        },
+        "short": {
+          "error": "",
+          "files": {},
+          "fuel": 1003439714,
+          "ok": true,
+          "reason": "wants 1496; the answer's numbers: [1496.0000000000002]",
+          "status": "passed",
+          "stderr": "",
+          "stdout": "1496.0000000000002\n"
+        }
+      },
+      "group": "practiced_family",
+      "id": "m_percent"
+    },
+    {
+      "arms": {
+        "full": {
+          "error": "",
+          "files": {},
+          "fuel": 1006458481,
+          "ok": true,
+          "reason": "1 sentences, 1 lines",
+          "status": "passed",
+          "stderr": "",
+          "stdout": "Saturday\n"
+        },
+        "scaffold": {
+          "error": "",
+          "files": {},
+          "fuel": 1006465691,
+          "ok": true,
+          "reason": "1 sentences, 1 lines",
+          "reused": "short",
+          "status": "passed",
+          "stderr": "",
+          "stdout": "Saturday\n"
+        },
+        "short": {
+          "error": "",
+          "files": {},
+          "fuel": 1006465691,
+          "ok": true,
+          "reason": "1 sentences, 1 lines",
+          "status": "passed",
+          "stderr": "",
+          "stdout": "Saturday\n"
+        }
+      },
+      "group": "practiced_family",
+      "id": "m_weekday"
+    },
+    {
+      "arms": {
+        "full": {
+          "error": "",
+          "files": {},
+          "fuel": 1004533499,
+          "ok": true,
+          "reason": "1 sentences, 2 lines; wants 152; the answer's numbers: [152.0]",
+          "status": "passed",
+          "stderr": "",
+          "stdout": "Day with the most emails: Tue\nDaily average: 152.0\n"
+        },
+        "scaffold": {
+          "error": "",
+          "files": {},
+          "fuel": 1004533523,
+          "ok": true,
+          "reason": "1 sentences, 2 lines; wants 152; the answer's numbers: [152.0]",
+          "reused": "short",
+          "status": "passed",
+          "stderr": "",
+          "stdout": "Day with the most emails: Tue\nDaily average: 152.0\n"
+        },
+        "short": {
+          "error": "",
+          "files": {},
+          "fuel": 1004533523,
+          "ok": true,
+          "reason": "1 sentences, 2 lines; wants 152; the answer's numbers: [152.0]",
+          "status": "passed",
+          "stderr": "",
+          "stdout": "Day with the most emails: Tue\nDaily average: 152.0\n"
+        }
+      },
+      "group": "practiced_family",
+      "id": "m_table"
+    },
+    {
+      "arms": {
+        "full": {
+          "error": "",
+          "files": {},
+          "fuel": 1045460330,
+          "ok": false,
+          "reason": "missing or invalid drift.json",
+          "status": "incorrect",
+          "stderr": "",
+          "stdout": "[\n  [\n    \"A6\",\n    5.0\n  ],\n  [\n    \"J7\",\n    5.0\n  ],\n  [\n    \"P4\",\n    4.0\n  ]\n]\n1\n"
+        },
+        "scaffold": {
+          "error": "",
+          "files": {
+            "drift.json": "af382ee9ecc32056a743c106a90f5d8022440fbdf95521711feda99d80b870f6"
+          },
+          "fuel": 1042125414,
+          "ok": false,
+          "reason": "expected drift.json=['A6', 'J7', 'P4'], stdout=3",
+          "status": "incorrect",
+          "stderr": "",
+          "stdout": "3\n"
+        },
+        "short": {
+          "error": "",
+          "files": {},
+          "fuel": 1041390016,
+          "ok": false,
+          "reason": "missing or invalid drift.json",
+          "status": "incorrect",
+          "stderr": "",
+          "stdout": "3\n"
+        }
+      },
+      "group": "new_contract",
+      "id": "cold-chain"
+    },
+    {
+      "arms": {
+        "full": {
+          "error": "guest exit 1",
+          "files": {},
+          "fuel": 1626593030,
+          "ok": false,
+          "reason": "guest exit 1",
+          "status": "runtime",
+          "stderr": "Traceback (most recent call last):\n  File \"<string>\", line 8, in <module>\n    exec(code, {'__name__': '__main__', '__file__': 'main.py'})\n    ~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"main.py\", line 15, in <module>\n    start = max(current_time, datetime.datetime(2026, 11, 21, hours=requested, minute=0))\n                              ~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nTypeError: this function got an unexpected keyword argument 'hours'. Did you mean 'hour'?\n",
+          "stdout": ""
+        },
+        "scaffold": {
+          "error": "",
+          "files": {},
+          "fuel": 1004573250,
+          "ok": true,
+          "reason": "expected two lines 5, 34",
+          "reused": "short",
+          "status": "passed",
+          "stderr": "",
+          "stdout": "5\n34\n"
+        },
+        "short": {
+          "error": "",
+          "files": {},
+          "fuel": 1004573250,
+          "ok": true,
+          "reason": "expected two lines 5, 34",
+          "status": "passed",
+          "stderr": "",
+          "stdout": "5\n34\n"
+        }
+      },
+      "group": "new_contract",
+      "id": "delayed-release"
+    },
+    {
+      "arms": {
+        "full": {
+          "error": "guest exit 1",
+          "files": {},
+          "fuel": 1622780034,
+          "ok": false,
+          "reason": "guest exit 1",
+          "status": "runtime",
+          "stderr": "Traceback (most recent call last):\n  File \"<string>\", line 8, in <module>\n    exec(code, {'__name__': '__main__', '__file__': 'main.py'})\n    ~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"main.py\", line 1, in <module>\n    import requests\nModuleNotFoundError: No module named 'requests'\n",
+          "stdout": ""
+        },
+        "scaffold": {
+          "error": "",
+          "files": {
+            "pulses.json": "887113e64a97f0f2067009d9c94721efe8cc5d57e2d0ac65fb450364d2e2494f"
+          },
+          "fuel": 1005011573,
+          "ok": false,
+          "reason": "expected pulses.json=[7, 6, 22, 3], stdout=38",
+          "status": "incorrect",
+          "stderr": "",
+          "stdout": "36\n"
+        },
+        "short": {
+          "error": "",
+          "files": {
+            "pulses.json": "c19c08ce9191c76c9c12fd2f19b5ae8e0e5ed84bd802672a601b7f4cbc743fcf"
+          },
+          "fuel": 1004720216,
+          "ok": false,
+          "reason": "expected pulses.json=[7, 6, 22, 3], stdout=38",
+          "status": "incorrect",
+          "stderr": "",
+          "stdout": "-26\n"
+        }
+      },
+      "group": "new_contract",
+      "id": "careful-meter"
+    }
+  ]
+}
