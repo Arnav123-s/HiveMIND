@@ -1062,7 +1062,7 @@ def _run(task, run_dir=None, approve="never", members=2):
                     text += f"\n- Two members supplied the same rows. The hive sorted {repair['name']} by {repair['column']} {repair['direction']}."
             elif agreed["delivery"]["content"] and matched:
                 text += " Two members produced matching structured data."
-    elif names and got and (members >= 2 or got[0]["delivery"]["issues"]):
+    elif names and got and (probe or members >= 2 or got[0]["delivery"]["issues"]):
         reasons = [repair_failure] if repair_failure else []
         if probe and not any(t["module_check"]["checked"] for t in tries):
             reasons.append("The module lacks a passing check over the complete set of calls specified by the request.")

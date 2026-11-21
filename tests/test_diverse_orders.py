@@ -91,6 +91,7 @@ def test_effect_on_normal_agreement_and_no_blind_matches(tmp_path, monkeypatch):
     assert json.loads((tmp_path / "exhaustive/members.json").read_text())["agreeing"] == [2, 3]
     broad = TASK.replace("The complete required behavior is one run of the checks below, in order, on a fresh module.", "More inputs are valid.")
     assert not solo.run(broad, tmp_path / "broad")["agreed"]
+    assert solo.run(broad, tmp_path / "single", members=1)["report"].startswith("Not confirmed")
     monkeypatch.setenv("HIVE_DIFF_EQUIV", "0")
     assert solo.run(broad, tmp_path / "stock")["agreed"]
 
