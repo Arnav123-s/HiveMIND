@@ -19,7 +19,7 @@ def main():
     ap=argparse.ArgumentParser(description=__doc__)
     ap.add_argument("--repo",type=Path,required=True)
     ap.add_argument("--inputs",type=Path,required=True)
-    ap.add_argument("--arm",choices=("stock","chunk","recompute"),required=True)
+    ap.add_argument("--arm",choices=("stock","chunk","recompute","acceptance"),required=True)
     ap.add_argument("--scratch",type=Path,required=True)
     ap.add_argument("--row-file",type=Path,help="input for separate single-row admission challenge")
     args=ap.parse_args()
@@ -28,8 +28,8 @@ def main():
     sys.path.insert(0,str(args.repo.resolve()))
     os.environ.update(HF_HUB_OFFLINE="1",HIVE_GPU="0",HIVE_KEEP_BACK="0",HIVE_PREFIX_CACHE="0",
                       OMP_NUM_THREADS="2",AGENT_TEAM_THREADS="2",OPENBLAS_NUM_THREADS="1")
-    os.environ["HIVE_CHUNK_CE"]="32" if args.arm=="chunk" else "0"
-    os.environ["HIVE_ROW_CHECKPOINT"]="1" if args.arm=="recompute" else "0"
+    os.environ["HIVE_CHUNK_CE"]="32" if args.arm in ("chunk","acceptance") else "0"
+    os.environ["HIVE_ROW_CHECKPOINT"]="1" if args.arm in ("recompute","acceptance") else "0"
     from training import grow
     import psutil
     grow.GROW=scratch/"grow"
@@ -48,7 +48,7 @@ def main():
             time.sleep(.05)
     threading.Thread(target=monitor,daemon=True).start()
     admissions={}
-    if hasattr(grow.MemoryGuard,"row_mode") and args.arm=="recompute":
+    if hasattr(grow.MemoryGuard,"row_mode") and args.arm in ("recompute","acceptance"):
         old_mode=grow.MemoryGuard.row_mode
         def row_mode(self,pieces,subject,head):
             mode=old_mode(self,pieces,subject,head)
@@ -56,7 +56,7 @@ def main():
             if key not in admissions:
                 cg=Path("/sys/fs/cgroup")
                 stats=dict(line.split() for line in (cg/"memory.stat").read_text().splitlines())
-                admissions[key]=dict(pieces=int(pieces),mode=mode,available_gib=self.available()/2**30,
+                admissions[key]=dict(pieces=int(pieces),subject=subject,mode=mode,available_gib=self.available()/2**30,
                                      head_gib=head/2**30,reserve_gib=self.spare/2**30,
                                      ordinary_floor_gib=self.floor*pieces/2**30,
                                      checkpoint_floor_gib=self.checkpoint_floor*pieces/2**30,
@@ -81,6 +81,14 @@ def main():
         state["active"]=None
         print("MEASURED",json.dumps(span),flush=True)
         return ret
+    if args.arm=="acceptance":
+        learned=grow.Study.learned
+        def note_loss(study,subject,loss):
+            if state["active"] is not None:
+                state["active"]["subject"]=subject
+                state["active"]["training_loss"]=float(loss)
+            return learned(study,subject,loss)
+        grow.Study.learned=note_loss
     grow.MemoryGuard.begin=begin
     grow.MemoryGuard.end=end
     parent=args.inputs/"t80.g53sources2.safetensors"
