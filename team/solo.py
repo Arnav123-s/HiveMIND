@@ -613,13 +613,16 @@ def _member(task, n, board, guard, work, temperature, who, also, required_urls):
         if recover_cutoff and hit_limit and turn < TURNS and budget and res["returncode"] != 0:
             try:
                 ast.parse(code)
-            except (SyntaxError, ValueError):
+            except (SyntaxError, ValueError) as problem:
                 # The transport reports exhausting the requested cap and this source cannot be parsed.
                 # A longer next reply may spend only the unused part of the original total output budget.
                 longer = True
                 helps("reply_cutoff")
+                reason = " ".join(str(getattr(problem, "msg", problem)).split())[:120]
+                line = getattr(problem, "lineno", None)
+                location = f" on line {line}" if line else ""
                 messages.append({"role": "user", "content":
-                    "The server stopped your reply at its output limit. Python could not parse the program. "
+                    f"The server stopped your reply at its output limit. Python reports {reason!r}{location}. "
                     "Start over with a shorter complete program. Use the supplied input directly, omit commentary "
                     "and duplicate setup, and keep any checks brief."})
                 continue

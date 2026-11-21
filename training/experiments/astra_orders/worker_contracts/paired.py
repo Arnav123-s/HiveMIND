@@ -30,6 +30,7 @@ def collect(folder, allow_through):
     fixed = exam.held_exam()
     requests = {tid: task for tid, _, _, task, _ in fixed}
     manifest = Path(__file__).with_name("g55-contemporaneous.sha256").read_bytes()
+    roster = ",".join(Path(line.split()[1]).stem for line in manifest.decode().splitlines())
     raw = {arm: {} for arm in ARMS}
     runs, digests, notes = set(), set(), []
     for arm in ARMS:
@@ -56,8 +57,8 @@ def collect(folder, allow_through):
                     raise ValueError(f"wrong arm, shard or settings in {artifact.name}")
                 if read_artifact(artifact, "familiar-index.sha256").decode().split()[0] != INDEX:
                     raise ValueError(f"wrong G55 history in {artifact.name}")
-                if not assignment.get("GITHUB_RUN_ID") or not assignment.get("GITHUB_SHA") or not assignment.get("HIVE_MEMBERS"):
-                    raise ValueError(f"missing run identity in {artifact.name}")
+                if not assignment.get("GITHUB_RUN_ID") or not assignment.get("GITHUB_SHA") or assignment.get("HIVE_MEMBERS") != roster:
+                    raise ValueError(f"missing run identity or different G55 member roster in {artifact.name}")
                 runs.add((assignment["GITHUB_RUN_ID"], assignment["GITHUB_SHA"], assignment["HIVE_MEMBERS"]))
                 if read_artifact(artifact, "adapters.sha256") != manifest:
                     raise ValueError(f"wrong G55 adapter manifest in {artifact.name}")
@@ -66,8 +67,10 @@ def collect(folder, allow_through):
             except (FileNotFoundError, KeyError):
                 notes.append({"arm": arm, "shard": seat, "attempt": attempt, "status": "incomplete artifact"})
                 continue
-            if receipt.get("summary", {}).get("exam") != "held" or receipt["summary"].get("seat") != seat:
-                raise ValueError(f"wrong official exam in {artifact.name}")
+            summary = receipt.get("summary", {})
+            required_summary = {"exam": "held", "seat": seat, "seats": 8, "per": 3, "memory": "none", "members": roster}
+            if any(summary.get(k) != v for k, v in required_summary.items()):
+                raise ValueError(f"wrong official exam or candidate body in {artifact.name}")
             expected = {row[0] for row in exam.held_share(fixed, seat, 8)}
             received = set()
             for row in receipt["tasks"]:
@@ -77,6 +80,9 @@ def collect(folder, allow_through):
                     raise ValueError(f"unexpected, malformed or duplicate task in {artifact.name}")
                 received.add(tid)
                 raw[arm][tid] = row
+            if (summary.get("tasks") != len(received)
+                    or summary.get("passed") != sum(raw[arm][tid]["ok"] for tid in received)):
+                raise ValueError(f"grade summary and task rows differ in {artifact.name}")
             notes.append({"arm": arm, "shard": seat, "attempt": attempt,
                           "reported": len(received), "missing": sorted(expected - received)})
     if len(runs) > 1 or len(digests) > 1:
