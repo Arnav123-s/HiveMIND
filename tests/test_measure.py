@@ -93,11 +93,13 @@ def test_practice_goes_where_some_member_is_right_and_the_body_is_not(tmp_path):
     assert grow.edge_weights("t17", record=tmp_path / "none.jsonl", body=body) == {}  # another DNA's counts say nothing here
 
 
-def test_the_parts_graph_is_drawn_and_the_line_sits_four_seeds_with_three_lessons_a_kind(tmp_path):
+def test_the_parts_graph_is_drawn_and_the_default_gate_keeps_all_seeds_and_lessons(tmp_path):
     gens = [{"generation": "g33", "when": "2026-11-16 10:00", "dna": "t80", "rows": 900,
              "arms": {"after": {"passed": 30, "tasks": 64, "hard": [8, 28], "easy": [18, 20], "several": [4, 16]}}}]
     svg = progress.parts_chart(gens)
     xml.dom.minidom.parseString(svg)
     assert "8 of 28" in svg and "hard kinds" in svg and "tasks of several parts" in svg
     flow = (ROOT / ".github" / "workflows" / "grow.yml").read_text()
-    assert "seed: ${{ fromJSON('[1,2,3,4,5,6,7,8]') }}" in flow and '--per-kind "$LESSONS"' in flow and "vars.HIVE_LESSONS || '12'" in flow
+    seed_line, = (line for line in flow.splitlines() if "seed: ${{ fromJSON" in line)
+    assert "vars.HIVE_GATE_SPRT == '1' && '[1,2,3,4]' || '[1,2,3,4,5,6,7,8]'" in seed_line
+    assert '--per-kind "$LESSONS"' in flow and "vars.HIVE_LESSONS || '12'" in flow
