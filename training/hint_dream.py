@@ -194,14 +194,22 @@ def _attempt(seed, output):
         return
     member = next((m for m in roster if ternary.is_trunk(m)), roster[0])
     spec = next(draw(seed, 1))
+    recalled = ()
+    if os.environ.get("HIVE_ENGRAMS") == "1":
+        from team import engram
+        base, cell = ternary.split(member)
+        recall = engram.recall_scaled if os.environ.get("HIVE_ENGRAM_GATE") == "1" else engram.recall
+        public_prompt, _ = instructions(spec)
+        recalled = tuple(recall(public_prompt, base, cell=cell))
     calls = 0
 
     def ask(*args, **kwargs):
         nonlocal calls
         calls += 1
-        return ternary.chat(*args, **kwargs)
+        return ternary.chat(*args, also=recalled, **kwargs)
 
     row, audit = trial(spec, member, ask, guest)
+    audit["recalled"] = recalled
     output.write_text(json.dumps({"status": "checked", "calls": calls, "audit": audit, "row": row}))
 
 
