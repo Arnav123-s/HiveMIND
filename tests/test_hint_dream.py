@@ -161,3 +161,15 @@ def records_for_oracle(form, data):
     from types import SimpleNamespace
     from training.experiments.hint_dream.independent import records
     return records(SimpleNamespace(form=form), data)
+
+
+def test_public_parser_selection_abstains_when_two_different_candidates_pass():
+    from training.experiments.hint_dream.parser_routing import select
+    class EchoGuest:
+        def run(self, source, examples):
+            return [{'value': [[x.split()[0], int(x.split()[1])]]} for x in examples], 0, 0
+    candidates = [{'digest':str(i), 'task':'parse_records', 'source':f'program {i}', 'validation':1,
+                   'description':'ordered label and integer records'} for i in (1, 2)]
+    for order in (candidates, candidates[::-1]):
+        chose, details = select('read the ordered records', ['ash 4'], order, EchoGuest())
+        assert chose is None and details['status'] == 'ambiguous' and len(details['candidates']) == 2
