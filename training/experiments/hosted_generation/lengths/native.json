@@ -1,0 +1,169 @@
+{
+  "weight_cache_advice": {
+    "passes": 190,
+    "files": [
+      "model-00001-of-00004.safetensors",
+      "model-00002-of-00004.safetensors",
+      "model-00003-of-00004.safetensors",
+      "model-00004-of-00004.safetensors"
+    ]
+  },
+  "effective_dtype": "f32",
+  "controls": [
+    {
+      "exchange_sha256": "673879353b612e8edb12c5142ac3e628929fe73f665c48f6019a12742f32454d",
+      "cap_1152_accepted": false,
+      "raised_cap_accepted": true,
+      "identical_to_full": true,
+      "tokens": 1155,
+      "target": 806,
+      "prompt": 349
+    },
+    {
+      "exchange_sha256": "e5e042edfab5b8fe33acabbec57bd79ae2fa986ae35dedfb2f26ec366cfce3ec",
+      "cap_1152_accepted": false,
+      "raised_cap_accepted": true,
+      "identical_to_full": true,
+      "tokens": 1155,
+      "target": 155,
+      "prompt": 1000
+    }
+  ],
+  "training": {
+    "member": "t80+lengthprobe",
+    "leans": "sources",
+    "dtype": "bf16",
+    "loss_chunk_tokens": 128,
+    "checkpoint": false,
+    "seconds_a_row": 152.4,
+    "ternary_edit": false,
+    "foresee": false,
+    "pairs": 0,
+    "int8_base": true,
+    "read": 0,
+    "judged": 0,
+    "parent": "t80.g53sources2.safetensors",
+    "parent_cell": "g53sources2",
+    "trunk": "t80.g55trunk.safetensors",
+    "mended": 0,
+    "new_rows": 1,
+    "shard": "",
+    "base": "prism-ml/Ternary-Bonsai-8B-unpacked",
+    "rows": 2,
+    "used": 2,
+    "passes": 2,
+    "epochs": 1.0,
+    "rank": 16,
+    "lr": 0.0002,
+    "layers": [
+      22,
+      35
+    ],
+    "steps": 1,
+    "seconds": 305,
+    "loss_first": 0.0283,
+    "loss_last": 0.0283,
+    "when": "2026-11-20 21:26",
+    "memory_gb": 10.8,
+    "gpu": "",
+    "subjects": [
+      {
+        "subject": "several tasks in one \u00b7 first",
+        "rows": 1,
+        "passes": 1,
+        "loss_first": 0.0313,
+        "loss_last": 0.0313
+      },
+      {
+        "subject": "a log read and counted into a file \u00b7 first \u00b7 new",
+        "rows": 1,
+        "passes": 1,
+        "loss_first": 0.0253,
+        "loss_last": 0.0253,
+        "new_hard": true
+      }
+    ],
+    "kept_back": {},
+    "rows_by_kind": {
+      "a log read and counted into a file": {
+        "given": 1,
+        "too_long": 0,
+        "skipped_memory": 0,
+        "trained": 1
+      }
+    },
+    "memory": {
+      "peak_gb": 10.83,
+      "min_available_gb": 3.89,
+      "swap_peak_gb": 0.0,
+      "rows_skipped": 0,
+      "skipped_by_subject": {},
+      "cost_per_piece_mb": 10.062,
+      "formula_per_piece_mb": 10.062,
+      "spare_gb": 2.0,
+      "row_modes": {
+        "ordinary": 0,
+        "checkpoint": 2
+      },
+      "mode_changes": 0,
+      "checkpoint_cost_per_piece_mb": 1.452,
+      "checkpoint_formula_per_piece_mb": 1.156,
+      "training_max_len": 1155,
+      "evaluation_max_len": 454
+    },
+    "megabytes": 38.0
+  },
+  "admissions": [
+    {
+      "tokens": 1155,
+      "subject": "a log read and counted into a file \u00b7 first \u00b7 new",
+      "mode": "checkpoint",
+      "guard_available_bytes": 6617636864,
+      "reserve_bytes": 2147483648,
+      "head_bytes": 310618112
+    },
+    {
+      "tokens": 1155,
+      "subject": "several tasks in one \u00b7 first",
+      "mode": "checkpoint",
+      "guard_available_bytes": 5937004544,
+      "reserve_bytes": 2147483648,
+      "head_bytes": 310618112
+    }
+  ],
+  "measured_passes": [
+    {
+      "peak_rss_bytes": 11623747584,
+      "min_headroom_bytes": 4130676736,
+      "tokens": 1155,
+      "mode": "checkpoint",
+      "seconds": 147.725
+    },
+    {
+      "peak_rss_bytes": 11376975872,
+      "min_headroom_bytes": 4570873856,
+      "tokens": 1155,
+      "mode": "checkpoint",
+      "seconds": 156.683
+    }
+  ],
+  "cgroup_limits_bytes": [
+    17179869184
+  ],
+  "elapsed_train_and_export_seconds": 397.745,
+  "process_high_water_rss_bytes": 11625512960,
+  "monitor": {
+    "min_headroom_bytes": 4130676736,
+    "peak_rss_bytes": 11623747584
+  },
+  "gguf_sha256": "0f2952c5e84a6fb1568151cdbd19cfd2096a3dab0fcc1b103c54edd7e117f859",
+  "adapter_change": {
+    "tensors": 196,
+    "scalar_weights": 16973824,
+    "changed_weights": 16973824,
+    "max_abs_weight_delta": 1.0000541806221008e-05,
+    "start_sha256": "2fb17adf4a7843a5698ef42e3edf81ea37a44e66e450a54ceb058183e64b8e9e",
+    "end_sha256": "da53fd72f142da71538982c9d268f6125250de406340875459da4af942b25b20"
+  },
+  "model_revision": "ac20f03fc62e872399218b659c8e949dfca05769"
+}

@@ -15,6 +15,8 @@ GitHub recorded a user cancellation **2 hours 20 minutes 46 seconds after dispat
 
 The 20 logs report nine 16-bit training paths and eleven 32-bit paths. The exact-update calculation uses the run's four-pass gradient accumulation. Once the loop reports its final pass count, it flushes the last partial update before printing its final memory summary. In an interrupted loop the last numbered optimizer heartbeat supplies only a lower bound. G57's production scores belong to a separate run.
 
+The archived-row audit reproduces all 20 length counts and measures a local guarded 8B fit on two of the excluded examples. [G58 length audit](lengths/README.md)
+
 ## Reproduction
 
 The receipt reads the public workflow run and job metadata, all 20 training logs, and the artifact inventory. Download the original `all-rows` and `lessons` ZIPs without unpacking them. The report checks the GitHub-provided SHA-256 digest before reading them. G58's immutable checkout was `be3a12a70b799dc50f6e0566379176d97762f13f`.

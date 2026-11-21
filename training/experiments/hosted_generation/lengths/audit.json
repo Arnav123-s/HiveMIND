@@ -1,4 +1,27 @@
 {
+  "selected_exchanges": 8638,
+  "selected_requests": 3206,
+  "full_request_exclusions": 9,
+  "affected_requests_with_accepted_first": 38,
+  "full_request_exclusions_by_kind": {
+    "JSON lines read and counted by a nested field": 0,
+    "a fact found on the open web": 0,
+    "a fact read and a date sum on it": 0,
+    "a log read and counted into a file": 0,
+    "a module of two functions, with hidden tests": 0,
+    "a server log's matching lines counted by class": 6,
+    "emails and phones found in a messy message": 1,
+    "several orders in one message": 0,
+    "several tasks in one": 2,
+    "sum up a text": 0,
+    "the regions of a grid, with hidden tests": 0
+  },
+  "multiplicity": {
+    "2": 4,
+    "3": 4,
+    "8": 124,
+    "20": 25
+  },
   "artifact_sha256": "1ed79413eac8503636dfb10afd4592a6f1a68fe89cbc60a84927fde17e4f9e7d",
   "rows_jsonl_sha256": "f799c6879e65f9c9847d64df8b47f35e75efc5ef02812de8d7ba239b330236bc",
   "training_source_sha256": "3ab91466a8ef729a2e57d5d6da31466b02c89aa733fb9850e2c7e0650b6f46a3",

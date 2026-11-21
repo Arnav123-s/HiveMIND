@@ -1,6 +1,7 @@
 """Recover the full G58 length-filter population with the runner's actual row selection and tokenizer."""
 import argparse
 import ast
+import csv
 from collections import Counter
 import hashlib
 import inspect
@@ -78,6 +79,7 @@ def run(args):
     tok = AutoTokenizer.from_pretrained(args.tokenizer)
     encode = training_encoder(tok)
     cache, excluded, per_slice = {}, {}, []
+    selected_keys, accepted_requests, accepted_first = set(), set(), set()
     with tempfile.TemporaryDirectory() as temp, zipfile.ZipFile(args.archive) as zipped:
         original = zipped.read("rows.jsonl")
         rows_path = Path(temp) / "rows.jsonl"
@@ -88,6 +90,8 @@ def run(args):
             missing = 0
             for row in rows:
                 key = exchange(row)
+                selected_keys.add(key)
+                question = digest(row["task"].encode())
                 cache_key = (key, row["messages"][0]["content"])
                 if cache_key not in cache:
                     encoded = encode(row, CAP)
@@ -97,10 +101,13 @@ def run(args):
                         cache[cache_key] = int(raw.shape[1]), target
                 lengths = cache[cache_key]
                 if lengths is None:
+                    accepted_requests.add(question)
+                    if row["type"] == "first":
+                        accepted_first.add(question)
                     continue
                 total, target = lengths
                 missing += 1
-                detail = dict(exchange_sha256=key, question_sha256=digest(row["task"].encode()),
+                detail = dict(exchange_sha256=key, question_sha256=question,
                               kind=row.get("kind") or "?", type=row.get("type"), who=row.get("who"),
                               gen=row.get("gen"), seed=row.get("seed"), target=target,
                               full_tokens=total, prompt=total-target, jobs=[])
@@ -113,18 +120,40 @@ def run(args):
             per_slice.append(dict(job=job["job"], job_id=job["job_id"], selected=len(rows),
                                   excluded=missing, hosted_log=job["partial"]["too_long"]))
     rows = sorted(excluded.values(), key=lambda row: row["exchange_sha256"])
-    result = dict(artifact_sha256=G58_ARTIFACT, rows_jsonl_sha256=digest(original),
-                  training_source_sha256=digest(Path(grow.__file__).read_bytes()),
-                  tokenizer={name: digest((args.tokenizer / name).read_bytes()) for name in
-                             ["tokenizer.json", "tokenizer_config.json", "chat_template.jinja"]},
-                  cap=CAP, total=summarize(rows), per_slice=per_slice,
-                  by_kind={k: summarize([r for r in rows if r["kind"] == k]) for k in mark(rows, "kind")},
-                  by_type={k: summarize([r for r in rows if r["type"] == k]) for k in mark(rows, "type")},
-                  current_generation=summarize([r for r in rows if r["gen"] == "g58"]),
-                  parent_mends=summarize([r for r in rows if r["type"] == "mend"]),
-                  minimum_raw_tokens=min(r["full_tokens"] for r in rows),
-                  maximum_raw_tokens=max(r["full_tokens"] for r in rows))
+    all_excluded = {r["question_sha256"] for r in rows} - accepted_requests
+    result = dict(
+        selected_exchanges=len(selected_keys), selected_requests=len(accepted_requests | all_excluded),
+        full_request_exclusions=len(all_excluded),
+        affected_requests_with_accepted_first=len({r["question_sha256"] for r in rows} & accepted_first),
+        full_request_exclusions_by_kind={
+            kind: len({r["question_sha256"] for r in rows if r["kind"] == kind} & all_excluded)
+            for kind in mark(rows, "kind")},
+        multiplicity={str(n): count for n, count in sorted(Counter(len(r["jobs"]) for r in rows).items())},
+        artifact_sha256=G58_ARTIFACT, rows_jsonl_sha256=digest(original),
+        training_source_sha256=digest(Path(grow.__file__).read_bytes()),
+        tokenizer={name: digest((args.tokenizer / name).read_bytes()) for name in
+                   ["tokenizer.json", "tokenizer_config.json", "chat_template.jinja"]},
+        cap=CAP, total=summarize(rows), per_slice=per_slice,
+        by_kind={k: summarize([r for r in rows if r["kind"] == k]) for k in mark(rows, "kind")},
+        by_type={k: summarize([r for r in rows if r["type"] == k]) for k in mark(rows, "type")},
+        current_generation=summarize([r for r in rows if r["gen"] == "g58"]),
+        parent_mends=summarize([r for r in rows if r["type"] == "mend"]),
+        minimum_raw_tokens=min(r["full_tokens"] for r in rows),
+        maximum_raw_tokens=max(r["full_tokens"] for r in rows))
     args.summary.write_text(json.dumps(result, indent=2) + "\n")
+    if args.identities:
+        fields = ["exchange_sha256", "question_sha256", "kind", "type", "gen", "seed",
+                  "prompt", "target", "full_tokens", "slice_presentations"]
+        with args.identities.open("w", newline="") as stream:
+            writer = csv.DictWriter(stream, fieldnames=fields + ["other_exchange_accepted", "first_exchange_accepted"],
+                                    lineterminator="\n")
+            writer.writeheader()
+            for row in rows:
+                writer.writerow({k: row[k] for k in fields[:-1]} | {
+                    "slice_presentations": len(row["jobs"]),
+                    "other_exchange_accepted": row["question_sha256"] in accepted_requests,
+                    "first_exchange_accepted": row["question_sha256"] in accepted_first,
+                })
     if args.rows:
         args.rows.write_text("".join(json.dumps(r) + "\n" for r in rows))
 
@@ -135,5 +164,6 @@ if __name__ == "__main__":
     parser.add_argument("--tokenizer", type=Path, required=True)
     parser.add_argument("--summary", required=True, type=Path)
     parser.add_argument("--rows", type=Path)
+    parser.add_argument("--identities", type=Path)
     os.environ.update(HIVE_KEEP_BACK="2", HIVE_SHARD_POLICY="hash", AGENT_TEAM_THREADS="2", HF_HUB_OFFLINE="1")
     run(parser.parse_args())

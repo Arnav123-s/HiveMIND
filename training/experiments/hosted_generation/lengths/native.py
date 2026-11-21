@@ -12,6 +12,28 @@ import zipfile
 from audit import CAP, collect, digest, exchange, training_encoder
 
 
+def adapter_change(directory):
+    """Check actual learned tensors against the exact parent/trunk mixture loaded at initialization."""
+    from safetensors import safe_open
+    import numpy as np
+
+    initial = directory / "t80+lengthprobe.start.safetensors"
+    final = directory / "t80+lengthprobe" / "adapter_model.safetensors"
+    largest, changed, total = 0.0, 0, 0
+    with safe_open(initial, framework="np") as before, safe_open(final, framework="np") as after:
+        assert before.keys() == after.keys()
+        names = before.keys()
+        for key in names:
+            delta = np.abs(after.get_tensor(key) - before.get_tensor(key))
+            assert np.isfinite(delta).all()
+            largest = max(largest, float(delta.max()))
+            changed += int(np.count_nonzero(delta))
+            total += delta.size
+    return dict(tensors=len(names), scalar_weights=total, changed_weights=changed,
+                max_abs_weight_delta=largest, start_sha256=digest(initial.read_bytes()),
+                end_sha256=digest(final.read_bytes()))
+
+
 def run(args):
     manifest = json.loads(Path(__file__).with_name("protocol.json").read_text())
     training = manifest["training"].copy()
@@ -21,6 +43,7 @@ def run(args):
     import psutil
     from training import grow
     from transformers import AutoTokenizer
+    from huggingface_hub import snapshot_download
 
     args.scratch.mkdir(exist_ok=False, parents=True)
     grow.GROW = args.scratch / "grow"
@@ -47,6 +70,8 @@ def run(args):
     normalized = collect(panel_path, "lengthprobe", "g53sources2", "sources", "")
     model_name = "models--" + manifest["model"].replace("/", "--")
     snapshot = args.hf_home / "hub" / model_name / "snapshots" / manifest["model_revision"]
+    resolved = Path(snapshot_download(manifest["model"], local_files_only=True))
+    assert resolved.resolve() == snapshot.resolve()
     encode = training_encoder(AutoTokenizer.from_pretrained(snapshot))
     controls = []
     for row in normalized:
@@ -140,7 +165,7 @@ def run(args):
     watcher.join()
     elapsed = time.monotonic() - start
     exported = Path(report.pop("file"))
-    result = dict(weight_cache_advice=cache_advice, effective_dtype="f32" if any("trained in 32-bit" in line for line in messages) else "bf16",
+    result = dict(model_revision=resolved.name, adapter_change=adapter_change(grow.GROW), weight_cache_advice=cache_advice, effective_dtype="f32" if any("trained in 32-bit" in line for line in messages) else "bf16",
                   controls=controls, training=report, admissions=admissions, measured_passes=samples,
                   cgroup_limits_bytes=[limit for _, limit in limits],
                   elapsed_train_and_export_seconds=round(elapsed, 3), process_high_water_rss_bytes=
