@@ -1,0 +1,110 @@
+import configparser
+import csv
+import io
+import json
+from pathlib import Path
+
+import pytest
+
+from training import exam, grow, hint_dream as hd
+
+
+def records(spec, data):
+    if spec.form == 'queue':
+        return data
+    if spec.form == 'csv':
+        rows = csv.DictReader(io.StringIO(data))
+    elif spec.form == 'json':
+        rows = json.loads(data)
+    else:
+        ini = configparser.ConfigParser()
+        ini.read_string(data)
+        rows = (ini[section] for section in ini.sections())
+    return [(row['label'], int(row['value'])) for row in rows]
+
+
+def streaming(spec, data):
+    values, previous, runs, alerts = {}, {}, {}, []
+    for label, value in records(spec, data):
+        values.setdefault(label, 0)
+        if spec.rule == 'rank' and value >= spec.threshold:
+            values[label] += value
+        elif spec.rule == 'wrap':
+            values[label] += (value - previous.get(label, value)) % spec.modulus
+        elif spec.rule == 'streak':
+            runs[label] = runs.get(label, 0) + 1 if value >= spec.threshold else 0
+            if runs[label] == spec.patience:
+                alerts.append(label)
+        previous[label] = value
+    if spec.rule == 'last':
+        return [k for k, value in previous.items() if value >= spec.threshold]
+    if spec.rule == 'rank':
+        return sorted(values, key=values.get, reverse=True)
+    return alerts if spec.rule == 'streak' else values
+
+
+def test_independent_streaming_implementation_matches_each_sealed_oracle():
+    specs = list(hd.draw(5757, 16))
+    assert {(s.form, s.rule) for s in specs} == {(f, r) for f in hd.FORMATS for r in hd.RULES}
+    assert specs == list(hd.draw(5757, 16)) and specs != list(hd.draw(5758, 16))
+    for spec in specs:
+        for suite in ('visible', 'check', 'audit'):
+            for data, answer in hd.examples(spec, suite):
+                assert streaming(spec, data) == answer
+
+
+class ReplayGuest:
+    def __init__(self, spec):
+        self.spec = spec
+
+    def run(self, program, data):
+        # Replay only fixture verdicts. Native integration uses the isolated WASI Guest.
+        return [{'value': streaming(self.spec, x) if 'checked' in program else None} for x in data], 0, 0
+
+
+@pytest.mark.parametrize('blind,hinted,want,calls', [(False, True, True, 2), (True, False, False, 1), (False, False, False, 2)])
+def test_admits_only_blind_failures_and_removes_private_context(blind, hinted, want, calls):
+    spec = next(hd.draw(54, 1))
+    prompt, hint = hd.instructions(spec)
+    asked = []
+    def ask(member, ms, **kwargs):
+        asked.append(ms)
+        return 'def solve(x): return ' + ('"checked"' if (blind, hinted)[len(asked) - 1] else 'None')
+    row, audit = hd.trial(spec, 'test', ask, ReplayGuest(spec))
+    assert len(asked) == calls and bool(row) == want
+    if want:
+        assert audit['hinted']['matched'] == 24 and row['messages'] == hd.messages(prompt)
+        assert hint not in json.dumps(row) and 'audit' not in row
+
+
+def test_enabled_entrypoint_reaches_gather_and_accounts_for_one_slot(tmp_path, monkeypatch):
+    monkeypatch.setenv('HIVE_SPADE_DREAM', '1')
+    monkeypatch.setattr(exam, 'RUNS', tmp_path / 'receipts')
+    spec = next(hd.draw(4, 1))
+    def fake_paired_process(command, **kwargs):
+        assert command[2:4] == ['training.hint_dream', '4'] and kwargs['timeout'] <= 600
+        replies = iter(['def solve(x): return None', 'def solve(x): return "checked"'])
+        row, audit = hd.trial(spec, 'fixture', lambda *a, **k: next(replies), ReplayGuest(spec))
+        Path(command[-1]).write_text(json.dumps({'status':'checked', 'calls':2, 'audit':audit, 'row':row}))
+    monkeypatch.setattr(hd.subprocess, 'run', fake_paired_process)
+    out = tmp_path / 'new' / 'rows.jsonl'
+    result = grow.dream(4, 3, tmp_path / 'absent.jsonl', out)
+    assert result['tasks'] == result['rows'] == result['right'] == 1
+    assert result['generated']['model_calls'] == 2
+    combined = tmp_path / 'joined.jsonl'
+    assert grow.gather(combined, 'g58', new=[out, out]) == (0, 1)
+    got = json.loads(combined.read_text())
+    assert got['gen'] == 'g58' and hd.instructions(spec)[1] not in json.dumps(got)
+    assert json.loads(next((tmp_path / 'receipts').rglob('hint-regret.json')).read_text())['admitted']
+
+
+def test_deadline_and_unavailable_guest_do_not_admit(tmp_path, monkeypatch):
+    from team import saved, ternary
+    monkeypatch.setattr(saved, 'guest', lambda: None)
+    monkeypatch.setattr(ternary, 'roster', lambda: [])
+    out = tmp_path / 'child.json'
+    hd._attempt(7, out)
+    assert json.loads(out.read_text())['status'] == 'unavailable'
+    summary = hd.run_slot(7, tmp_path / 'rows.jsonl', tmp_path / 'report.json', 1)
+    assert summary['rows'] == summary['model_calls'] == 0
+    assert not (tmp_path / 'rows.jsonl').exists()

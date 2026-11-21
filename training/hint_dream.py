@@ -2,14 +2,18 @@
 import ast
 import configparser
 import csv
-import hashlib
 import io
 import json
 import random
+import os
+import subprocess
+import sys
+import tempfile
+import time
 from dataclasses import dataclass
 from pathlib import Path
 
-from team.specialists.coder import extract_code
+from team.tools.source import extract_code
 
 FORMATS = ("csv", "json", "ini", "queue")
 RULES = ("last", "rank", "wrap", "streak")
@@ -164,3 +168,58 @@ def trial(spec, member, ask, guest, all_pairs=False):
     row = {"type": "first", "dream": True, "task": prompt, "kind": spec.kind, "seed": spec.seed,
            "who": member, "hint_regret": True, "messages": base, "output": f"```python\n{source}\n```"}
     return row, audit
+
+
+def _attempt(seed, output):
+    from team import saved, ternary
+    guest = saved.guest()
+    roster = [member for member in ternary.roster() if member.partition("+")[0] in ternary.MODELS]
+    if not guest or not roster:
+        output.write_text(json.dumps({"status": "unavailable", "detail": "missing WASI guest or native member"}))
+        return
+    member = next((m for m in roster if ternary.is_trunk(m)), roster[0])
+    spec = next(draw(seed, 1))
+    calls = 0
+
+    def ask(*args, **kwargs):
+        nonlocal calls
+        calls += 1
+        return ternary.chat(*args, **kwargs)
+
+    row, audit = trial(spec, member, ask, guest)
+    output.write_text(json.dumps({"status": "checked", "calls": calls, "audit": audit, "row": row}))
+
+
+def run_slot(seed, out, receipt, deadline, log=print):
+    """Reserve at most one ordinary dream slot, under both the task and job time budgets."""
+    cap = float(os.environ.get("HIVE_TASK_SECONDS", 600))
+    seconds = min(cap, deadline - time.time()) if deadline else cap
+    summary = {"tasks": 0, "right": 0, "rows": 0, "model_calls": 0, "status": "deadline"}
+    if seconds <= 0:
+        return summary
+    receipt.parent.mkdir(parents=True, exist_ok=True)
+    with tempfile.TemporaryDirectory(dir=receipt.parent) as tmp:
+        path = Path(tmp) / "result.json"
+        try:
+            subprocess.run([sys.executable, "-m", "training.hint_dream", str(seed), str(path)],
+                           timeout=seconds, check=True, cwd=Path(__file__).resolve().parents[1])
+            report = json.loads(path.read_text())
+        except subprocess.TimeoutExpired:
+            report = {"status": "timeout", "calls": None}
+        except (subprocess.CalledProcessError, OSError, ValueError) as exc:
+            report = {"status": "unavailable", "detail": type(exc).__name__, "calls": None}
+        row = report.pop("row", None)
+        if row:
+            out.parent.mkdir(parents=True, exist_ok=True)
+            with out.open("a") as f:
+                f.write(json.dumps(row) + "\n")
+        summary.update(tasks=int(report["status"] != "unavailable"), right=int(bool(row)), rows=int(bool(row)),
+                       model_calls=report.get("calls", 0), status=report["status"])
+        path.write_text(json.dumps(dict(report, admitted=bool(row)), indent=2) + "\n")
+        path.replace(receipt)
+    log(f"generated dream {seed}: {summary}", flush=True)
+    return summary
+
+
+if __name__ == "__main__":
+    _attempt(sys.argv[1], Path(sys.argv[2]))

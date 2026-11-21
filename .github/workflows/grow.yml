@@ -304,9 +304,20 @@ jobs:
       - name: The body's cells, from the release
         run: python3 training/grow_record.py fetch "$HIVE_MEMBERS"
       - uses: ./.github/actions/hive
+      - name: Install the guest for generated practice
+        continue-on-error: true
+        if: ${{ vars.HIVE_SPADE_DREAM == '1' }}
+        run: |
+          python -m pip install --quiet wasmtime==36.0.0
+          sdk="$RUNNER_TEMP/dream-wasi"
+          curl -fsSL --retry 2 --max-time 90 'https://github.com/brettcannon/cpython-wasi-build/releases/download/v3.13.9/python-3.13.9-wasi_sdk-24.zip' -o "$sdk.zip"
+          echo "f974d681668b8a51bf548474c9999630fe83a316155a4e937eaff57ea3ea4f39  $sdk.zip" | sha256sum -c -
+          unzip -q "$sdk.zip" -d "$sdk"
+          echo "HIVE_FIELDWORK_SDK=$sdk" >> "$GITHUB_ENV"
       - name: Dream
         env:
           # another cell beside the trunk on each runner, and on each try after the first (training/grow.py dream)
+          HIVE_SPADE_DREAM: ${{ vars.HIVE_SPADE_DREAM || '0' }}
           HIVE_ROTATE: ${{ matrix.dream }}
           # as in practice: the slowest corrected dream of g33, g35 and g38 took 242 s
           HIVE_TASK_SECONDS: "600"
@@ -314,7 +325,7 @@ jobs:
           # the tasks the hive got wrong before (kept in the release)
           curl -sfL -o old_failures.jsonl "https://github.com/${GITHUB_REPOSITORY}/releases/download/hive-grown/failures.jsonl" || : > old_failures.jsonl
           DREAMS="${{ inputs.dreams || '3' }}"
-          if ! [[ "$DREAMS" =~ ^[0-9]{1,2}$ ]] || [ "$DREAMS" -eq 0 ] || ! [ -s old_failures.jsonl ]; then echo "no dreams: $DREAMS a runner, $(wc -l < old_failures.jsonl) old failures"; exit 0; fi
+          if ! [[ "$DREAMS" =~ ^[0-9]{1,2}$ ]] || [ "$DREAMS" -eq 0 ] || { [ "$HIVE_SPADE_DREAM" != 1 ] && ! [ -s old_failures.jsonl ]; }; then echo "no dreams: $DREAMS a runner, $(wc -l < old_failures.jsonl) old failures"; exit 0; fi
           (while sleep 120; do echo "memory: $(free -m | awk '/Mem/{m=$3"/"$2} /Swap/{s=$3} END{print m " MB used, swap " s " MB"}'); most: $(ps -eo rss=,comm= --sort=-rss | head -3 | awk '{printf "%s %d MB; ", $2, $1/1024}')"; done) &
           # seeds of their own: practice's are 10000000 + run * 100 + runner, and dreams on the practice runners took
           # 30000000 + run * 100 + runner (1 to 12); the dream runners take 51 to 58 of each run's hundred, so no
@@ -347,6 +358,7 @@ jobs:
             runs/exam/**/TASK.md
             runs/exam/**/REPORT.md
             runs/exam/**/exam.json
+            runs/exam/**/hint-regret.json
             runs/exam/**/events.jsonl
             runs/exam/**/member*_*.py
             runs/exam/**/.member*_*.py.out

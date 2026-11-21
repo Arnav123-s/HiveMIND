@@ -479,6 +479,30 @@ def dream_priority(failure, index, count, weights):
 
 
 def dream(seed, n=4, failures=None, out=None, log=print, minutes=0, tries=2, weights=None, deadline=0):
+    """Optionally reserve one of the shard's practice slots for a freshly generated task."""
+    if os.environ.get("HIVE_SPADE_DREAM") != "1" or n <= 0:
+        return _past_dreams(seed, n, failures, out, log, minutes, tries, weights, deadline=deadline)
+    from training import hint_dream
+    from training.exam import RUNS
+    out = Path(out or GROW / "rows.jsonl")
+    began = time.time()
+    end = deadline
+    if minutes:
+        end = min(end or float("inf"), began + minutes * 60)
+    fresh = hint_dream.run_slot(seed, out, RUNS / f"dream_{seed}" / "hint-regret.json", end, log)
+    left = n - fresh["tasks"]
+    remaining_minutes = (end - time.time()) / 60 if end else 0
+    if left > 0 and (not end or remaining_minutes > 0):
+        past = _past_dreams(seed, left, failures, out, log, remaining_minutes, tries, weights, deadline=deadline)
+    else:
+        past = {"dream": seed, "tasks": 0, "right": 0, "rows": 0}
+    for field in ("tasks", "right", "rows"):
+        past[field] += fresh[field]
+    past["generated"] = fresh
+    return past
+
+
+def _past_dreams(seed, n=4, failures=None, out=None, log=print, minutes=0, tries=2, weights=None, deadline=0):
     """The hive goes back to tasks it got wrong (failures.jsonl, kept by practice) and corrects itself. Each is made
     again exactly (training/exam.remake), with the old program and what the check said (numbers hidden); where the
     check now passes, the correction is a training row like any other: the old attempt and the verdict lead to the
