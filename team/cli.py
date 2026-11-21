@@ -234,8 +234,21 @@ def main(argv=None):
                 return "(stopped)"
         converse_loop(first, step, keep_going=keep_going)
         return 0
-    from . import sdk, stop
-    swarm = sdk.Swarm(approve="never" if a.unattended or not sys.stdin.isatty() else "ask")
+    from . import saved, stop
+    bank = saved.bank_path() if os.environ.get("HIVE_ROLES") != "1" else None
+    swarm = None
+
+    def local_step(msg, history):
+        nonlocal swarm
+        if bank is not None:
+            result = saved.answer(msg, bank=bank, has_history=bool(history), direct_only=True)
+            if result is not None:
+                print(result["text"])
+                return result["text"]
+        if swarm is None:
+            from . import sdk
+            swarm = sdk.Swarm(approve="never" if a.unattended or not sys.stdin.isatty() else "ask")
+        return say(swarm, msg, history, a.rounds)
 
     def on_ctrl_c(sig, frame):  # first: kill switch (every specialist stops, what was finished is kept); second: exit
         if stop.requested():
@@ -243,7 +256,7 @@ def main(argv=None):
         stop.request("hive: Ctrl+C")
         print("\n*** stopping every specialist now (Ctrl+C again to exit immediately)", flush=True)
     signal.signal(signal.SIGINT, on_ctrl_c)
-    converse_loop(first, lambda m, h: say(swarm, m, h, a.rounds), keep_going=keep_going)
+    converse_loop(first, local_step, keep_going=keep_going)
     return 0
 
 

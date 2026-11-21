@@ -142,7 +142,7 @@ def reply(message, history=(), name="the user", run_dir=None, log=None, base=Non
         return {"text": text, "worked": False, "agreed": None, "task": "", "dir": "", "files": [], "seconds": round(time.time() - t0)}
     # a saved, checked method (HIVE_BANK) answers what it fits, with no model call; off when no bank is configured
     from . import saved
-    kept = saved.answer(message, log=say) if saved.bank_path() else None
+    kept = saved.answer(message, log=say, has_history=bool(history)) if saved.bank_path() else None
     if kept:
         say(f"saved method {kept['task']}: {kept['status']}")
         return {"text": kept["text"], "worked": True, "agreed": kept["status"] == "answered", "task": message, "dir": "",
