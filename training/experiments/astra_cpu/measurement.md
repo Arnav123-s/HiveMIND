@@ -9,6 +9,27 @@ Two full T80 CPU training runs began with the actual G56 sources-slice parent an
 
 The long answer used a maximum projection of 32 positions per block, down from 189. The 29-token short control took the stock path in both arms. Recorded training losses were 0.0306 and 0.0308 in both runs. The complete workers took 204.75 and 241.45 seconds including weight loading, parent/trunk mixing and file export. Process affinity and row selection were matched, but other processes shared the four-core host. Even the short control varied in CPU time. The per-worker process peak fell from 12.168 to 11.801 GiB. The whole cgroup's peak estimated nonreclaimable charge was 12.52 and 12.68 GiB respectively and included neighboring processes. These two updates measure training behavior and memory. They supply no user-task transfer or exam result. [Raw paired receipts](native-pair.json) · [Full tensor comparison](update-comparison.json) · [Projection routing](projection.json) · [Reproduction](native-replay.md)
 
+## Production settings on the same two rows
+
+With 128-token loss chunks and row checkpointing enabled, the T80 CPU trainer made the same two nonzero optimizer updates as the archived stock worker. The two workers started from identical weights and finished with identical values for **all 16,973,824 parameters in 196 tensors**. The exported GGUFs also had identical SHA-256 hashes. Both workers finished two rows with zero skips.
+
+| Measured on the two-thread worker | Stock | 128-token output chunks and per-row checkpointing |
+|---|---:|---:|
+| Peak process RSS | 12.168 GiB | 10.479 GiB |
+| Complete worker wall time | 204.75 s | 233.80 s |
+| Total worker CPU time | 353.59 s | 412.74 s |
+| 475-token row, peak RSS / wall time | 12.158 GiB / 62.81 s | 10.045 GiB / 82.23 s |
+| 198-token row, peak RSS / wall time | 10.420 GiB / 31.61 s | 10.480 GiB / 27.46 s |
+
+On the long row, the candidate selected checkpointing with 5.35 GiB available beside the model. A forward hook on the real output layer observed 128 and 60 projected positions for its 188 answer tokens. On the short row it selected ordinary training and projected all 30 positions for its 29 answer tokens. These defaults saved **1.69 GiB (13.9%)** of process peak and the full worker took **29.05 seconds longer (14.2%)**. The measurements were made at different times on a shared CPU. The two-row experiment measures update equivalence and peak memory. Complete-generation acceptance requires a hosted run. [Candidate receipt and tensor comparison](default-profile-native.json) · [Archived stock receipt](native-pair.json)
+
+Use the pinned checkpoint and CPU environment to repeat the candidate arm. [Native replay preparation](native-replay.md)
+
+```sh
+taskset -c 3,4 python training/experiments/astra_cpu/native.py --repo . --arm acceptance --chunk-tokens 128 --inputs /tmp/astra-inputs --scratch /tmp/astra-default-output
+python training/experiments/astra_cpu/compare_native.py /tmp/astra-stock-output /tmp/astra-default-output
+```
+
 ## How the historical skip count was measured
 
 The log line naming 563 refers to skipped **pass attempts** on G51 code slice zero. A subject could put the same row back and try it again. G55 and G56 show different counts. Each archive reconstructed exactly both the original number of slice rows and the logged post-encoding study size once externally obtained raw and judged examples were included.
