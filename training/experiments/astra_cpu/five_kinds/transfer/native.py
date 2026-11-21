@@ -41,23 +41,23 @@ def save(path, data):
     tmp.replace(path)
 
 
-def run(a):
+def run(a, *, panel=HERE / "panel.json", panel_sha=EXPECTED_PANEL):
     if a.out.exists():
         raise FileExistsError(a.out)
     if a.arm == "parent" and a.lora_sha != EXPECTED_PARENT:
         raise ValueError("starting blend differs from its frozen digest")
-    for path, expected in ((HERE / "panel.json", EXPECTED_PANEL), (a.model, EXPECTED_MODEL),
+    for path, expected in ((panel, panel_sha), (a.model, EXPECTED_MODEL),
                            (a.runtime, EXPECTED_RUNTIME), (a.lora, a.lora_sha)):
         if digest(path) != expected:
             raise ValueError(f"asset digest mismatch at {path.name}")
-    cases = json.loads((HERE / "panel.json").read_bytes())["rows"]
+    cases = json.loads(panel.read_bytes())["rows"]
     with socket.socket() as s:
         s.bind(("127.0.0.1", 0))
         port = s.getsockname()[1]
     url = f"http://127.0.0.1:{port}"
     flags = ["-ngl", "0", "-c", "2048", "-t", "2", "-tb", "2", "-rtr", "-b", "128", "-ub", "128",
              "--parallel", "1", "--threads-http", "2", "--host", "127.0.0.1", "--port", str(port), "--jinja"]
-    record = {"arm": a.arm, "panel_sha256": EXPECTED_PANEL, "model_sha256": EXPECTED_MODEL,
+    record = {"arm": a.arm, "panel_sha256": panel_sha, "model_sha256": EXPECTED_MODEL,
               "runtime_sha256": EXPECTED_RUNTIME, "lora_sha256": a.lora_sha, "flags": flags, "sampling": SAMPLING,
               "affinity": sorted(os.sched_getaffinity(0)), "started": now(), "complete": False, "calls": []}
     with a.log.open("wb") as log:
