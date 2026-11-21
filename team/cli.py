@@ -176,6 +176,9 @@ def main(argv=None):
     if argv[:1] == ["exposure"]:
         from .exposure import main as exposure
         return exposure(argv[1:])
+    if argv[:1] == ["bank-admit"]:
+        from .bank_admit import main as admit
+        return admit(argv[1:])
     if argv[:1] == ["fieldwork"]:
         from training.experiments.fieldwork.work import main as fieldwork
         return fieldwork(argv[1:])

@@ -44,6 +44,7 @@ trunk → **paired gate** → record.
 
 - [Checked work on generation 47](training/reports/checked-work.md) covers real file deliveries, a recovered sensor calculation and an independent test of specialist routing on bin packing.
 - [How the hive uses older and corrected methods](training/reports/retained-skills/README.md) explains how its workers differ, how an unchanged exam score hid lost skills, and how to use saved versions with `./hive fieldwork`.
+- [Admit a worker function for reuse in chat](training/experiments/astra_transfer/bank_admission/README.md) shows how to check a finite input range and save the verified implementation with `./hive bank-admit`.
 - [docs/OVERVIEW.md](docs/OVERVIEW.md): the whole story in one page.
 - [docs/PROGRESS.md](docs/PROGRESS.md): the graphs of every generation.
 - [docs/reads/latest.md](docs/reads/latest.md): the read of the newest generation and its next piece.

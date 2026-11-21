@@ -96,6 +96,27 @@ def read_inputs(message, keys):
     return {keys[0]: [int(n) for n in numbers]}, None
 
 
+def bounded_inputs(message, versions):
+    obj = re.search(r"\{.*\}", message, re.S)
+    if obj:
+        try:
+            return json.loads(obj.group())
+        except ValueError:
+            return None
+    # Only a single integer field can be filled from prose without guessing the field or coercing its type.
+    axes = [r["arguments"] for r in versions]
+    if not all(len(axis) == 1 and "min" in axis[0] for axis in axes):
+        return None
+    keys = {axis[0]["name"] for axis in axes}
+    numbers = re.findall(r"[+-]?(?:\d+(?:[.,]\d+)*|\.\d+)(?:[eE][+-]?\d+)?", message)
+    if len(keys) == len(numbers) == 1 and re.fullmatch(r"[+-]?[0-9]+", numbers[0]):
+        try:
+            return {keys.pop(): int(numbers[0])}
+        except ValueError:
+            pass
+    return None
+
+
 def answer(message, bank=None, runner=None, log=None):
     """A saved method's answer to the message (see the module's notes), or None to go on as before."""
     from training.experiments.fieldwork.work import load_bank, shared_results
@@ -107,9 +128,23 @@ def answer(message, bank=None, runner=None, log=None):
     if found is None:
         return None
     task, description, versions = found
-    method = f"{task} ({', '.join(r['digest'][:12] for r in versions)})"
     plain = re.sub(r"^Write solve\(x\) to\s+", "", description)
-    value, missing = read_inputs(message, input_keys(versions, description))
+    bounded = [r for r in versions if "arguments" in r]
+    if bounded:
+        from .bank_admit import applies
+        value = bounded_inputs(message, bounded)
+        legacy = [r for r in versions if "arguments" not in r]
+        eligible = [r for r in bounded if applies(r["arguments"], value)]
+        if value is None and legacy:
+            value, missing = read_inputs(message, input_keys(legacy, description))
+        else:
+            missing = None if isinstance(value, dict) and (eligible or legacy) else (
+                "a JSON object within a saved method's verified domain")
+        if not missing:
+            versions = eligible + legacy
+    else:
+        value, missing = read_inputs(message, input_keys(versions, description))
+    method = f"{task} ({', '.join(r['digest'][:12] for r in versions)})"
     if missing:
         return dict(status="missing", task=task, methods=[r["digest"] for r in versions],
                     text=f"I have a saved, checked method for this, {method}, but I cannot run it on your message: "

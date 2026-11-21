@@ -320,6 +320,16 @@ def sit_one(tag, tid, task, check, memory_home, timeout=None, kind=""):
         ok, why = False, f"check failed: {type(e).__name__}: {e}"
     res = {"id": tid, "ok": bool(ok), "why": why, "seconds": round(time.time() - t0), "note": note, "answer": B._body(report)[:400]}
     res["members"] = each_member(run, check)
+    # Only practice may grow the method bank. A fixed exam's worker outputs are never candidates.
+    if (re.fullmatch(r"practice_\d+", tag) and os.environ.get("HIVE_BANK")
+            and os.environ.get("HIVE_BANK_CONTRACTS")):
+        from team import bank_admit
+        sdk = Path(os.environ.get("HIVE_FIELDWORK_SDK") or ROOT / "runs/fieldwork-assets/wasi")
+        try:
+            res["bank_admissions"] = bank_admit.practice(run, res["members"], Path(os.environ["HIVE_BANK_CONTRACTS"]),
+                                                        Path(os.environ["HIVE_BANK"]), sdk)
+        except Exception as exc:  # optional WASI admission must not discard the completed practice grade
+            res["bank_admissions"] = [{"unavailable": str(exc)}]
     (run / "exam.json").write_text(json.dumps(res, indent=1))
     return res
 
