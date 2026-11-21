@@ -1,0 +1,669 @@
+{
+  "panel_sha256": "b47c3198485544e736774fac16b7536ff62fef55e26b656d3dba0e453e58d099",
+  "manifest_sha256": "96926f0e537c9aaabc64daffd19b8a4ba05cb86c36ba1f8bf6aeee2448231f18",
+  "retained_parent_sha256": "6d2b50f593941b73e564286a3889768948bf539fec5517c6b884cd2c390d0ab0",
+  "comparisons": [
+    {
+      "family": "h_txt_names",
+      "fresh_only_fit": {
+        "parent": "release",
+        "parent_trainable_sha256": "6d2b50f593941b73e564286a3889768948bf539fec5517c6b884cd2c390d0ab0",
+        "parent_gguf_sha256": "72913f1c566638f2177574178f1d6925cde956a92b35af06795e7598c5729036",
+        "inherited_tensors": 196,
+        "trainable_sha256": "cd0c4f6f7b94aa799c7d6209540f53ab0f1aba21b46d4ecee58b78ef8869a355",
+        "gguf_sha256": "cb89501a7bbd73ba30f335f6f24820bd1b98218ea828fb9a7d61d764f372e5d1",
+        "elapsed_seconds": 317.71,
+        "meta": {
+          "member": "t80+retention1",
+          "leans": "sources",
+          "dtype": "bf16",
+          "loss_chunk_tokens": 128,
+          "checkpoint": false,
+          "seconds_a_row": 59.7,
+          "ternary_edit": false,
+          "foresee": false,
+          "pairs": 0,
+          "int8_base": true,
+          "read": 0,
+          "judged": 0,
+          "parent": "t80.g55trunk.safetensors",
+          "parent_cell": "",
+          "trunk": "",
+          "mended": 0,
+          "new_rows": 3,
+          "shard": "",
+          "base": "prism-ml/Ternary-Bonsai-8B-unpacked",
+          "rows": 3,
+          "used": 3,
+          "passes": 3,
+          "epochs": 1.0,
+          "rank": 32,
+          "lr": 0.0002,
+          "layers": [
+            22,
+            35
+          ],
+          "steps": 3,
+          "seconds": 179,
+          "loss_first": 0.0033,
+          "loss_last": 0.0014,
+          "when": "2026-11-20 20:27",
+          "memory_gb": 11.5,
+          "gpu": "",
+          "subjects": [
+            {
+              "subject": "names turned and sorted \u00b7 first \u00b7 new",
+              "rows": 3,
+              "passes": 3,
+              "loss_first": 0.0033,
+              "loss_last": 0.0014,
+              "new_hard": true
+            }
+          ],
+          "kept_back": {},
+          "rows_by_kind": {
+            "names turned and sorted": {
+              "given": 3,
+              "too_long": 0,
+              "skipped_memory": 0,
+              "trained": 3
+            }
+          },
+          "memory": {
+            "peak_gb": 11.47,
+            "min_available_gb": 2.29,
+            "swap_peak_gb": 0.0,
+            "rows_skipped": 0,
+            "skipped_by_subject": {},
+            "cost_per_piece_mb": 10.062,
+            "formula_per_piece_mb": 10.062,
+            "spare_gb": 1.0,
+            "row_modes": {
+              "ordinary": 1,
+              "checkpoint": 2
+            },
+            "mode_changes": 1,
+            "checkpoint_cost_per_piece_mb": 2.339,
+            "checkpoint_formula_per_piece_mb": 1.156,
+            "training_max_len": 1152,
+            "evaluation_max_len": 381
+          },
+          "megabytes": 70.4
+        },
+        "optimizer_order": [
+          "2b9ef2d4c6aff3fddbd36740f07f522ea009ed5b48dc03ddcf3f6e93f97f893b",
+          "01989deba829fd70b6d2602c15f4e192ee4be7fb1d8104c7820668267d1de0aa",
+          "b679a059a99c66b4db040acfe00216ef7a081ff7c47a5945e3c0fbbce7188d14"
+        ]
+      },
+      "fresh_only_decision": {
+        "parent": "release",
+        "child": "cycle-1",
+        "parent_passed": [
+          "h_tab_fill",
+          "m_percent",
+          "m_weekday"
+        ],
+        "child_passed": [
+          "h_tab_fill",
+          "m_percent",
+          "m_weekday"
+        ],
+        "gained": [],
+        "lost": [],
+        "keep": false,
+        "next": "release"
+      },
+      "fresh_only_grades": {
+        "lora_sha256": "cb89501a7bbd73ba30f335f6f24820bd1b98218ea828fb9a7d61d764f372e5d1",
+        "results": {
+          "m_percent": {
+            "passed": true,
+            "grader": "wants 748; the answer's numbers: [748.0]",
+            "exit_error": null,
+            "stdout": "New price: 748.0\n",
+            "stderr": "",
+            "program_sha256": "ea6ecb9ead71d490a2cecb05e1187e9099d1e3edb935a8d2a36cc564f45fc5a0",
+            "files": {}
+          },
+          "m_weekday": {
+            "passed": true,
+            "grader": "1 sentences, 1 lines",
+            "exit_error": null,
+            "stdout": "Monday\n",
+            "stderr": "",
+            "program_sha256": "2e0ba8ebee105e8d0896860bfa2796c4c8abec50bc5aee376573b05b38afa746",
+            "files": {}
+          },
+          "h_txt_names": {
+            "passed": false,
+            "grader": "names.txt ['. lindqvist', '. van dijk', '. AHMED', 'TOMAS . Novak', '. AHMED', '. silva', '. De Luca', 'NADIA . Da Costa', '. Moreau'] against ['Aiko Ahmed', 'Pavel Ahmed', 'Nadia E. Da Costa', 'Pavel De Luca', 'Pavel Lindqvist', 'Sofia Moreau', 'Tomas R. Novak', 'Jonas Silva', 'Ravi Van Dijk']; the count 9 in the answer",
+            "exit_error": null,
+            "stdout": "names.txt saved\nnames: 9\n",
+            "stderr": "",
+            "program_sha256": "214d4127a37452780923d44ee890abd161aaa43c0f582ad77705fe88f45a90a1",
+            "files": {
+              ".hive_given.json": "8d051ab683fbe8ac1d24a6a962a36807ce4ccb637f7c593d75c2decf0d85e30d",
+              "names.txt": "4b4a62233d4b44c9d5f4eb73c7b4c9d741dab380d24655b8a19ad5db9fb1ee79",
+              "task_data.txt": "4b91c789b5b86ce7335199a77614cf65284bc58f5d70893298175b5271b8d31c"
+            }
+          },
+          "h_txt_mdcsv": {
+            "passed": false,
+            "grader": "table.csv [['', '---:', ':--:', '---:', '---:', '']]... (1 rows) against [['Name', 'City', 'Team', 'Score'], ['Pavel', 'Porto', 'green', '43.6'], ['Sofia', 'Salem, MA', '', '81.1']]... (10 rows); 9 data rows said",
+            "exit_error": null,
+            "stdout": "table.csv saved\ndata rows: 0\n",
+            "stderr": "",
+            "program_sha256": "83263059ac96a0b328669c60649b438731a570eaf595c8bae1d3db198d5a11a5",
+            "files": {
+              ".hive_given.json": "f8e78f97204e6823df5ec3c57c74efeaae6c6cd498ad102c6203a87e49cf2943",
+              "table.csv": "35bb19b5195bf1ab3660182836f8b092088d1f6892db02aa5cfd1108732c31cd",
+              "task_data.txt": "7027d554f0721489dcf267e057173f085a47d27c54d57e2a818711189aceb720"
+            }
+          },
+          "h_tab_fill": {
+            "passed": true,
+            "grader": "filled.csv: 24 rows against 24, 6 filled in the answer: True",
+            "exit_error": null,
+            "stdout": "filled.csv saved\nfilled: 6\n",
+            "stderr": "",
+            "program_sha256": "6c89d0e3441779b6d18d8a065b901af3a70fe2cff16c62135ce9dea045493753",
+            "files": {
+              ".hive_given.json": "09894de4041235f945aa486256a6ebddceb20a8ffb4826a27dbc9ceee4d16c42",
+              "filled.csv": "78e9b88f755fbe0bfc6181cef9e254fd75731865ae07c759d9cbdb749a793815",
+              "levels.csv": "570491b46fda630c69f48d7e2c7569865dca9ca8dbd7c7b79ace04391bfb6bc5"
+            }
+          }
+        }
+      },
+      "mixed_decision": {
+        "parent": "release",
+        "child": "cycle-1",
+        "parent_passed": [
+          "h_tab_fill",
+          "m_percent",
+          "m_weekday"
+        ],
+        "child_passed": [
+          "h_tab_fill",
+          "m_percent",
+          "m_weekday"
+        ],
+        "gained": [],
+        "lost": [],
+        "keep": false,
+        "next": "release"
+      },
+      "changed_first_programs": [
+        "h_txt_names"
+      ],
+      "derived_step_learning_rates": [
+        0.00014333333333333337,
+        7.666666666666668e-05,
+        1.000000000000001e-05
+      ],
+      "changed_whole_task_grades": [],
+      "same_two_anchors": true,
+      "mixed_answer_total_tokens": [
+        511,
+        1370
+      ],
+      "fresh_answer_total_tokens": [
+        396,
+        1133
+      ],
+      "fresh_inference_seconds": 279.457,
+      "mixed_inference_seconds": 232.121,
+      "parent_to_fresh": {
+        "values": 33947648,
+        "changed": 33947648,
+        "squared_update": 1.2479632061057064
+      },
+      "mixed_to_fresh": {
+        "values": 33947648,
+        "changed": 33947428,
+        "squared_update": 0.0016728128803163685
+      }
+    },
+    {
+      "family": "h_txt_mdcsv",
+      "fresh_only_fit": {
+        "parent": "release",
+        "parent_trainable_sha256": "6d2b50f593941b73e564286a3889768948bf539fec5517c6b884cd2c390d0ab0",
+        "parent_gguf_sha256": "72913f1c566638f2177574178f1d6925cde956a92b35af06795e7598c5729036",
+        "inherited_tensors": 196,
+        "trainable_sha256": "bb813388b6ab6a2a53fd0f46ba5569d237025a5079782a43e1c501c93bb93520",
+        "gguf_sha256": "ed3a51d4aa8b53dd6eeefd021ada3dc74f90e0247ba0949c77c7eab0b3e96ad5",
+        "elapsed_seconds": 292.98,
+        "meta": {
+          "member": "t80+retention2",
+          "leans": "sources",
+          "dtype": "bf16",
+          "loss_chunk_tokens": 128,
+          "checkpoint": false,
+          "seconds_a_row": 54.3,
+          "ternary_edit": false,
+          "foresee": false,
+          "pairs": 0,
+          "int8_base": true,
+          "read": 0,
+          "judged": 0,
+          "parent": "t80.g55trunk.safetensors",
+          "parent_cell": "",
+          "trunk": "",
+          "mended": 0,
+          "new_rows": 3,
+          "shard": "",
+          "base": "prism-ml/Ternary-Bonsai-8B-unpacked",
+          "rows": 3,
+          "used": 3,
+          "passes": 3,
+          "epochs": 1.0,
+          "rank": 32,
+          "lr": 0.0002,
+          "layers": [
+            22,
+            35
+          ],
+          "steps": 3,
+          "seconds": 163,
+          "loss_first": 1.2734,
+          "loss_last": 0.8776,
+          "when": "2026-11-20 20:38",
+          "memory_gb": 11.5,
+          "gpu": "",
+          "subjects": [
+            {
+              "subject": "a markdown table turned into CSV \u00b7 first \u00b7 new",
+              "rows": 3,
+              "passes": 3,
+              "loss_first": 1.2734,
+              "loss_last": 0.8776,
+              "new_hard": true
+            }
+          ],
+          "kept_back": {},
+          "rows_by_kind": {
+            "a markdown table turned into CSV": {
+              "given": 3,
+              "too_long": 0,
+              "skipped_memory": 0,
+              "trained": 3
+            }
+          },
+          "memory": {
+            "peak_gb": 11.54,
+            "min_available_gb": 2.41,
+            "swap_peak_gb": 0.0,
+            "rows_skipped": 0,
+            "skipped_by_subject": {},
+            "cost_per_piece_mb": 10.062,
+            "formula_per_piece_mb": 10.062,
+            "spare_gb": 1.0,
+            "row_modes": {
+              "ordinary": 1,
+              "checkpoint": 2
+            },
+            "mode_changes": 1,
+            "checkpoint_cost_per_piece_mb": 2.208,
+            "checkpoint_formula_per_piece_mb": 1.156,
+            "training_max_len": 1152,
+            "evaluation_max_len": 359
+          },
+          "megabytes": 70.4
+        },
+        "optimizer_order": [
+          "09cc7edb8418d8710acf12d1e6f4de93d7eb2eb68fe4f521fcb080afff8da4e6",
+          "1b30f68983e391a6078f45f772620b66e55bfed3cb0bf8ec415ebde90bceee53",
+          "bc2371796e2a9c114411443402b750089aa214f0a712e61c93819be01f8c985d"
+        ]
+      },
+      "fresh_only_decision": {
+        "parent": "release",
+        "child": "cycle-2",
+        "parent_passed": [
+          "h_tab_fill",
+          "m_percent",
+          "m_weekday"
+        ],
+        "child_passed": [
+          "h_tab_fill",
+          "m_percent",
+          "m_weekday"
+        ],
+        "gained": [],
+        "lost": [],
+        "keep": false,
+        "next": "release"
+      },
+      "fresh_only_grades": {
+        "lora_sha256": "ed3a51d4aa8b53dd6eeefd021ada3dc74f90e0247ba0949c77c7eab0b3e96ad5",
+        "results": {
+          "m_percent": {
+            "passed": true,
+            "grader": "wants 748; the answer's numbers: [748.0]",
+            "exit_error": null,
+            "stdout": "New price: 748.0\n",
+            "stderr": "",
+            "program_sha256": "ea6ecb9ead71d490a2cecb05e1187e9099d1e3edb935a8d2a36cc564f45fc5a0",
+            "files": {}
+          },
+          "m_weekday": {
+            "passed": true,
+            "grader": "1 sentences, 1 lines",
+            "exit_error": null,
+            "stdout": "Monday\n",
+            "stderr": "",
+            "program_sha256": "2e0ba8ebee105e8d0896860bfa2796c4c8abec50bc5aee376573b05b38afa746",
+            "files": {}
+          },
+          "h_txt_names": {
+            "passed": false,
+            "grader": "names.txt ['Pavel lindqvist', 'Ravi van dijk', 'Aiko AHMED', 'Tomas R Novak R', 'Pavel AHMED', 'Jonas silva', 'Pavel De Luca', 'Nadia E Da Costa  E', 'Sofia Moreau'] against ['Aiko Ahmed', 'Pavel Ahmed', 'Nadia E. Da Costa', 'Pavel De Luca', 'Pavel Lindqvist', 'Sofia Moreau', 'Tomas R. Novak', 'Jonas Silva', 'Ravi Van Dijk']; the count 9 in the answer",
+            "exit_error": null,
+            "stdout": "names.txt saved\nnames: 9\n",
+            "stderr": "",
+            "program_sha256": "2246627f134e1fe9c5e8a9463639a490b97684d235c387bbfab959889a27d481",
+            "files": {
+              ".hive_given.json": "8d051ab683fbe8ac1d24a6a962a36807ce4ccb637f7c593d75c2decf0d85e30d",
+              "names.txt": "28d75e2a3933c39770ff3bb844da19ef6c9ea9a57277f27f57df8499fa42d8ac",
+              "task_data.txt": "4b91c789b5b86ce7335199a77614cf65284bc58f5d70893298175b5271b8d31c"
+            }
+          },
+          "h_txt_mdcsv": {
+            "passed": false,
+            "grader": "table.csv [['', 'Name', 'City', 'Team', 'Score', ''], ['', '---:', ':--:', '---:', '---:', ''], ['', 'Pavel', 'Porto', 'green', '43.6', '']]... (11 rows) against [['Name', 'City', 'Team', 'Score'], ['Pavel', 'Porto', 'green', '43.6'], ['Sofia', 'Salem, MA', '', '81.1']]... (10 rows); 9 data rows said",
+            "exit_error": null,
+            "stdout": "table.csv saved\ndata rows: 10\n",
+            "stderr": "",
+            "program_sha256": "cc44e882b7c415656d5c34684da849324ccffa553ec3e68a9b2dcef2399f0c8b",
+            "files": {
+              ".hive_given.json": "f8e78f97204e6823df5ec3c57c74efeaae6c6cd498ad102c6203a87e49cf2943",
+              "table.csv": "00cff00b1493422fa24d4274090ba1d0a3b75e0cf84ecac913d6e7c4140d6aa4",
+              "task_data.txt": "7027d554f0721489dcf267e057173f085a47d27c54d57e2a818711189aceb720"
+            }
+          },
+          "h_tab_fill": {
+            "passed": true,
+            "grader": "filled.csv: 24 rows against 24, 6 filled in the answer: True",
+            "exit_error": null,
+            "stdout": "filled.csv saved\nfilled: 6\n",
+            "stderr": "",
+            "program_sha256": "6c89d0e3441779b6d18d8a065b901af3a70fe2cff16c62135ce9dea045493753",
+            "files": {
+              ".hive_given.json": "09894de4041235f945aa486256a6ebddceb20a8ffb4826a27dbc9ceee4d16c42",
+              "filled.csv": "78e9b88f755fbe0bfc6181cef9e254fd75731865ae07c759d9cbdb749a793815",
+              "levels.csv": "570491b46fda630c69f48d7e2c7569865dca9ca8dbd7c7b79ace04391bfb6bc5"
+            }
+          }
+        }
+      },
+      "mixed_decision": {
+        "parent": "release",
+        "child": "cycle-2",
+        "parent_passed": [
+          "h_tab_fill",
+          "m_percent",
+          "m_weekday"
+        ],
+        "child_passed": [
+          "h_tab_fill",
+          "m_percent",
+          "m_weekday"
+        ],
+        "gained": [],
+        "lost": [],
+        "keep": false,
+        "next": "release"
+      },
+      "changed_first_programs": [],
+      "derived_step_learning_rates": [
+        0.00014333333333333337,
+        7.666666666666668e-05,
+        1.000000000000001e-05
+      ],
+      "changed_whole_task_grades": [],
+      "same_two_anchors": true,
+      "mixed_answer_total_tokens": [
+        482,
+        1297
+      ],
+      "fresh_answer_total_tokens": [
+        402,
+        1185
+      ],
+      "fresh_inference_seconds": 181.139,
+      "mixed_inference_seconds": 286.304,
+      "parent_to_fresh": {
+        "values": 33947648,
+        "changed": 33947648,
+        "squared_update": 1.2459516404862594
+      },
+      "mixed_to_fresh": {
+        "values": 33947648,
+        "changed": 33945470,
+        "squared_update": 0.0007341766974464263
+      }
+    },
+    {
+      "family": "h_tab_fill",
+      "fresh_only_fit": {
+        "parent": "release",
+        "parent_trainable_sha256": "6d2b50f593941b73e564286a3889768948bf539fec5517c6b884cd2c390d0ab0",
+        "parent_gguf_sha256": "72913f1c566638f2177574178f1d6925cde956a92b35af06795e7598c5729036",
+        "inherited_tensors": 196,
+        "trainable_sha256": "a7fb7f1cb8ce19ad6c0139ecc59b86bb90085c4f985ac8b7200f0d8e6fc6788d",
+        "gguf_sha256": "d10953995b3d70e9f74ed229a32c91bf0299871e24d42f6a5de8db5843131e8a",
+        "elapsed_seconds": 265.65,
+        "meta": {
+          "member": "t80+retention3",
+          "leans": "sources",
+          "dtype": "bf16",
+          "loss_chunk_tokens": 128,
+          "checkpoint": false,
+          "seconds_a_row": 47.6,
+          "ternary_edit": false,
+          "foresee": false,
+          "pairs": 0,
+          "int8_base": true,
+          "read": 0,
+          "judged": 0,
+          "parent": "t80.g55trunk.safetensors",
+          "parent_cell": "",
+          "trunk": "",
+          "mended": 0,
+          "new_rows": 3,
+          "shard": "",
+          "base": "prism-ml/Ternary-Bonsai-8B-unpacked",
+          "rows": 3,
+          "used": 3,
+          "passes": 3,
+          "epochs": 1.0,
+          "rank": 32,
+          "lr": 0.0002,
+          "layers": [
+            22,
+            35
+          ],
+          "steps": 3,
+          "seconds": 143,
+          "loss_first": 0.0059,
+          "loss_last": 0.0023,
+          "when": "2026-11-20 20:46",
+          "memory_gb": 11.7,
+          "gpu": "",
+          "subjects": [
+            {
+              "subject": "the blanks of a table filled by a rule \u00b7 first \u00b7 new",
+              "rows": 3,
+              "passes": 3,
+              "loss_first": 0.0059,
+              "loss_last": 0.0023,
+              "new_hard": true
+            }
+          ],
+          "kept_back": {},
+          "rows_by_kind": {
+            "the blanks of a table filled by a rule": {
+              "given": 3,
+              "too_long": 0,
+              "skipped_memory": 0,
+              "trained": 3
+            }
+          },
+          "memory": {
+            "peak_gb": 11.68,
+            "min_available_gb": 2.91,
+            "swap_peak_gb": 0.0,
+            "rows_skipped": 0,
+            "skipped_by_subject": {},
+            "cost_per_piece_mb": 10.062,
+            "formula_per_piece_mb": 10.062,
+            "spare_gb": 1.0,
+            "row_modes": {
+              "ordinary": 3,
+              "checkpoint": 0
+            },
+            "mode_changes": 0,
+            "checkpoint_cost_per_piece_mb": 1.156,
+            "checkpoint_formula_per_piece_mb": 1.156,
+            "training_max_len": 1152,
+            "evaluation_max_len": 455
+          },
+          "megabytes": 70.4
+        },
+        "optimizer_order": [
+          "095bd48d9c754d1cb5f099effe27d2b01c2f23c17d0640432f54e5fde875b148",
+          "15e26e446686b466131db7247771baf81e99e5ffd38b0bf96ba80556e8ac0b87",
+          "4af2dee495eed2dff5e94d8bbf7dcbb7852165ba4939fdcfa290e6ae52260b02"
+        ]
+      },
+      "fresh_only_decision": {
+        "parent": "release",
+        "child": "cycle-3",
+        "parent_passed": [
+          "h_tab_fill",
+          "m_percent",
+          "m_weekday"
+        ],
+        "child_passed": [
+          "h_tab_fill",
+          "m_percent",
+          "m_weekday"
+        ],
+        "gained": [],
+        "lost": [],
+        "keep": false,
+        "next": "release"
+      },
+      "fresh_only_grades": {
+        "lora_sha256": "d10953995b3d70e9f74ed229a32c91bf0299871e24d42f6a5de8db5843131e8a",
+        "results": {
+          "m_percent": {
+            "passed": true,
+            "grader": "wants 748; the answer's numbers: [748.0]",
+            "exit_error": null,
+            "stdout": "New price: 748.0\n",
+            "stderr": "",
+            "program_sha256": "ea6ecb9ead71d490a2cecb05e1187e9099d1e3edb935a8d2a36cc564f45fc5a0",
+            "files": {}
+          },
+          "m_weekday": {
+            "passed": true,
+            "grader": "1 sentences, 1 lines",
+            "exit_error": null,
+            "stdout": "Monday\n",
+            "stderr": "",
+            "program_sha256": "2e0ba8ebee105e8d0896860bfa2796c4c8abec50bc5aee376573b05b38afa746",
+            "files": {}
+          },
+          "h_txt_names": {
+            "passed": false,
+            "grader": "names.txt ['Pavel lindqvist', 'Ravi van dijk', 'Aiko AHMED', 'Tomas R Novak R', 'Pavel AHMED', 'Jonas silva', 'Pavel De Luca', 'Nadia E Da Costa  E', 'Sofia Moreau'] against ['Aiko Ahmed', 'Pavel Ahmed', 'Nadia E. Da Costa', 'Pavel De Luca', 'Pavel Lindqvist', 'Sofia Moreau', 'Tomas R. Novak', 'Jonas Silva', 'Ravi Van Dijk']; the count 9 in the answer",
+            "exit_error": null,
+            "stdout": "names.txt saved\nnames: 9\n",
+            "stderr": "",
+            "program_sha256": "2246627f134e1fe9c5e8a9463639a490b97684d235c387bbfab959889a27d481",
+            "files": {
+              ".hive_given.json": "8d051ab683fbe8ac1d24a6a962a36807ce4ccb637f7c593d75c2decf0d85e30d",
+              "names.txt": "28d75e2a3933c39770ff3bb844da19ef6c9ea9a57277f27f57df8499fa42d8ac",
+              "task_data.txt": "4b91c789b5b86ce7335199a77614cf65284bc58f5d70893298175b5271b8d31c"
+            }
+          },
+          "h_txt_mdcsv": {
+            "passed": false,
+            "grader": "table.csv [['', 'Name', 'City', 'Team', 'Score', ''], ['', '---:', ':--:', '---:', '---:', ''], ['', 'Pavel', 'Porto', 'green', '43.6', '']]... (11 rows) against [['Name', 'City', 'Team', 'Score'], ['Pavel', 'Porto', 'green', '43.6'], ['Sofia', 'Salem, MA', '', '81.1']]... (10 rows); 9 data rows said",
+            "exit_error": null,
+            "stdout": "table.csv saved\ndata rows: 10\n",
+            "stderr": "",
+            "program_sha256": "cc44e882b7c415656d5c34684da849324ccffa553ec3e68a9b2dcef2399f0c8b",
+            "files": {
+              ".hive_given.json": "f8e78f97204e6823df5ec3c57c74efeaae6c6cd498ad102c6203a87e49cf2943",
+              "table.csv": "00cff00b1493422fa24d4274090ba1d0a3b75e0cf84ecac913d6e7c4140d6aa4",
+              "task_data.txt": "7027d554f0721489dcf267e057173f085a47d27c54d57e2a818711189aceb720"
+            }
+          },
+          "h_tab_fill": {
+            "passed": true,
+            "grader": "filled.csv: 24 rows against 24, 6 filled in the answer: True",
+            "exit_error": null,
+            "stdout": "filled.csv saved\nfilled: 6\n",
+            "stderr": "",
+            "program_sha256": "6c89d0e3441779b6d18d8a065b901af3a70fe2cff16c62135ce9dea045493753",
+            "files": {
+              ".hive_given.json": "09894de4041235f945aa486256a6ebddceb20a8ffb4826a27dbc9ceee4d16c42",
+              "filled.csv": "78e9b88f755fbe0bfc6181cef9e254fd75731865ae07c759d9cbdb749a793815",
+              "levels.csv": "570491b46fda630c69f48d7e2c7569865dca9ca8dbd7c7b79ace04391bfb6bc5"
+            }
+          }
+        }
+      },
+      "mixed_decision": {
+        "parent": "release",
+        "child": "cycle-3",
+        "parent_passed": [
+          "h_tab_fill",
+          "m_percent",
+          "m_weekday"
+        ],
+        "child_passed": [
+          "h_tab_fill",
+          "m_percent",
+          "m_weekday"
+        ],
+        "gained": [],
+        "lost": [],
+        "keep": false,
+        "next": "release"
+      },
+      "changed_first_programs": [],
+      "derived_step_learning_rates": [
+        0.00014333333333333337,
+        7.666666666666668e-05,
+        1.000000000000001e-05
+      ],
+      "changed_whole_task_grades": [],
+      "same_two_anchors": true,
+      "mixed_answer_total_tokens": [
+        551,
+        1220
+      ],
+      "fresh_answer_total_tokens": [
+        537,
+        1111
+      ],
+      "fresh_inference_seconds": 201.416,
+      "mixed_inference_seconds": 272.029,
+      "parent_to_fresh": {
+        "values": 33947648,
+        "changed": 33947648,
+        "squared_update": 1.1606552437068374
+      },
+      "mixed_to_fresh": {
+        "values": 33947648,
+        "changed": 33947368,
+        "squared_update": 0.0014497045927274483
+      }
+    }
+  ]
+}

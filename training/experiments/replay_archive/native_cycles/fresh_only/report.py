@@ -4,6 +4,7 @@ import gzip
 import json
 from pathlib import Path
 
+from training import grow
 from training.experiments.replay_archive.native_cycles import pilot
 from training.experiments.replay_archive.native_cycles.fresh_only.freeze import HERE
 from training.experiments.replay_archive.native_cycles.report import tensor_change
@@ -63,6 +64,7 @@ def collect(scratch, original, initial):
         flips = [k for k, r in grades["results"].items() if r["passed"] != siblings[k]["passed"]]
         report["comparisons"].append(dict(family=stage["family"], fresh_only_fit=fit, fresh_only_decision=decision,
                 fresh_only_grades=grades, mixed_decision=old["decision"], changed_first_programs=changed,
+                derived_step_learning_rates=[fit["meta"]["lr"] * grow.lr_share(j / 3) for j in (1, 2, 3)],
                 changed_whole_task_grades=flips, same_two_anchors=all(grades["results"][k]["passed"] == siblings[k]["passed"]
                     for k in ("m_percent","m_weekday")), mixed_answer_total_tokens=mixed_cost,
                 fresh_answer_total_tokens=fresh_cost, fresh_inference_seconds=sum(c["wall_seconds"] for c in raw["calls"]),
