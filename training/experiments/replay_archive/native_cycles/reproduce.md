@@ -30,5 +30,5 @@ python -m "$module.pilot" decide --scratch "$SCRATCH" --cycle "$N" --parent "$PA
 After all three fits and decisions, collect verified per-arm results and compress the original native calls.
 
 ```sh
-python -m "$module.report" --scratch "$SCRATCH"
+python -m "$module.report" --scratch "$SCRATCH" --initial "$G55_TRUNK_TENSORS"
 ```
