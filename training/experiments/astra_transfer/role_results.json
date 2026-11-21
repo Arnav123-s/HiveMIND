@@ -1,0 +1,170 @@
+{
+ "cases": 10,
+ "totals": {
+  "empty": {
+   "exact": 2,
+   "true_positive": 0,
+   "false_positive": 0,
+   "false_negative": 11
+  },
+  "output_only": {
+   "exact": 5,
+   "true_positive": 5,
+   "false_positive": 0,
+   "false_negative": 6
+  },
+  "scaffolds": {
+   "exact": 8,
+   "true_positive": 9,
+   "false_positive": 0,
+   "false_negative": 2
+  }
+ },
+ "details": [
+  {
+   "case": 1,
+   "expected": [
+    "read_csv"
+   ],
+   "predictions": {
+    "empty": [],
+    "output_only": [],
+    "scaffolds": [
+     "read_csv"
+    ]
+   },
+   "rendered_tokens": 41
+  },
+  {
+   "case": 2,
+   "expected": [
+    "read_jsonl",
+    "write_csv"
+   ],
+   "predictions": {
+    "empty": [],
+    "output_only": [
+     "write_csv"
+    ],
+    "scaffolds": [
+     "read_jsonl",
+     "write_csv"
+    ]
+   },
+   "rendered_tokens": 72
+  },
+  {
+   "case": 3,
+   "expected": [
+    "read_csv",
+    "read_jsonl"
+   ],
+   "predictions": {
+    "empty": [],
+    "output_only": [],
+    "scaffolds": [
+     "read_csv",
+     "read_jsonl"
+    ]
+   },
+   "rendered_tokens": 64
+  },
+  {
+   "case": 4,
+   "expected": [
+    "write_json"
+   ],
+   "predictions": {
+    "empty": [],
+    "output_only": [
+     "write_json"
+    ],
+    "scaffolds": [
+     "write_json"
+    ]
+   },
+   "rendered_tokens": 46
+  },
+  {
+   "case": 5,
+   "expected": [
+    "write_module"
+   ],
+   "predictions": {
+    "empty": [],
+    "output_only": [
+     "write_module"
+    ],
+    "scaffolds": [
+     "write_module"
+    ]
+   },
+   "rendered_tokens": 42
+  },
+  {
+   "case": 6,
+   "expected": [],
+   "predictions": {
+    "empty": [],
+    "output_only": [],
+    "scaffolds": []
+   },
+   "rendered_tokens": 0
+  },
+  {
+   "case": 7,
+   "expected": [
+    "read_csv"
+   ],
+   "predictions": {
+    "empty": [],
+    "output_only": [],
+    "scaffolds": []
+   },
+   "rendered_tokens": 0
+  },
+  {
+   "case": 8,
+   "expected": [],
+   "predictions": {
+    "empty": [],
+    "output_only": [],
+    "scaffolds": []
+   },
+   "rendered_tokens": 0
+  },
+  {
+   "case": 9,
+   "expected": [
+    "write_csv"
+   ],
+   "predictions": {
+    "empty": [],
+    "output_only": [
+     "write_csv"
+    ],
+    "scaffolds": [
+     "write_csv"
+    ]
+   },
+   "rendered_tokens": 49
+  },
+  {
+   "case": 10,
+   "expected": [
+    "read_jsonl",
+    "write_json"
+   ],
+   "predictions": {
+    "empty": [],
+    "output_only": [
+     "write_json"
+    ],
+    "scaffolds": [
+     "write_json"
+    ]
+   },
+   "rendered_tokens": 46
+  }
+ ]
+}
