@@ -25,6 +25,8 @@ REGISTRATION = "bf8b4d74042bcb037477d661ac43cdb0f9eaded04861fc98bf2c9b3be39f81ee
 LEGACY_RUNNER = "e8dd600a80b6e757e135dd72a0dae244a2a6220f6d530f33e03b1bfb2fd6ae70"
 LEGACY_JOURNAL = "fb9d175346f79b605d8d3e86ce23a9ab28225dcc325705ddcaf9be244dc61ceb"
 LEGACY_ROOT = "/tmp/tmpt5ib3ei5"
+PATH_RUNNER = "b92fddd59e658b0497e4be1e3b3704c89f5e508a7f12865773f0c69aa322aa06"
+PATH_JOURNAL = "ee1508442b6f0935b94f473562a6155b5d51b0f0078113fdc489fbf0fb4360a5"
 SEAT = "t80+g55trunk"
 ARMS = ("fixed", "borrow")
 SETTINGS = {"temperature": 0., "top_p": 1., "top_k": 0, "cache_prompt": False, "seed": 8103,
@@ -50,8 +52,24 @@ def case_roots(run_id, kinds, migrated):
 
 
 def migrate(raw, record, config):
-    """Only the published two-call checkpoint can adopt the original traceback's private path."""
-    if (hashlib.sha256(raw).hexdigest() != LEGACY_JOURNAL or record["config"] != (config | {"runner_sha256": LEGACY_RUNNER})
+    """Only the two exact published partial checkpoints may cross runner versions."""
+    digest = hashlib.sha256(raw).hexdigest()
+    if digest == PATH_JOURNAL:
+        case = "h_tab_dates"
+        fixed, borrow = (record["calls"][case][arm] for arm in ARMS)
+        if (record["config"] != (config | {"runner_sha256": PATH_RUNNER}) or record["complete"] or record.get("in_flight")
+                or list(record["arms"][case]) != ["fixed"] or len(fixed) != 3 or len(borrow) != 3
+                or record["case_roots"] != case_roots(record["workspace_id"], record["calls"], True)
+                or any(b["source"] != f["id"] or b["request"] != f["request"] or b["response"] != f["response"]
+                       for f, b in zip(fixed, borrow))):
+            raise ValueError("unexpected six-call observation checkpoint")
+        record["config"] = config
+        record["output_check_migration"] = {
+            "from_runner_sha256": PATH_RUNNER, "from_journal_sha256": PATH_JOURNAL,
+            "retained_calls": [c["id"] for c in fixed + borrow], "retained_grade": f"{case}/fixed",
+            "reason": "The earlier runner stopped before recording a shared-response pair with different worker stdout."}
+        return
+    if (digest != LEGACY_JOURNAL or record["config"] != (config | {"runner_sha256": LEGACY_RUNNER})
             or record["config"]["registration_sha256"] != REGISTRATION or record.get("in_flight") or record["complete"]
             or any(record["arms"].values())):
         raise ValueError("the run configuration or legacy journal differs")
@@ -218,14 +236,23 @@ def run_arm(args, record, case, grade, arm, url, proc):
                 "larger_cap_offered": any(c["request"]["max_tokens"] > 192 for c in journal)}
 
 
+def shared_outputs(fixed, borrow):
+    """Compare the original worker answers verbatim, the exact file digests and the official pass/fail grade."""
+    return {"identical_file_bytes": fixed["files"] == borrow["files"], "identical_stdout": fixed["answer"] == borrow["answer"],
+            "identical_grade": fixed["ok"] == borrow["ok"], "identical_call_count": fixed["call_count"] == borrow["call_count"]}
+
+
 def summarize(record):
     paired = {k: arms for k, arms in record["arms"].items() if all(a in arms for a in ARMS)}
     gained = [k for k, a in paired.items() if a["borrow"]["ok"] and not a["fixed"]["ok"]]
     lost = [k for k, a in paired.items() if a["fixed"]["ok"] and not a["borrow"]["ok"]]
+    comparisons = {k: a["borrow"]["shared_output_check"] for k, a in paired.items() if "shared_output_check" in a["borrow"]}
     return {"paired": len(paired), "required": 3, "right_on_paired": {a: sum(v[a]["ok"] for v in paired.values()) for a in ARMS},
             "gained": gained, "lost": lost, "net": len(gained) - len(lost),
             "larger_cap_offered": [k for k, a in paired.items() if a["borrow"]["larger_cap_offered"]],
-            "unchanged_requests": [k for k, a in paired.items() if a["borrow"]["fresh_calls"] == 0],
+            "unchanged_requests": [k for k, check in comparisons.items() if check["identical_call_count"]],
+            "identical_outputs": [k for k, check in comparisons.items() if all(check.values())],
+            "shared_reply_outputs_differ": [k for k, check in comparisons.items() if not all(check.values())],
             "paired_tokens": {a: sum(v[a]["completion_tokens"] for v in paired.values()) for a in ARMS},
             "fresh_calls": sum(row["origin"] == "native" for arms in record["calls"].values() for calls in arms.values() for row in calls)}
 
@@ -258,6 +285,7 @@ def run(args):
         record = json.loads(raw)
         if record["config"] != config:
             migrate(raw, record, config)
+            generate.save(args.out, record)
         if record.get("in_flight"):
             raise RuntimeError(f"unresolved native call {record['in_flight']['id']}; inspect server logs before retrying")
         if record["complete"]:
@@ -291,9 +319,7 @@ def run(args):
                         continue
                     outcome = run_arm(args, record, case, grades[kind], arm, url, proc)
                     if arm == "borrow" and outcome["fresh_calls"] == 0:
-                        control = arms["fixed"]
-                        if outcome["call_count"] != control["call_count"] or any(outcome[k] != control[k] for k in ("files", "answer", "ok")):
-                            raise ValueError("identical model requests produced different files or verdict")
+                        outcome["shared_output_check"] = shared_outputs(arms["fixed"], outcome)
                     arms[arm] = outcome
                     record["summary"] = summarize(record)
                     generate.save(args.out, record)
