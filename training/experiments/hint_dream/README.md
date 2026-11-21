@@ -35,6 +35,19 @@ The second implementation cross-checked 64 additional fresh input streams for ea
 
 The ordinary CPU training worker gathered all four programs, inherited all 98 G55 LoRA modules at rank 32 and finished one optimizer step per row. The average training length was 328 tokens. Three rows fit the ordinary backward pass and one used checkpointing. The measured fit and weight comparison took 407.66 seconds, peaked at 11.34 GiB and used zero swap. All 196 LoRA tensors changed. The 73,835,264-byte candidate GGUF has SHA-256 `fffbb3692c8f1202b7df14014c8e515f77799f000428fe3fbd906f5b11f7490b`. [Download the tested GGUF](https://raw.githubusercontent.com/Arnav123-s/HiveMIND/df9317a688e2a6a2461fb664c393ec9b8311cce4/t80-hint-dream.gguf) · [Training receipt](evidence/fit/receipt.json) · [Worker log](evidence/fit/worker.log)
 
+## Blind transfer to three reserved combinations
+
+| New task | Original G55 checks | Trained G55 checks |
+|---|---:|---:|
+| JSON threshold alerts | 7/24 | 10/24 |
+| CSV filter on final value | 0/24 | 0/24 |
+| INI threshold alerts | 2/24 | 2/24 |
+| Completely solved tasks | 0/3 | 0/3 |
+
+The three task types were disjoint from both practice cohorts. The candidate matched 12/72 sealed outputs, compared with 9/72 for the starting model. Both scored zero whole tasks. The local study establishes a way to collect verified training examples and fit them on a CPU. Whole-task transfer remains unproven on this panel. [Original blind responses](evidence/transfer-parent/results.json) · [Candidate blind responses](evidence/transfer-child/results.json) · [Frozen prompts and oracle digests](transfer-manifest.json)
+
+An independent hosted diagnostic substitutes the measured GGUF for the single trunk in the ordinary 25-member G55 roster and uses the original fixed held-out examiner. It has a separate control and thirty tasks across ten kinds. [Official evaluation recipe](https://github.com/Arnav123-s/HiveMIND/blob/e24bbea34b7ddbd80ce6456ebbb2aaf40749c97b/training/experiments/astra_orders/worker_contracts/f4-held.md)
+
 ## Reproduce
 
 Use the pinned G55 weights and runtime hashes recorded in the receipts. `SDK` is the CPython WASI directory containing `python.wasm` and its standard library. Set `HF_HOME` to the cached unpacked Ternary-Bonsai-8B model and `HIVE_TERNARY_HOME` to a checkout containing the pinned `ik_llama.cpp` converter. The measured unpacked model revision was `ac20f03fc62e872399218b659c8e949dfca05769`. The host used wasmtime 36.0.0 with `python.wasm` SHA-256 `278a485c42319053a7989b837bbaa42c2b9d1892d65cb582d9c41dac8cef5f7e`. [WASI installation](../../reports/rule_lab/fieldwork/reproduce.md)
