@@ -1,0 +1,277 @@
+{
+  "g53": {
+    "actual_seconds": 4255,
+    "completed_fixed": 60,
+    "completed_fresh": 128,
+    "early_only": {
+      "before_running_at_candidate_ready": 9,
+      "before_started_early": 16,
+      "final_unit": "held-after-6",
+      "jobs": 33,
+      "peak": 20,
+      "runner_seconds": 48272,
+      "seconds": 2546
+    },
+    "early_split_cold0_gap10": {
+      "before_running_at_candidate_ready": 9,
+      "before_started_early": 16,
+      "final_unit": "held-after-1",
+      "jobs": 38,
+      "peak": 20,
+      "runner_seconds": 49400,
+      "seconds": 2759
+    },
+    "early_split_cold120_gap30": {
+      "before_running_at_candidate_ready": 9,
+      "before_started_early": 16,
+      "final_unit": "held-after-1",
+      "jobs": 39,
+      "peak": 20,
+      "runner_seconds": 50120,
+      "seconds": 2899
+    },
+    "early_split_cold60_gap10": {
+      "before_running_at_candidate_ready": 9,
+      "before_started_early": 16,
+      "final_unit": "held-after-1",
+      "jobs": 39,
+      "peak": 20,
+      "runner_seconds": 49760,
+      "seconds": 2819
+    },
+    "early_split_without_cancellation_tail": {
+      "before_running_at_candidate_ready": 9,
+      "before_started_early": 16,
+      "final_unit": "held-after-1",
+      "jobs": 39,
+      "peak": 20,
+      "runner_seconds": 49760,
+      "seconds": 2910
+    },
+    "optimistic_remaining_work_floor": 1599,
+    "paired_net_gains": [
+      2,
+      2
+    ],
+    "paired_zero_look_cost": {
+      "before_running_at_candidate_ready": 0,
+      "before_started_early": 0,
+      "final_unit": "fresh-after-8",
+      "jobs": 33,
+      "peak": 20,
+      "runner_seconds": 48272,
+      "seconds": 5940
+    },
+    "ranked": {
+      "before_running_at_candidate_ready": 0,
+      "before_started_early": 0,
+      "final_unit": "held-after-1",
+      "jobs": 33,
+      "peak": 20,
+      "runner_seconds": 48272,
+      "seconds": 3248
+    },
+    "split_only": {
+      "before_running_at_candidate_ready": 0,
+      "before_started_early": 0,
+      "final_unit": "held-after-1",
+      "jobs": 39,
+      "peak": 20,
+      "runner_seconds": 49760,
+      "seconds": 3239
+    }
+  },
+  "g54": {
+    "actual_seconds": 3083,
+    "completed_fixed": 55,
+    "completed_fresh": 128,
+    "early_only": {
+      "before_running_at_candidate_ready": 3,
+      "before_started_early": 16,
+      "final_unit": "fresh-after-1",
+      "jobs": 33,
+      "peak": 20,
+      "runner_seconds": 47595,
+      "seconds": 2650
+    },
+    "exclusion": "cannot time shards of interrupted original seat held-after-4",
+    "optimistic_remaining_work_floor": 1495,
+    "paired_net_gains": [
+      0,
+      -1
+    ],
+    "paired_zero_look_cost": {
+      "before_running_at_candidate_ready": 0,
+      "before_started_early": 0,
+      "final_unit": "fresh-before-7",
+      "jobs": 33,
+      "peak": 20,
+      "runner_seconds": 47595,
+      "seconds": 5659
+    },
+    "ranked": {
+      "before_running_at_candidate_ready": 0,
+      "before_started_early": 0,
+      "final_unit": "fresh-after-1",
+      "jobs": 33,
+      "peak": 20,
+      "runner_seconds": 47595,
+      "seconds": 3848
+    }
+  },
+  "g55": {
+    "actual_seconds": 3418,
+    "completed_fixed": 59,
+    "completed_fresh": 128,
+    "early_only": {
+      "before_running_at_candidate_ready": 11,
+      "before_started_early": 11,
+      "final_unit": "held-after-5",
+      "jobs": 33,
+      "peak": 20,
+      "runner_seconds": 45870,
+      "seconds": 2575
+    },
+    "early_split_cold0_gap10": {
+      "before_running_at_candidate_ready": 11,
+      "before_started_early": 11,
+      "final_unit": "held-before-8",
+      "jobs": 38,
+      "peak": 20,
+      "runner_seconds": 47031,
+      "seconds": 2297
+    },
+    "early_split_cold120_gap30": {
+      "before_running_at_candidate_ready": 11,
+      "before_started_early": 11,
+      "final_unit": "held-after-4.1",
+      "jobs": 39,
+      "peak": 20,
+      "runner_seconds": 47751,
+      "seconds": 2543
+    },
+    "early_split_cold60_gap10": {
+      "before_running_at_candidate_ready": 11,
+      "before_started_early": 11,
+      "final_unit": "held-after-4.1",
+      "jobs": 39,
+      "peak": 20,
+      "runner_seconds": 47391,
+      "seconds": 2403
+    },
+    "optimistic_remaining_work_floor": 1960.0,
+    "paired_net_gains": [
+      2,
+      1
+    ],
+    "paired_zero_look_cost": {
+      "before_running_at_candidate_ready": 0,
+      "before_started_early": 0,
+      "final_unit": "fresh-before-8",
+      "jobs": 33,
+      "peak": 20,
+      "runner_seconds": 45870,
+      "seconds": 5626
+    },
+    "ranked": {
+      "before_running_at_candidate_ready": 0,
+      "before_started_early": 0,
+      "final_unit": "held-before-6",
+      "jobs": 33,
+      "peak": 20,
+      "runner_seconds": 45870,
+      "seconds": 2595
+    },
+    "split_only": {
+      "before_running_at_candidate_ready": 0,
+      "before_started_early": 0,
+      "final_unit": "held-before-6",
+      "jobs": 39,
+      "peak": 20,
+      "runner_seconds": 47391,
+      "seconds": 2655
+    }
+  },
+  "g56": {
+    "actual_seconds": 3207,
+    "completed_fixed": 60,
+    "completed_fresh": 128,
+    "early_only": {
+      "before_running_at_candidate_ready": 3,
+      "before_started_early": 16,
+      "final_unit": "held-after-4",
+      "jobs": 33,
+      "peak": 20,
+      "runner_seconds": 45421,
+      "seconds": 2464
+    },
+    "early_split_cold0_gap10": {
+      "before_running_at_candidate_ready": 3,
+      "before_started_early": 16,
+      "final_unit": "held-after-4.0",
+      "jobs": 38,
+      "peak": 20,
+      "runner_seconds": 46335,
+      "seconds": 1956
+    },
+    "early_split_cold120_gap30": {
+      "before_running_at_candidate_ready": 3,
+      "before_started_early": 16,
+      "final_unit": "held-after-4.0",
+      "jobs": 39,
+      "peak": 20,
+      "runner_seconds": 47055,
+      "seconds": 2076
+    },
+    "early_split_cold60_gap10": {
+      "before_running_at_candidate_ready": 3,
+      "before_started_early": 16,
+      "final_unit": "held-after-4.0",
+      "jobs": 39,
+      "peak": 20,
+      "runner_seconds": 46695,
+      "seconds": 2016
+    },
+    "early_split_without_cancellation_tail": {
+      "before_running_at_candidate_ready": 11,
+      "before_started_early": 11,
+      "final_unit": "fresh-before-2",
+      "jobs": 39,
+      "peak": 20,
+      "runner_seconds": 46695,
+      "seconds": 3731
+    },
+    "optimistic_remaining_work_floor": 1724,
+    "paired_net_gains": [
+      0,
+      -1
+    ],
+    "paired_zero_look_cost": {
+      "before_running_at_candidate_ready": 0,
+      "before_started_early": 0,
+      "final_unit": "fresh-after-7",
+      "jobs": 33,
+      "peak": 20,
+      "runner_seconds": 45421,
+      "seconds": 7017
+    },
+    "ranked": {
+      "before_running_at_candidate_ready": 0,
+      "before_started_early": 0,
+      "final_unit": "fresh-before-2",
+      "jobs": 33,
+      "peak": 20,
+      "runner_seconds": 45421,
+      "seconds": 3939
+    },
+    "split_only": {
+      "before_running_at_candidate_ready": 0,
+      "before_started_early": 0,
+      "final_unit": "fresh-before-2",
+      "jobs": 39,
+      "peak": 20,
+      "runner_seconds": 46695,
+      "seconds": 4126
+    }
+  }
+}
