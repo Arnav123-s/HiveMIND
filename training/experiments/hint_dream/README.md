@@ -29,6 +29,8 @@ A second implementation decoded 64 fresh JSON streams and evaluated them in arri
 
 Three of five fresh tasks qualified **(60%)**. Across both chronological samples, four of eleven tasks **(36.4%)** yielded training rows. Three involved the final reading per label and one involved cyclic meters. The two cohorts used different format/rule combinations. The live opt-in slot uses the parser-and-rule reminder and keeps the blind and hinted inputs identical apart from that private line. [All 10 follow-up replies and grades](evidence/confirmation/results.json) · [The three exported rows](evidence/confirmation/rows.jsonl)
 
+The second implementation cross-checked 64 additional fresh input streams for each selected follow-up contract. The earlier INI, queue and CSV programs passed 17, 13 and 3. Every corrected program passed all 64. Including the earlier JSON audit, that gives **43/256 blind and 256/256 hinted** across four selected contracts. These are new inputs to known practice contracts. [Follow-up independent audit](evidence/confirmation/independent-audit.json)
+
 ## Four verified updates on the original weights
 
 The ordinary CPU training worker gathered all four programs, inherited all 98 G55 LoRA modules at rank 32 and finished one optimizer step per row. The average training length was 328 tokens. Three rows fit the ordinary backward pass and one used checkpointing. The measured fit and weight comparison took 407.66 seconds, peaked at 11.34 GiB and used zero swap. All 196 LoRA tensors changed. The 73,835,264-byte candidate GGUF has SHA-256 `fffbb3692c8f1202b7df14014c8e515f77799f000428fe3fbd906f5b11f7490b`. [Training receipt](evidence/fit/receipt.json) · [Worker log](evidence/fit/worker.log)

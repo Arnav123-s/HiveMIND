@@ -1,0 +1,20 @@
+[
+  {
+    "spec": "stream-v1/spade-format-confirmation-20261121/2",
+    "cases": 64,
+    "blind": 17,
+    "hinted": 64
+  },
+  {
+    "spec": "stream-v1/spade-format-confirmation-20261121/8",
+    "cases": 64,
+    "blind": 13,
+    "hinted": 64
+  },
+  {
+    "spec": "stream-v1/spade-format-confirmation-20261121/11",
+    "cases": 64,
+    "blind": 3,
+    "hinted": 64
+  }
+]
