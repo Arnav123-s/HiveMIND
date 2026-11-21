@@ -39,7 +39,7 @@ from .familiarity import familiar
 from .board import Board
 from .guard import Guard
 from .specialists.coder import extract_code
-from .tools.sandbox import give, note, run_python
+from .tools.sandbox import give, member_http, note, run_python
 
 _MEMBER_START = """You solve the TASK by writing Python programs. You see the world only through what your programs print.
 Reply with ONE complete program in a ```python block and nothing else. It is run and you are shown what it printed.
@@ -530,6 +530,27 @@ def stuck_hint(task, code, err):
 def member(task, n, board, guard, work, temperature, who="coder", also=()):
     """One member's whole try. Returns {"answer", "program", "turns"}: the answer is what its last program that ran
     printed ("" when none ran)."""
+    with member_http(task) as required_urls:
+        return _member(task, n, board, guard, work, temperature, who, also, required_urls)
+
+
+def _asks_for_printed_answer(task, blocks):
+    """Look for a direct response request outside the supplied data or prior chat."""
+    text = task.split("\n\n(This continues a conversation.", 1)[0]
+    for block in blocks:
+        text = text.replace(block["text"], "")
+    if re.search(r"\b(?:do not|don't|never|without)\s+(?:print(?:ing)?|reply(?:ing)?|respond(?:ing)?)\b"
+                 r"|\b(?:print nothing|no (?:stdout|printed output|reply)|(?:return|deliver) only the files?)\b", text, re.I):
+        return False
+    for m in re.finditer(r"(?:^|[.!?;]\s+|\band\s+)(?:(?:please|then|also)\s+)*"
+                         r"(tell me|reply with|print)\s+([^!?;\n]+?)(?=[.!?](?:\s|$)|[;\n]|$)", text, re.I | re.M):
+        if m[1].lower() != "print" or not re.search(r"\b(?:to|into|inside|in)\s+(?:(?:an?|the|your)\s+)?"
+                                                    r"(?:output\s+)?(?:file\b|[`'\"]?[\w-]+\.)", m[2], re.I):
+            return True
+    return False
+
+
+def _member(task, n, board, guard, work, temperature, who, also, required_urls):
     system, temperature = member_settings(task, n, who, also, temperature)
     messages = [{"role": "system", "content": system},
                 {"role": "user", "content": f"TASK: {task}"}]
@@ -556,7 +577,21 @@ def member(task, n, board, guard, work, temperature, who="coder", also=()):
             messages[0]["content"] += notes.block(said)
             board.log(f"member{n}", "notes", f"{len(said)} note(s) from earlier work")
     names = wanted(task)
-    messages[-1]["content"] += note(give(task, work, skip=names))
+    module_checks = None
+    if os.environ.get("HIVE_ASSERT_FIRST") == "1":
+        from .familiarity import familiar
+        from .public_examples import INSPECT, ModuleChecks, module_examples
+        if not familiar(task):
+            messages[-1]["content"] += "\n\n" + INSPECT
+            if board is not None:
+                board.log(f"member{n}", "inspect", "inspect input and check the supplied contract")
+        examples = module_examples(task, names)
+        if examples:
+            module_checks = ModuleChecks(names[0], examples, task)
+    observed_gets = set()
+    complete_observations = True
+    blocks = give(task, work, skip=names)
+    messages[-1]["content"] += note(blocks)
     saved_files = tempfile.TemporaryDirectory() if names else None
     helped = []
 
@@ -565,10 +600,28 @@ def member(task, n, board, guard, work, temperature, who="coder", also=()):
             helped.append(h)
             board.log(f"member{n}", "hint", h)
     good, last_error, repeats, turn, typed, looking, shaped, insisted = None, None, 0, 0, 0, False, 0, False
-    for turn in range(1, TURNS + 1):
+    recover_cutoff = who != "coder" and os.environ.get("HIVE_CUTOFF_REPAIR") == "1"
+    follow_cutoff = (who != "coder" and os.environ.get("HIVE_CUTOFF_CONTINUE") == "1"
+                     and bool(names) and _asks_for_printed_answer(task, blocks))
+    observe_cutoff = recover_cutoff or follow_cutoff
+    budget = TURNS * LONG
+    longer = False
+    for attempt in range(1, TURNS + 1):
+        if observe_cutoff and budget <= 0:
+            break
+        turn = attempt
         stop.check()
         if who == "coder":
             reply = llm.chat("coder", messages, max_new_tokens=LONG, stop="code", temperature=temperature)
+        elif observe_cutoff:
+            cap = min(budget, LONG * (2 if longer else 1))
+            with ternary.observe_completion() as end:
+                reply = ternary.chat(who, messages, max_new_tokens=cap, temperature=temperature, also=also)
+            used = end.get("tokens")
+            measured = type(used) is int and 0 <= used <= cap
+            budget -= used if measured else cap
+            hit_limit = measured and used == cap and end.get("reason") == "length"
+            longer = False
         else:
             reply = ternary.chat(who, messages, max_new_tokens=LONG, temperature=temperature, also=also)
         code = extract_code(reply)
@@ -606,10 +659,29 @@ def member(task, n, board, guard, work, temperature, who="coder", also=()):
         if not guard.check_code("coder", code):
             board.log(f"member{n}", "stopped", "the program needs Arnav's approval; not run")
             break
+        previous_hashes = None
+        if follow_cutoff and hit_limit and turn < TURNS and budget and (not good or good["delivery"]["issues"]):
+            previous_hashes = deliverables.inspect(task, work, names)["byte_hashes"]
         res = run_python(code, work, name=f"member{n}_{turn}.py")
         out, err = res["stdout"].strip(), res["stderr"].strip()
         board.log(f"member{n}", "run", f"turn {turn}: exit {res['returncode']}, printed {len(out)} characters")
         messages.append({"role": "assistant", "content": f"```python\n{code}\n```"})
+        if recover_cutoff and hit_limit and turn < TURNS and budget and res["returncode"] != 0:
+            try:
+                ast.parse(code)
+            except (SyntaxError, ValueError) as problem:
+                # The transport reports exhausting the requested cap and this source cannot be parsed.
+                # A longer next reply may spend only the unused part of the original total output budget.
+                longer = True
+                helps("reply_cutoff")
+                reason = " ".join(str(getattr(problem, "msg", problem)).split())[:120]
+                line = getattr(problem, "lineno", None)
+                location = f" on line {line}" if line else ""
+                messages.append({"role": "user", "content":
+                    f"The server stopped your reply at its output limit. Python reports {reason!r}{location}. "
+                    "Start over with a shorter complete program. Use the supplied input directly, omit commentary "
+                    "and duplicate setup, and keep any checks brief."})
+                continue
         # Seen on seed 9011 (the members' own work, uploaded): three members each made up the address of an inner
         # page (horror_2, horror_26, horror_37), got a 404, saved a CSV with only its heading, printed "CSV file
         # created", and two of them agreed on that sentence.
@@ -619,7 +691,19 @@ def member(task, n, board, guard, work, temperature, who="coder", also=()):
             err = (f"The address {gone.group(1)} answered {gone.group(2)}: there is no such page. Do not make an address up. "
                    "Fetch the site's first page, print the links on it (their text and href), and follow the one that matches.")
         again = re.search(r"HIVE-SAME: (\S+) was fetched (\d+) times", err)
-        if res["returncode"] == 0 and again:
+        if required_urls is not None:
+            trace = re.search(r"^HIVE-URLS: (\d+) hits=(\d+) covered=([0-9,]*)$", res["stderr"], re.M)
+            if trace:
+                board.log(f"member{n}", "http", trace.group(0))
+                observed_gets.update(int(i) for i in trace[3].split(",") if i)
+            if required_urls:
+                from .public_examples import literal_requests_only
+                complete_observations &= bool(trace) and literal_requests_only(code)
+                missing = [url for i, url in enumerate(required_urls) if i not in observed_gets]
+                if res["returncode"] == 0 and out and complete_observations and missing:
+                    res = dict(res, returncode=1)
+                    err = "The task explicitly requires a Requests GET for each listed URL. Still missing: " + ", ".join(missing)
+        if required_urls is None and res["returncode"] == 0 and again:
             res = dict(res, returncode=1)
             err = (f"The program fetched the same page {again.group(1)} {again.group(2)} times: the loop never moved to "
                    "another page. Find the link to the next page on each page (its text is often 'Next') and fetch that, "
@@ -653,6 +737,12 @@ def member(task, n, board, guard, work, temperature, who="coder", also=()):
                           f"imports {saved[:-3]}, calls the functions as the TASK asks, and prints each value it asks for."}]
             continue
         delivery = deliverables.inspect(task, work, names) if names and res["returncode"] == 0 else None
+        issue = ""
+        if delivery is not None and module_checks and not delivery["issues"]:
+            issue = module_checks.issue(work)
+            if issue:
+                delivery["issues"][module_checks.name] = issue
+                helps("supplied_test")
         if res["returncode"] == 0 and out and len(out) < 300 and EMPTY.search(out) and not EMPTY.search(task):
             res = dict(res, returncode=1)
             err = f"The program found nothing: {out.strip()[-200:]}"
@@ -673,6 +763,8 @@ def member(task, n, board, guard, work, temperature, who="coder", also=()):
             continue
         if res["returncode"] == 0 and out:
             candidate = {"answer": out[-3000:], "program": code}
+            if issue:
+                candidate["supplied_test_failed"] = True
             feedback = ""
             if delivery is not None:
                 candidate["delivery"] = delivery
@@ -728,6 +820,16 @@ def member(task, n, board, guard, work, temperature, who="coder", also=()):
             "\n\nThe error is in the program's own steps. Print the values it works with just before the line that failed, "
             "see where they go wrong, and reply with the whole corrected program." if LOOK.search(err or out) else
             "\n\nReply with the whole corrected program.")})
+        if (previous_hashes is not None and not res["stdout"] and delivery and not delivery["issues"]
+                and not deliverables.repairs(delivery) and all(i in observed_gets for i in range(len(required_urls or ())))
+                and all(line.startswith(("HIVE-URLS: ", "HIVE-GIVEN: ")) for line in err.splitlines())
+                and all(previous_hashes.get(name) != delivery["byte_hashes"][name]
+                        and f"HIVE-GIVEN: {name} was not here" not in err for name in names)):
+            helps("cutoff_saved_file")
+            longer = os.environ.get("HIVE_CUTOFF_CONTINUE_BORROW") == "1"
+            messages[-1]["content"] = (
+                "Your reply reached the output limit. The program saved the requested files and printed nothing. "
+                "Read the saved files and print the answer the task asks for. Leave the files as they are.")
     if saved_files is not None:
         if good and not good["delivery"]["issues"]:
             try:
@@ -782,6 +884,12 @@ def headings(task, t, n, board, guard):
             delivery = deliverables.inspect(task, work, names)
             if delivery["issues"]:
                 return
+            if os.environ.get("HIVE_ASSERT_FIRST") == "1":
+                from .public_examples import ModuleChecks, module_examples
+                examples = module_examples(task, names)
+                if examples and ModuleChecks(names[0], examples, task).issue(work):
+                    return
+            t.pop("supplied_test_failed", None)
             t.update(work=str(work), delivery=delivery)
         t.update(answer=out[-3000:], program=code, turns=t["turns"] + 1)
 
@@ -847,7 +955,8 @@ def together(x, y, task):
 
 def agreeing(tries, task):
     """The pairs of members whose tries agree (together()), the earlier member first."""
-    return [(x, y) for i, x in enumerate(tries) for y in tries[i + 1:] if together(x, y, task)]
+    usable = [t for t in tries if not t.get("supplied_test_failed")]
+    return [(x, y) for i, x in enumerate(usable) for y in usable[i + 1:] if together(x, y, task)]
 
 
 def _winner(tries, pairs, task):

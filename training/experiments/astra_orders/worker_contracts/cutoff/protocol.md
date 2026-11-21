@@ -1,0 +1,9 @@
+# Recovery after a measured output cutoff
+
+The cold-chain inspect arm in the earlier F3 trial reached its 192-token generation limit three times on incomplete Python. The server recorded `finish_reason=length` while the worker independently saw a syntax error. This follow-up keeps the earlier instruction, task texts, G55 adapter, empty recent memory, frozen familiarity index, greedy seed and maximum of three model calls. Each worker may generate at most 576 tokens across those calls. Reuse the independent stock and inspect receipts as controls. Freeze the recovery before generating either treatment.
+
+On a server-confirmed length stop, require the reported generated-token count to equal the requested limit and the executed program to fail parsing before requesting a compact rewrite. The next call may use up to twice its usual per-turn allowance, limited by tokens remaining from the original cap. Charge missing usage conservatively. Ordinary completions, clipped programs that already run and runtime exceptions in syntactically complete programs use the usual feedback. No extra seat or call is added.
+
+Run the changed method once on each of the original study’s two tasks, cold-chain and fixed held-out CSV edit 0. Compare the printed answer and the saved file together, independently scored after the member finishes. Record every response, finish reason, cap and measured token usage. Count breakage as well as gains. A task on which the rule never fires is an exposure control. An originally uncorrectable task becoming executable can be recorded separately from passing its functional check.
+
+The feedback carries Python's syntax message and line number alongside the server stop reason. In a live service the worker can account for returned completions and their reported usage. Transport recovery may retry a request after a lost response. The local measurement talks directly to the pinned server and stores every returned completion.
