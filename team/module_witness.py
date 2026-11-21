@@ -55,9 +55,9 @@ class Probe:
         self.name = name
         examples = module_examples(task, [name])
         # "Examples to pass" alone is insufficient to make a public lookup implementation correct.
-        self.complete = bool(examples and
-            re.search(r"(?im)^The complete required behavior is one run of the checks below, in order, on a fresh module\.[ \t]*$", task)
-            and re.search(r"(?im)^Required checks:[ \t]*$", task))
+        self.complete = bool(examples and re.search(
+            r"(?im)^The complete required behavior is one run of the checks below, in order, on a fresh module\.[ \t]*"
+            r"\r?\nRequired checks:[ \t]*\r?\n```python[ \t]*\r?$", task))
         self.calls = [(fn, args) for fn, args, _ in examples] if examples else list_calls(task)
         self.expected = [canonical(expected) for _, _, expected in examples]
         self.runner = saved.guest() if self.calls else None

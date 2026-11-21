@@ -84,8 +84,11 @@ def orders(who, today=None):
     return (SHORT if "+" in who else MEMBER).format(today=today or time.strftime("%Y-%m-%d (%A)"))
 
 
-_WEB_TASK = re.compile(r"https?://|\b(?:web(?:site|page)?s?|pages?|scrap(?:e|ing)|apis?|online|pypi|wikipedia|hugging\s*face)\b", re.I)
-_DATE_TASK = re.compile(r"\b(?:dates?|calendar|weekdays?|today|tomorrow|yesterday|day of (?:the )?week|days? (?:before|after|ago)|(?:19|20)\d\d-\d{2}-\d{2})\b", re.I)
+_WEB_TASK = re.compile(r"https?://|\b(?:https?|web(?:site|page)?s?|pages?|scrap(?:e|ing)|apis?|online|pypi|wikipedia|hugging\s*face)\b", re.I)
+_DATE_TASK = re.compile(r"\b(?:dates?|calendar|weekdays?|today|tomorrow|yesterday|day of (?:the )?week|"
+                        r"days? (?:before|after|ago)|(?:Mon|Tues|Wednes|Thurs|Fri|Satur|Sun)days?|"
+                        r"(?:19|20)\d\d-\d{2}-\d{2}|(?:January|February|March|April|May|June|July|August|"
+                        r"September|October|November|December)\s+\d{1,4})\b", re.I)
 
 
 def modular_orders(task, today=None):

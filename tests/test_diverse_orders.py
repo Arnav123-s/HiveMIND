@@ -27,6 +27,8 @@ def test_prompt_contents_and_seat_overrides(monkeypatch):
     request = "Schedule packets"
     assert "Today is" not in solo.modular_orders(request) and "Use requests" not in solo.modular_orders(request)
     assert solo.modular_orders("Find today's date on this web page") == ORDERS["full"]
+    assert "Today is" in solo.modular_orders("Which tasks fall on Thursdays?")
+    assert "Use requests" in solo.modular_orders("Perform an HTTP GET")
     monkeypatch.setenv("HIVE_DIVERSE_ORDERS", "1")
     assert solo.member_orders(request, 1, "t80", ()) == ORDERS["short"]
     assert solo.member_orders(request, 2, "t80+trained", ()) == solo.modular_orders(request)
@@ -128,3 +130,27 @@ def test_checked_index_projection_rotation_and_local_memory(tmp_path, monkeypatc
     index.unlink()
     with pytest.raises(FileNotFoundError):
         solo.familiar("count ten giraffes")
+
+
+def test_heading_repair_cannot_reuse_a_check_for_the_old_file(tmp_path, monkeypatch):
+    class Returns:
+        def run(self, program, cases):
+            values = [100 for _ in cases] if "invalid_replacement" in program else [1 - a[0] for _, a in cases]
+            return [{"value": value} for value in values], 0, 0
+    monkeypatch.setenv("HIVE_DIFF_EQUIV", "1")
+    monkeypatch.setattr(module_witness.saved, "guest", lambda: Returns())
+    monkeypatch.setattr(solo, "keep", lambda *args: None)
+    monkeypatch.setattr(solo, "whole", lambda task, answer: answer == "ready")
+    def worker(task, n, board, guard, work, *args):
+        work.mkdir(exist_ok=True)
+        (work / "desk.py").write_text("def flip(z): return 1-z")
+        return {"answer":"partial", "who":"cell", "program":"examined", "turns":1}
+    def edit(task, row, n, board, guard):
+        from pathlib import Path
+        work = Path(row["work"]) / "repair"
+        work.mkdir(exist_ok=True)
+        (work / "desk.py").write_text("def flip(invalid_replacement): return 100")
+        row.update(work=str(work), delivery=solo.deliverables.inspect(task, work, ["desk.py"]), answer="ready", asked=True)
+    monkeypatch.setattr(solo, "member", worker)
+    monkeypatch.setattr(solo, "headings", edit)
+    assert not solo.run(TASK, tmp_path / "attempt")["agreed"]
