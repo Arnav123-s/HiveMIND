@@ -8,7 +8,7 @@ from zipfile import ZipFile
 
 from team import solo
 from team.tools.sandbox import give, note
-from training import exam, grow, kinds, self_replay
+from training import exam, kinds, self_replay
 
 HERE = Path(__file__).resolve().parent
 FAMILIES = ("h_txt_names", "h_txt_mdcsv", "h_tab_fill")
@@ -27,6 +27,7 @@ def row_id(row):
 
 
 def freeze(archives, proofs):
+    from training import grow
     previous, current = ([json.loads(l) for l in (archives / f"g{n}-rows.jsonl").read_text().splitlines()] for n in (55, 56))
     body = json.loads((HERE.parents[3] / "cells/body.json").read_text())
     assert body["generation"] == 55 and body["trunk"] == "g55trunk"

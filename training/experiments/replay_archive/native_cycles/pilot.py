@@ -9,7 +9,7 @@ import tempfile
 from team import solo
 from team.specialists.coder import extract_code
 from team.tools.sandbox import give
-from training import exam, grow
+from training import exam
 from training.experiments.astra_cpu.five_kinds.transfer import native
 from training.experiments.astra_cpu.five_kinds.transfer.grade import RUN, run_guest
 from training.experiments.fieldwork.guest import Guest
@@ -51,10 +51,14 @@ def score(a):
             give(task, work, skip=solo.wanted(task))
             (work / "member1_1.py").write_text(code)
             out = run_guest(guest, work, root / "io", RUN, [], True)
-            ok, detail = check(root, out["stdout"].strip()) if code and not out["error"] else (False, out["error"] or "no program")
-            scores[row["name"]] = {"passed": bool(ok), "grader": detail, "exit_error": out["error"],
+            paths = list(work.rglob("*"))
+            regular = len(paths) <= 128 and all(not p.is_symlink() and (p.is_dir() or p.is_file() and p.stat().st_size <= 1_000_000) for p in paths)
+            error = out["error"] or ("unexpected output tree" if not regular else None)
+            ok, detail = check(root, out["stdout"].strip()) if code and not error else (False, error or "no program")
+            scores[row["name"]] = {"passed": bool(ok), "grader": detail, "exit_error": error,
                                    "stdout": out["stdout"][:1200], "stderr": out["stderr"], "program_sha256": digest(code.encode()),
-                                   "files": {p.name: native.digest(p) for p in sorted(work.iterdir()) if p.is_file() and p.name != "member1_1.py"}}
+                                   "files": {str(p.relative_to(work)): native.digest(p) for p in sorted(paths)
+                                             if regular and p.is_file() and p.name != "member1_1.py"}}
     native.save(a.scratch / f"{a.arm}-grades.json", {"lora_sha256": raw["lora_sha256"], "results": scores})
 
 
@@ -82,10 +86,12 @@ def train(a):
         assert json.loads((a.scratch / f"cycle-{a.cycle-1}-decision.json").read_text())["next"] == a.parent
     run = a.scratch / f"cycle-{a.cycle}"
     run.mkdir()
-    grow.GROW = run / "grow"
     name = "retention" + str(a.cycle)
     os.environ.update(HF_HUB_OFFLINE="1", HIVE_GPU="0", HIVE_ROW_CHECKPOINT="1", HIVE_CHUNK_CE="128", HIVE_SELF_REPLAY="1",
                       HIVE_SELF_REPLAY_RATIO="2", HIVE_KEEP_BACK="0", HIVE_PREFIX_CACHE="0", AGENT_TEAM_THREADS="2")
+    from training import grow
+    assert grow.KEEP_BACK == 0
+    grow.GROW = run / "grow"
     # Check that no inherited tensor can silently be omitted by the normal parent loader.
     from safetensors import safe_open
     from training import ternary_base
@@ -129,7 +135,8 @@ def train(a):
            "trainable_sha256": native.digest(tensor), "gguf_sha256": native.digest(gguf), "elapsed_seconds": round(time.monotonic()-begin, 2),
            "meta": result}
     native.save(a.scratch / f"cycle-{a.cycle}-fit.json", out)
-    assert result["self_replay"]["passes"] == {"fresh": 2, "replay": 1, "other": 0}, result["self_replay"]
+    expected = {"fresh": 2, "replay": 1, "other": 0}
+    assert all(result["self_replay"][k] == expected for k in ("passes", "unique_rows")), result["self_replay"]
 
 
 if __name__ == "__main__":
