@@ -15,6 +15,8 @@ The kept G55 trunk wrote two Python programs for each generated task. Only the p
 
 One of six tasks qualified, or **16.7%**. This sample fell below the 20% threshold. The blind JSON program summed every reading per label. The private reminder led G55 to keep the latest reading and then apply the threshold. The CSV reminder made a partially correct alert program fail every case. Both directions matter when deciding what to teach. All 12 completions ended normally and took 921.6 seconds combined on two CPU cores while a separate packed workload ran. Each task had 23 unique sealed inputs across the 24 checks because both suites included the empty case. [All 12 native replies and exact grades](evidence/initial/results.json) · [Exported training row](evidence/initial/rows.jsonl)
 
+A second implementation decoded 64 fresh JSON streams and evaluated them in arrival order, with lengths from zero through 63. The blind program passed 10/64. The hinted program passed 64/64. This measures the same practice contract on new inputs. [Independent audit](evidence/initial/independent-audit.json)
+
 ## Reproduce
 
 Use the pinned G55 weights and runtime hashes recorded in the receipts. `SDK` is the CPython WASI directory containing `python.wasm` and its standard library. Set `HF_HOME` to the cached unpacked Ternary-Bonsai-8B model and `HIVE_TERNARY_HOME` to a checkout containing the pinned `ik_llama.cpp` converter. The measured unpacked model revision was `ac20f03fc62e872399218b659c8e949dfca05769`. The host used wasmtime 36.0.0 with `python.wasm` SHA-256 `278a485c42319053a7989b837bbaa42c2b9d1892d65cb582d9c41dac8cef5f7e`. [WASI installation](../../reports/rule_lab/fieldwork/reproduce.md)
