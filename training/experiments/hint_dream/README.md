@@ -74,6 +74,19 @@ The earlier verified CSV meter program and INI final-value program each containe
 
 All eight calls ended within the same 256-token cap. The helper invitation added 28 prompt tokens per call, raising total prompt tokens from 712 to 824. Completion tokens fell from 480 to 379. Model-call time totaled 160.35 seconds ordinary and 135.47 seconds with the offer, on a host shared with other studies. The receipts show zero cached tokens in both arms. These timings illustrate the measured runs. The study was designed to test whole-task transfer.
 
+## Choosing the parser from a public example
+
+The two stored helpers have identical names and descriptions. Stock Fieldwork text retrieval broke that tie by digest and selected the INI implementation on all four requests. A separate offline selector kept both checked implementations, ran them in WASI on the public example input, and required exactly one to return ordered labels and integers that changed correctly when the sample’s labels and readings were renamed. It received no study format, filename, answer or target grade. The selector chose the matching helper for all four captured requests. It also picked correctly on two new format-neutral descriptions with valid examples and abstained on all five frozen controls with empty, unsupported, incomplete or conflicting input. A separate unit fixture checks abstention when two implementations pass the same probe. [Frozen controls](routing-cases.json) · [Selection protocol](routing-protocol.md)
+
+| How the captured programs were run | Complete tasks | Correct outputs |
+|---|---:|---:|
+| Ordinary programs, no helper | 1/4 | 33/96 |
+| Fieldwork text retrieval | 1/4 | 31/96 |
+| Public example probes | 2/4 | 62/96 |
+| Original manual assignment | 2/4 | 62/96 |
+
+Text retrieval lost the CSV range task and gained the INI range task. Public-example selection preserved the CSV win and gained the INI win. No fallback was needed on the four compatible jobs. This was an offline replay of the same programs on the same 96 inputs, so it adds evidence about routing without adding another model transfer win. Selection currently applies to one declared interface, two empirically qualified helpers, short alphabetic labels, whole-number readings, and at least one informative public example. A passing probe cannot establish correctness for every future input. [All decisions and replay grades](evidence/parser/routing.json) · [Research selector](parser_routing.py)
+
 ## Reproduce
 
 Use the pinned G55 weights and runtime hashes recorded in the receipts. `SDK` is the CPython WASI directory containing `python.wasm` and its standard library. Set `HF_HOME` to the cached unpacked Ternary-Bonsai-8B model and `HIVE_TERNARY_HOME` to a checkout containing the pinned `ik_llama.cpp` converter. The measured unpacked model revision was `ac20f03fc62e872399218b659c8e949dfca05769`. The host used wasmtime 36.0.0 with `python.wasm` SHA-256 `278a485c42319053a7989b837bbaa42c2b9d1892d65cb582d9c41dac8cef5f7e`. [WASI installation](../../reports/rule_lab/fieldwork/reproduce.md)
@@ -93,4 +106,5 @@ python -m training.experiments.hint_dream.parser_transfer --qualify --sdk "$SDK"
 for case_index in 0 1 2 3; do
   python -m training.experiments.hint_dream.parser_transfer "${args[@]}" --adapter "$candidate" --bank runs/parser-bank --case "$case_index" --out "runs/parser-case-$case_index"
 done
+python -m training.experiments.hint_dream.parser_routing --sdk "$SDK" --out runs/parser-routing.json
 ```
