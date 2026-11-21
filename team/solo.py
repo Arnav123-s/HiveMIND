@@ -1010,7 +1010,11 @@ def _run(task, run_dir=None, approve="never", members=2):
             # right or not. Values that agree are no answer the exam can read until one of them carries every heading:
             # each member that agreed without them is asked once more, plainly, the latest first.
             for i in [i for i in reversed(range(len(tries))) if any(tries[i] is x for p in pairs for x in p) and not tries[i].get("asked")]:
+                prior_work = tries[i]["work"]
                 headings(task, tries[i], i + 1, board, guard)
+                if probe and tries[i]["work"] != prior_work:
+                    revised = tries[i]
+                    revised["module_check"] = probe.inspect(revised["work"], revised["delivery"]["byte_hashes"].get(names[0]))
                 (home / f"member{i + 1}.json").write_text(json.dumps(tries[i]))
                 if whole(task, tries[i]["answer"]):
                     break
