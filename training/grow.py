@@ -452,9 +452,12 @@ def remember_failure(run, task, kind, check, result, path):
         printed = (t.get("answer") or "")[-600:]
     if not program or len(program) > 5000:
         return
+    from training.grow_record import member_delivery_outcome
+    outcome = member_delivery_outcome(result)
     with open(path, "a") as f:
         f.write(json.dumps({"maker": check.maker, "rseed": check.rseed, "level": getattr(check, "level", 0), "parts": getattr(check, "parts", None),
                             "task": task, "kind": kind, "program": program, "printed": printed, "who": who,
+                            **({"member_only": outcome == "member_only"} if outcome else {}),
                             "delivered": delivered(result),
                             "said": _masked(result.get("why")), "when": time.strftime("%Y-%m-%d %H:%M")}) + "\n")
 
@@ -469,7 +472,13 @@ DREAM = ("{task}\n\nThis task was done once before, and the answer was wrong. Th
          "Find the mistake in that program, then write the whole corrected program.")
 
 
-def dream(seed, n=4, failures=None, out=None, log=print, minutes=0, tries=2, weights=None):
+def dream_priority(failure, index, count, weights):
+    """Bias the existing kind weights toward recent failures and verified member-only wins."""
+    recency = 1 + index / max(1, count - 1)
+    return max(0.01, weights.get(failure.get("kind", ""), 0.25)) * recency * (2 if failure.get("member_only") is True else 1)
+
+
+def dream(seed, n=4, failures=None, out=None, log=print, minutes=0, tries=2, weights=None, deadline=0):
     """The hive goes back to tasks it got wrong (failures.jsonl, kept by practice) and corrects itself. Each is made
     again exactly (training/exam.remake), with the old program and what the check said (numbers hidden); where the
     check now passes, the correction is a training row like any other: the old attempt and the verdict lead to the
@@ -478,6 +487,9 @@ def dream(seed, n=4, failures=None, out=None, log=print, minutes=0, tries=2, wei
     tries: how many times a task is taken again before it is left for another night, each time with another cell beside
     the trunk (HIVE_ROTATE). Generation 28: one try corrected 5 of 24; a task one cell cannot see through, another may."""
     from training import exam as E
+    if minutes:
+        end = time.time() + minutes * 60
+        deadline = min(deadline, end) if deadline else end
     out = Path(out or GROW / "rows.jsonl")
     src = Path(failures or out.with_name("failures.jsonl"))
     seen = []
@@ -494,17 +506,16 @@ def dream(seed, n=4, failures=None, out=None, log=print, minutes=0, tries=2, wei
     # practice: edge_weights). Generation 33's dreams took mostly kinds never passed (several parts, modules, facts on
     # the open web) and corrected 0 of 10 in two tries each; lessons start those kinds, dreams finish the ones begun.
     w = weights if weights is not None else edge_weights(_dna())
-    pick, pool = [], list(recent)
+    pick, pool = [], [(f, dream_priority(f, i, len(recent), w)) for i, f in enumerate(recent)]
     while pool and len(pick) < n:
-        i = r.choices(range(len(pool)), weights=[max(0.01, w.get(f.get("kind", ""), 0.25)) for f in pool])[0]
-        pick.append(pool.pop(i))
+        i = r.choices(range(len(pool)), weights=[weight for _, weight in pool])[0]
+        pick.append(pool.pop(i)[0])
     os.environ.setdefault("AGENT_TEAM_SOLO", "2")
     os.environ.setdefault("AGENT_TEAM_SOLO_ALONE", "1")
     home = E._memory(True)
-    right = made = 0
-    born = time.time()
+    right = made = attempted = 0
     for i, f in enumerate(pick):
-        if minutes and time.time() - born > minutes * 60:
+        if deadline and time.time() >= deadline:
             log(f"time is up after {i} of {len(pick)} dreams", flush=True)
             break
         again = E.remake(f.get("maker", ""), f.get("rseed", ""), f.get("level", 0), f.get("parts"))
@@ -515,12 +526,21 @@ def dream(seed, n=4, failures=None, out=None, log=print, minutes=0, tries=2, wei
         was = os.environ.get("HIVE_ROTATE")
         turn = int(was) if (was or "").isdigit() else 0
         new = []
+        attempts = 0
         for k in range(max(1, int(tries))):
+            caps = {}
+            if deadline:
+                # sit_one gives its subprocess a grace period, then grades the work it finished.
+                seconds = int(deadline - time.time()) - int(os.environ.get("HIVE_CAP_GRACE", 40)) - 5
+                if seconds <= 0:
+                    break
+                caps["timeout"] = min(seconds, int(os.environ.get("HIVE_TASK_SECONDS", 2400)))
+            attempts += 1
             tid = f"d{seed}_{i:02d}" + (f"_{k}" if k else "")
             if k:  # another cell beside the trunk on each try after the first
                 os.environ["HIVE_ROTATE"] = str(turn + k)
             try:
-                res = E.sit_one(f"dream_{seed}", tid, text, check, home, kind=kind)
+                res = E.sit_one(f"dream_{seed}", tid, text, check, home, kind=kind, **caps)
             finally:  # the runner's own turn given back exactly, unset if it was
                 if was is None:
                     os.environ.pop("HIVE_ROTATE", None)
@@ -529,19 +549,23 @@ def dream(seed, n=4, failures=None, out=None, log=print, minutes=0, tries=2, wei
             # every try's members the check confirmed are rows, the tries that failed as a whole too (taught):
             # generation 28's dreams had 2 failed tries with a member the check confirmed
             here = E.RUNS / f"dream_{seed}" / tid
-            new += rows_by_part(here, task, kind, seed) if has_parts(here) else rows_of(here, task, kind, seed) + pair_rows(here, task, kind, seed)
-            if res["ok"] or (minutes and time.time() - born > minutes * 60):
+            rows = rows_by_part(here, task, kind, seed) if has_parts(here) else rows_of(here, task, kind, seed) + pair_rows(here, task, kind, seed)
+            written = len(new)
+            new = once(new + rows)
+            # Save verified members before another long retry, even when the whole attempt failed.
+            with open(out, "a") as fo:
+                for row in new[written:]:
+                    fo.write(json.dumps(dict(row, dream=True)) + "\n")
+            if res["ok"]:
                 break
-        new = once(new)
-        for row in new:
-            row["dream"] = True
-        with open(out, "a") as fo:
-            for row in new:
-                fo.write(json.dumps(row) + "\n")
+        if not attempts:
+            log(f"no time left to start dream {i + 1} of {len(pick)}", flush=True)
+            break
+        attempted += 1
         right += res["ok"]
         made += sum(x["type"] != "pair" for x in new)
-        log(f"dream {'CORRECTED' if res['ok'] else 'still wrong'} {tid} [{kind}] {res['seconds']}s, try {k + 1}, {len(new)} rows", flush=True)
-    return {"dream": seed, "tasks": len(pick), "right": right, "rows": made}
+        log(f"dream {'CORRECTED' if res['ok'] else 'still wrong'} {tid} [{kind}] {res['seconds']}s, try {attempts}, {len(new)} rows", flush=True)
+    return {"dream": seed, "tasks": attempted, "right": right, "rows": made}
 
 
 def gather(out, gen, old=(), new=(), log=print):
@@ -1768,7 +1792,7 @@ def main(argv):
     opt = lambda k, d: type(d)(argv[argv.index(k) + 1]) if k in argv else d  # noqa: E731
     cmd = argv[0] if argv else ""
     if cmd == "dream":
-        print(json.dumps(dream(opt("--seed", int(time.time() // 60)), opt("--tasks", 4), opt("--failures", ""), opt("--out", ""), minutes=opt("--minutes", 0), tries=opt("--tries", 2))))
+        print(json.dumps(dream(opt("--seed", int(time.time() // 60)), opt("--tasks", 4), opt("--failures", ""), opt("--out", ""), minutes=opt("--minutes", 0), tries=opt("--tries", 2), deadline=opt("--deadline", 0))))
     elif cmd == "practice":
         print(json.dumps(practice(opt("--seed", 10_000_000 + int(time.time() // 60)), opt("--tasks", 16), opt("--level", "mixed"), opt("--out", ""), minutes=opt("--minutes", 0))))
     elif cmd == "gather":
