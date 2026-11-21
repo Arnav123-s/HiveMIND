@@ -41,12 +41,24 @@ def save(path, record):
     tmp.replace(path)
 
 
-def run(args):
+def original_offers(data):
+    for index, row in enumerate(data['rows']):
+        arms = ['short', 'full'] + (['scaffold'] if row['scaffold'] else [])
+        first = index % len(arms)
+        for arm in arms[first:] + arms[:first]:
+            messages = [{'role': 'system', 'content': data['orders']['short' if arm == 'scaffold' else arm]},
+                        {'role': 'user', 'content': row['user'] + (row['scaffold'] if arm == 'scaffold' else '')}]
+            yield row['id'], arm, messages, {}
+
+
+def run(args, offers=original_offers, inputs=None, inputs_hash='bf794b51abdbd4206d8df953f84968461435077a0775ba0a6efc385eed4b6062'):
     for k,h in ASSETS.items():
         if file_hash(getattr(args,k)) != h:
             raise ValueError(f'{k} digest mismatch')
-    assert file_hash(HERE/'inputs.json') == 'bf794b51abdbd4206d8df953f84968461435077a0775ba0a6efc385eed4b6062'
-    data = json.loads((HERE/'inputs.json').read_bytes())
+    inputs = inputs or HERE / 'inputs.json'
+    if file_hash(inputs) != inputs_hash:
+        raise ValueError('frozen inputs digest mismatch')
+    data = json.loads(inputs.read_bytes())
     with socket.socket() as probe:
         probe.bind(('127.0.0.1', 0))
         port = probe.getsockname()[1]
@@ -55,7 +67,7 @@ def run(args):
              '--threads-http','2','--port',str(port),'--host','127.0.0.1','--jinja']
     settings = {'temperature':0.,'top_k':0,'top_p':1.,'cache_prompt':False,'max_tokens':192,
                 'chat_template_kwargs':{'enable_thinking':False},'seed':8103}
-    record = {'assets_sha256':ASSETS,'inputs_sha256':file_hash(HERE/'inputs.json'),'native_flags':flags,'sampling':settings,
+    record = {'assets_sha256':ASSETS,'inputs_sha256':inputs_hash,'native_flags':flags,'sampling':settings,
               'affinity':sorted(os.sched_getaffinity(0)), 'utc_start':datetime.now(timezone.utc).isoformat(),'calls':[]}
     if args.out.exists():
         raise FileExistsError(args.out)
@@ -78,20 +90,20 @@ def run(args):
             adapters = call(url+'/lora-adapters')
             assert len(adapters)==1 and Path(adapters[0]['path']).name==args.lora.name and adapters[0]['scale']==1, adapters
             record['lora_adapters'] = adapters
-            for index,row in enumerate(data['rows']):
-                arms = ['short','full'] + (['scaffold'] if row['scaffold'] else [])
-                first = index % len(arms)
-                for arm in arms[first:]+arms[:first]:
-                    messages = [{'role':'system','content':data['orders']['short' if arm=='scaffold' else arm]},
-                                {'role':'user','content':row['user']+(row['scaffold'] if arm=='scaffold' else '')}]
-                    start,prev = time.monotonic(), cpu(proc.pid)
-                    reply = call(url+'/v1/chat/completions',dict(settings,messages=messages))
-                    choice = reply['choices'][0]
-                    record['calls'].append({'id':row['id'],'arm':arm,'raw':choice['message'].get('content') or '',
-                                            'finish_reason':choice.get('finish_reason'),'usage':reply['usage'],
-                                            'wall_s':round(time.monotonic()-start,3),'server_cpu_s':round(cpu(proc.pid)-prev,3)})
-                    save(args.out,record)
-                    print(row['id'],arm,reply['usage']['completion_tokens'],flush=True)
+            for ident, arm, messages, overrides in offers(data):
+                start, prev = time.monotonic(), cpu(proc.pid)
+                reply = call(url+'/v1/chat/completions', dict(settings | overrides, messages=messages))
+                choice = reply['choices'][0]
+                observed = {'id': ident, 'arm': arm, 'raw': choice['message'].get('content') or '',
+                            'finish_reason': choice.get('finish_reason'), 'usage': reply['usage'],
+                            'wall_s': round(time.monotonic()-start, 3), 'server_cpu_s': round(cpu(proc.pid)-prev, 3)}
+                if overrides:
+                    observed['sampling_override'] = overrides
+                if offers is not original_offers:
+                    observed['system_sha256'] = sha256(messages[0]['content'].encode()).hexdigest()
+                record['calls'].append(observed)
+                save(args.out, record)
+                print(ident, arm, reply['usage']['completion_tokens'], flush=True)
             record['complete'] = True
             record['utc_finished'] = datetime.now(timezone.utc).isoformat()
             save(args.out,record)
