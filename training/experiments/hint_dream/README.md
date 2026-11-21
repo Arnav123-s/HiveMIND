@@ -17,6 +17,18 @@ One of six tasks qualified, or **16.7%**. This sample fell below the 20% thresho
 
 A second implementation decoded 64 fresh JSON streams and evaluated them in arrival order, with lengths from zero through 63. The blind program passed 10/64. The hinted program passed 64/64. This measures the same practice contract on new inputs. [Independent audit](evidence/initial/independent-audit.json)
 
+## Fresh follow-up with one parser and rule reminder
+
+| Task | Checks passed blind | Checks passed with hint | Row admitted |
+|---|---:|---:|---|
+| JSON per-label meter wraps | 2/24 | 3/24 | No |
+| INI filter on final value | 5/24 | 24/24 | Yes |
+| Queue filter on final value | 14/24 | 24/24 | Yes |
+| CSV per-label meter wraps | 2/24 | 24/24 | Yes |
+| INI ranked totals | 21/24 | 22/24 | No |
+
+Three of five fresh tasks qualified **(60%)**. Across both chronological samples, four of eleven tasks **(36.4%)** yielded training rows. Three involved the final reading per label and one involved cyclic meters. The two cohorts used different format/rule combinations. The live opt-in slot uses the parser-and-rule reminder and keeps the blind and hinted inputs identical apart from that private line. [All 10 follow-up replies and grades](evidence/confirmation/results.json) · [The three exported rows](evidence/confirmation/rows.jsonl)
+
 ## Reproduce
 
 Use the pinned G55 weights and runtime hashes recorded in the receipts. `SDK` is the CPython WASI directory containing `python.wasm` and its standard library. Set `HF_HOME` to the cached unpacked Ternary-Bonsai-8B model and `HIVE_TERNARY_HOME` to a checkout containing the pinned `ik_llama.cpp` converter. The measured unpacked model revision was `ac20f03fc62e872399218b659c8e949dfca05769`. The host used wasmtime 36.0.0 with `python.wasm` SHA-256 `278a485c42319053a7989b837bbaa42c2b9d1892d65cb582d9c41dac8cef5f7e`. [WASI installation](../../reports/rule_lab/fieldwork/reproduce.md)

@@ -208,7 +208,8 @@ def _attempt(seed, output):
         calls += 1
         return ternary.chat(*args, also=recalled, **kwargs)
 
-    row, audit = trial(spec, member, ask, guest)
+    row, audit = trial(spec, member, ask, guest, format_hint=True)
+    audit["hint_policy"] = "format-and-rule"
     audit["recalled"] = recalled
     if row:
         row["verified_member"] = True
