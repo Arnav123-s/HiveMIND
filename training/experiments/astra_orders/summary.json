@@ -1,0 +1,421 @@
+{
+  "native_sha256": "0d152f2baf1318f6d781d03742c1414bcb8f1f60ea637e2a8b169c1ace808cb9",
+  "per_request": [
+    {
+      "arms": {
+        "full": {
+          "cpu_s": 71.74,
+          "executed_arm": "full",
+          "input_tokens": 721,
+          "ok": true,
+          "output_tokens": 24,
+          "status": "passed",
+          "stop": "stop",
+          "wall_s": 36.762
+        },
+        "gated": {
+          "cpu_s": 17.7,
+          "executed_arm": "short",
+          "input_tokens": 112,
+          "ok": true,
+          "output_tokens": 18,
+          "status": "passed",
+          "stop": "stop",
+          "wall_s": 8.981
+        },
+        "scaffold": {
+          "cpu_s": 17.7,
+          "executed_arm": "short",
+          "input_tokens": 112,
+          "ok": true,
+          "output_tokens": 18,
+          "status": "passed",
+          "stop": "stop",
+          "wall_s": 8.981
+        },
+        "short": {
+          "cpu_s": 17.7,
+          "executed_arm": "short",
+          "input_tokens": 112,
+          "ok": true,
+          "output_tokens": 18,
+          "status": "passed",
+          "stop": "stop",
+          "wall_s": 8.981
+        }
+      },
+      "group": "practiced_family",
+      "id": "m_percent"
+    },
+    {
+      "arms": {
+        "full": {
+          "cpu_s": 88.8,
+          "executed_arm": "full",
+          "input_tokens": 713,
+          "ok": true,
+          "output_tokens": 39,
+          "status": "passed",
+          "stop": "stop",
+          "wall_s": 44.917
+        },
+        "gated": {
+          "cpu_s": 30.58,
+          "executed_arm": "short",
+          "input_tokens": 104,
+          "ok": true,
+          "output_tokens": 40,
+          "status": "passed",
+          "stop": "stop",
+          "wall_s": 15.918
+        },
+        "scaffold": {
+          "cpu_s": 30.58,
+          "executed_arm": "short",
+          "input_tokens": 104,
+          "ok": true,
+          "output_tokens": 40,
+          "status": "passed",
+          "stop": "stop",
+          "wall_s": 15.918
+        },
+        "short": {
+          "cpu_s": 30.58,
+          "executed_arm": "short",
+          "input_tokens": 104,
+          "ok": true,
+          "output_tokens": 40,
+          "status": "passed",
+          "stop": "stop",
+          "wall_s": 15.918
+        }
+      },
+      "group": "practiced_family",
+      "id": "m_weekday"
+    },
+    {
+      "arms": {
+        "full": {
+          "cpu_s": 121.05,
+          "executed_arm": "full",
+          "input_tokens": 744,
+          "ok": true,
+          "output_tokens": 97,
+          "status": "passed",
+          "stop": "stop",
+          "wall_s": 61.277
+        },
+        "gated": {
+          "cpu_s": 60.51,
+          "executed_arm": "short",
+          "input_tokens": 135,
+          "ok": true,
+          "output_tokens": 97,
+          "status": "passed",
+          "stop": "stop",
+          "wall_s": 30.912
+        },
+        "scaffold": {
+          "cpu_s": 60.51,
+          "executed_arm": "short",
+          "input_tokens": 135,
+          "ok": true,
+          "output_tokens": 97,
+          "status": "passed",
+          "stop": "stop",
+          "wall_s": 30.912
+        },
+        "short": {
+          "cpu_s": 60.51,
+          "executed_arm": "short",
+          "input_tokens": 135,
+          "ok": true,
+          "output_tokens": 97,
+          "status": "passed",
+          "stop": "stop",
+          "wall_s": 30.912
+        }
+      },
+      "group": "practiced_family",
+      "id": "m_table"
+    },
+    {
+      "arms": {
+        "full": {
+          "cpu_s": 131.92,
+          "executed_arm": "full",
+          "input_tokens": 873,
+          "ok": false,
+          "output_tokens": 117,
+          "status": "incorrect",
+          "stop": "stop",
+          "wall_s": 67.2
+        },
+        "gated": {
+          "cpu_s": 131.92,
+          "executed_arm": "full",
+          "input_tokens": 873,
+          "ok": false,
+          "output_tokens": 117,
+          "status": "incorrect",
+          "stop": "stop",
+          "wall_s": 67.2
+        },
+        "scaffold": {
+          "cpu_s": 80.26,
+          "executed_arm": "scaffold",
+          "input_tokens": 309,
+          "ok": false,
+          "output_tokens": 125,
+          "status": "incorrect",
+          "stop": "stop",
+          "wall_s": 41.847
+        },
+        "short": {
+          "cpu_s": 68.63,
+          "executed_arm": "short",
+          "input_tokens": 264,
+          "ok": false,
+          "output_tokens": 100,
+          "status": "incorrect",
+          "stop": "stop",
+          "wall_s": 35.256
+        }
+      },
+      "group": "new_contract",
+      "id": "cold-chain"
+    },
+    {
+      "arms": {
+        "full": {
+          "cpu_s": 160.38,
+          "executed_arm": "full",
+          "input_tokens": 799,
+          "ok": false,
+          "output_tokens": 184,
+          "status": "runtime",
+          "stop": "stop",
+          "wall_s": 82.831
+        },
+        "gated": {
+          "cpu_s": 160.38,
+          "executed_arm": "full",
+          "input_tokens": 799,
+          "ok": false,
+          "output_tokens": 184,
+          "status": "runtime",
+          "stop": "stop",
+          "wall_s": 82.831
+        },
+        "scaffold": {
+          "cpu_s": 72.8,
+          "executed_arm": "short",
+          "input_tokens": 190,
+          "ok": true,
+          "output_tokens": 119,
+          "status": "passed",
+          "stop": "stop",
+          "wall_s": 36.87
+        },
+        "short": {
+          "cpu_s": 72.8,
+          "executed_arm": "short",
+          "input_tokens": 190,
+          "ok": true,
+          "output_tokens": 119,
+          "status": "passed",
+          "stop": "stop",
+          "wall_s": 36.87
+        }
+      },
+      "group": "new_contract",
+      "id": "delayed-release"
+    },
+    {
+      "arms": {
+        "full": {
+          "cpu_s": 168.47,
+          "executed_arm": "full",
+          "input_tokens": 771,
+          "ok": false,
+          "output_tokens": 174,
+          "status": "runtime",
+          "stop": "stop",
+          "wall_s": 91.311
+        },
+        "gated": {
+          "cpu_s": 168.47,
+          "executed_arm": "full",
+          "input_tokens": 771,
+          "ok": false,
+          "output_tokens": 174,
+          "status": "runtime",
+          "stop": "stop",
+          "wall_s": 91.311
+        },
+        "scaffold": {
+          "cpu_s": 81.6,
+          "executed_arm": "scaffold",
+          "input_tokens": 207,
+          "ok": false,
+          "output_tokens": 148,
+          "status": "incorrect",
+          "stop": "stop",
+          "wall_s": 41.413
+        },
+        "short": {
+          "cpu_s": 61.97,
+          "executed_arm": "short",
+          "input_tokens": 162,
+          "ok": false,
+          "output_tokens": 112,
+          "status": "incorrect",
+          "stop": "stop",
+          "wall_s": 31.311
+        }
+      },
+      "group": "new_contract",
+      "id": "careful-meter"
+    }
+  ],
+  "summaries": {
+    "all": {
+      "full": {
+        "cpu_s": 742.36,
+        "gained_vs_short": 0,
+        "input_tokens": 4621,
+        "lost_vs_short": 1,
+        "n": 6,
+        "output_tokens": 635,
+        "passes": 3,
+        "truncated": 0,
+        "wall_s": 384.298
+      },
+      "gated": {
+        "cpu_s": 569.56,
+        "gained_vs_short": 0,
+        "input_tokens": 2794,
+        "lost_vs_short": 1,
+        "n": 6,
+        "output_tokens": 630,
+        "passes": 3,
+        "truncated": 0,
+        "wall_s": 297.153
+      },
+      "scaffold": {
+        "cpu_s": 343.45,
+        "gained_vs_short": 0,
+        "input_tokens": 1057,
+        "lost_vs_short": 0,
+        "n": 6,
+        "output_tokens": 547,
+        "passes": 4,
+        "truncated": 0,
+        "wall_s": 175.941
+      },
+      "short": {
+        "cpu_s": 312.19,
+        "gained_vs_short": 0,
+        "input_tokens": 967,
+        "lost_vs_short": 0,
+        "n": 6,
+        "output_tokens": 486,
+        "passes": 4,
+        "truncated": 0,
+        "wall_s": 159.248
+      }
+    },
+    "new_contract": {
+      "full": {
+        "cpu_s": 460.77,
+        "gained_vs_short": 0,
+        "input_tokens": 2443,
+        "lost_vs_short": 1,
+        "n": 3,
+        "output_tokens": 475,
+        "passes": 0,
+        "truncated": 0,
+        "wall_s": 241.342
+      },
+      "gated": {
+        "cpu_s": 460.77,
+        "gained_vs_short": 0,
+        "input_tokens": 2443,
+        "lost_vs_short": 1,
+        "n": 3,
+        "output_tokens": 475,
+        "passes": 0,
+        "truncated": 0,
+        "wall_s": 241.342
+      },
+      "scaffold": {
+        "cpu_s": 234.66,
+        "gained_vs_short": 0,
+        "input_tokens": 706,
+        "lost_vs_short": 0,
+        "n": 3,
+        "output_tokens": 392,
+        "passes": 1,
+        "truncated": 0,
+        "wall_s": 120.13
+      },
+      "short": {
+        "cpu_s": 203.4,
+        "gained_vs_short": 0,
+        "input_tokens": 616,
+        "lost_vs_short": 0,
+        "n": 3,
+        "output_tokens": 331,
+        "passes": 1,
+        "truncated": 0,
+        "wall_s": 103.437
+      }
+    },
+    "practiced_family": {
+      "full": {
+        "cpu_s": 281.59,
+        "gained_vs_short": 0,
+        "input_tokens": 2178,
+        "lost_vs_short": 0,
+        "n": 3,
+        "output_tokens": 160,
+        "passes": 3,
+        "truncated": 0,
+        "wall_s": 142.956
+      },
+      "gated": {
+        "cpu_s": 108.79,
+        "gained_vs_short": 0,
+        "input_tokens": 351,
+        "lost_vs_short": 0,
+        "n": 3,
+        "output_tokens": 155,
+        "passes": 3,
+        "truncated": 0,
+        "wall_s": 55.811
+      },
+      "scaffold": {
+        "cpu_s": 108.79,
+        "gained_vs_short": 0,
+        "input_tokens": 351,
+        "lost_vs_short": 0,
+        "n": 3,
+        "output_tokens": 155,
+        "passes": 3,
+        "truncated": 0,
+        "wall_s": 55.811
+      },
+      "short": {
+        "cpu_s": 108.79,
+        "gained_vs_short": 0,
+        "input_tokens": 351,
+        "lost_vs_short": 0,
+        "n": 3,
+        "output_tokens": 155,
+        "passes": 3,
+        "truncated": 0,
+        "wall_s": 55.811
+      }
+    }
+  }
+}

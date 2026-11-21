@@ -1,0 +1,118 @@
+{
+  "cursor": {
+    "no_cache": {
+      "network_by_traversal": [
+        5,
+        5
+      ],
+      "hits": 0,
+      "response_body_bytes_from_origin": 256,
+      "author_counts": [
+        {
+          "Ada": 2,
+          "Lin": 4,
+          "Ros": 2,
+          "Mei": 1
+        },
+        {
+          "Ada": 2,
+          "Lin": 4,
+          "Ros": 2,
+          "Mei": 1
+        }
+      ]
+    },
+    "no_freshness_offer": {
+      "network_by_traversal": [
+        5,
+        5
+      ],
+      "hits": 0,
+      "response_body_bytes_from_origin": 256,
+      "author_counts": [
+        {
+          "Ada": 2,
+          "Lin": 4,
+          "Ros": 2,
+          "Mei": 1
+        },
+        {
+          "Ada": 2,
+          "Lin": 4,
+          "Ros": 2,
+          "Mei": 1
+        }
+      ]
+    },
+    "explicit_public_freshness": {
+      "network_by_traversal": [
+        5,
+        0
+      ],
+      "hits": 5,
+      "response_body_bytes_from_origin": 128,
+      "author_counts": [
+        {
+          "Ada": 2,
+          "Lin": 4,
+          "Ros": 2,
+          "Mei": 1
+        },
+        {
+          "Ada": 2,
+          "Lin": 4,
+          "Ros": 2,
+          "Mei": 1
+        }
+      ]
+    }
+  },
+  "two_read_bypasses_origin_calls": {
+    "/no-store": 2,
+    "/no-cache": 2,
+    "/private": 2,
+    "/ambiguous": 2,
+    "/no-offer": 2,
+    "/vary-star": 2,
+    "/set-cookie": 2,
+    "/too-old": 2,
+    "/content-range": 2,
+    "/partial": 2,
+    "/missing": 2,
+    "/lookup?key=fixture": 2,
+    "request Authorization": 2,
+    "request Proxy-Authorization": 2,
+    "request Cookie": 2,
+    "request Range": 2,
+    "request If-None-Match": 2,
+    "request X-Private": 2
+  },
+  "session_cookie_fetches_after_set": 2,
+  "force_reread": {
+    "directives_checked": 3,
+    "network_per_five_requests": 3
+  },
+  "absent_empty_and_french_selector_network_for_six": 3,
+  "age_adjusted_expiry": {
+    "initial_age": 4,
+    "origin_max_age": 7,
+    "hit_after_seconds": 2,
+    "miss_after_seconds": 3
+  },
+  "encoded_representations": {
+    "gzip_fetches": 1,
+    "redirect_fetches": 2,
+    "redirect_target_fetches": 0
+  },
+  "bounded_store": {
+    "entry_limit": 2,
+    "byte_limit": 1024,
+    "network_for_seven": 6,
+    "read_limit_enforced": true
+  },
+  "separate_single_read_runs": {
+    "network": 2,
+    "hits": 0,
+    "different_origin_values": true
+  }
+}

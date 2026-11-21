@@ -1,0 +1,2086 @@
+{
+ "candidates": {
+  "20a572528913670d3d2ee9fc6d2fbaf49a46e2fbd78493cb1e961e3ae2ed5843": {
+   "errors": 0,
+   "fuel": 1024456210,
+   "outputs": [
+    {
+     "value": 0
+    },
+    {
+     "value": ""
+    },
+    {
+     "value": 0
+    },
+    {
+     "value": ""
+    },
+    {
+     "value": 0
+    },
+    {
+     "value": ""
+    },
+    {
+     "value": 0
+    },
+    {
+     "value": ""
+    },
+    {
+     "value": 0
+    },
+    {
+     "value": ""
+    },
+    {
+     "value": 0
+    },
+    {
+     "value": ""
+    },
+    {
+     "value": 0
+    },
+    {
+     "value": ""
+    },
+    {
+     "value": 0
+    },
+    {
+     "value": ""
+    },
+    {
+     "value": 0
+    },
+    {
+     "value": ""
+    },
+    {
+     "value": 0
+    },
+    {
+     "value": ""
+    },
+    {
+     "value": 0
+    },
+    {
+     "value": ""
+    },
+    {
+     "value": 0
+    },
+    {
+     "value": ""
+    },
+    {
+     "value": 0
+    },
+    {
+     "value": ""
+    },
+    {
+     "value": 0
+    },
+    {
+     "value": ""
+    },
+    {
+     "value": 0
+    },
+    {
+     "value": ""
+    }
+   ],
+   "probes": 30,
+   "right": 0,
+   "signatures": {
+    "from_roman": [
+     1,
+     0,
+     false,
+     0,
+     false
+    ],
+    "to_roman": [
+     1,
+     0,
+     false,
+     0,
+     false
+    ]
+   }
+  },
+  "2f15b88a1bf38b47e8128bc772293b95d6478e59fcc7baf17fdec1648e7255ad": {
+   "errors": 0,
+   "fuel": 1024601095,
+   "outputs": [
+    {
+     "value": 0
+    },
+    {
+     "value": ""
+    },
+    {
+     "value": 0
+    },
+    {
+     "value": ""
+    },
+    {
+     "value": 0
+    },
+    {
+     "value": ""
+    },
+    {
+     "value": 0
+    },
+    {
+     "value": ""
+    },
+    {
+     "value": 0
+    },
+    {
+     "value": ""
+    },
+    {
+     "value": 0
+    },
+    {
+     "value": ""
+    },
+    {
+     "value": 0
+    },
+    {
+     "value": ""
+    },
+    {
+     "value": 0
+    },
+    {
+     "value": ""
+    },
+    {
+     "value": 0
+    },
+    {
+     "value": ""
+    },
+    {
+     "value": 0
+    },
+    {
+     "value": ""
+    },
+    {
+     "value": 0
+    },
+    {
+     "value": ""
+    },
+    {
+     "value": 0
+    },
+    {
+     "value": ""
+    },
+    {
+     "value": 0
+    },
+    {
+     "value": ""
+    },
+    {
+     "value": 0
+    },
+    {
+     "value": ""
+    },
+    {
+     "value": 0
+    },
+    {
+     "value": ""
+    }
+   ],
+   "probes": 30,
+   "right": 0,
+   "signatures": {
+    "from_roman": [
+     0,
+     0,
+     true,
+     0,
+     false
+    ],
+    "to_roman": [
+     0,
+     0,
+     true,
+     0,
+     false
+    ]
+   }
+  },
+  "3556c41548b5ac1510c20b8d2b98426b452cbbc4c535489104946fd131da59d4": {
+   "errors": 0,
+   "fuel": 1024744382,
+   "outputs": [
+    {
+     "value": 0
+    },
+    {
+     "value": ""
+    },
+    {
+     "value": 0
+    },
+    {
+     "value": ""
+    },
+    {
+     "value": 0
+    },
+    {
+     "value": ""
+    },
+    {
+     "value": 0
+    },
+    {
+     "value": ""
+    },
+    {
+     "value": 0
+    },
+    {
+     "value": ""
+    },
+    {
+     "value": 0
+    },
+    {
+     "value": ""
+    },
+    {
+     "value": 0
+    },
+    {
+     "value": ""
+    },
+    {
+     "value": 0
+    },
+    {
+     "value": ""
+    },
+    {
+     "value": 0
+    },
+    {
+     "value": ""
+    },
+    {
+     "value": 0
+    },
+    {
+     "value": ""
+    },
+    {
+     "value": 0
+    },
+    {
+     "value": ""
+    },
+    {
+     "value": 0
+    },
+    {
+     "value": ""
+    },
+    {
+     "value": 0
+    },
+    {
+     "value": ""
+    },
+    {
+     "value": 0
+    },
+    {
+     "value": ""
+    },
+    {
+     "value": 0
+    },
+    {
+     "value": ""
+    }
+   ],
+   "probes": 30,
+   "right": 0,
+   "signatures": {
+    "to_seconds": [
+     0,
+     0,
+     true,
+     0,
+     false
+    ],
+    "to_text": [
+     0,
+     0,
+     true,
+     0,
+     false
+    ]
+   }
+  },
+  "62a9640287839f7191edfbf92f836a5652ee86f29ececab8e3267a70b39ee8d4": {
+   "errors": 0,
+   "fuel": 1024606304,
+   "outputs": [
+    {
+     "value": 0
+    },
+    {
+     "value": ""
+    },
+    {
+     "value": 0
+    },
+    {
+     "value": ""
+    },
+    {
+     "value": 0
+    },
+    {
+     "value": ""
+    },
+    {
+     "value": 0
+    },
+    {
+     "value": ""
+    },
+    {
+     "value": 0
+    },
+    {
+     "value": ""
+    },
+    {
+     "value": 0
+    },
+    {
+     "value": ""
+    },
+    {
+     "value": 0
+    },
+    {
+     "value": ""
+    },
+    {
+     "value": 0
+    },
+    {
+     "value": ""
+    },
+    {
+     "value": 0
+    },
+    {
+     "value": ""
+    },
+    {
+     "value": 0
+    },
+    {
+     "value": ""
+    },
+    {
+     "value": 0
+    },
+    {
+     "value": ""
+    },
+    {
+     "value": 0
+    },
+    {
+     "value": ""
+    },
+    {
+     "value": 0
+    },
+    {
+     "value": ""
+    },
+    {
+     "value": 0
+    },
+    {
+     "value": ""
+    },
+    {
+     "value": 0
+    },
+    {
+     "value": ""
+    }
+   ],
+   "probes": 30,
+   "right": 0,
+   "signatures": {
+    "to_seconds": [
+     1,
+     0,
+     false,
+     0,
+     false
+    ],
+    "to_text": [
+     1,
+     0,
+     false,
+     0,
+     false
+    ]
+   }
+  },
+  "7c3aecf7e5366a55b486341adfe3650055d75ccbf7753cb1583ef20d53cbd12b": {
+   "errors": 0,
+   "fuel": 1027994583,
+   "outputs": [
+    {
+     "value": 3764
+    },
+    {
+     "value": "MDCCCLXIX"
+    },
+    {
+     "value": 3331
+    },
+    {
+     "value": "MMCDXXXIV"
+    },
+    {
+     "value": 1121
+    },
+    {
+     "value": "DCCCLVII"
+    },
+    {
+     "value": 1877
+    },
+    {
+     "value": "DCLXXV"
+    },
+    {
+     "value": 1338
+    },
+    {
+     "value": "DC"
+    },
+    {
+     "value": 1062
+    },
+    {
+     "value": "MMMDCCCLXXXIX"
+    },
+    {
+     "value": 487
+    },
+    {
+     "value": "MDCCCXXXIV"
+    },
+    {
+     "value": 566
+    },
+    {
+     "value": "MMMCMLX"
+    },
+    {
+     "value": 874
+    },
+    {
+     "value": "MMMXLVIII"
+    },
+    {
+     "value": 3645
+    },
+    {
+     "value": "MMDCCCLXI"
+    },
+    {
+     "value": 1472
+    },
+    {
+     "value": "MMMCMXXII"
+    },
+    {
+     "value": 1352
+    },
+    {
+     "value": "MDCCCXXXV"
+    },
+    {
+     "value": 125
+    },
+    {
+     "value": "MMCCXXX"
+    },
+    {
+     "value": 1812
+    },
+    {
+     "value": "MDCCLXXXIX"
+    },
+    {
+     "value": 3213
+    },
+    {
+     "value": "MMMLXII"
+    }
+   ],
+   "probes": 30,
+   "right": 30,
+   "signatures": {
+    "from_roman": [
+     1,
+     0,
+     false,
+     0,
+     false
+    ],
+    "to_roman": [
+     1,
+     0,
+     false,
+     0,
+     false
+    ]
+   }
+  },
+  "81a0e75842a9f209cf65cf5a1e17905900bfbeb2651c46ab2adb837b1a0b34b7": {
+   "errors": 0,
+   "fuel": 1024490523,
+   "outputs": [
+    {
+     "value": 0
+    },
+    {
+     "value": ""
+    },
+    {
+     "value": 0
+    },
+    {
+     "value": ""
+    },
+    {
+     "value": 0
+    },
+    {
+     "value": ""
+    },
+    {
+     "value": 0
+    },
+    {
+     "value": ""
+    },
+    {
+     "value": 0
+    },
+    {
+     "value": ""
+    },
+    {
+     "value": 0
+    },
+    {
+     "value": ""
+    },
+    {
+     "value": 0
+    },
+    {
+     "value": ""
+    },
+    {
+     "value": 0
+    },
+    {
+     "value": ""
+    },
+    {
+     "value": 0
+    },
+    {
+     "value": ""
+    },
+    {
+     "value": 0
+    },
+    {
+     "value": ""
+    },
+    {
+     "value": 0
+    },
+    {
+     "value": ""
+    },
+    {
+     "value": 0
+    },
+    {
+     "value": ""
+    },
+    {
+     "value": 0
+    },
+    {
+     "value": ""
+    },
+    {
+     "value": 0
+    },
+    {
+     "value": ""
+    },
+    {
+     "value": 0
+    },
+    {
+     "value": ""
+    }
+   ],
+   "probes": 30,
+   "right": 0,
+   "signatures": {
+    "from_roman": [
+     0,
+     0,
+     true,
+     0,
+     false
+    ],
+    "to_roman": [
+     0,
+     0,
+     true,
+     0,
+     false
+    ]
+   }
+  },
+  "83af6f54adb6aef8b4c56bd1738c394e7db591d2f8ac5eb567cb58d7c815b425": {
+   "errors": 0,
+   "fuel": 1027201958,
+   "outputs": [
+    {
+     "value": 13291
+    },
+    {
+     "value": "17h28s"
+    },
+    {
+     "value": 54608
+    },
+    {
+     "value": "3h7m7s"
+    },
+    {
+     "value": 59534
+    },
+    {
+     "value": "8h46m17s"
+    },
+    {
+     "value": 69590
+    },
+    {
+     "value": "13h1m40s"
+    },
+    {
+     "value": 8419
+    },
+    {
+     "value": "10h40m47s"
+    },
+    {
+     "value": 8474
+    },
+    {
+     "value": "1h42m28s"
+    },
+    {
+     "value": 44403
+    },
+    {
+     "value": "21h38m54s"
+    },
+    {
+     "value": 9078
+    },
+    {
+     "value": "5h39m6s"
+    },
+    {
+     "value": 84975
+    },
+    {
+     "value": "8h48m2s"
+    },
+    {
+     "value": 65607
+    },
+    {
+     "value": "20h52m29s"
+    },
+    {
+     "value": 7250
+    },
+    {
+     "value": "16h23m20s"
+    },
+    {
+     "value": 86049
+    },
+    {
+     "value": "4h35m42s"
+    },
+    {
+     "value": 73329
+    },
+    {
+     "value": "44m28s"
+    },
+    {
+     "value": 60169
+    },
+    {
+     "value": "2h11m"
+    },
+    {
+     "value": 32846
+    },
+    {
+     "value": "9h50m49s"
+    }
+   ],
+   "probes": 30,
+   "right": 30,
+   "signatures": {
+    "to_seconds": [
+     1,
+     0,
+     false,
+     0,
+     false
+    ],
+    "to_text": [
+     1,
+     0,
+     false,
+     0,
+     false
+    ]
+   }
+  },
+  "9bbb8aa8d33e30fbb9e3f242d2027ceaf590f7a9977e68df0b5b5c0d6f6f5b4e": {
+   "errors": 0,
+   "fuel": 1025309757,
+   "outputs": [
+    {
+     "value": 0
+    },
+    {
+     "value": ""
+    },
+    {
+     "value": 0
+    },
+    {
+     "value": ""
+    },
+    {
+     "value": 0
+    },
+    {
+     "value": ""
+    },
+    {
+     "value": 0
+    },
+    {
+     "value": ""
+    },
+    {
+     "value": 0
+    },
+    {
+     "value": ""
+    },
+    {
+     "value": 0
+    },
+    {
+     "value": ""
+    },
+    {
+     "value": 0
+    },
+    {
+     "value": ""
+    },
+    {
+     "value": 0
+    },
+    {
+     "value": ""
+    },
+    {
+     "value": 0
+    },
+    {
+     "value": ""
+    },
+    {
+     "value": 0
+    },
+    {
+     "value": ""
+    },
+    {
+     "value": 0
+    },
+    {
+     "value": ""
+    },
+    {
+     "value": 0
+    },
+    {
+     "value": ""
+    },
+    {
+     "value": 0
+    },
+    {
+     "value": ""
+    },
+    {
+     "value": 0
+    },
+    {
+     "value": ""
+    },
+    {
+     "value": 0
+    },
+    {
+     "value": ""
+    }
+   ],
+   "probes": 30,
+   "right": 0,
+   "signatures": {
+    "to_seconds": [
+     0,
+     0,
+     true,
+     0,
+     false
+    ],
+    "to_text": [
+     0,
+     0,
+     true,
+     0,
+     false
+    ]
+   }
+  },
+  "a3672c5ca3769003277da9ec84f2d9379ce93ca6a51d0e13cb66293703c86298": {
+   "errors": 0,
+   "fuel": 1025517452,
+   "outputs": [
+    {
+     "value": 0
+    },
+    {
+     "value": ""
+    },
+    {
+     "value": 0
+    },
+    {
+     "value": ""
+    },
+    {
+     "value": 0
+    },
+    {
+     "value": ""
+    },
+    {
+     "value": 0
+    },
+    {
+     "value": ""
+    },
+    {
+     "value": 0
+    },
+    {
+     "value": ""
+    },
+    {
+     "value": 0
+    },
+    {
+     "value": ""
+    },
+    {
+     "value": 0
+    },
+    {
+     "value": ""
+    },
+    {
+     "value": 0
+    },
+    {
+     "value": ""
+    },
+    {
+     "value": 0
+    },
+    {
+     "value": ""
+    },
+    {
+     "value": 0
+    },
+    {
+     "value": ""
+    },
+    {
+     "value": 0
+    },
+    {
+     "value": ""
+    },
+    {
+     "value": 0
+    },
+    {
+     "value": ""
+    },
+    {
+     "value": 0
+    },
+    {
+     "value": ""
+    },
+    {
+     "value": 0
+    },
+    {
+     "value": ""
+    },
+    {
+     "value": 0
+    },
+    {
+     "value": ""
+    }
+   ],
+   "probes": 30,
+   "right": 0,
+   "signatures": {
+    "to_seconds": [
+     1,
+     0,
+     false,
+     0,
+     false
+    ],
+    "to_text": [
+     1,
+     0,
+     false,
+     0,
+     false
+    ]
+   }
+  },
+  "a79e979ae51d5dbf79bb912202570000910746006aa5241d5578fd4444b2f908": {
+   "errors": 0,
+   "fuel": 1027004495,
+   "outputs": [
+    {
+     "value": 3764
+    },
+    {
+     "value": "MDCCCLXIX"
+    },
+    {
+     "value": 3331
+    },
+    {
+     "value": "MMCDXXXIV"
+    },
+    {
+     "value": 1121
+    },
+    {
+     "value": "DCCCLVII"
+    },
+    {
+     "value": 1877
+    },
+    {
+     "value": "DCLXXV"
+    },
+    {
+     "value": 1338
+    },
+    {
+     "value": "DC"
+    },
+    {
+     "value": 1062
+    },
+    {
+     "value": "MMMDCCCLXXXIX"
+    },
+    {
+     "value": 487
+    },
+    {
+     "value": "MDCCCXXXIV"
+    },
+    {
+     "value": 566
+    },
+    {
+     "value": "MMMCMLX"
+    },
+    {
+     "value": 874
+    },
+    {
+     "value": "MMMXLVIII"
+    },
+    {
+     "value": 3645
+    },
+    {
+     "value": "MMDCCCLXI"
+    },
+    {
+     "value": 1472
+    },
+    {
+     "value": "MMMCMXXII"
+    },
+    {
+     "value": 1352
+    },
+    {
+     "value": "MDCCCXXXV"
+    },
+    {
+     "value": 125
+    },
+    {
+     "value": "MMCCXXX"
+    },
+    {
+     "value": 1812
+    },
+    {
+     "value": "MDCCLXXXIX"
+    },
+    {
+     "value": 3213
+    },
+    {
+     "value": "MMMLXII"
+    }
+   ],
+   "probes": 30,
+   "right": 30,
+   "signatures": {
+    "from_roman": [
+     1,
+     0,
+     false,
+     0,
+     false
+    ],
+    "to_roman": [
+     1,
+     0,
+     false,
+     0,
+     false
+    ]
+   }
+  },
+  "c6d9edaeedf11f44107a52031ceda4a42ed02cc1bd1c7221784571dca33bf854": {
+   "errors": 0,
+   "fuel": 1024833718,
+   "outputs": [
+    {
+     "value": 0
+    },
+    {
+     "value": ""
+    },
+    {
+     "value": 0
+    },
+    {
+     "value": ""
+    },
+    {
+     "value": 0
+    },
+    {
+     "value": ""
+    },
+    {
+     "value": 0
+    },
+    {
+     "value": ""
+    },
+    {
+     "value": 0
+    },
+    {
+     "value": ""
+    },
+    {
+     "value": 0
+    },
+    {
+     "value": ""
+    },
+    {
+     "value": 0
+    },
+    {
+     "value": ""
+    },
+    {
+     "value": 0
+    },
+    {
+     "value": ""
+    },
+    {
+     "value": 0
+    },
+    {
+     "value": ""
+    },
+    {
+     "value": 0
+    },
+    {
+     "value": ""
+    },
+    {
+     "value": 0
+    },
+    {
+     "value": ""
+    },
+    {
+     "value": 0
+    },
+    {
+     "value": ""
+    },
+    {
+     "value": 0
+    },
+    {
+     "value": ""
+    },
+    {
+     "value": 0
+    },
+    {
+     "value": ""
+    },
+    {
+     "value": 0
+    },
+    {
+     "value": ""
+    }
+   ],
+   "probes": 30,
+   "right": 0,
+   "signatures": {
+    "from_roman": [
+     1,
+     0,
+     false,
+     0,
+     false
+    ],
+    "to_roman": [
+     1,
+     0,
+     false,
+     0,
+     false
+    ]
+   }
+  },
+  "ddfe7ea9ceabafb2b89cb0baa37af6605d4a0a9771215855f72eaf0fc6102c95": {
+   "errors": 0,
+   "fuel": 1027358886,
+   "outputs": [
+    {
+     "value": 13291
+    },
+    {
+     "value": "17h 28s"
+    },
+    {
+     "value": 54608
+    },
+    {
+     "value": "3h7m7s"
+    },
+    {
+     "value": 59534
+    },
+    {
+     "value": "8h46m17s"
+    },
+    {
+     "value": 69590
+    },
+    {
+     "value": "13h1m40s"
+    },
+    {
+     "value": 8419
+    },
+    {
+     "value": "10h40m47s"
+    },
+    {
+     "value": 8474
+    },
+    {
+     "value": "1h42m28s"
+    },
+    {
+     "value": 44403
+    },
+    {
+     "value": "21h38m54s"
+    },
+    {
+     "value": 9078
+    },
+    {
+     "value": "5h39m6s"
+    },
+    {
+     "value": 84975
+    },
+    {
+     "value": "8h48m2s"
+    },
+    {
+     "value": 65607
+    },
+    {
+     "value": "20h52m29s"
+    },
+    {
+     "value": 7250
+    },
+    {
+     "value": "16h23m20s"
+    },
+    {
+     "value": 86049
+    },
+    {
+     "value": "4h35m42s"
+    },
+    {
+     "value": 73329
+    },
+    {
+     "value": "44m28s"
+    },
+    {
+     "value": 60169
+    },
+    {
+     "value": "2h11m"
+    },
+    {
+     "value": 32846
+    },
+    {
+     "value": "9h50m49s"
+    }
+   ],
+   "probes": 30,
+   "right": 29,
+   "signatures": {
+    "to_seconds": [
+     1,
+     0,
+     false,
+     0,
+     false
+    ],
+    "to_text": [
+     1,
+     0,
+     false,
+     0,
+     false
+    ]
+   }
+  },
+  "ee6373e9af74950603cf5c4b9a2520d3c02a55758f5fa06196eba16e5ec21a53": {
+   "errors": 0,
+   "fuel": 1027210705,
+   "outputs": [
+    {
+     "value": 13291
+    },
+    {
+     "value": "17h28s"
+    },
+    {
+     "value": 54608
+    },
+    {
+     "value": "3h7m7s"
+    },
+    {
+     "value": 59534
+    },
+    {
+     "value": "8h46m17s"
+    },
+    {
+     "value": 69590
+    },
+    {
+     "value": "13h1m40s"
+    },
+    {
+     "value": 8419
+    },
+    {
+     "value": "10h40m47s"
+    },
+    {
+     "value": 8474
+    },
+    {
+     "value": "1h42m28s"
+    },
+    {
+     "value": 44403
+    },
+    {
+     "value": "21h38m54s"
+    },
+    {
+     "value": 9078
+    },
+    {
+     "value": "5h39m6s"
+    },
+    {
+     "value": 84975
+    },
+    {
+     "value": "8h48m2s"
+    },
+    {
+     "value": 65607
+    },
+    {
+     "value": "20h52m29s"
+    },
+    {
+     "value": 7250
+    },
+    {
+     "value": "16h23m20s"
+    },
+    {
+     "value": 86049
+    },
+    {
+     "value": "4h35m42s"
+    },
+    {
+     "value": 73329
+    },
+    {
+     "value": "44m28s"
+    },
+    {
+     "value": 60169
+    },
+    {
+     "value": "2h11m"
+    },
+    {
+     "value": 32846
+    },
+    {
+     "value": "9h50m49s"
+    }
+   ],
+   "probes": 30,
+   "right": 30,
+   "signatures": {
+    "to_seconds": [
+     1,
+     0,
+     false,
+     0,
+     false
+    ],
+    "to_text": [
+     1,
+     0,
+     false,
+     0,
+     false
+    ]
+   }
+  }
+ },
+ "comparisons": [
+  {
+   "case": "gate-work-after-2/h20000502_00",
+   "confirmed": true,
+   "filename": "durations.py",
+   "first_distinguishing_probe": null,
+   "group": "original_and_dictionary_lookup",
+   "identical_declarations": true,
+   "left": "9bbb8aa8d33e30fbb9e3f242d2027ceaf590f7a9977e68df0b5b5c0d6f6f5b4e",
+   "left_right": 0,
+   "right": "3556c41548b5ac1510c20b8d2b98426b452cbbc4c535489104946fd131da59d4",
+   "right_right": 0,
+   "successful_agreement": 30
+  },
+  {
+   "case": "gate-work-after-2/h20000502_00",
+   "confirmed": true,
+   "filename": "durations.py",
+   "first_distinguishing_probe": null,
+   "group": "two_single_argument_lookups",
+   "identical_declarations": true,
+   "left": "a3672c5ca3769003277da9ec84f2d9379ce93ca6a51d0e13cb66293703c86298",
+   "left_right": 0,
+   "right": "62a9640287839f7191edfbf92f836a5652ee86f29ececab8e3267a70b39ee8d4",
+   "right_right": 0,
+   "successful_agreement": 30
+  },
+  {
+   "case": "gate-work-after-8/h20000508_02",
+   "confirmed": true,
+   "filename": "roman.py",
+   "first_distinguishing_probe": null,
+   "group": "original_and_dictionary_lookup",
+   "identical_declarations": true,
+   "left": "2f15b88a1bf38b47e8128bc772293b95d6478e59fcc7baf17fdec1648e7255ad",
+   "left_right": 0,
+   "right": "81a0e75842a9f209cf65cf5a1e17905900bfbeb2651c46ab2adb837b1a0b34b7",
+   "right_right": 0,
+   "successful_agreement": 30
+  },
+  {
+   "case": "gate-work-after-8/h20000508_02",
+   "confirmed": true,
+   "filename": "roman.py",
+   "first_distinguishing_probe": null,
+   "group": "two_single_argument_lookups",
+   "identical_declarations": true,
+   "left": "c6d9edaeedf11f44107a52031ceda4a42ed02cc1bd1c7221784571dca33bf854",
+   "left_right": 0,
+   "right": "20a572528913670d3d2ee9fc6d2fbaf49a46e2fbd78493cb1e961e3ae2ed5843",
+   "right_right": 0,
+   "successful_agreement": 30
+  },
+  {
+   "case": "gate-work-after-8/h20000508_02",
+   "confirmed": false,
+   "filename": "roman.py",
+   "first_distinguishing_probe": 0,
+   "group": "original_lookup_and_worker",
+   "identical_declarations": false,
+   "left": "2f15b88a1bf38b47e8128bc772293b95d6478e59fcc7baf17fdec1648e7255ad",
+   "left_right": 0,
+   "right": "7c3aecf7e5366a55b486341adfe3650055d75ccbf7753cb1583ef20d53cbd12b",
+   "right_right": 30,
+   "successful_agreement": 0
+  },
+  {
+   "case": "gate-work-before-2/h20000502_00",
+   "confirmed": true,
+   "filename": "durations.py",
+   "first_distinguishing_probe": null,
+   "group": "original_and_dictionary_lookup",
+   "identical_declarations": true,
+   "left": "9bbb8aa8d33e30fbb9e3f242d2027ceaf590f7a9977e68df0b5b5c0d6f6f5b4e",
+   "left_right": 0,
+   "right": "3556c41548b5ac1510c20b8d2b98426b452cbbc4c535489104946fd131da59d4",
+   "right_right": 0,
+   "successful_agreement": 30
+  },
+  {
+   "case": "gate-work-before-2/h20000502_00",
+   "confirmed": true,
+   "filename": "durations.py",
+   "first_distinguishing_probe": null,
+   "group": "two_single_argument_lookups",
+   "identical_declarations": true,
+   "left": "a3672c5ca3769003277da9ec84f2d9379ce93ca6a51d0e13cb66293703c86298",
+   "left_right": 0,
+   "right": "62a9640287839f7191edfbf92f836a5652ee86f29ececab8e3267a70b39ee8d4",
+   "right_right": 0,
+   "successful_agreement": 30
+  },
+  {
+   "case": "gate-work-before-2/h20000502_00",
+   "confirmed": false,
+   "filename": "durations.py",
+   "first_distinguishing_probe": 0,
+   "group": "original_lookup_and_worker",
+   "identical_declarations": false,
+   "left": "9bbb8aa8d33e30fbb9e3f242d2027ceaf590f7a9977e68df0b5b5c0d6f6f5b4e",
+   "left_right": 0,
+   "right": "ddfe7ea9ceabafb2b89cb0baa37af6605d4a0a9771215855f72eaf0fc6102c95",
+   "right_right": 29,
+   "successful_agreement": 0
+  },
+  {
+   "case": "gate-work-before-8/h20000508_02",
+   "confirmed": true,
+   "filename": "roman.py",
+   "first_distinguishing_probe": null,
+   "group": "original_and_dictionary_lookup",
+   "identical_declarations": true,
+   "left": "2f15b88a1bf38b47e8128bc772293b95d6478e59fcc7baf17fdec1648e7255ad",
+   "left_right": 0,
+   "right": "81a0e75842a9f209cf65cf5a1e17905900bfbeb2651c46ab2adb837b1a0b34b7",
+   "right_right": 0,
+   "successful_agreement": 30
+  },
+  {
+   "case": "gate-work-before-8/h20000508_02",
+   "confirmed": true,
+   "filename": "roman.py",
+   "first_distinguishing_probe": null,
+   "group": "two_single_argument_lookups",
+   "identical_declarations": true,
+   "left": "c6d9edaeedf11f44107a52031ceda4a42ed02cc1bd1c7221784571dca33bf854",
+   "left_right": 0,
+   "right": "20a572528913670d3d2ee9fc6d2fbaf49a46e2fbd78493cb1e961e3ae2ed5843",
+   "right_right": 0,
+   "successful_agreement": 30
+  },
+  {
+   "case": "gate-work-before-8/h20000508_02",
+   "confirmed": false,
+   "filename": "roman.py",
+   "first_distinguishing_probe": 0,
+   "group": "original_lookup_and_worker",
+   "identical_declarations": false,
+   "left": "2f15b88a1bf38b47e8128bc772293b95d6478e59fcc7baf17fdec1648e7255ad",
+   "left_right": 0,
+   "right": "a79e979ae51d5dbf79bb912202570000910746006aa5241d5578fd4444b2f908",
+   "right_right": 30,
+   "successful_agreement": 0
+  },
+  {
+   "case": "gate-work-after-3/h20000523_03",
+   "confirmed": true,
+   "filename": "durations.py",
+   "first_distinguishing_probe": null,
+   "group": "original_and_dictionary_lookup",
+   "identical_declarations": true,
+   "left": "9bbb8aa8d33e30fbb9e3f242d2027ceaf590f7a9977e68df0b5b5c0d6f6f5b4e",
+   "left_right": 0,
+   "right": "3556c41548b5ac1510c20b8d2b98426b452cbbc4c535489104946fd131da59d4",
+   "right_right": 0,
+   "successful_agreement": 30
+  },
+  {
+   "case": "gate-work-after-3/h20000523_03",
+   "confirmed": true,
+   "filename": "durations.py",
+   "first_distinguishing_probe": null,
+   "group": "two_single_argument_lookups",
+   "identical_declarations": true,
+   "left": "a3672c5ca3769003277da9ec84f2d9379ce93ca6a51d0e13cb66293703c86298",
+   "left_right": 0,
+   "right": "62a9640287839f7191edfbf92f836a5652ee86f29ececab8e3267a70b39ee8d4",
+   "right_right": 0,
+   "successful_agreement": 30
+  },
+  {
+   "case": "gate-work-after-3/h20000523_03",
+   "confirmed": false,
+   "filename": "durations.py",
+   "first_distinguishing_probe": 0,
+   "group": "original_lookup_and_worker",
+   "identical_declarations": false,
+   "left": "9bbb8aa8d33e30fbb9e3f242d2027ceaf590f7a9977e68df0b5b5c0d6f6f5b4e",
+   "left_right": 0,
+   "right": "83af6f54adb6aef8b4c56bd1738c394e7db591d2f8ac5eb567cb58d7c815b425",
+   "right_right": 30,
+   "successful_agreement": 0
+  },
+  {
+   "case": "gate-work-after-7/h20000527_03",
+   "confirmed": true,
+   "filename": "durations.py",
+   "first_distinguishing_probe": null,
+   "group": "original_and_dictionary_lookup",
+   "identical_declarations": true,
+   "left": "9bbb8aa8d33e30fbb9e3f242d2027ceaf590f7a9977e68df0b5b5c0d6f6f5b4e",
+   "left_right": 0,
+   "right": "3556c41548b5ac1510c20b8d2b98426b452cbbc4c535489104946fd131da59d4",
+   "right_right": 0,
+   "successful_agreement": 30
+  },
+  {
+   "case": "gate-work-after-7/h20000527_03",
+   "confirmed": true,
+   "filename": "durations.py",
+   "first_distinguishing_probe": null,
+   "group": "two_single_argument_lookups",
+   "identical_declarations": true,
+   "left": "a3672c5ca3769003277da9ec84f2d9379ce93ca6a51d0e13cb66293703c86298",
+   "left_right": 0,
+   "right": "62a9640287839f7191edfbf92f836a5652ee86f29ececab8e3267a70b39ee8d4",
+   "right_right": 0,
+   "successful_agreement": 30
+  },
+  {
+   "case": "gate-work-after-7/h20000527_03",
+   "confirmed": false,
+   "filename": "durations.py",
+   "first_distinguishing_probe": 0,
+   "group": "original_lookup_and_worker",
+   "identical_declarations": false,
+   "left": "9bbb8aa8d33e30fbb9e3f242d2027ceaf590f7a9977e68df0b5b5c0d6f6f5b4e",
+   "left_right": 0,
+   "right": "ee6373e9af74950603cf5c4b9a2520d3c02a55758f5fa06196eba16e5ec21a53",
+   "right_right": 30,
+   "successful_agreement": 0
+  },
+  {
+   "case": null,
+   "confirmed": false,
+   "filename": "durations.py",
+   "first_distinguishing_probe": 1,
+   "group": "distinct_archived_workers",
+   "identical_declarations": true,
+   "left": "83af6f54adb6aef8b4c56bd1738c394e7db591d2f8ac5eb567cb58d7c815b425",
+   "left_right": 30,
+   "right": "ddfe7ea9ceabafb2b89cb0baa37af6605d4a0a9771215855f72eaf0fc6102c95",
+   "right_right": 29,
+   "successful_agreement": 29
+  },
+  {
+   "case": null,
+   "confirmed": true,
+   "filename": "durations.py",
+   "first_distinguishing_probe": null,
+   "group": "distinct_archived_workers",
+   "identical_declarations": true,
+   "left": "83af6f54adb6aef8b4c56bd1738c394e7db591d2f8ac5eb567cb58d7c815b425",
+   "left_right": 30,
+   "right": "ee6373e9af74950603cf5c4b9a2520d3c02a55758f5fa06196eba16e5ec21a53",
+   "right_right": 30,
+   "successful_agreement": 30
+  },
+  {
+   "case": null,
+   "confirmed": false,
+   "filename": "durations.py",
+   "first_distinguishing_probe": 1,
+   "group": "distinct_archived_workers",
+   "identical_declarations": true,
+   "left": "ddfe7ea9ceabafb2b89cb0baa37af6605d4a0a9771215855f72eaf0fc6102c95",
+   "left_right": 29,
+   "right": "ee6373e9af74950603cf5c4b9a2520d3c02a55758f5fa06196eba16e5ec21a53",
+   "right_right": 30,
+   "successful_agreement": 29
+  },
+  {
+   "case": null,
+   "confirmed": true,
+   "filename": "roman.py",
+   "first_distinguishing_probe": null,
+   "group": "distinct_archived_workers",
+   "identical_declarations": true,
+   "left": "7c3aecf7e5366a55b486341adfe3650055d75ccbf7753cb1583ef20d53cbd12b",
+   "left_right": 30,
+   "right": "a79e979ae51d5dbf79bb912202570000910746006aa5241d5578fd4444b2f908",
+   "right_right": 30,
+   "successful_agreement": 30
+  }
+ ],
+ "probes": {
+  "durations.py": [
+   [
+    "to_seconds",
+    "3h41m31s",
+    13291
+   ],
+   [
+    "to_text",
+    61228,
+    "17h28s"
+   ],
+   [
+    "to_seconds",
+    "15h10m8s",
+    54608
+   ],
+   [
+    "to_text",
+    11227,
+    "3h7m7s"
+   ],
+   [
+    "to_seconds",
+    "16h32m14s",
+    59534
+   ],
+   [
+    "to_text",
+    31577,
+    "8h46m17s"
+   ],
+   [
+    "to_seconds",
+    "19h19m50s",
+    69590
+   ],
+   [
+    "to_text",
+    46900,
+    "13h1m40s"
+   ],
+   [
+    "to_seconds",
+    "2h20m19s",
+    8419
+   ],
+   [
+    "to_text",
+    38447,
+    "10h40m47s"
+   ],
+   [
+    "to_seconds",
+    "2h21m14s",
+    8474
+   ],
+   [
+    "to_text",
+    6148,
+    "1h42m28s"
+   ],
+   [
+    "to_seconds",
+    "12h20m3s",
+    44403
+   ],
+   [
+    "to_text",
+    77934,
+    "21h38m54s"
+   ],
+   [
+    "to_seconds",
+    "2h31m18s",
+    9078
+   ],
+   [
+    "to_text",
+    20346,
+    "5h39m6s"
+   ],
+   [
+    "to_seconds",
+    "23h36m15s",
+    84975
+   ],
+   [
+    "to_text",
+    31682,
+    "8h48m2s"
+   ],
+   [
+    "to_seconds",
+    "18h13m27s",
+    65607
+   ],
+   [
+    "to_text",
+    75149,
+    "20h52m29s"
+   ],
+   [
+    "to_seconds",
+    "2h50s",
+    7250
+   ],
+   [
+    "to_text",
+    59000,
+    "16h23m20s"
+   ],
+   [
+    "to_seconds",
+    "23h54m9s",
+    86049
+   ],
+   [
+    "to_text",
+    16542,
+    "4h35m42s"
+   ],
+   [
+    "to_seconds",
+    "20h22m9s",
+    73329
+   ],
+   [
+    "to_text",
+    2668,
+    "44m28s"
+   ],
+   [
+    "to_seconds",
+    "16h42m49s",
+    60169
+   ],
+   [
+    "to_text",
+    7860,
+    "2h11m"
+   ],
+   [
+    "to_seconds",
+    "9h7m26s",
+    32846
+   ],
+   [
+    "to_text",
+    35449,
+    "9h50m49s"
+   ]
+  ],
+  "roman.py": [
+   [
+    "from_roman",
+    "MMMDCCLXIV",
+    3764
+   ],
+   [
+    "to_roman",
+    1869,
+    "MDCCCLXIX"
+   ],
+   [
+    "from_roman",
+    "MMMCCCXXXI",
+    3331
+   ],
+   [
+    "to_roman",
+    2434,
+    "MMCDXXXIV"
+   ],
+   [
+    "from_roman",
+    "MCXXI",
+    1121
+   ],
+   [
+    "to_roman",
+    857,
+    "DCCCLVII"
+   ],
+   [
+    "from_roman",
+    "MDCCCLXXVII",
+    1877
+   ],
+   [
+    "to_roman",
+    675,
+    "DCLXXV"
+   ],
+   [
+    "from_roman",
+    "MCCCXXXVIII",
+    1338
+   ],
+   [
+    "to_roman",
+    600,
+    "DC"
+   ],
+   [
+    "from_roman",
+    "MLXII",
+    1062
+   ],
+   [
+    "to_roman",
+    3889,
+    "MMMDCCCLXXXIX"
+   ],
+   [
+    "from_roman",
+    "CDLXXXVII",
+    487
+   ],
+   [
+    "to_roman",
+    1834,
+    "MDCCCXXXIV"
+   ],
+   [
+    "from_roman",
+    "DLXVI",
+    566
+   ],
+   [
+    "to_roman",
+    3960,
+    "MMMCMLX"
+   ],
+   [
+    "from_roman",
+    "DCCCLXXIV",
+    874
+   ],
+   [
+    "to_roman",
+    3048,
+    "MMMXLVIII"
+   ],
+   [
+    "from_roman",
+    "MMMDCXLV",
+    3645
+   ],
+   [
+    "to_roman",
+    2861,
+    "MMDCCCLXI"
+   ],
+   [
+    "from_roman",
+    "MCDLXXII",
+    1472
+   ],
+   [
+    "to_roman",
+    3922,
+    "MMMCMXXII"
+   ],
+   [
+    "from_roman",
+    "MCCCLII",
+    1352
+   ],
+   [
+    "to_roman",
+    1835,
+    "MDCCCXXXV"
+   ],
+   [
+    "from_roman",
+    "CXXV",
+    125
+   ],
+   [
+    "to_roman",
+    2230,
+    "MMCCXXX"
+   ],
+   [
+    "from_roman",
+    "MDCCCXII",
+    1812
+   ],
+   [
+    "to_roman",
+    1789,
+    "MDCCLXXXIX"
+   ],
+   [
+    "from_roman",
+    "MMMCCXIII",
+    3213
+   ],
+   [
+    "to_roman",
+    3062,
+    "MMMLXII"
+   ]
+  ]
+ },
+ "sdk_sha256": "278a485c42319053a7989b837bbaa42c2b9d1892d65cb582d9c41dac8cef5f7e",
+ "summary": {
+  "distinct_archived_workers": {
+   "confirmed": 2,
+   "pairs": 4
+  },
+  "original_and_dictionary_lookup": {
+   "confirmed": 6,
+   "pairs": 6
+  },
+  "original_lookup_and_worker": {
+   "confirmed": 0,
+   "pairs": 5
+  },
+  "two_single_argument_lookups": {
+   "confirmed": 6,
+   "pairs": 6
+  }
+ }
+}
