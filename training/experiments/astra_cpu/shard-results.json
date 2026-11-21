@@ -1,0 +1,403 @@
+{
+  "tokenizer_sha256": "aeb13307a71acd8fe81861d94ad54ab689df773318809eed3cbe794b4492dae4",
+  "chat_template_sha256": "30a75d10e60b57e2f260420163dd59720dacf9f63b9a8de070d65dd80a7b30f7",
+  "treatment": "ordinary archive rows, no parent mends/pairs/foresee/read/judged; one full traversal; same cap across workers",
+  "generations": {
+    "g55": {
+      "rows_sha256": "c33f707c7120d279c050748a5752067be708687711aa9acc84a4f434208fadfd",
+      "raw_rows": 8247,
+      "unique_before_holdback": 7485,
+      "old": 6950,
+      "replicated": 388,
+      "held_back_rows": 147,
+      "caps": {
+        "508": {
+          "eligible_old": 5454,
+          "eligible_shared": 275,
+          "2": {
+            "hash": {
+              "eligible_sequence_tokens": [
+                1114019,
+                1135354
+              ],
+              "max_min_gap_percent_of_mean": 1.897
+            },
+            "snake": {
+              "eligible_sequence_tokens": [
+                1127487,
+                1121886
+              ],
+              "max_min_gap_percent_of_mean": 0.498
+            },
+            "cost": {
+              "eligible_sequence_tokens": [
+                1127203,
+                1122170
+              ],
+              "max_min_gap_percent_of_mean": 0.448
+            }
+          },
+          "3": {
+            "hash": {
+              "eligible_sequence_tokens": [
+                777920,
+                791306,
+                782802
+              ],
+              "max_min_gap_percent_of_mean": 1.707
+            },
+            "snake": {
+              "eligible_sequence_tokens": [
+                786963,
+                778557,
+                786508
+              ],
+              "max_min_gap_percent_of_mean": 1.072
+            },
+            "cost": {
+              "eligible_sequence_tokens": [
+                790885,
+                777976,
+                783167
+              ],
+              "max_min_gap_percent_of_mean": 1.647
+            }
+          },
+          "8": {
+            "hash": {
+              "eligible_sequence_tokens": [
+                355005,
+                369723,
+                331570,
+                350646,
+                374235,
+                371029,
+                361174,
+                351921
+              ],
+              "max_min_gap_percent_of_mean": 11.912
+            },
+            "snake": {
+              "eligible_sequence_tokens": [
+                354470,
+                357694,
+                356190,
+                359798,
+                364059,
+                358286,
+                357681,
+                357125
+              ],
+              "max_min_gap_percent_of_mean": 2.677
+            },
+            "cost": {
+              "eligible_sequence_tokens": [
+                359269,
+                350183,
+                360493,
+                365225,
+                361769,
+                354682,
+                357584,
+                356098
+              ],
+              "max_min_gap_percent_of_mean": 4.2
+            }
+          }
+        },
+        "1152": {
+          "eligible_old": 6834,
+          "eligible_shared": 383,
+          "2": {
+            "hash": {
+              "eligible_sequence_tokens": [
+                1761774,
+                1778633
+              ],
+              "max_min_gap_percent_of_mean": 0.952
+            },
+            "snake": {
+              "eligible_sequence_tokens": [
+                1776831,
+                1763576
+              ],
+              "max_min_gap_percent_of_mean": 0.749
+            },
+            "cost": {
+              "eligible_sequence_tokens": [
+                1767524,
+                1772883
+              ],
+              "max_min_gap_percent_of_mean": 0.303
+            }
+          },
+          "3": {
+            "hash": {
+              "eligible_sequence_tokens": [
+                1217547,
+                1240924,
+                1264080
+              ],
+              "max_min_gap_percent_of_mean": 3.75
+            },
+            "snake": {
+              "eligible_sequence_tokens": [
+                1244019,
+                1241770,
+                1236762
+              ],
+              "max_min_gap_percent_of_mean": 0.585
+            },
+            "cost": {
+              "eligible_sequence_tokens": [
+                1240832,
+                1248260,
+                1233459
+              ],
+              "max_min_gap_percent_of_mean": 1.193
+            }
+          },
+          "8": {
+            "hash": {
+              "eligible_sequence_tokens": [
+                584275,
+                588548,
+                555945,
+                574222,
+                600799,
+                578485,
+                567187,
+                583810
+              ],
+              "max_min_gap_percent_of_mean": 7.745
+            },
+            "snake": {
+              "eligible_sequence_tokens": [
+                575153,
+                581782,
+                572407,
+                581312,
+                582175,
+                575281,
+                580538,
+                584623
+              ],
+              "max_min_gap_percent_of_mean": 2.109
+            },
+            "cost": {
+              "eligible_sequence_tokens": [
+                581311,
+                577809,
+                582912,
+                575118,
+                577661,
+                581530,
+                577053,
+                579877
+              ],
+              "max_min_gap_percent_of_mean": 1.346
+            }
+          }
+        }
+      }
+    },
+    "g56": {
+      "rows_sha256": "a7738ee21886d9ca1d1b24cc59c2cd489ccfde6cbaee079648cc630e66a94139",
+      "raw_rows": 8820,
+      "unique_before_holdback": 8023,
+      "old": 7340,
+      "replicated": 530,
+      "held_back_rows": 153,
+      "caps": {
+        "508": {
+          "eligible_old": 5731,
+          "eligible_shared": 406,
+          "2": {
+            "hash": {
+              "eligible_sequence_tokens": [
+                1215679,
+                1231859
+              ],
+              "max_min_gap_percent_of_mean": 1.322
+            },
+            "snake": {
+              "eligible_sequence_tokens": [
+                1217846,
+                1229692
+              ],
+              "max_min_gap_percent_of_mean": 0.968
+            },
+            "cost": {
+              "eligible_sequence_tokens": [
+                1221733,
+                1225805
+              ],
+              "max_min_gap_percent_of_mean": 0.333
+            }
+          },
+          "3": {
+            "hash": {
+              "eligible_sequence_tokens": [
+                863361,
+                869079,
+                865045
+              ],
+              "max_min_gap_percent_of_mean": 0.66
+            },
+            "snake": {
+              "eligible_sequence_tokens": [
+                861839,
+                857972,
+                877674
+              ],
+              "max_min_gap_percent_of_mean": 2.276
+            },
+            "cost": {
+              "eligible_sequence_tokens": [
+                879829,
+                851483,
+                866173
+              ],
+              "max_min_gap_percent_of_mean": 3.274
+            }
+          },
+          "8": {
+            "hash": {
+              "eligible_sequence_tokens": [
+                418278,
+                428709,
+                391261,
+                409825,
+                435139,
+                432461,
+                420842,
+                410705
+              ],
+              "max_min_gap_percent_of_mean": 10.487
+            },
+            "snake": {
+              "eligible_sequence_tokens": [
+                412528,
+                417147,
+                417737,
+                416409,
+                422014,
+                424016,
+                420633,
+                416736
+              ],
+              "max_min_gap_percent_of_mean": 2.746
+            },
+            "cost": {
+              "eligible_sequence_tokens": [
+                416775,
+                417762,
+                415330,
+                421575,
+                423268,
+                423100,
+                416555,
+                412855
+              ],
+              "max_min_gap_percent_of_mean": 2.489
+            }
+          }
+        },
+        "1152": {
+          "eligible_old": 7219,
+          "eligible_shared": 527,
+          "2": {
+            "hash": {
+              "eligible_sequence_tokens": [
+                1918580,
+                1924893
+              ],
+              "max_min_gap_percent_of_mean": 0.329
+            },
+            "snake": {
+              "eligible_sequence_tokens": [
+                1920585,
+                1922888
+              ],
+              "max_min_gap_percent_of_mean": 0.12
+            },
+            "cost": {
+              "eligible_sequence_tokens": [
+                1925767,
+                1917706
+              ],
+              "max_min_gap_percent_of_mean": 0.419
+            }
+          },
+          "3": {
+            "hash": {
+              "eligible_sequence_tokens": [
+                1346512,
+                1354081,
+                1385022
+              ],
+              "max_min_gap_percent_of_mean": 2.828
+            },
+            "snake": {
+              "eligible_sequence_tokens": [
+                1364374,
+                1362548,
+                1358693
+              ],
+              "max_min_gap_percent_of_mean": 0.417
+            },
+            "cost": {
+              "eligible_sequence_tokens": [
+                1358810,
+                1365574,
+                1361231
+              ],
+              "max_min_gap_percent_of_mean": 0.497
+            }
+          },
+          "8": {
+            "hash": {
+              "eligible_sequence_tokens": [
+                668634,
+                667415,
+                636997,
+                651584,
+                690613,
+                660703,
+                648762,
+                671617
+              ],
+              "max_min_gap_percent_of_mean": 8.099
+            },
+            "snake": {
+              "eligible_sequence_tokens": [
+                660346,
+                668105,
+                658600,
+                662479,
+                662305,
+                663505,
+                659104,
+                661881
+              ],
+              "max_min_gap_percent_of_mean": 1.436
+            },
+            "cost": {
+              "eligible_sequence_tokens": [
+                666336,
+                657177,
+                661867,
+                662581,
+                662824,
+                658527,
+                662668,
+                664345
+              ],
+              "max_min_gap_percent_of_mean": 1.383
+            }
+          }
+        }
+      }
+    }
+  }
+}

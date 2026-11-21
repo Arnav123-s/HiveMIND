@@ -134,6 +134,7 @@ def _train(tmp_path, name, shard, n, alive=False):
     text = _fill(_step("train", "Grow the cell")["run"], {"needs.plan.outputs.children": children, "github.run_number": "40",
                                                         "vars.HIVE_COLAB_CHILDREN || '1'": "1"})
     env = dict(os.environ, PATH=f"{shim}:{os.environ['PATH']}", DNA="t80", GEN="g40", NAME=name, ORGAN="code", P="", VERSUS="",
+               HIVE_TRAIN_MIN="170", TRAIN_PROFILE="auto", HIVE_SHARD_POLICY="hash", HIVE_TRAIN_PLATEAU="off",
                SHARD=str(shard), N=str(n), GITHUB_REPOSITORY="x/y", GITHUB_STEP_SUMMARY=str(work / "summary"))
     p = subprocess.run(["bash", "-e", "-c", text], cwd=work, env=env, capture_output=True, text=True)
     calls = (work / "calls").read_text() if (work / "calls").exists() else ""
@@ -171,6 +172,9 @@ def test_practice_and_dreams_take_at_most_600_s_a_task_and_the_gate_keeps_its_ow
 
 def test_dreams_have_runners_of_their_own_beside_practice():
     practice, dream = JOBS["practice"], JOBS["dream"]
+    assert practice["needs"] == dream["needs"] == "fresh"
+    assert all(set(JOBS[j]["needs"]) == {"fresh", "practice", "dream"} for j in ("gather", "plan"))
+    assert practice["strategy"]["max-parallel"] == "${{ format('{0}', inputs.dreams) == '0' && 20 || 12 }}"
     assert "grow.py dream" not in str(practice) and "grow.py practice" in _step("practice", "Practice")["run"]
     assert dream["strategy"]["matrix"]["dream"] == list(range(1, 9))
     assert len(json.loads(practice["strategy"]["matrix"]["shard"].split("'")[1])) + 8 == 20  # 20 jobs at once

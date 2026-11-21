@@ -1,0 +1,102 @@
+{
+  "arm": "parent",
+  "graded": [
+    {
+      "name": "bank",
+      "generated": true,
+      "file_sha256": "eab536bad901fd60bc721296a4782c703f6ef6eff14138af5b584ea72add75ce",
+      "module_source": "member file",
+      "program_exit_ok": true,
+      "public_values_ok": false,
+      "hidden_passed": 208,
+      "hidden_total": 283,
+      "full_pass": false,
+      "program_sha256": "eab536bad901fd60bc721296a4782c703f6ef6eff14138af5b584ea72add75ce",
+      "execution": {
+        "stdout": "-421\n",
+        "stderr": "",
+        "error": null,
+        "fuel": 1190316322
+      },
+      "hidden_fuel": 1046773669
+    },
+    {
+      "name": "calc",
+      "generated": true,
+      "file_sha256": "80634fa4f142475daed04dbe8006fdb93b4c8eb97983e05b920693705ada51bc",
+      "module_source": "member file",
+      "program_exit_ok": true,
+      "public_values_ok": true,
+      "hidden_passed": 42,
+      "hidden_total": 52,
+      "full_pass": false,
+      "program_sha256": "80634fa4f142475daed04dbe8006fdb93b4c8eb97983e05b920693705ada51bc",
+      "execution": {
+        "stdout": "0\n",
+        "stderr": "",
+        "error": null,
+        "fuel": 1190083909
+      },
+      "hidden_fuel": 1038610797
+    },
+    {
+      "name": "lru",
+      "generated": true,
+      "file_sha256": "ae7f4c9f313bafcb6eae790cee061630ca8e3dc78e17fb51de441ee5e06fe744",
+      "module_source": "member file",
+      "program_exit_ok": false,
+      "public_values_ok": false,
+      "hidden_passed": 308,
+      "hidden_total": 329,
+      "full_pass": false,
+      "program_sha256": "ae7f4c9f313bafcb6eae790cee061630ca8e3dc78e17fb51de441ee5e06fe744",
+      "execution": {
+        "stdout": "",
+        "stderr": "Traceback (most recent call last):\n  File \"<string>\", line 8, in <module>\n    exec(code, {'__name__': '__main__', '__file__': sys.argv[0]})\n    ~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"member1_1.py\", line 24, in <module>\n    assert t.keys() == ['z', 'y', 'x']\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^\nAssertionError\n",
+        "error": "CPython exit 1",
+        "fuel": 1806867922
+      },
+      "hidden_fuel": 1051194665
+    },
+    {
+      "name": "machine",
+      "generated": true,
+      "file_sha256": null,
+      "module_source": null,
+      "program_exit_ok": false,
+      "public_values_ok": false,
+      "hidden_passed": 0,
+      "hidden_total": 72,
+      "full_pass": false,
+      "program_sha256": "4531531bced88dc199e99ca94806291eaf5aafd53f444f4d563ee6e429a743b1",
+      "execution": {
+        "stdout": "",
+        "stderr": "Traceback (most recent call last):\n  File \"<string>\", line 7, in <module>\n    code = compile(f.read(), sys.argv[0], 'exec')\n  File \"member1_1.py\", line 53\n    print(\"Run(['start', 'fail', 'pause', 'fail']) =\", run\n         ^\nSyntaxError: '(' was never closed\n",
+        "error": "CPython exit 1",
+        "fuel": 1622570542
+      },
+      "reason": "requested module absent or unreadable"
+    },
+    {
+      "name": "schedule",
+      "generated": true,
+      "file_sha256": "1554d4d00365e7d8a39579902c01fd6b60332547d9617e59223fae86d727c3d8",
+      "module_source": "member file",
+      "program_exit_ok": false,
+      "public_values_ok": false,
+      "hidden_passed": 61,
+      "hidden_total": 61,
+      "full_pass": false,
+      "program_sha256": "1554d4d00365e7d8a39579902c01fd6b60332547d9617e59223fae86d727c3d8",
+      "execution": {
+        "stdout": "",
+        "stderr": "ast):\n  File \"<string>\", line 8, in <module>\n    exec(code, {'__name__': '__main__', '__file__': sys.argv[0]})\n    ~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"member1_1.py\", line 22, in <module>\n    assert levels({'fetch': ['build', 'mail', 'pack'], 'pack': ['bench', 'build'], 'audit': [], 'mail': ['audit'], 'test': ['bench'], 'bench': [], 'build': ['audit', 'mail'], 'tag': []}) == {'fetch': 2, 'pack': 2, 'audit': 0, 'mail': 1, 'test': 2, 'bench': 1, 'build': 2, 'tag': 0}\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nAssertionError\n",
+        "error": "CPython exit 1",
+        "fuel": 1811581735
+      },
+      "hidden_fuel": 1054276614
+    }
+  ],
+  "python_wasm_sha256": "278a485c42319053a7989b837bbaa42c2b9d1892d65cb582d9c41dac8cef5f7e",
+  "panel_sha256": "8d3903f5bd41ea2d65973931026069baa297c0009af57471a0cdef8ee9db1945"
+}

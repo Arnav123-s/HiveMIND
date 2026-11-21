@@ -1,0 +1,176 @@
+{
+  "panel_sha256": "8d3903f5bd41ea2d65973931026069baa297c0009af57471a0cdef8ee9db1945",
+  "totals": {
+    "parent": {
+      "full_pass": 0,
+      "emitted_module": 4,
+      "program_exit_ok": 2,
+      "public_values_ok": 1,
+      "hidden_passed": 619,
+      "hidden_total": 797,
+      "truncations": 1,
+      "generated_tokens": 1370,
+      "inference_seconds": 292.632
+    },
+    "five": {
+      "full_pass": 1,
+      "emitted_module": 4,
+      "program_exit_ok": 3,
+      "public_values_ok": 3,
+      "hidden_passed": 694,
+      "hidden_total": 797,
+      "truncations": 0,
+      "generated_tokens": 1163,
+      "inference_seconds": 253.868
+    }
+  },
+  "pairs": {
+    "bank": {
+      "parent": {
+        "full_pass": false,
+        "public_values_ok": false,
+        "hidden": [
+          208,
+          283
+        ],
+        "module_source": "member file",
+        "reason": null,
+        "generated_tokens": 222,
+        "finish_reason": "stop",
+        "raw_sha256": "8e972d715b1353002e560730a3efa1f0b58465affce741202da613200ad2b5d1"
+      },
+      "five": {
+        "full_pass": true,
+        "public_values_ok": true,
+        "hidden": [
+          283,
+          283
+        ],
+        "module_source": "member file",
+        "reason": null,
+        "generated_tokens": 235,
+        "finish_reason": "stop",
+        "raw_sha256": "3c28ed3df4e8d6b67e833a435575ad500e9eabd554c6cd606f3cd12c4fb1675f"
+      }
+    },
+    "calc": {
+      "parent": {
+        "full_pass": false,
+        "public_values_ok": true,
+        "hidden": [
+          42,
+          52
+        ],
+        "module_source": "member file",
+        "reason": null,
+        "generated_tokens": 228,
+        "finish_reason": "stop",
+        "raw_sha256": "d9aa1fd5020e20b3692bade8e9fc85bf16f95a4d31dc1dfb6074352ae213052c"
+      },
+      "five": {
+        "full_pass": false,
+        "public_values_ok": true,
+        "hidden": [
+          42,
+          52
+        ],
+        "module_source": "member file",
+        "reason": null,
+        "generated_tokens": 228,
+        "finish_reason": "stop",
+        "raw_sha256": "d9aa1fd5020e20b3692bade8e9fc85bf16f95a4d31dc1dfb6074352ae213052c"
+      }
+    },
+    "lru": {
+      "parent": {
+        "full_pass": false,
+        "public_values_ok": false,
+        "hidden": [
+          308,
+          329
+        ],
+        "module_source": "member file",
+        "reason": null,
+        "generated_tokens": 223,
+        "finish_reason": "stop",
+        "raw_sha256": "b53dba4ff0df367b6af2ff7c7f7e477373e38b9c47cc066f6c6a1552cc331fe8"
+      },
+      "five": {
+        "full_pass": false,
+        "public_values_ok": true,
+        "hidden": [
+          308,
+          329
+        ],
+        "module_source": "member file",
+        "reason": null,
+        "generated_tokens": 208,
+        "finish_reason": "stop",
+        "raw_sha256": "602e7c38d1d3300df9c81d3defcfec99d138ee21f2d5afc083e0fd8e7f333104"
+      }
+    },
+    "machine": {
+      "parent": {
+        "full_pass": false,
+        "public_values_ok": false,
+        "hidden": [
+          0,
+          72
+        ],
+        "module_source": null,
+        "reason": "requested module absent or unreadable",
+        "generated_tokens": 384,
+        "finish_reason": "length",
+        "raw_sha256": "6e2fe9b794c0dc46cf63942b254e916ce89813e0b96a49ab5fa368ab936c9158"
+      },
+      "five": {
+        "full_pass": false,
+        "public_values_ok": false,
+        "hidden": [
+          0,
+          72
+        ],
+        "module_source": null,
+        "reason": "requested module absent or unreadable",
+        "generated_tokens": 183,
+        "finish_reason": "stop",
+        "raw_sha256": "a50a9481d02287c93dc0ae0792702864427c379405a3700fc0b49507cf9725cf"
+      }
+    },
+    "schedule": {
+      "parent": {
+        "full_pass": false,
+        "public_values_ok": false,
+        "hidden": [
+          61,
+          61
+        ],
+        "module_source": "member file",
+        "reason": null,
+        "generated_tokens": 313,
+        "finish_reason": "stop",
+        "raw_sha256": "54eb3ac739af70f88b7919ee96818ffb60f6142f93111af4a807c555e8e63780"
+      },
+      "five": {
+        "full_pass": false,
+        "public_values_ok": false,
+        "hidden": [
+          61,
+          61
+        ],
+        "module_source": "member file",
+        "reason": null,
+        "generated_tokens": 309,
+        "finish_reason": "stop",
+        "raw_sha256": "d9af2520f087f480a62b08835a10690a9f2d4b08381b77f93be2894632e5108e"
+      }
+    }
+  },
+  "gains": [
+    "bank"
+  ],
+  "losses": [],
+  "identical_responses": [
+    "calc"
+  ]
+}

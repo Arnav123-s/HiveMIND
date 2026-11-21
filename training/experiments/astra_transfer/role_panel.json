@@ -1,0 +1,12 @@
+[
+  {"request":"The attached visits.csv has one park visit per row. Tell me which park had the most visits in one sentence.","expected":["read_csv"]},
+  {"request":"Use the orders in batches.jsonl to find the five most common sellers, then save seller and count columns in leaders.csv.","expected":["read_jsonl","write_csv"]},
+  {"request":"Compare the attached active.csv with holiday_events.jsonl and tell me how many active customers visited on a holiday.","expected":["read_csv","read_jsonl"]},
+  {"request":"Save a mapping of Monday to 4 and Tuesday to 9 in shifts.json.","expected":["write_json"]},
+  {"request":"Please create weights.py with a function normalized(values) that returns each number divided by the sum. Include no other deliverable.","expected":["write_module"]},
+  {"request":"Explain in plain English when to use CSV instead of JSON. Give me one short paragraph.","expected":[]},
+  {"request":"Read the returns.csv attachment and tell me the total sales amount. Do not create a JSON file or send a CSV export.","expected":["read_csv"]},
+  {"request":"I only need a PNG chart of the numbers 1, 4, and 2. Please call it three-bars.png.","expected":[]},
+  {"request":"Make a CSV called garden.csv with the columns plant and shade. Enter mint,yes and thyme,no.","expected":["write_csv"]},
+  {"request":"The uploaded lines in dispatch.jsonl each contain a warehouse and an item count. Sum by warehouse and save the totals in by-warehouse.json.","expected":["read_jsonl","write_json"]}
+]

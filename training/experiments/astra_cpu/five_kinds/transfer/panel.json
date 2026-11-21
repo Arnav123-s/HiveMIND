@@ -1,0 +1,90 @@
+{
+  "g56_rows_sha256": "a7738ee21886d9ca1d1b24cc59c2cd489ccfde6cbaee079648cc630e66a94139",
+  "rows": [
+    {
+      "name": "bank",
+      "maker": "h_prog_bank",
+      "seed": "astra-independent-transfer-v1-20261121/h_prog_bank/0",
+      "level": 0,
+      "task": "Write a Python module and save it as bank.py. It holds a class Account. Account(balance=0) opens an account with that many dollars (whole numbers only). It has three methods. 1) deposit(amount) adds the amount and returns the new balance; an amount that is not above 0 raises ValueError. 2) withdraw(amount) takes the amount and a fee of 1 dollars for every withdrawal and returns the new balance; it raises ValueError and changes nothing when the amount is not above 0, when the account has already made 4 withdrawals, or when the balance would fall below -0 (an overdraft of 0 dollars is allowed). A refused withdrawal does not count. 3) balance() returns the balance. Test the class yourself before you finish. Then tell me the balance of Account(15) after withdraw(87), withdraw(45), withdraw(0), withdraw(185), withdraw(115), withdraw(0), in that order, each that raises ValueError skipped.",
+      "messages": [
+        {
+          "role": "system",
+          "content": "You solve the TASK by writing Python programs. Reply with ONE complete program in a ```python block and nothing else. It is run and you are shown what it printed. look(x) is built in: it shows what JSON data or a web page really holds. Today is 2026-11-21 (Saturday)."
+        },
+        {
+          "role": "user",
+          "content": "TASK: Write a Python module and save it as bank.py. It holds a class Account. Account(balance=0) opens an account with that many dollars (whole numbers only). It has three methods. 1) deposit(amount) adds the amount and returns the new balance; an amount that is not above 0 raises ValueError. 2) withdraw(amount) takes the amount and a fee of 1 dollars for every withdrawal and returns the new balance; it raises ValueError and changes nothing when the amount is not above 0, when the account has already made 4 withdrawals, or when the balance would fall below -0 (an overdraft of 0 dollars is allowed). A refused withdrawal does not count. 3) balance() returns the balance. Test the class yourself before you finish. Then tell me the balance of Account(15) after withdraw(87), withdraw(45), withdraw(0), withdraw(185), withdraw(115), withdraw(0), in that order, each that raises ValueError skipped."
+        }
+      ]
+    },
+    {
+      "name": "calc",
+      "maker": "h_prog_calc",
+      "seed": "astra-independent-transfer-v1-20261121/h_prog_calc/0",
+      "level": 0,
+      "task": "Write a Python module and save it as calc.py for a tiny language of arithmetic on whole numbers. An expression has numbers (0 or more), the operators +, -, * and $, round brackets, and maybe spaces. a $ b is a minus b, or 0 when that is below 0. * binds more tightly than + and -, as usual; $ binds more tightly than + and -, less tightly than *. +, - and * group from the left; $ groups from the left (a $ b $ c is (a $ b) $ c). Brackets are worked out first. The module has two functions. 1) tokens(text) returns the list of the expression's pieces as strings, spaces left out (tokens('12 *(3$4)') is ['12', '*', '(', '3', '$', '4', ')']). 2) evaluate(text) returns the expression's value as an int. Test both yourself before you finish. Then tell me the value of evaluate('6$(15$7$17)$12$11').",
+      "messages": [
+        {
+          "role": "system",
+          "content": "You solve the TASK by writing Python programs. Reply with ONE complete program in a ```python block and nothing else. It is run and you are shown what it printed. look(x) is built in: it shows what JSON data or a web page really holds. Today is 2026-11-21 (Saturday)."
+        },
+        {
+          "role": "user",
+          "content": "TASK: Write a Python module and save it as calc.py for a tiny language of arithmetic on whole numbers. An expression has numbers (0 or more), the operators +, -, * and $, round brackets, and maybe spaces. a $ b is a minus b, or 0 when that is below 0. * binds more tightly than + and -, as usual; $ binds more tightly than + and -, less tightly than *. +, - and * group from the left; $ groups from the left (a $ b $ c is (a $ b) $ c). Brackets are worked out first. The module has two functions. 1) tokens(text) returns the list of the expression's pieces as strings, spaces left out (tokens('12 *(3$4)') is ['12', '*', '(', '3', '$', '4', ')']). 2) evaluate(text) returns the expression's value as an int. Test both yourself before you finish. Then tell me the value of evaluate('6$(15$7$17)$12$11')."
+        }
+      ]
+    },
+    {
+      "name": "lru",
+      "maker": "h_prog_lru",
+      "seed": "astra-independent-transfer-v1-20261121/h_prog_lru/0",
+      "level": 0,
+      "task": "Write a Python module and save it as lru.py. It holds a class LRUCache. LRUCache(capacity) is a cache that holds at most capacity keys. It has three methods. 1) get(key) returns the value kept for the key, or 'missing' when the cache does not hold it. 2) put(key, value) keeps the value for the key and returns None; when that makes more keys than the capacity, the key used longest ago is forgotten. 3) keys() returns the list of keys it holds, from the one used longest ago to the one used last. Putting a new key is a use of it. Getting a key the cache holds does count as a use. Putting a key the cache already holds changes its value and does count as a use. Test the class yourself before you finish. Then tell me the value of keys() of an LRUCache(3) after these calls, in order: get('e'); put('e', 74); put('c', 1); put('e', 16); put('c', 19).",
+      "messages": [
+        {
+          "role": "system",
+          "content": "You solve the TASK by writing Python programs. Reply with ONE complete program in a ```python block and nothing else. It is run and you are shown what it printed. look(x) is built in: it shows what JSON data or a web page really holds. Today is 2026-11-21 (Saturday)."
+        },
+        {
+          "role": "user",
+          "content": "TASK: Write a Python module and save it as lru.py. It holds a class LRUCache. LRUCache(capacity) is a cache that holds at most capacity keys. It has three methods. 1) get(key) returns the value kept for the key, or 'missing' when the cache does not hold it. 2) put(key, value) keeps the value for the key and returns None; when that makes more keys than the capacity, the key used longest ago is forgotten. 3) keys() returns the list of keys it holds, from the one used longest ago to the one used last. Putting a new key is a use of it. Getting a key the cache holds does count as a use. Putting a key the cache already holds changes its value and does count as a use. Test the class yourself before you finish. Then tell me the value of keys() of an LRUCache(3) after these calls, in order: get('e'); put('e', 74); put('c', 1); put('e', 16); put('c', 19)."
+        }
+      ]
+    },
+    {
+      "name": "machine",
+      "maker": "h_prog_machine",
+      "seed": "astra-independent-transfer-v1-20261121/h_prog_machine/0",
+      "level": 0,
+      "task": "Write a Python module and save it as machine.py for a machine with the states waiting, paused, stopped and the events tick, fail, start, pause. It starts in waiting. This table says where an event takes it (state, event -> new state):\nwaiting, fail -> waiting\nwaiting, start -> stopped\npaused, pause -> stopped\npaused, start -> waiting\nstopped, pause -> waiting\nFor a state and an event the table does not have, the machine stays in the state it is in. The module has three functions. 1) step(state, event) returns the state the event takes the machine to from that state. 2) run(events) takes a list of events, starts in waiting, and returns the state it ends in. 3) visits(events, state) returns how many times the machine is in that state while it runs those events, the start counted (visits([], 'waiting') is 1). Test the functions yourself before you finish. Then tell me the value of run(['start', 'fail', 'pause', 'fail']).",
+      "messages": [
+        {
+          "role": "system",
+          "content": "You solve the TASK by writing Python programs. Reply with ONE complete program in a ```python block and nothing else. It is run and you are shown what it printed. look(x) is built in: it shows what JSON data or a web page really holds. Today is 2026-11-21 (Saturday)."
+        },
+        {
+          "role": "user",
+          "content": "TASK: Write a Python module and save it as machine.py for a machine with the states waiting, paused, stopped and the events tick, fail, start, pause. It starts in waiting. This table says where an event takes it (state, event -> new state):\nwaiting, fail -> waiting\nwaiting, start -> stopped\npaused, pause -> stopped\npaused, start -> waiting\nstopped, pause -> waiting\nFor a state and an event the table does not have, the machine stays in the state it is in. The module has three functions. 1) step(state, event) returns the state the event takes the machine to from that state. 2) run(events) takes a list of events, starts in waiting, and returns the state it ends in. 3) visits(events, state) returns how many times the machine is in that state while it runs those events, the start counted (visits([], 'waiting') is 1). Test the functions yourself before you finish. Then tell me the value of run(['start', 'fail', 'pause', 'fail']).\n\nThe data this TASK gives is saved for you as a file in the current folder: task_data.txt (5 lines, CSV text: read it with the csv module (delimiter ','), it is not JSON). Read it from there in your program (open the file) as the kind of text it is. Do not type the data out again by hand."
+        }
+      ]
+    },
+    {
+      "name": "schedule",
+      "maker": "h_prog_schedule",
+      "seed": "astra-independent-transfer-v1-20261121/h_prog_schedule/0",
+      "level": 0,
+      "task": "Write a Python module and save it as schedule.py. A plan is a dict from a task's name to the list of the tasks it depends on (every one of them is a key of the dict too). The module has two functions. 1) order(tasks) returns the list of all the task names in the order they are done: a task only after every task it depends on. When several tasks could be done next, the one done is the one with the shortest name, and of names as long the one first in alphabetical order. 2) levels(tasks) returns a dict from each task's name to its level: 0 for a task that depends on nothing, else 1 more than the highest level of the tasks it depends on. When the dependencies go round in a circle, both raise ValueError. Test both yourself before you finish. Then tell me the value of order({'fetch': ['build', 'mail', 'pack'], 'pack': ['bench', 'build'], 'audit': [], 'mail': ['audit'], 'test': ['bench'], 'bench': [], 'build': ['audit', 'mail'], 'tag': []}).",
+      "messages": [
+        {
+          "role": "system",
+          "content": "You solve the TASK by writing Python programs. Reply with ONE complete program in a ```python block and nothing else. It is run and you are shown what it printed. look(x) is built in: it shows what JSON data or a web page really holds. Today is 2026-11-21 (Saturday)."
+        },
+        {
+          "role": "user",
+          "content": "TASK: Write a Python module and save it as schedule.py. A plan is a dict from a task's name to the list of the tasks it depends on (every one of them is a key of the dict too). The module has two functions. 1) order(tasks) returns the list of all the task names in the order they are done: a task only after every task it depends on. When several tasks could be done next, the one done is the one with the shortest name, and of names as long the one first in alphabetical order. 2) levels(tasks) returns a dict from each task's name to its level: 0 for a task that depends on nothing, else 1 more than the highest level of the tasks it depends on. When the dependencies go round in a circle, both raise ValueError. Test both yourself before you finish. Then tell me the value of order({'fetch': ['build', 'mail', 'pack'], 'pack': ['bench', 'build'], 'audit': [], 'mail': ['audit'], 'test': ['bench'], 'bench': [], 'build': ['audit', 'mail'], 'tag': []})."
+        }
+      ]
+    }
+  ]
+}

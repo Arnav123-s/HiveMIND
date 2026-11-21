@@ -1,0 +1,416 @@
+{
+  "artifacts": {
+    "inherited_safetensors": "e062a5519b09ca6e97e38cc4a2a5af2632d02ebdfc9c24f6c0b6f925cc4fad67",
+    "trained_safetensors": "5d928c8d9fb08d8fc0e24d3423362a7b9e8ee8018ad68d993269aa3bbc2b581d",
+    "trained_gguf": "99dc4d80a397ff307a89ecdb177fcca71aa6918c5a0f9f18e5570fde6ec6924f",
+    "inherited_gguf": "b603c9395c82838c28831a491d8fc8b48dd09e8bf26c158573724807bef2b3f4"
+  },
+  "covered": 5,
+  "requested": 5,
+  "completed_updates": 5,
+  "skipped_passes": 0,
+  "changed_values": 16973807,
+  "total_values": 16973824,
+  "changed_tensors": 196,
+  "update_squared_norm": 1.197999888602088,
+  "per_kind": [
+    {
+      "kind": "bank",
+      "source_checked": true,
+      "tokens": 521,
+      "answer_tokens": 228,
+      "finished_updates": 1,
+      "observed_modes": [
+        "checkpoint"
+      ],
+      "spans": [
+        {
+          "initial_rss_gib": 9.278850555419922,
+          "peak_rss_gib": 9.901969909667969,
+          "start_available_gib": 5.406215667724609,
+          "subject": "a class with rules, with hidden tests \u00b7 first",
+          "training_loss": 0.010361025109887123,
+          "pieces": 521,
+          "elapsed_seconds": 81.855,
+          "cpu_seconds": 160.32
+        }
+      ]
+    },
+    {
+      "kind": "calc",
+      "source_checked": true,
+      "tokens": 525,
+      "answer_tokens": 223,
+      "finished_updates": 1,
+      "observed_modes": [
+        "checkpoint"
+      ],
+      "spans": [
+        {
+          "initial_rss_gib": 9.278881072998047,
+          "peak_rss_gib": 9.913471221923828,
+          "start_available_gib": 5.509212493896484,
+          "subject": "a parser for a tiny language, with hidden tests \u00b7 first",
+          "training_loss": 0.07662952691316605,
+          "pieces": 525,
+          "elapsed_seconds": 98.624,
+          "cpu_seconds": 168.451
+        }
+      ]
+    },
+    {
+      "kind": "lru",
+      "source_checked": true,
+      "tokens": 566,
+      "answer_tokens": 234,
+      "finished_updates": 1,
+      "observed_modes": [
+        "checkpoint"
+      ],
+      "spans": [
+        {
+          "initial_rss_gib": 9.280101776123047,
+          "peak_rss_gib": 9.865489959716797,
+          "start_available_gib": 5.386329650878906,
+          "subject": "a cache that forgets the least recently used, with hidden tests \u00b7 first \u00b7 new",
+          "training_loss": 0.37562987208366394,
+          "pieces": 566,
+          "elapsed_seconds": 93.742,
+          "cpu_seconds": 178.449
+        }
+      ]
+    },
+    {
+      "kind": "machine",
+      "source_checked": true,
+      "tokens": 536,
+      "answer_tokens": 207,
+      "finished_updates": 1,
+      "observed_modes": [
+        "checkpoint"
+      ],
+      "spans": [
+        {
+          "initial_rss_gib": 8.420669555664062,
+          "peak_rss_gib": 9.99288558959961,
+          "start_available_gib": 5.971698760986328,
+          "subject": "a state machine from a table, with hidden tests \u00b7 first \u00b7 new",
+          "training_loss": 0.007276525720953941,
+          "pieces": 536,
+          "elapsed_seconds": 93.522,
+          "cpu_seconds": 173.86
+        }
+      ]
+    },
+    {
+      "kind": "schedule",
+      "source_checked": true,
+      "tokens": 447,
+      "answer_tokens": 174,
+      "finished_updates": 1,
+      "observed_modes": [
+        "checkpoint"
+      ],
+      "spans": [
+        {
+          "initial_rss_gib": 9.27376937866211,
+          "peak_rss_gib": 9.7933349609375,
+          "start_available_gib": 5.362983703613281,
+          "subject": "an order of tasks by their dependencies, with hidden tests \u00b7 first",
+          "training_loss": 0.012720964848995209,
+          "pieces": 447,
+          "elapsed_seconds": 68.872,
+          "cpu_seconds": 134.317
+        }
+      ]
+    }
+  ],
+  "raw": {
+    "arm": "acceptance",
+    "elapsed_seconds": 604.218,
+    "process_cpu_seconds": 1057.632,
+    "peak_rss_gib": 9.993,
+    "row_spans": [
+      {
+        "initial_rss_gib": 8.420669555664062,
+        "peak_rss_gib": 9.99288558959961,
+        "start_available_gib": 5.971698760986328,
+        "subject": "a state machine from a table, with hidden tests \u00b7 first \u00b7 new",
+        "training_loss": 0.007276525720953941,
+        "pieces": 536,
+        "elapsed_seconds": 93.522,
+        "cpu_seconds": 173.86
+      },
+      {
+        "initial_rss_gib": 9.280101776123047,
+        "peak_rss_gib": 9.865489959716797,
+        "start_available_gib": 5.386329650878906,
+        "subject": "a cache that forgets the least recently used, with hidden tests \u00b7 first \u00b7 new",
+        "training_loss": 0.37562987208366394,
+        "pieces": 566,
+        "elapsed_seconds": 93.742,
+        "cpu_seconds": 178.449
+      },
+      {
+        "initial_rss_gib": 9.278850555419922,
+        "peak_rss_gib": 9.901969909667969,
+        "start_available_gib": 5.406215667724609,
+        "subject": "a class with rules, with hidden tests \u00b7 first",
+        "training_loss": 0.010361025109887123,
+        "pieces": 521,
+        "elapsed_seconds": 81.855,
+        "cpu_seconds": 160.32
+      },
+      {
+        "initial_rss_gib": 9.278881072998047,
+        "peak_rss_gib": 9.913471221923828,
+        "start_available_gib": 5.509212493896484,
+        "subject": "a parser for a tiny language, with hidden tests \u00b7 first",
+        "training_loss": 0.07662952691316605,
+        "pieces": 525,
+        "elapsed_seconds": 98.624,
+        "cpu_seconds": 168.451
+      },
+      {
+        "initial_rss_gib": 9.27376937866211,
+        "peak_rss_gib": 9.7933349609375,
+        "start_available_gib": 5.362983703613281,
+        "subject": "an order of tasks by their dependencies, with hidden tests \u00b7 first",
+        "training_loss": 0.012720964848995209,
+        "pieces": 447,
+        "elapsed_seconds": 68.872,
+        "cpu_seconds": 134.317
+      }
+    ],
+    "admissions": [
+      {
+        "pieces": 536,
+        "subject": "a state machine from a table, with hidden tests \u00b7 first \u00b7 new",
+        "mode": "checkpoint",
+        "available_gib": 5.971698760986328,
+        "head_gib": 0.07232141494750977,
+        "reserve_gib": 1.0,
+        "ordinary_floor_gib": 5.26708984375,
+        "checkpoint_floor_gib": 0.605224609375,
+        "cgroup_current": 10794758144,
+        "cgroup_limit": 17179869184,
+        "cgroup": {
+          "anon": 9889255424,
+          "active_file": 449646592,
+          "inactive_file": 177901568,
+          "file_mapped": 80502784,
+          "file_dirty": 70352896,
+          "file_writeback": 0,
+          "kernel": 276946944
+        }
+      },
+      {
+        "pieces": 566,
+        "subject": "a cache that forgets the least recently used, with hidden tests \u00b7 first \u00b7 new",
+        "mode": "checkpoint",
+        "available_gib": 5.386329650878906,
+        "head_gib": 0.07232141494750977,
+        "reserve_gib": 1.0,
+        "ordinary_floor_gib": 5.5618896484375,
+        "checkpoint_floor_gib": 0.63909912109375,
+        "cgroup_current": 11431915520,
+        "cgroup_limit": 17179869184,
+        "cgroup": {
+          "anon": 10511675392,
+          "active_file": 450416640,
+          "inactive_file": 180629504,
+          "file_mapped": 80515072,
+          "file_dirty": 64446464,
+          "file_writeback": 0,
+          "kernel": 280289280
+        }
+      },
+      {
+        "pieces": 521,
+        "subject": "a class with rules, with hidden tests \u00b7 first",
+        "mode": "checkpoint",
+        "available_gib": 5.406215667724609,
+        "head_gib": 0.07232141494750977,
+        "reserve_gib": 1.0,
+        "ordinary_floor_gib": 5.11968994140625,
+        "checkpoint_floor_gib": 0.588287353515625,
+        "cgroup_current": 11418759168,
+        "cgroup_limit": 17179869184,
+        "cgroup": {
+          "anon": 10492686336,
+          "active_file": 454955008,
+          "inactive_file": 183013376,
+          "file_mapped": 78532608,
+          "file_dirty": 60616704,
+          "file_writeback": 0,
+          "kernel": 279392256
+        }
+      },
+      {
+        "pieces": 525,
+        "subject": "a parser for a tiny language, with hidden tests \u00b7 first",
+        "mode": "checkpoint",
+        "available_gib": 5.509212493896484,
+        "head_gib": 0.07232141494750977,
+        "reserve_gib": 1.0,
+        "ordinary_floor_gib": 5.15899658203125,
+        "checkpoint_floor_gib": 0.592803955078125,
+        "cgroup_current": 11365912576,
+        "cgroup_limit": 17179869184,
+        "cgroup": {
+          "anon": 10414264320,
+          "active_file": 467189760,
+          "inactive_file": 190521344,
+          "file_mapped": 78532608,
+          "file_dirty": 10379264,
+          "file_writeback": 0,
+          "kernel": 285622272
+        }
+      },
+      {
+        "pieces": 447,
+        "subject": "an order of tasks by their dependencies, with hidden tests \u00b7 first",
+        "mode": "checkpoint",
+        "available_gib": 5.362983703613281,
+        "head_gib": 0.07232141494750977,
+        "reserve_gib": 1.0,
+        "ordinary_floor_gib": 4.39251708984375,
+        "checkpoint_floor_gib": 0.504730224609375,
+        "cgroup_current": 11502104576,
+        "cgroup_limit": 17179869184,
+        "cgroup": {
+          "anon": 10523639808,
+          "active_file": 463540224,
+          "inactive_file": 218435584,
+          "file_mapped": 72994816,
+          "file_dirty": 64651264,
+          "file_writeback": 0,
+          "kernel": 288292864
+        }
+      }
+    ],
+    "training": {
+      "member": "t80+astrastudy",
+      "leans": "sources",
+      "dtype": "bf16",
+      "loss_chunk_tokens": 32,
+      "checkpoint": false,
+      "seconds_a_row": 87.4,
+      "ternary_edit": false,
+      "foresee": false,
+      "pairs": 0,
+      "int8_base": true,
+      "read": 0,
+      "judged": 0,
+      "parent": "t80.g53sources2.safetensors",
+      "parent_cell": "g53sources2",
+      "trunk": "t80.g55trunk.safetensors",
+      "mended": 0,
+      "new_rows": 2,
+      "shard": "",
+      "base": "prism-ml/Ternary-Bonsai-8B-unpacked",
+      "rows": 5,
+      "used": 5,
+      "passes": 5,
+      "epochs": 1.0,
+      "rank": 16,
+      "lr": 0.0002,
+      "layers": [
+        22,
+        35
+      ],
+      "steps": 5,
+      "seconds": 437,
+      "loss_first": 0.0073,
+      "loss_last": 0.0965,
+      "when": "2026-11-20 16:59",
+      "memory_gb": 10.0,
+      "gpu": "",
+      "subjects": [
+        {
+          "subject": "a class with rules, with hidden tests \u00b7 first",
+          "rows": 1,
+          "passes": 1,
+          "loss_first": 0.0104,
+          "loss_last": 0.0104
+        },
+        {
+          "subject": "a parser for a tiny language, with hidden tests \u00b7 first",
+          "rows": 1,
+          "passes": 1,
+          "loss_first": 0.0766,
+          "loss_last": 0.0766
+        },
+        {
+          "subject": "a cache that forgets the least recently used, with hidden tests \u00b7 first \u00b7 new",
+          "rows": 1,
+          "passes": 1,
+          "loss_first": 0.3756,
+          "loss_last": 0.3756,
+          "new_hard": true
+        },
+        {
+          "subject": "a state machine from a table, with hidden tests \u00b7 first \u00b7 new",
+          "rows": 1,
+          "passes": 1,
+          "loss_first": 0.0073,
+          "loss_last": 0.0073,
+          "new_hard": true
+        },
+        {
+          "subject": "an order of tasks by their dependencies, with hidden tests \u00b7 first",
+          "rows": 1,
+          "passes": 1,
+          "loss_first": 0.0127,
+          "loss_last": 0.0127
+        }
+      ],
+      "kept_back": {},
+      "rows_by_kind": {
+        "a cache that forgets the least recently used, with hidden tests": {
+          "given": 1,
+          "too_long": 0,
+          "skipped_memory": 0,
+          "trained": 1
+        },
+        "a state machine from a table, with hidden tests": {
+          "given": 1,
+          "too_long": 0,
+          "skipped_memory": 0,
+          "trained": 1
+        }
+      },
+      "memory": {
+        "peak_gb": 9.99,
+        "min_available_gb": 4.6,
+        "swap_peak_gb": 0.0,
+        "rows_skipped": 0,
+        "skipped_by_subject": {},
+        "cost_per_piece_mb": 10.062,
+        "formula_per_piece_mb": 10.062,
+        "spare_gb": 1.0,
+        "row_modes": {
+          "ordinary": 0,
+          "checkpoint": 5
+        },
+        "mode_changes": 0,
+        "checkpoint_cost_per_piece_mb": 1.501,
+        "checkpoint_formula_per_piece_mb": 1.156,
+        "training_max_len": 1152,
+        "evaluation_max_len": 435
+      },
+      "megabytes": 38.0
+    },
+    "adapter_sha256": "99dc4d80a397ff307a89ecdb177fcca71aa6918c5a0f9f18e5570fde6ec6924f",
+    "torch_inputs": {
+      "rows": "257761cab26afb9ec20b3f6a766f2ac3e2d912053e6acca7ec07e772fd6aefff",
+      "parent": "dbd31660e52ba2f45e5a80d087b4e63da735a5ac71b33e0cb9b73a72fad4ef38",
+      "trunk": "6d2b50f593941b73e564286a3889768948bf539fec5517c6b884cd2c390d0ab0"
+    },
+    "tested_sources": {
+      "grow.py": "d5a126dc40f5294480edea93efdcdd63bb7c21ba8916e3d881154b39decb7b90",
+      "ternary_base.py": "74dca9ff4eeafb22e2d51b8d5c6b4b3d39c1f8e9d2681e6f36a74d76fd3c9e9c",
+      "lm_head_loss.py": "7bf842d77084f2b06135fbaca26862188cc2940df31c83482a6beededf3822aa"
+    }
+  }
+}

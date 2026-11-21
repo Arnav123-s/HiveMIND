@@ -1,0 +1,519 @@
+{
+  "g45": {
+    "excluded": "arm task identities differ",
+    "matched": 63
+  },
+  "g47": {
+    "before": 47,
+    "after": 47,
+    "full_fresh_keep": true,
+    "lr": {
+      "seeds": 8,
+      "keep": true,
+      "agrees": true,
+      "paired_tasks_saved": 0,
+      "path": [
+        {
+          "seeds": 4,
+          "wins": 1,
+          "losses": 0,
+          "net": 1
+        },
+        {
+          "seeds": 6,
+          "wins": 2,
+          "losses": 0,
+          "net": 2
+        },
+        {
+          "seeds": 8,
+          "wins": 2,
+          "losses": 2,
+          "net": 0
+        }
+      ]
+    },
+    "certain": {
+      "seeds": 8,
+      "keep": true,
+      "agrees": true,
+      "paired_tasks_saved": 0,
+      "path": [
+        {
+          "seeds": 4,
+          "wins": 1,
+          "losses": 0,
+          "net": 1
+        },
+        {
+          "seeds": 6,
+          "wins": 2,
+          "losses": 0,
+          "net": 2
+        },
+        {
+          "seeds": 8,
+          "wins": 2,
+          "losses": 2,
+          "net": 0
+        }
+      ]
+    }
+  },
+  "g48": {
+    "before": 53,
+    "after": 53,
+    "full_fresh_keep": true,
+    "lr": {
+      "seeds": 8,
+      "keep": true,
+      "agrees": true,
+      "paired_tasks_saved": 0,
+      "path": [
+        {
+          "seeds": 4,
+          "wins": 1,
+          "losses": 1,
+          "net": 0
+        },
+        {
+          "seeds": 6,
+          "wins": 3,
+          "losses": 1,
+          "net": 2
+        },
+        {
+          "seeds": 8,
+          "wins": 3,
+          "losses": 3,
+          "net": 0
+        }
+      ]
+    },
+    "certain": {
+      "seeds": 8,
+      "keep": true,
+      "agrees": true,
+      "paired_tasks_saved": 0,
+      "path": [
+        {
+          "seeds": 4,
+          "wins": 1,
+          "losses": 1,
+          "net": 0
+        },
+        {
+          "seeds": 6,
+          "wins": 3,
+          "losses": 1,
+          "net": 2
+        },
+        {
+          "seeds": 8,
+          "wins": 3,
+          "losses": 3,
+          "net": 0
+        }
+      ]
+    }
+  },
+  "g49": {
+    "before": 46,
+    "after": 49,
+    "full_fresh_keep": true,
+    "lr": {
+      "seeds": 8,
+      "keep": true,
+      "agrees": true,
+      "paired_tasks_saved": 0,
+      "path": [
+        {
+          "seeds": 4,
+          "wins": 1,
+          "losses": 0,
+          "net": 1
+        },
+        {
+          "seeds": 6,
+          "wins": 1,
+          "losses": 0,
+          "net": 1
+        },
+        {
+          "seeds": 8,
+          "wins": 3,
+          "losses": 0,
+          "net": 3
+        }
+      ]
+    },
+    "certain": {
+      "seeds": 8,
+      "keep": true,
+      "agrees": true,
+      "paired_tasks_saved": 0,
+      "path": [
+        {
+          "seeds": 4,
+          "wins": 1,
+          "losses": 0,
+          "net": 1
+        },
+        {
+          "seeds": 6,
+          "wins": 1,
+          "losses": 0,
+          "net": 1
+        },
+        {
+          "seeds": 8,
+          "wins": 3,
+          "losses": 0,
+          "net": 3
+        }
+      ]
+    }
+  },
+  "g50": {
+    "before": 55,
+    "after": 54,
+    "full_fresh_keep": false,
+    "lr": {
+      "seeds": 8,
+      "keep": false,
+      "agrees": true,
+      "paired_tasks_saved": 0,
+      "path": [
+        {
+          "seeds": 4,
+          "wins": 1,
+          "losses": 0,
+          "net": 1
+        },
+        {
+          "seeds": 6,
+          "wins": 1,
+          "losses": 3,
+          "net": -2
+        },
+        {
+          "seeds": 8,
+          "wins": 2,
+          "losses": 3,
+          "net": -1
+        }
+      ]
+    },
+    "certain": {
+      "seeds": 8,
+      "keep": false,
+      "agrees": true,
+      "paired_tasks_saved": 0,
+      "path": [
+        {
+          "seeds": 4,
+          "wins": 1,
+          "losses": 0,
+          "net": 1
+        },
+        {
+          "seeds": 6,
+          "wins": 1,
+          "losses": 3,
+          "net": -2
+        },
+        {
+          "seeds": 8,
+          "wins": 2,
+          "losses": 3,
+          "net": -1
+        }
+      ]
+    }
+  },
+  "g51": {
+    "before": 49,
+    "after": 50,
+    "full_fresh_keep": true,
+    "lr": {
+      "seeds": 8,
+      "keep": true,
+      "agrees": true,
+      "paired_tasks_saved": 0,
+      "path": [
+        {
+          "seeds": 4,
+          "wins": 0,
+          "losses": 0,
+          "net": 0
+        },
+        {
+          "seeds": 6,
+          "wins": 0,
+          "losses": 0,
+          "net": 0
+        },
+        {
+          "seeds": 8,
+          "wins": 1,
+          "losses": 0,
+          "net": 1
+        }
+      ]
+    },
+    "certain": {
+      "seeds": 8,
+      "keep": true,
+      "agrees": true,
+      "paired_tasks_saved": 0,
+      "path": [
+        {
+          "seeds": 4,
+          "wins": 0,
+          "losses": 0,
+          "net": 0
+        },
+        {
+          "seeds": 6,
+          "wins": 0,
+          "losses": 0,
+          "net": 0
+        },
+        {
+          "seeds": 8,
+          "wins": 1,
+          "losses": 0,
+          "net": 1
+        }
+      ]
+    }
+  },
+  "g52": {
+    "before": 52,
+    "after": 52,
+    "full_fresh_keep": true,
+    "lr": {
+      "seeds": 8,
+      "keep": true,
+      "agrees": true,
+      "paired_tasks_saved": 0,
+      "path": [
+        {
+          "seeds": 4,
+          "wins": 2,
+          "losses": 1,
+          "net": 1
+        },
+        {
+          "seeds": 6,
+          "wins": 2,
+          "losses": 1,
+          "net": 1
+        },
+        {
+          "seeds": 8,
+          "wins": 2,
+          "losses": 2,
+          "net": 0
+        }
+      ]
+    },
+    "certain": {
+      "seeds": 8,
+      "keep": true,
+      "agrees": true,
+      "paired_tasks_saved": 0,
+      "path": [
+        {
+          "seeds": 4,
+          "wins": 2,
+          "losses": 1,
+          "net": 1
+        },
+        {
+          "seeds": 6,
+          "wins": 2,
+          "losses": 1,
+          "net": 1
+        },
+        {
+          "seeds": 8,
+          "wins": 2,
+          "losses": 2,
+          "net": 0
+        }
+      ]
+    }
+  },
+  "g53": {
+    "before": 48,
+    "after": 50,
+    "full_fresh_keep": true,
+    "lr": {
+      "seeds": 8,
+      "keep": true,
+      "agrees": true,
+      "paired_tasks_saved": 0,
+      "path": [
+        {
+          "seeds": 4,
+          "wins": 2,
+          "losses": 0,
+          "net": 2
+        },
+        {
+          "seeds": 6,
+          "wins": 2,
+          "losses": 0,
+          "net": 2
+        },
+        {
+          "seeds": 8,
+          "wins": 3,
+          "losses": 1,
+          "net": 2
+        }
+      ]
+    },
+    "certain": {
+      "seeds": 8,
+      "keep": true,
+      "agrees": true,
+      "paired_tasks_saved": 0,
+      "path": [
+        {
+          "seeds": 4,
+          "wins": 2,
+          "losses": 0,
+          "net": 2
+        },
+        {
+          "seeds": 6,
+          "wins": 2,
+          "losses": 0,
+          "net": 2
+        },
+        {
+          "seeds": 8,
+          "wins": 3,
+          "losses": 1,
+          "net": 2
+        }
+      ]
+    }
+  },
+  "g54": {
+    "before": 52,
+    "after": 50,
+    "full_fresh_keep": false,
+    "lr": {
+      "seeds": 8,
+      "keep": false,
+      "agrees": true,
+      "paired_tasks_saved": 0,
+      "path": [
+        {
+          "seeds": 4,
+          "wins": 0,
+          "losses": 0,
+          "net": 0
+        },
+        {
+          "seeds": 6,
+          "wins": 0,
+          "losses": 1,
+          "net": -1
+        },
+        {
+          "seeds": 8,
+          "wins": 0,
+          "losses": 2,
+          "net": -2
+        }
+      ]
+    },
+    "certain": {
+      "seeds": 8,
+      "keep": false,
+      "agrees": true,
+      "paired_tasks_saved": 0,
+      "path": [
+        {
+          "seeds": 4,
+          "wins": 0,
+          "losses": 0,
+          "net": 0
+        },
+        {
+          "seeds": 6,
+          "wins": 0,
+          "losses": 1,
+          "net": -1
+        },
+        {
+          "seeds": 8,
+          "wins": 0,
+          "losses": 2,
+          "net": -2
+        }
+      ]
+    }
+  },
+  "g55": {
+    "before": 51,
+    "after": 52,
+    "full_fresh_keep": true,
+    "lr": {
+      "seeds": 8,
+      "keep": true,
+      "agrees": true,
+      "paired_tasks_saved": 0,
+      "path": [
+        {
+          "seeds": 4,
+          "wins": 2,
+          "losses": 0,
+          "net": 2
+        },
+        {
+          "seeds": 6,
+          "wins": 2,
+          "losses": 1,
+          "net": 1
+        },
+        {
+          "seeds": 8,
+          "wins": 2,
+          "losses": 1,
+          "net": 1
+        }
+      ]
+    },
+    "certain": {
+      "seeds": 8,
+      "keep": true,
+      "agrees": true,
+      "paired_tasks_saved": 0,
+      "path": [
+        {
+          "seeds": 4,
+          "wins": 2,
+          "losses": 0,
+          "net": 2
+        },
+        {
+          "seeds": 6,
+          "wins": 2,
+          "losses": 1,
+          "net": 1
+        },
+        {
+          "seeds": 8,
+          "wins": 2,
+          "losses": 1,
+          "net": 1
+        }
+      ]
+    }
+  }
+}

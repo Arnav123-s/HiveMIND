@@ -1,0 +1,26 @@
+{
+  "equal_correct_same_notice": {
+    "same_bytes": false,
+    "same_files": false,
+    "same_text": true,
+    "winner": true
+  },
+  "equal_correct_different_notice": {
+    "same_bytes": false,
+    "same_files": false,
+    "same_text": false,
+    "winner": false
+  },
+  "equal_wrong_same_notice": {
+    "same_bytes": false,
+    "same_files": false,
+    "same_text": true,
+    "winner": true
+  },
+  "conflicting_same_notice": {
+    "same_bytes": false,
+    "same_files": false,
+    "same_text": true,
+    "winner": true
+  }
+}

@@ -1,0 +1,102 @@
+{
+  "arm": "five",
+  "graded": [
+    {
+      "name": "bank",
+      "generated": true,
+      "file_sha256": "92006a629b6060a18055684948bb1ce1919cdf579a250d1f4181502fbf04ffda",
+      "module_source": "member file",
+      "program_exit_ok": true,
+      "public_values_ok": true,
+      "hidden_passed": 283,
+      "hidden_total": 283,
+      "full_pass": true,
+      "program_sha256": "92006a629b6060a18055684948bb1ce1919cdf579a250d1f4181502fbf04ffda",
+      "execution": {
+        "stdout": "15\n",
+        "stderr": "",
+        "error": null,
+        "fuel": 1190415638
+      },
+      "hidden_fuel": 1046273012
+    },
+    {
+      "name": "calc",
+      "generated": true,
+      "file_sha256": "80634fa4f142475daed04dbe8006fdb93b4c8eb97983e05b920693705ada51bc",
+      "module_source": "member file",
+      "program_exit_ok": true,
+      "public_values_ok": true,
+      "hidden_passed": 42,
+      "hidden_total": 52,
+      "full_pass": false,
+      "program_sha256": "80634fa4f142475daed04dbe8006fdb93b4c8eb97983e05b920693705ada51bc",
+      "execution": {
+        "stdout": "0\n",
+        "stderr": "",
+        "error": null,
+        "fuel": 1190083937
+      },
+      "hidden_fuel": 1038610797
+    },
+    {
+      "name": "lru",
+      "generated": true,
+      "file_sha256": "942bcbfcd236fdb3f5ac0ce88ff0b1eb181680e51b334f054cb97697251107c9",
+      "module_source": "member file",
+      "program_exit_ok": true,
+      "public_values_ok": true,
+      "hidden_passed": 308,
+      "hidden_total": 329,
+      "full_pass": false,
+      "program_sha256": "942bcbfcd236fdb3f5ac0ce88ff0b1eb181680e51b334f054cb97697251107c9",
+      "execution": {
+        "stdout": "['e', 'c']\n",
+        "stderr": "",
+        "error": null,
+        "fuel": 1189790933
+      },
+      "hidden_fuel": 1051040591
+    },
+    {
+      "name": "machine",
+      "generated": true,
+      "file_sha256": null,
+      "module_source": null,
+      "program_exit_ok": false,
+      "public_values_ok": false,
+      "hidden_passed": 0,
+      "hidden_total": 72,
+      "full_pass": false,
+      "program_sha256": "12db03864ae2dbf47c81d36dbb603136dd590037be1618cf502ab885a3857eae",
+      "execution": {
+        "stdout": "",
+        "stderr": "Traceback (most recent call last):\n  File \"<string>\", line 8, in <module>\n    exec(code, {'__name__': '__main__', '__file__': sys.argv[0]})\n    ~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"member1_1.py\", line 5, in <module>\n    T[l['state'], l['event']] = l['state']\n                                ~^^^^^^^^^\nKeyError: 'state'\n",
+        "error": "CPython exit 1",
+        "fuel": 1660269753
+      },
+      "reason": "requested module absent or unreadable"
+    },
+    {
+      "name": "schedule",
+      "generated": true,
+      "file_sha256": "b30f2cc585fc601e64f07f3b0e98f19495f75a0b9dbfcdb39ad9dcf961a4ca18",
+      "module_source": "member file",
+      "program_exit_ok": false,
+      "public_values_ok": false,
+      "hidden_passed": 61,
+      "hidden_total": 61,
+      "full_pass": false,
+      "program_sha256": "b30f2cc585fc601e64f07f3b0e98f19495f75a0b9dbfcdb39ad9dcf961a4ca18",
+      "execution": {
+        "stdout": "",
+        "stderr": "ast):\n  File \"<string>\", line 8, in <module>\n    exec(code, {'__name__': '__main__', '__file__': sys.argv[0]})\n    ~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"member1_1.py\", line 21, in <module>\n    assert levels({'fetch': ['build', 'mail', 'pack'], 'pack': ['bench', 'build'], 'audit': [], 'mail': ['audit'], 'test': ['bench'], 'bench': [], 'build': ['audit', 'mail'], 'tag': []}) == {'fetch': 2, 'pack': 2, 'audit': 0, 'mail': 1, 'test': 2, 'bench': 1, 'build': 2, 'tag': 0}\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nAssertionError\n",
+        "error": "CPython exit 1",
+        "fuel": 1811358400
+      },
+      "hidden_fuel": 1054311195
+    }
+  ],
+  "python_wasm_sha256": "278a485c42319053a7989b837bbaa42c2b9d1892d65cb582d9c41dac8cef5f7e",
+  "panel_sha256": "8d3903f5bd41ea2d65973931026069baa297c0009af57471a0cdef8ee9db1945"
+}

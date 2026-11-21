@@ -1,0 +1,381 @@
+{
+  "tokenizer_sha256": "aeb13307a71acd8fe81861d94ad54ab689df773318809eed3cbe794b4492dae4",
+  "date_in_prompt": "2026-01-01 (Thursday)",
+  "cases": [
+    {
+      "kind": "h_prog_bank",
+      "draw": 0,
+      "level": 0,
+      "verified": true,
+      "chosen_seed": "astra-wave-one-length:h_prog_bank:0:3",
+      "turns": [
+        {
+          "type": "first",
+          "pieces": 510,
+          "encoded_at_cap": {
+            "508": null,
+            "1152": 510
+          }
+        },
+        {
+          "type": "done",
+          "pieces": 561,
+          "encoded_at_cap": {
+            "508": 493,
+            "1152": 561
+          }
+        }
+      ]
+    },
+    {
+      "kind": "h_prog_bank",
+      "draw": 1,
+      "level": 0,
+      "verified": true,
+      "chosen_seed": "astra-wave-one-length:h_prog_bank:1:5",
+      "turns": [
+        {
+          "type": "first",
+          "pieces": 517,
+          "encoded_at_cap": {
+            "508": null,
+            "1152": 517
+          }
+        },
+        {
+          "type": "done",
+          "pieces": 569,
+          "encoded_at_cap": {
+            "508": 500,
+            "1152": 569
+          }
+        }
+      ]
+    },
+    {
+      "kind": "h_prog_bank",
+      "draw": 2,
+      "level": 0,
+      "verified": true,
+      "chosen_seed": "astra-wave-one-length:h_prog_bank:2:4",
+      "turns": [
+        {
+          "type": "first",
+          "pieces": 516,
+          "encoded_at_cap": {
+            "508": null,
+            "1152": 516
+          }
+        },
+        {
+          "type": "done",
+          "pieces": 568,
+          "encoded_at_cap": {
+            "508": 500,
+            "1152": 568
+          }
+        }
+      ]
+    },
+    {
+      "kind": "h_prog_calc",
+      "draw": 0,
+      "level": 0,
+      "verified": true,
+      "chosen_seed": "astra-wave-one-length:h_prog_calc:0:3",
+      "turns": [
+        {
+          "type": "first",
+          "pieces": 517,
+          "encoded_at_cap": {
+            "508": null,
+            "1152": 517
+          }
+        },
+        {
+          "type": "done",
+          "pieces": 568,
+          "encoded_at_cap": {
+            "508": 477,
+            "1152": 568
+          }
+        }
+      ]
+    },
+    {
+      "kind": "h_prog_calc",
+      "draw": 1,
+      "level": 0,
+      "verified": true,
+      "chosen_seed": "astra-wave-one-length:h_prog_calc:1:6",
+      "turns": [
+        {
+          "type": "first",
+          "pieces": 511,
+          "encoded_at_cap": {
+            "508": null,
+            "1152": 511
+          }
+        },
+        {
+          "type": "done",
+          "pieces": 562,
+          "encoded_at_cap": {
+            "508": 471,
+            "1152": 562
+          }
+        }
+      ]
+    },
+    {
+      "kind": "h_prog_calc",
+      "draw": 2,
+      "level": 0,
+      "verified": true,
+      "chosen_seed": "astra-wave-one-length:h_prog_calc:2:6",
+      "turns": [
+        {
+          "type": "first",
+          "pieces": 508,
+          "encoded_at_cap": {
+            "508": 508,
+            "1152": 508
+          }
+        },
+        {
+          "type": "done",
+          "pieces": 558,
+          "encoded_at_cap": {
+            "508": 461,
+            "1152": 558
+          }
+        }
+      ]
+    },
+    {
+      "kind": "h_prog_lru",
+      "draw": 0,
+      "level": 0,
+      "verified": true,
+      "chosen_seed": "astra-wave-one-length:h_prog_lru:0:4",
+      "turns": [
+        {
+          "type": "first",
+          "pieces": 556,
+          "encoded_at_cap": {
+            "508": null,
+            "1152": 556
+          }
+        },
+        {
+          "type": "done",
+          "pieces": 610,
+          "encoded_at_cap": {
+            "508": 478,
+            "1152": 610
+          }
+        }
+      ]
+    },
+    {
+      "kind": "h_prog_lru",
+      "draw": 1,
+      "level": 0,
+      "verified": true,
+      "chosen_seed": "astra-wave-one-length:h_prog_lru:1:2",
+      "turns": [
+        {
+          "type": "first",
+          "pieces": 550,
+          "encoded_at_cap": {
+            "508": null,
+            "1152": 550
+          }
+        },
+        {
+          "type": "done",
+          "pieces": 604,
+          "encoded_at_cap": {
+            "508": 471,
+            "1152": 604
+          }
+        }
+      ]
+    },
+    {
+      "kind": "h_prog_lru",
+      "draw": 2,
+      "level": 0,
+      "verified": true,
+      "chosen_seed": "astra-wave-one-length:h_prog_lru:2:7",
+      "turns": [
+        {
+          "type": "first",
+          "pieces": 550,
+          "encoded_at_cap": {
+            "508": null,
+            "1152": 550
+          }
+        },
+        {
+          "type": "done",
+          "pieces": 607,
+          "encoded_at_cap": {
+            "508": 493,
+            "1152": 607
+          }
+        }
+      ]
+    },
+    {
+      "kind": "h_prog_machine",
+      "draw": 0,
+      "level": 0,
+      "verified": true,
+      "chosen_seed": "astra-wave-one-length:h_prog_machine:0",
+      "turns": [
+        {
+          "type": "first",
+          "pieces": 507,
+          "encoded_at_cap": {
+            "508": 507,
+            "1152": 507
+          }
+        },
+        {
+          "type": "done",
+          "pieces": 557,
+          "encoded_at_cap": {
+            "508": 476,
+            "1152": 557
+          }
+        }
+      ]
+    },
+    {
+      "kind": "h_prog_machine",
+      "draw": 1,
+      "level": 0,
+      "verified": true,
+      "chosen_seed": "astra-wave-one-length:h_prog_machine:1:3",
+      "turns": [
+        {
+          "type": "first",
+          "pieces": 489,
+          "encoded_at_cap": {
+            "508": 489,
+            "1152": 489
+          }
+        },
+        {
+          "type": "done",
+          "pieces": 539,
+          "encoded_at_cap": {
+            "508": 497,
+            "1152": 539
+          }
+        }
+      ]
+    },
+    {
+      "kind": "h_prog_machine",
+      "draw": 2,
+      "level": 0,
+      "verified": true,
+      "chosen_seed": "astra-wave-one-length:h_prog_machine:2",
+      "turns": [
+        {
+          "type": "first",
+          "pieces": 481,
+          "encoded_at_cap": {
+            "508": 481,
+            "1152": 481
+          }
+        },
+        {
+          "type": "done",
+          "pieces": 531,
+          "encoded_at_cap": {
+            "508": 489,
+            "1152": 531
+          }
+        }
+      ]
+    },
+    {
+      "kind": "h_prog_schedule",
+      "draw": 0,
+      "level": 0,
+      "verified": true,
+      "chosen_seed": "astra-wave-one-length:h_prog_schedule:0:2",
+      "turns": [
+        {
+          "type": "first",
+          "pieces": 447,
+          "encoded_at_cap": {
+            "508": 447,
+            "1152": 447
+          }
+        },
+        {
+          "type": "done",
+          "pieces": 504,
+          "encoded_at_cap": {
+            "508": 504,
+            "1152": 504
+          }
+        }
+      ]
+    },
+    {
+      "kind": "h_prog_schedule",
+      "draw": 1,
+      "level": 0,
+      "verified": true,
+      "chosen_seed": "astra-wave-one-length:h_prog_schedule:1",
+      "turns": [
+        {
+          "type": "first",
+          "pieces": 451,
+          "encoded_at_cap": {
+            "508": 451,
+            "1152": 451
+          }
+        },
+        {
+          "type": "done",
+          "pieces": 508,
+          "encoded_at_cap": {
+            "508": 508,
+            "1152": 508
+          }
+        }
+      ]
+    },
+    {
+      "kind": "h_prog_schedule",
+      "draw": 2,
+      "level": 0,
+      "verified": true,
+      "chosen_seed": "astra-wave-one-length:h_prog_schedule:2:6",
+      "turns": [
+        {
+          "type": "first",
+          "pieces": 473,
+          "encoded_at_cap": {
+            "508": 473,
+            "1152": 473
+          }
+        },
+        {
+          "type": "done",
+          "pieces": 536,
+          "encoded_at_cap": {
+            "508": 499,
+            "1152": 536
+          }
+        }
+      ]
+    }
+  ]
+}
