@@ -192,7 +192,7 @@ def run(args):
             call['matched_with_helper_removed'] = without
     record['complete'] = True
     pilot.save(args.out/'result.json', record)
-    print([(c['offered'],c['used_helper'],c['matched']) for c in record['calls']], flush=True)
+    print([(c['offered'],c['calls_helper_in_source'],c['matched']) for c in record['calls']], flush=True)
 
 
 if __name__ == '__main__':
