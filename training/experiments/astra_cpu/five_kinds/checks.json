@@ -1,0 +1,47 @@
+[
+  {
+    "kind": "h_prog_bank",
+    "seed": "lesson:g51:h_prog_bank:5:5",
+    "archive_solution_sha256": "1bcd803864c2dbe37b0a73decb67c8ba5badb1deae3124a4c9a62119ada30769",
+    "ok": true,
+    "level": 0,
+    "detail": "290 of 290 hidden tests pass; the values asked for ([285]) in the answer: True",
+    "returned": "285"
+  },
+  {
+    "kind": "h_prog_calc",
+    "seed": "lesson:g52:h_prog_calc:1:7",
+    "archive_solution_sha256": "1a81579586a7d90869f6328c170db23b69ccd726e6c33f04e690db533f7ea7ed",
+    "ok": true,
+    "level": 0,
+    "detail": "54 of 54 hidden tests pass; the values asked for ([6]) in the answer: True",
+    "returned": "6"
+  },
+  {
+    "kind": "h_prog_lru",
+    "seed": "lesson:g56:h_prog_lru:6:6",
+    "archive_solution_sha256": "3c5842dd6b1473095717d47841613955f9ea0eaaa274455dbb2531605591158b",
+    "ok": true,
+    "level": 0,
+    "detail": "426 of 426 hidden tests pass; the values asked for ([['a', 'b', 'c']]) in the answer: True",
+    "returned": "['a', 'b', 'c']"
+  },
+  {
+    "kind": "h_prog_machine",
+    "seed": "10005612:h_prog_machine:41:0",
+    "archive_solution_sha256": "51d0f02c22891be77a8d88fe1f36d3eecd7391c01b34f1247e7a20a81407a5a8",
+    "ok": true,
+    "level": 0,
+    "detail": "76 of 76 hidden tests pass; the values asked for (['ready']) in the answer: True",
+    "returned": "ready"
+  },
+  {
+    "kind": "h_prog_schedule",
+    "seed": "lesson:g50:h_prog_schedule:6:7",
+    "archive_solution_sha256": "642a7ff6aa8e04a6246e79348f96ef7da51fb8d40eb98e42c4b1c08ce8a6fff4",
+    "ok": true,
+    "level": 0,
+    "detail": "61 of 61 hidden tests pass; the values asked for ([['mail', 'tag', 'test']]) in the answer: True",
+    "returned": "['mail', 'tag', 'test']"
+  }
+]
