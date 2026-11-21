@@ -1,0 +1,101 @@
+import json
+
+import pytest
+
+from team import module_witness, solo
+from training.experiments.astra_orders import prepare
+
+
+ORDERS = json.loads((prepare.HERE / "inputs.json").read_text())["orders"]
+DATE = "2026-11-21 (Saturday)"
+TASK = """Save desk.py.
+The complete required behavior is one run of the checks below, in order, on a fresh module.
+Required checks:
+```python
+assert flip(0) == 1
+assert flip(1) == 0
+```
+Print ready."""
+
+
+def test_prompt_contents_and_seat_overrides(monkeypatch):
+    monkeypatch.setattr(solo.time, "strftime", lambda *_: DATE)
+    monkeypatch.setattr(solo, "solved", lambda: [{"checked": False, "task": "schedule packets"},
+                                                 {"checked": True, "task": "store red apples"}])
+    assert not solo.familiar("schedule packets") and solo.familiar("store red apples")
+    assert solo.orders("t80") == ORDERS["full"] and solo.orders("t80+learned") == ORDERS["short"]
+    request = "Schedule packets"
+    assert "Today is" not in solo.modular_orders(request) and "Use requests" not in solo.modular_orders(request)
+    assert solo.modular_orders("Find today's date on this web page") == ORDERS["full"]
+    monkeypatch.setenv("HIVE_DIVERSE_ORDERS", "1")
+    assert solo.member_orders(request, 1, "t80", ()) == ORDERS["short"]
+    assert solo.member_orders(request, 2, "t80+trained", ()) == solo.modular_orders(request)
+    assert solo.member_orders(request, 3, "t80", ()) == ORDERS["full"]
+    assert solo.member_orders("store red apples", 2, "t80+trained", ()) == ORDERS["short"]
+    assert solo.member_orders(request, 2, "t80+trained", ("engram",)) == ORDERS["short"]
+    monkeypatch.setenv("HIVE_FULL_ORDERS", "1")
+    assert solo.member_orders(request, 2, "t80+trained", ()) == ORDERS["full"]
+    monkeypatch.setenv("HIVE_SHORT_ORDERS", "1")
+    assert solo.member_orders(request, 2, "t80", ()) == ORDERS["short"]
+
+
+def test_second_member_gets_its_orders_and_the_third_gets_only_the_witness(tmp_path, monkeypatch):
+    class Seen(Exception):
+        pass
+    class Board:
+        module_witness = "flip(1)"
+    def capture(who, messages, **kwargs):
+        raise Seen(messages)
+    monkeypatch.setenv("HIVE_DIVERSE_ORDERS", "1")
+    monkeypatch.setattr(solo, "familiar", lambda _: False)
+    monkeypatch.setattr(solo.ternary, "chat", capture)
+    for n in (2, 3):
+        with pytest.raises(Seen) as seen:
+            solo.member("compute", n, Board(), None, tmp_path, .7, "t80+trained", ())
+        system, task = seen.value.args[0]
+        assert system["content"] == (solo.modular_orders("compute") if n == 2 else solo.orders("t80+trained"))
+        assert ("flip(1)" in task["content"]) == (n == 3)
+
+
+def test_unlabelled_permutations_preserve_domain_and_shrink_only_when_allowed(monkeypatch):
+    monkeypatch.setattr(module_witness.saved, "guest", lambda: None)
+    prompt = ("The list of rows may be in any order. work(rows) returns a count. "
+              "Compute for these rows: [[1, 2], [3, 4], [5, 6]].")
+    probe = module_witness.Probe(prompt, "desk.py")
+    assert len(probe.calls) == 6 and {len(a[0]) for _, a in probe.calls} == {3}
+    probe = module_witness.Probe("Any nonempty subset of the rows is valid. " + prompt, "desk.py")
+    assert probe.witness({"observed":["a"] * len(probe.calls)}, {"observed":["b"] * len(probe.calls)}) == "work([[1, 2]])"
+    assert not probe.complete and probe.inspect(".", None) == {"checked":False,"observed":[]}
+    assert module_witness.list_calls(prompt.replace("any order", "input order")) == []
+    assert module_witness.list_calls(prompt.replace("[[1, 2], [3, 4], [5, 6]]", "[side_effect()]")) == []
+
+
+def test_effect_on_normal_agreement_and_no_blind_matches(tmp_path, monkeypatch):
+    class Returns:
+        def run(self, program, cases):
+            # A controlled guest stub for the end-to-end _run test. Real WASI is exercised by controls.py.
+            return ([{"value": 0 if "always_zero" in program else 1 - args[0]} for _, args in cases], 0, 0)
+    monkeypatch.setattr(module_witness.saved, "guest", lambda: Returns())
+    monkeypatch.setattr(solo, "keep", lambda *args: None)
+    monkeypatch.setenv("HIVE_DIFF_EQUIV", "1")
+    seen = []
+    def member(task, n, board, guard, work, *args):
+        seen.append(getattr(board, "module_witness", None))
+        work.mkdir(exist_ok=True)
+        (work / "desk.py").write_text(("def flip(always_zero): return 0" if n == 1
+                                       else f"def flip(arg{n}): return 1 - arg{n}"))
+        return {"answer":"ready", "who":"cell", "program":"examined", "turns":1}
+    monkeypatch.setattr(solo, "member", member)
+    out = solo.run(TASK, tmp_path / "exhaustive")
+    assert out["agreed"] and seen == [None, None, "flip(0)"]
+    assert json.loads((tmp_path / "exhaustive/members.json").read_text())["agreeing"] == [2, 3]
+    broad = TASK.replace("The complete required behavior is one run of the checks below, in order, on a fresh module.", "More inputs are valid.")
+    assert not solo.run(broad, tmp_path / "broad")["agreed"]
+    monkeypatch.setenv("HIVE_DIFF_EQUIV", "0")
+    assert solo.run(broad, tmp_path / "stock")["agreed"]
+
+
+def test_matched_files_with_one_empty_worker_cannot_witness_a_diverse_release(tmp_path):
+    row = {"answer": "1", "work": str(tmp_path), "diverse_orders": True}
+    (tmp_path / "x.json").write_text("[2]")
+    assert not solo.together(row, dict(row, answer=""), "Create x.json.")
