@@ -17,3 +17,5 @@ python training/grow.py gather --out runs/hint-practice/gathered.jsonl --gen pra
 ```
 
 The per-shard `runs/exam/dream_<seed>/hint-regret.json` retains the blind/hinted verification counts, selected member and admission decision. Only admitted tasks go to `rows.jsonl`. The existing gather stage stamps and deduplicates these alongside the body's other checked practice. Its normal supervised training worker reads the resulting rows.
+
+`python -m team dream` also shares the opt-in lane when local rehearsals are requested. Its synthetic rows enter `runs/grow/rows.jsonl` for the ternary body trainer. The role-specific dream command retains its own existing training and memory log.

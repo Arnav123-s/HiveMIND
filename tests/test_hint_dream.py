@@ -108,3 +108,18 @@ def test_deadline_and_unavailable_guest_do_not_admit(tmp_path, monkeypatch):
     summary = hd.run_slot(7, tmp_path / 'rows.jsonl', tmp_path / 'report.json', 1)
     assert summary['rows'] == summary['model_calls'] == 0
     assert not (tmp_path / 'rows.jsonl').exists()
+
+
+def test_desktop_dream_uses_same_gate_and_preserves_remaining_rehearsals(tmp_path, monkeypatch):
+    from team import dream as local
+    monkeypatch.setenv('HIVE_SPADE_DREAM', '1')
+    monkeypatch.setattr(grow, 'GROW', tmp_path / 'grow')
+    monkeypatch.setattr(exam, 'RUNS', tmp_path / 'runs')
+    monkeypatch.setattr(local, 'distil', lambda log: None)
+    monkeypatch.setattr(local, 'lessons', lambda log: None)
+    monkeypatch.setattr(local.memory, 'log_dream', lambda log: None)
+    rehearsed = []
+    monkeypatch.setattr(local, 'rehearse', lambda log, n: rehearsed.append(n))
+    monkeypatch.setattr(hd, 'run_slot', lambda seed, out, receipt, end: {'tasks':1, 'rows':0})
+    report = local.dream(train=False, rehearse_n=2)
+    assert rehearsed == [1] and report['generated']['tasks'] == 1
