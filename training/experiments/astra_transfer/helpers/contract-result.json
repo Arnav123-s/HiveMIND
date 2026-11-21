@@ -1,0 +1,29 @@
+{
+  "contract": "one integer in [-16, 10000] to an exact bool indicating primality",
+  "source_sha256": "5c2b29aebc5d7553f165aca748952f0d802db61208c5805122e124a64e0743a5",
+  "wasm_sha256": "278a485c42319053a7989b837bbaa42c2b9d1892d65cb582d9c41dac8cef5f7e",
+  "prime_outputs": 1229,
+  "candidate": {
+    "inputs": 10017,
+    "correct": 10017,
+    "mismatches": 0,
+    "first_mismatches": [],
+    "wasm_fuel_used": 1193702555
+  },
+  "unchecked_square_root_mutant": {
+    "inputs": 10017,
+    "correct": 9982,
+    "mismatches": 35,
+    "first_mismatches": [
+      4,
+      6,
+      8,
+      9,
+      15,
+      25,
+      35,
+      49
+    ],
+    "wasm_fuel_used": 1191078886
+  }
+}

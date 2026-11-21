@@ -1,0 +1,46 @@
+{
+  "extracted_source_sha256": "5c2b29aebc5d7553f165aca748952f0d802db61208c5805122e124a64e0743a5",
+  "saved_method_digest": "c57d5f088ed6e157b287b2c06c8b3c4d456898f00878f4938868bb21917d3d9f",
+  "wrapper_checks_passed": 10017,
+  "wrapper_guard_rejections": 9,
+  "saved_answer_calls": [
+    {
+      "input": 9973,
+      "status": "answered",
+      "value": true
+    },
+    {
+      "input": 9801,
+      "status": "answered",
+      "value": false
+    },
+    {
+      "input": true,
+      "status": "missing"
+    },
+    {
+      "input": false,
+      "status": "missing"
+    },
+    {
+      "input": 3.0,
+      "status": "missing"
+    },
+    {
+      "input": "3",
+      "status": "missing"
+    },
+    {
+      "input": -17,
+      "status": "missing"
+    },
+    {
+      "input": 10001,
+      "status": "missing"
+    },
+    {
+      "input": null,
+      "status": "missing"
+    }
+  ]
+}
