@@ -1,8 +1,11 @@
 """An optional sequential look at complete fresh before/after grade artifacts.
 
-After four and six seeds, compare P(child wins | discordant)=.6 against .4.
-The paired Wald threshold assumes independent discordant outcomes. Shared exam kinds
-can violate that assumption; the ordinary full parallel gate remains available.
+Of paired tasks, let q be the discordance probability and p the child's conditional
+win probability. Win/loss/tie probabilities are (q*p, q*(1-p), 1-q). Profiling q
+under both p=.6 and p=.4 gives the same estimate, discordances / total pairs.
+The resulting generalized log-likelihood ratio equals the conditional binomial one.
+The two interim Wald boundaries have nominal alpha=beta=.05 under the working
+independence model. Shared tasks and lineages can correlate outcomes.
 """
 import argparse
 import json
@@ -13,8 +16,12 @@ from pathlib import Path
 from training import grow_record
 
 
+def paired_log_lr(gained, lost):
+    return (gained - lost) * math.log(0.6 / 0.4)
+
+
 def decisive(gained, lost):
-    return abs(gained - lost) * math.log(1.5) >= math.log(19)
+    return abs(paired_log_lr(gained, lost)) >= math.log(19)
 
 
 def look(folder, run_number, seats):
@@ -41,7 +48,8 @@ def look(folder, run_number, seats):
         return {"stop": False, "reason": "missing, duplicate or mismatched task identities"}
     counts = changes["counts"]
     gained, lost = counts["gained"], counts["lost"]
-    return {"stop": seats < 8 and decisive(gained, lost), "seats": seats, "gained": gained, "lost": lost}
+    return {"stop": seats < 8 and decisive(gained, lost), "seats": seats, "gained": gained, "lost": lost,
+            "log_lr": round(paired_log_lr(gained, lost), 6)}
 
 
 if __name__ == "__main__":

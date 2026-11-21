@@ -1,4 +1,5 @@
 import json
+import math
 from pathlib import Path
 
 import pytest
@@ -96,7 +97,7 @@ def test_sequential_recorder_rechecks_planned_prefix_before_changing_body(tmp_pa
     (folder / "gate-work-after-1").mkdir()
     grow_record.gate(args + ["4", "99"])
     line = json.loads(records.read_text().splitlines()[-1])
-    assert line["kept"] and line["paired"]["sequential"] == {"seats": 4, "stop": True, "gained": 8, "lost": 0}
+    assert line["kept"] and line["paired"]["sequential"] == {"seats": 4, "stop": True, "gained": 8, "lost": 0, "log_lr": 3.243721}
 
 
 def test_complete_historical_results_retain_actual_decisions_including_fixed_exam():
@@ -109,3 +110,13 @@ def test_complete_historical_results_retain_actual_decisions_including_fixed_exa
         assert grow_record.decide(r["arms"], grow=True, held=r.get("held_exam"))[0] == r["kept"]
     g52 = next(r for r in cohort if r["generation"] == "g52")
     assert g52["arms"]["before"]["passed"] == g52["arms"]["after"]["passed"] and not g52["kept"]
+
+
+@pytest.mark.parametrize("wins,losses,ties", [(0, 0, 32), (2, 2, 28), (12, 4, 16), (4, 12, 16), (8, 0, 0)])
+def test_statistic_equals_profiled_three_outcome_likelihood(wins, losses, ties):
+    q = (wins + losses) / (wins + losses + ties)
+
+    def profile(p):
+        return sum(n * math.log(prob) for n, prob in ((wins, q * p), (losses, q * (1-p)), (ties, 1-q)) if n)
+
+    assert gate_look.paired_log_lr(wins, losses) == pytest.approx(profile(0.6) - profile(0.4))
