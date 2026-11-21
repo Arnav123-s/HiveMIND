@@ -96,3 +96,26 @@ def test_private_format_or_rule_prose_in_source_is_ineligible():
         replies = iter(['def solve(x): return None', f'# {private}\ndef solve(x): return "checked"'])
         row, grades = hd.trial(spec, 'fixture', lambda *a, **k: next(replies), ReplayGuest(spec), format_hint=True)
         assert grades['hinted']['ok'] and row is None
+
+
+def test_both_production_arms_use_same_memory_recalled_only_from_public_task(tmp_path, monkeypatch):
+    from team import engram, saved, ternary
+    seed = '30005652'
+    spec = next(hd.draw(seed, 1))
+    memories = [('old-skill', 0.75)]
+    recalled, applied = [], []
+    monkeypatch.setenv('HIVE_ENGRAMS', '1')
+    monkeypatch.setenv('HIVE_ENGRAM_GATE', '1')
+    monkeypatch.setattr(saved, 'guest', lambda: ReplayGuest(spec))
+    monkeypatch.setattr(ternary, 'roster', lambda: ['t80+g55trunk'])
+    monkeypatch.setattr(engram, 'recall_scaled', lambda prompt, base, cell: recalled.append(prompt) or memories)
+    def answer(member, msgs, *, also, **kwargs):
+        applied.append(also)
+        return 'def solve(x): return None' if len(applied) == 1 else 'def solve(x): return "checked"'
+    monkeypatch.setattr(ternary, 'chat', answer)
+    path = tmp_path / 'result.json'
+    hd._attempt(seed, path)
+    result = json.loads(path.read_text())
+    assert recalled == [hd.instructions(spec)[0]] and applied == [tuple(memories)] * 2
+    assert result['row']['seed'] == 30005652 and result['row']['spec_id'] == spec.seed
+    assert result['row']['verified_member'] and result['audit']['recalled'] == [list(memories[0])]

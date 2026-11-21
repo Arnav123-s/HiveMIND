@@ -311,8 +311,14 @@ jobs:
       - uses: ./.github/actions/hive
       - name: Install the guest for generated practice
         continue-on-error: true
+        timeout-minutes: 3
         if: ${{ vars.HIVE_SPADE_DREAM == '1' }}
         run: |
+          # Allow the whole optional install plus the dream job's 90-second upload reserve.
+          if [ -n "${DREAM_DEADLINE:-}" ] && (( DREAM_DEADLINE - $(date +%s) <= 270 )); then
+            echo 'Skipping the optional practice guest as the dream clock is nearly spent.'
+            exit 0
+          fi
           python -m pip install --quiet wasmtime==36.0.0
           sdk="$RUNNER_TEMP/dream-wasi"
           curl -fsSL --retry 2 --max-time 90 'https://github.com/brettcannon/cpython-wasi-build/releases/download/v3.13.9/python-3.13.9-wasi_sdk-24.zip' -o "$sdk.zip"

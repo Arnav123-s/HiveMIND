@@ -7,7 +7,8 @@ import os
 from pathlib import Path
 import time
 
-from training.experiments.hint_dream.pilot import ASSETS
+from training import hint_dream
+from training.experiments.hint_dream.pilot import ASSETS, PANELS
 
 G55_PARENT = "6d2b50f593941b73e564286a3889768948bf539fec5517c6b884cd2c390d0ab0"
 
@@ -21,12 +22,31 @@ def checked_rows(folder):
     rec = json.loads((folder / "results.json").read_text())
     if not rec['complete'] or rec.get('panel', 'initial') == 'transfer' or rec['assets'] != ASSETS:
         raise ValueError(f"Unexpected source panel {folder}")
-    wanted = [p['spec'] for p in rec['pairs'] if not p['blind']['ok'] and p['hinted']['ok'] and p['admitted']]
+    panel = rec.get('panel', 'initial')
+    seed, indexes = PANELS[panel]
+    specs = list(hint_dream.draw(seed, max(indexes) + 1))
+    if rec['seed'] != seed or len(rec['calls']) != 2 * len(indexes):
+        raise ValueError("Missing native calls or unexpected seed")
     rows_file = folder / 'rows.jsonl'
     rows = [json.loads(line) for line in rows_file.read_text().splitlines()] if rows_file.exists() else []
-    if wanted != [row['seed'] for row in rows]:
-        raise ValueError("Exported rows disagree with paired verification")
-    if any(not row['hint_regret'] or row['type'] != 'first' or 'Implementation hint:' in str(row['messages']) for row in rows):
+    expected = []
+    for i, (idx, pair) in enumerate(zip(indexes, rec['pairs'], strict=True)):
+        spec = specs[idx]
+        prompt, hint = hint_dream.instructions(spec)
+        if panel == 'confirmation':
+            hint = hint_dream.decoding_hint(spec.form) + ' ' + hint
+        blind, hinted = rec['calls'][2*i:2*i+2]
+        if (pair['spec'] != spec.seed or blind['messages'] != hint_dream.messages(prompt)
+                or hinted['messages'] != hint_dream.messages(prompt, hint)):
+            raise ValueError("Captured prompts differ from the frozen pair")
+        if pair['admitted']:
+            if pair['blind']['ok'] or not pair['hinted']['ok'] or pair['hinted']['matched'] != pair['hinted']['cases']:
+                raise ValueError("An admitted row has no verified hint-regret window")
+            code = hint_dream.extract_code(hinted['raw'])
+            expected.append((spec.seed, blind['messages'], f"```python\n{code}\n```"))
+    if expected != [(r['seed'], r['messages'], r['output']) for r in rows]:
+        raise ValueError("Exported SFT examples differ from the observed unhinted prompt or hinted program")
+    if any(not r['hint_regret'] or r['who'] != 't80+g55trunk' or r['type'] != 'first' for r in rows):
         raise ValueError("Unexpected SFT row")
     return rows_file, len(rows)
 

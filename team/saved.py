@@ -117,7 +117,32 @@ def bounded_inputs(message, versions):
     return None
 
 
-def answer(message, bank=None, runner=None, log=None):
+def standalone_request(message, task, description, direct_only):
+    """Require a single request for this method. Leave other work and references to the conversation."""
+    prose = message
+    if "{" in prose:
+        start = prose.index("{")
+        try:
+            _, length = json.JSONDecoder().raw_decode(prose[start:])
+        except ValueError:
+            return False
+        prose = prose[:start] + " " + prose[start+length:]
+    if re.search(r"[{}\n;/%=<>@^*]|\b(?:file|save|write|export|download|upload|explain|repeat|again|instead|"
+                 r"previous|last|same|above|earlier|that|those|these|it|them|then)\b", prose, re.I):
+        return False
+    from .deliverables import wanted
+    if wanted(prose):
+        return False
+    if not direct_only:
+        return True
+    vocabulary = _stems(re.findall(r"[a-z]+", (task + " " + description).lower()))
+    # Common question phrasing and units accepted by the original shipping calculator.
+    wording = set("a an and are as at be by calculate can check compute do does find for from g give how i in is "
+                  "many me much my of on or please return tell the to what whether with would you".split())
+    return _stems(re.findall(r"[a-z]+", prose.lower())) <= vocabulary | wording
+
+
+def answer(message, bank=None, runner=None, log=None, *, has_history=False, direct_only=False):
     """A saved method's answer to the message (see the module's notes), or None to go on as before."""
     from training.experiments.fieldwork.work import load_bank, shared_results
     say = log or (lambda *a: None)
@@ -128,6 +153,8 @@ def answer(message, bank=None, runner=None, log=None):
     if found is None:
         return None
     task, description, versions = found
+    if not standalone_request(message, task, description, direct_only):
+        return None
     plain = re.sub(r"^Write solve\(x\) to\s+", "", description)
     bounded = [r for r in versions if "arguments" in r]
     if bounded:
@@ -146,6 +173,8 @@ def answer(message, bank=None, runner=None, log=None):
         value, missing = read_inputs(message, input_keys(versions, description))
     method = f"{task} ({', '.join(r['digest'][:12] for r in versions)})"
     if missing:
+        if has_history:  # a prior turn may supply the missing input
+            return None
         return dict(status="missing", task=task, methods=[r["digest"] for r in versions],
                     text=f"I have a saved, checked method for this, {method}, but I cannot run it on your message: "
                          f"it needs {missing}. It is made to {plain}")

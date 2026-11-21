@@ -74,9 +74,12 @@ def test_future_jobs_only_start_if_previous_look_requested_more():
 
 def test_sequential_recorder_rechecks_planned_prefix_before_changing_body(tmp_path, monkeypatch):
     from training import grow_record
-    from tests.test_paired_gate import _files
-
-    body, records = _files(tmp_path, monkeypatch)
+    body = tmp_path / "body.json"
+    records = tmp_path / "generations.jsonl"
+    body.write_text(json.dumps({"dna": "t80", "generation": 7, "cells": ["g7code"], "trunk": "g7trunk"}))
+    monkeypatch.setattr(grow_record, "BODY", body)
+    monkeypatch.setattr(grow_record, "RECORD", records)
+    monkeypatch.setattr(grow_record, "STRENGTHS", tmp_path / "strengths.json")
     before = body.read_bytes()
     folder, got = tmp_path / "grades", tmp_path / "cells"
     folder.mkdir()

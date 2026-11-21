@@ -42,7 +42,9 @@ def draw(seed, count):
     rng.shuffle(forms)
     rng.shuffle(rules)
     for i in range(count):
-        form, rule = forms[i % 4], rules[(i + i // 4) % 4]
+        form_index = i % len(forms)
+        form = forms[form_index]
+        rule = rules[(form_index + i // len(forms)) % len(rules)]
         modulus = rng.choice((9, 13, 23, 31))
         yield Spec(f"stream-v1/{seed}/{i}", form, rule, rng.randint(2, modulus - 3),
                    modulus, rng.choice((2, 3, 4)))
@@ -143,23 +145,24 @@ def messages(prompt, hint=None):
 
 
 def grade(reply, spec, guest):
+    suites = [examples(spec, split) for split in ("check", "audit")]
+    count = sum(map(len, suites))
     program = extract_code(reply)
     try:
         tree = ast.parse(program)
         if not any(isinstance(node, ast.FunctionDef) and node.name == "solve" for node in tree.body):
             raise ValueError("missing solve(x)")
     except (ValueError, SyntaxError) as ex:
-        return {"ok": False, "matched": 0, "cases": 24, "reason": type(ex).__name__}, None
+        return {"ok": False, "matched": 0, "cases": count, "reason": type(ex).__name__}, None
     matched = 0
-    for split in ("check", "audit"):
-        cases = examples(spec, split)
+    for cases in suites:
         observed, _, _ = guest.run(program, [x for x, _ in cases])
         if len(observed) != len(cases):
             raise RuntimeError("guest returned an incomplete set of grades")
         for row, (_, wanted) in zip(observed, cases, strict=True):
             if "value" in row and json.dumps(row["value"], sort_keys=True) == json.dumps(wanted, sort_keys=True):
                 matched += 1
-    return {"ok": matched == 24, "matched": matched, "cases": 24}, program
+    return {"ok": matched == count, "matched": matched, "cases": count}, program
 
 
 def trial(spec, member, ask, guest, all_pairs=False, format_hint=False):
@@ -191,14 +194,28 @@ def _attempt(seed, output):
         return
     member = next((m for m in roster if ternary.is_trunk(m)), roster[0])
     spec = next(draw(seed, 1))
+    recalled = ()
+    if os.environ.get("HIVE_ENGRAMS") == "1":
+        from team import engram
+        base, cell = ternary.split(member)
+        recall = engram.recall_scaled if os.environ.get("HIVE_ENGRAM_GATE") == "1" else engram.recall
+        public_prompt, _ = instructions(spec)
+        recalled = tuple(recall(public_prompt, base, cell=cell))
     calls = 0
 
     def ask(*args, **kwargs):
         nonlocal calls
         calls += 1
-        return ternary.chat(*args, **kwargs)
+        return ternary.chat(*args, also=recalled, **kwargs)
 
-    row, audit = trial(spec, member, ask, guest)
+    row, audit = trial(spec, member, ask, guest, format_hint=True)
+    audit["hint_policy"] = "format-and-rule"
+    audit["recalled"] = recalled
+    if row:
+        row["verified_member"] = True
+        row["spec_id"] = spec.seed
+        if str(seed).isascii() and str(seed).isdecimal():
+            row["seed"] = int(seed)  # preserve the actual grow shard's practice-only seed for self-replay
     output.write_text(json.dumps({"status": "checked", "calls": calls, "audit": audit, "row": row}))
 
 

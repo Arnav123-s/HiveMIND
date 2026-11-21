@@ -4,7 +4,7 @@ A practice worker can earn a reusable tool when its standalone function passes a
 
 ## Use it
 
-Set `HIVE_FIELDWORK_SDK` to the CPython WASI installation and choose a bank directory. These commands generate three reference contracts and submit a real G51 worker's digit-sum function. A configured local HiveMIND body can then answer the example through its normal chat command. [Runtime setup](../../../reports/rule_lab/fieldwork/reproduce.md)
+Set `HIVE_FIELDWORK_SDK` to the CPython WASI installation and choose a bank directory. These commands generate three reference contracts and submit a real G51 worker's digit-sum function. The normal chat command can answer the example on a machine with the WASI runtime even when no language model is installed. [Runtime setup](../../../reports/rule_lab/fieldwork/reproduce.md)
 
 ```sh
 export HIVE_FIELDWORK_SDK="$PWD/runs/fieldwork-assets/wasi"
@@ -15,7 +15,7 @@ python -m training.experiments.astra_transfer.bank_admission.replay --write-cont
 ./hive --once 'Calculate the decimal digit sum of 907.'
 ```
 
-The result is **16**. Supply a JSON object for multiple arguments. For example, after the base-conversion worker earns admission, ask `Calculate the lowercase base notation conversion for {"n":255,"b":16}`.
+The result is **16**. In an interactive local session the same shortcut works on each self-contained calculation. Requests that use earlier turns, ask for a file, or combine additional work continue through the conversation. `--local` selects this machine even when a service is available. Explicit `HIVE_ROLES=1` uses the role swarm. Supply a JSON object for multiple arguments. For example, after the base-conversion worker earns admission, ask `Calculate the lowercase base notation conversion for {"n":255,"b":16}`.
 
 With both directories configured, the regular practice runner automatically checks named functions found in an individually passing member's last successful program. The practice result's `bank_admissions` records what happened. Fixed exam runs do not submit candidates. Other worker wins can qualify once a trusted contract names the function and its supported inputs.
 

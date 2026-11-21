@@ -1,0 +1,370 @@
+{
+ "complete": true,
+ "assets": {
+  "server": "0dc642d61dc39d51a8b5da348c43ba19d29f720b2a3ac790e0019351239da3b2",
+  "model": "1376f942aa90e60f7b570c1d81b3916fea1315ff85aa1c4d19006af68fb4b922",
+  "adapter": "72913f1c566638f2177574178f1d6925cde956a92b35af06795e7598c5729036"
+ },
+ "affinity": [
+  1,
+  2
+ ],
+ "flags": [
+  "-ngl",
+  "0",
+  "-c",
+  "2048",
+  "-t",
+  "2",
+  "-tb",
+  "2",
+  "-rtr",
+  "-b",
+  "128",
+  "-ub",
+  "128",
+  "--parallel",
+  "1",
+  "--threads-http",
+  "2",
+  "--host",
+  "127.0.0.1",
+  "--port",
+  "40559",
+  "--jinja"
+ ],
+ "sampling": {
+  "temperature": 0,
+  "max_tokens": 256,
+  "top_k": 0,
+  "top_p": 1,
+  "cache_prompt": false,
+  "seed": 8103,
+  "chat_template_kwargs": {
+   "enable_thinking": false
+  }
+ },
+ "seed": "spade-format-confirmation-20261121",
+ "panel": "confirmation",
+ "pairs": [
+  {
+   "spec": "stream-v1/spade-format-confirmation-20261121/1",
+   "kind": "generated stream json wrap",
+   "member": "t80+g55trunk",
+   "blind": {
+    "ok": false,
+    "matched": 2,
+    "cases": 24
+   },
+   "hinted": {
+    "ok": false,
+    "matched": 3,
+    "cases": 24
+   },
+   "admitted": false
+  },
+  {
+   "spec": "stream-v1/spade-format-confirmation-20261121/2",
+   "kind": "generated stream ini last",
+   "member": "t80+g55trunk",
+   "blind": {
+    "ok": false,
+    "matched": 5,
+    "cases": 24
+   },
+   "hinted": {
+    "ok": true,
+    "matched": 24,
+    "cases": 24
+   },
+   "admitted": true
+  },
+  {
+   "spec": "stream-v1/spade-format-confirmation-20261121/8",
+   "kind": "generated stream queue last",
+   "member": "t80+g55trunk",
+   "blind": {
+    "ok": false,
+    "matched": 14,
+    "cases": 24
+   },
+   "hinted": {
+    "ok": true,
+    "matched": 24,
+    "cases": 24
+   },
+   "admitted": true
+  },
+  {
+   "spec": "stream-v1/spade-format-confirmation-20261121/11",
+   "kind": "generated stream csv wrap",
+   "member": "t80+g55trunk",
+   "blind": {
+    "ok": false,
+    "matched": 2,
+    "cases": 24
+   },
+   "hinted": {
+    "ok": true,
+    "matched": 24,
+    "cases": 24
+   },
+   "admitted": true
+  },
+  {
+   "spec": "stream-v1/spade-format-confirmation-20261121/6",
+   "kind": "generated stream ini rank",
+   "member": "t80+g55trunk",
+   "blind": {
+    "ok": false,
+    "matched": 21,
+    "cases": 24
+   },
+   "hinted": {
+    "ok": false,
+    "matched": 22,
+    "cases": 24
+   },
+   "admitted": false
+  }
+ ],
+ "calls": [
+  {
+   "messages": [
+    {
+     "role": "system",
+     "content": "Write a self-contained Python function solve(x). Use the standard library. Return one complete Python code block."
+    },
+    {
+     "role": "user",
+     "content": "x is JSON text encoding an array of objects with keys label and value, in arrival order. Labels are short words and values are whole numbers from 0 to 12. Return a dictionary mapping every label to its total forward change. Each label has its own cyclic meter with values 0 through 12. Its first reading contributes zero. A decrease means one wrap, equality means no change. Empty input is valid. Write solve(x), returning the result. One example is x = '[{\"label\": \"teal\", \"value\": 6}, {\"label\": \"ash\", \"value\": 12}, {\"label\": \"teal\", \"value\": 1}, {\"label\": \"oak\", \"value\": 6}, {\"label\": \"ash\", \"value\": 0}, {\"label\": \"teal\", \"value\": 7}]', which gives {'teal': 14, 'ash': 1, 'oak': 0}."
+    }
+   ],
+   "raw": "```python\nimport json\n\ndef solve(x):\n    data = json.loads(x)\n    result = {}\n    for item in data:\n        label = item['label']\n        value = item['value']\n        if label not in result:\n            result[label] = 0\n        # The first reading contributes zero\n        if len(result) == 1:\n            result[label] += value\n        else:\n            # Compute the forward change: (value - previous) % 13\n            prev = result[label]\n            change = (value - prev) % 13\n            result[label] += change\n    return result\n```",
+   "stop": "stop",
+   "usage": {
+    "completion_tokens": 132,
+    "prompt_tokens": 239,
+    "total_tokens": 371,
+    "prompt_tokens_details": {
+     "cached_tokens": 0
+    }
+   },
+   "seconds": 84.177
+  },
+  {
+   "messages": [
+    {
+     "role": "system",
+     "content": "Write a self-contained Python function solve(x). Use the standard library. Return one complete Python code block."
+    },
+    {
+     "role": "user",
+     "content": "x is JSON text encoding an array of objects with keys label and value, in arrival order. Labels are short words and values are whole numbers from 0 to 12. Return a dictionary mapping every label to its total forward change. Each label has its own cyclic meter with values 0 through 12. Its first reading contributes zero. A decrease means one wrap, equality means no change. Empty input is valid. Write solve(x), returning the result. One example is x = '[{\"label\": \"teal\", \"value\": 6}, {\"label\": \"ash\", \"value\": 12}, {\"label\": \"teal\", \"value\": 1}, {\"label\": \"oak\", \"value\": 6}, {\"label\": \"ash\", \"value\": 0}, {\"label\": \"teal\", \"value\": 7}]', which gives {'teal': 14, 'ash': 1, 'oak': 0}.\n\nImplementation hint: Iterate json.loads(x), reading each object's r['label'] and r['value']. Keep the previous reading separately for each label; for a later reading add (current - previous) % 13."
+    }
+   ],
+   "raw": "```python\nimport json\n\ndef solve(x):\n    data = json.loads(x)\n    label_changes = {}\n    \n    for item in data:\n        label = item['label']\n        value = item['value']\n        \n        if label not in label_changes:\n            label_changes[label] = {'prev': 0, 'total': 0}\n        \n        prev = label_changes[label]['prev']\n        change = (value - prev) % 13\n        label_changes[label]['total'] += change\n        label_changes[label]['prev'] = value\n    \n    return {label: changes['total'] for label, changes in label_changes.items()}\n\n# Example usage:\n# print(solve('[{\"label\": \"teal\", \"value\": 6}, {\"label\": \"ash\", \"value\": 12}, {\"label\": \"teal\", \"value\": 1}, {\"label\": \"oak\", \"value\": 6}, {\"label\": \"ash\", \"value\": 0}, {\"label\": \"teal\", \"value\": 7}]'))\n```",
+   "stop": "stop",
+   "usage": {
+    "completion_tokens": 221,
+    "prompt_tokens": 285,
+    "total_tokens": 506,
+    "prompt_tokens_details": {
+     "cached_tokens": 0
+    }
+   },
+   "seconds": 105.795
+  },
+  {
+   "messages": [
+    {
+     "role": "system",
+     "content": "Write a self-contained Python function solve(x). Use the standard library. Return one complete Python code block."
+    },
+    {
+     "role": "user",
+     "content": "x is INI text with one section per event in arrival order, each with keys label and value. Labels are short words and values are whole numbers from 0 to 12. Return the labels whose final recorded value is at least 8. List them in the order they first appeared, even when the final observation order differs. Empty input is valid. Write solve(x), returning the result. One example is x = '[event0]\\nlabel = oak\\nvalue = 8\\n\\n[event1]\\nlabel = fir\\nvalue = 12\\n\\n[event2]\\nlabel = oak\\nvalue = 1\\n\\n[event3]\\nlabel = rose\\nvalue = 8\\n\\n[event4]\\nlabel = fir\\nvalue = 0\\n\\n[event5]\\nlabel = oak\\nvalue = 9\\n\\n', which gives ['oak', 'rose']."
+    }
+   ],
+   "raw": "```python\ndef solve(x):\n    import re\n    sections = re.split(r'\\n\\s*$$', x.strip())\n    label_values = {}\n    for section in sections:\n        if not section:\n            continue\n        key, value = re.search(r'label\\s*=\\s*([a-z]+)', section).group(1), int(re.search(r'value\\s*=\\s*(\\d+)', section).group(1))\n        if key in label_values:\n            label_values[key].append(value)\n        else:\n            label_values[key] = [value]\n    result = []\n    for label in label_values:\n        if label not in result and any(v >= 8 for v in label_values[label]):\n            result.append(label)\n    return result\n```",
+   "stop": "stop",
+   "usage": {
+    "completion_tokens": 158,
+    "prompt_tokens": 220,
+    "total_tokens": 378,
+    "prompt_tokens_details": {
+     "cached_tokens": 0
+    }
+   },
+   "seconds": 70.599
+  },
+  {
+   "messages": [
+    {
+     "role": "system",
+     "content": "Write a self-contained Python function solve(x). Use the standard library. Return one complete Python code block."
+    },
+    {
+     "role": "user",
+     "content": "x is INI text with one section per event in arrival order, each with keys label and value. Labels are short words and values are whole numbers from 0 to 12. Return the labels whose final recorded value is at least 8. List them in the order they first appeared, even when the final observation order differs. Empty input is valid. Write solve(x), returning the result. One example is x = '[event0]\\nlabel = oak\\nvalue = 8\\n\\n[event1]\\nlabel = fir\\nvalue = 12\\n\\n[event2]\\nlabel = oak\\nvalue = 1\\n\\n[event3]\\nlabel = rose\\nvalue = 8\\n\\n[event4]\\nlabel = fir\\nvalue = 0\\n\\n[event5]\\nlabel = oak\\nvalue = 9\\n\\n', which gives ['oak', 'rose'].\n\nImplementation hint: Use cfg=configparser.ConfigParser(); cfg.read_string(x); iterate s in cfg.sections(), reading cfg[s]['label'] and cfg[s].getint('value'). Record the last value for every label, including small values; filter only after reading everything."
+    }
+   ],
+   "raw": "```python\nimport configparser\n\ndef solve(x):\n    cfg = configparser.ConfigParser()\n    cfg.read_string(x)\n    last_values = {}\n    for section in cfg.sections():\n        label = cfg[section]['label']\n        value = int(cfg[section].get('value', 0))\n        last_values[label] = value\n    return [label for label in last_values if last_values[label] >= 8]\n```",
+   "stop": "stop",
+   "usage": {
+    "completion_tokens": 85,
+    "prompt_tokens": 275,
+    "total_tokens": 360,
+    "prompt_tokens_details": {
+     "cached_tokens": 0
+    }
+   },
+   "seconds": 53.293
+  },
+  {
+   "messages": [
+    {
+     "role": "system",
+     "content": "Write a self-contained Python function solve(x). Use the standard library. Return one complete Python code block."
+    },
+    {
+     "role": "user",
+     "content": "x is a list of [label, value] pairs in arrival order. Labels are short words and values are whole numbers from 0 to 22. Return the labels whose final recorded value is at least 10. List them in the order they first appeared, even when the final observation order differs. Empty input is valid. Write solve(x), returning the result. One example is x = [['red', 10], ['ash', 22], ['red', 1], ['lime', 10], ['ash', 0], ['red', 11]], which gives ['red', 'lime']."
+    }
+   ],
+   "raw": "```python\ndef solve(x):\n    result = []\n    seen = set()\n    for label, value in x:\n        if label not in seen:\n            seen.add(label)\n            result.append(label)\n    return result\n```",
+   "stop": "stop",
+   "usage": {
+    "completion_tokens": 47,
+    "prompt_tokens": 167,
+    "total_tokens": 214,
+    "prompt_tokens_details": {
+     "cached_tokens": 0
+    }
+   },
+   "seconds": 28.981
+  },
+  {
+   "messages": [
+    {
+     "role": "system",
+     "content": "Write a self-contained Python function solve(x). Use the standard library. Return one complete Python code block."
+    },
+    {
+     "role": "user",
+     "content": "x is a list of [label, value] pairs in arrival order. Labels are short words and values are whole numbers from 0 to 22. Return the labels whose final recorded value is at least 10. List them in the order they first appeared, even when the final observation order differs. Empty input is valid. Write solve(x), returning the result. One example is x = [['red', 10], ['ash', 22], ['red', 1], ['lime', 10], ['ash', 0], ['red', 11]], which gives ['red', 'lime'].\n\nImplementation hint: Iterate directly as `for label, n in x` without sorting the events. Record the last value for every label, including small values; filter only after reading everything."
+    }
+   ],
+   "raw": "```python\ndef solve(x):\n    label_values = {}\n    for label, value in x:\n        label_values[label] = value\n    result = [label for label, value in label_values.items() if value >= 10]\n    return result\n```",
+   "stop": "stop",
+   "usage": {
+    "completion_tokens": 55,
+    "prompt_tokens": 205,
+    "total_tokens": 260,
+    "prompt_tokens_details": {
+     "cached_tokens": 0
+    }
+   },
+   "seconds": 32.85
+  },
+  {
+   "messages": [
+    {
+     "role": "system",
+     "content": "Write a self-contained Python function solve(x). Use the standard library. Return one complete Python code block."
+    },
+    {
+     "role": "user",
+     "content": "x is CSV text with header label,value and one event per subsequent row, in arrival order. Labels are short words and values are whole numbers from 0 to 8. Return a dictionary mapping every label to its total forward change. Each label has its own cyclic meter with values 0 through 8. Its first reading contributes zero. A decrease means one wrap, equality means no change. Empty input is valid. Write solve(x), returning the result. One example is x = 'label,value\\r\\nblue,2\\r\\nash,8\\r\\nblue,1\\r\\nlime,2\\r\\nash,0\\r\\nblue,3\\r\\n', which gives {'blue': 10, 'ash': 1, 'lime': 0}."
+    }
+   ],
+   "raw": "```python\nimport csv\nfrom io import StringIO\n\ndef solve(x):\n    data = StringIO(x)\n    reader = csv.DictReader(data)\n    result = {}\n    \n    for row in reader:\n        label = row['label']\n        value = int(row['value'])\n        \n        if label not in result:\n            result[label] = 0\n        \n        # The first reading contributes zero\n        if len(result) == 1 and value == 0:\n            continue\n        \n        # Compute forward change\n        prev = result[label]\n        change = (value - prev) % 9\n        result[label] += change\n    \n    return result\n```",
+   "stop": "stop",
+   "usage": {
+    "completion_tokens": 133,
+    "prompt_tokens": 192,
+    "total_tokens": 325,
+    "prompt_tokens_details": {
+     "cached_tokens": 0
+    }
+   },
+   "seconds": 63.458
+  },
+  {
+   "messages": [
+    {
+     "role": "system",
+     "content": "Write a self-contained Python function solve(x). Use the standard library. Return one complete Python code block."
+    },
+    {
+     "role": "user",
+     "content": "x is CSV text with header label,value and one event per subsequent row, in arrival order. Labels are short words and values are whole numbers from 0 to 8. Return a dictionary mapping every label to its total forward change. Each label has its own cyclic meter with values 0 through 8. Its first reading contributes zero. A decrease means one wrap, equality means no change. Empty input is valid. Write solve(x), returning the result. One example is x = 'label,value\\r\\nblue,2\\r\\nash,8\\r\\nblue,1\\r\\nlime,2\\r\\nash,0\\r\\nblue,3\\r\\n', which gives {'blue': 10, 'ash': 1, 'lime': 0}.\n\nImplementation hint: Iterate csv.DictReader(io.StringIO(x)); it consumes the header. Use r['label'] and int(r['value']). Keep the previous reading separately for each label; for a later reading add (current - previous) % 9."
+    }
+   ],
+   "raw": "```python\nimport csv\nfrom io import StringIO\n\ndef solve(x):\n    data = StringIO(x)\n    reader = csv.DictReader(data)\n    result = {}\n    prev = {}\n    for row in reader:\n        label = row['label']\n        value = int(row['value'])\n        if label not in prev:\n            prev[label] = value\n        change = (value - prev[label]) % 9\n        result[label] = result.get(label, 0) + change\n        prev[label] = value\n    return result\n```",
+   "stop": "stop",
+   "usage": {
+    "completion_tokens": 113,
+    "prompt_tokens": 244,
+    "total_tokens": 357,
+    "prompt_tokens_details": {
+     "cached_tokens": 0
+    }
+   },
+   "seconds": 52.719
+  },
+  {
+   "messages": [
+    {
+     "role": "system",
+     "content": "Write a self-contained Python function solve(x). Use the standard library. Return one complete Python code block."
+    },
+    {
+     "role": "user",
+     "content": "x is INI text with one section per event in arrival order, each with keys label and value. Labels are short words and values are whole numbers from 0 to 12. List every observed label ranked by the sum of its values that are at least 3, largest sum first. A label with no qualifying values has sum zero. Break ties by first appearance. Empty input is valid. Write solve(x), returning the result. One example is x = '[event0]\\nlabel = blue\\nvalue = 3\\n\\n[event1]\\nlabel = oak\\nvalue = 12\\n\\n[event2]\\nlabel = blue\\nvalue = 1\\n\\n[event3]\\nlabel = rose\\nvalue = 3\\n\\n[event4]\\nlabel = oak\\nvalue = 0\\n\\n[event5]\\nlabel = blue\\nvalue = 4\\n\\n', which gives ['oak', 'blue', 'rose']."
+    }
+   ],
+   "raw": "```python\ndef solve(x):\n    import re\n    sections = re.split(r'\\n\\s*\\n', x.strip())\n    label_sums = {}\n    for section in sections:\n        if not section:\n            continue\n        key, value = re.search(r'label\\s*=\\s*([a-z]+)', section).group(1), int(re.search(r'value\\s*=\\s*(\\d+)', section).group(1))\n        if key not in label_sums:\n            label_sums[key] = 0\n        if value >= 3:\n            label_sums[key] += value\n    # Sort by sum (descending), then by first appearance (ascending)\n    sorted_labels = sorted(label_sums.keys(), key=lambda k: (-label_sums[k], k))\n    return sorted_labels\n```",
+   "stop": "stop",
+   "usage": {
+    "completion_tokens": 170,
+    "prompt_tokens": 231,
+    "total_tokens": 401,
+    "prompt_tokens_details": {
+     "cached_tokens": 0
+    }
+   },
+   "seconds": 96.183
+  },
+  {
+   "messages": [
+    {
+     "role": "system",
+     "content": "Write a self-contained Python function solve(x). Use the standard library. Return one complete Python code block."
+    },
+    {
+     "role": "user",
+     "content": "x is INI text with one section per event in arrival order, each with keys label and value. Labels are short words and values are whole numbers from 0 to 12. List every observed label ranked by the sum of its values that are at least 3, largest sum first. A label with no qualifying values has sum zero. Break ties by first appearance. Empty input is valid. Write solve(x), returning the result. One example is x = '[event0]\\nlabel = blue\\nvalue = 3\\n\\n[event1]\\nlabel = oak\\nvalue = 12\\n\\n[event2]\\nlabel = blue\\nvalue = 1\\n\\n[event3]\\nlabel = rose\\nvalue = 3\\n\\n[event4]\\nlabel = oak\\nvalue = 0\\n\\n[event5]\\nlabel = blue\\nvalue = 4\\n\\n', which gives ['oak', 'blue', 'rose'].\n\nImplementation hint: Use cfg=configparser.ConfigParser(); cfg.read_string(x); iterate s in cfg.sections(), reading cfg[s]['label'] and cfg[s].getint('value'). Initialize each label before checking the threshold; preserve first-seen order through a stable descending sort."
+    }
+   ],
+   "raw": "```python\nimport configparser\n\ndef solve(x):\n    config = configparser.ConfigParser()\n    config.read_string(x)\n    sections = config.sections()\n    label_sums = {}\n    for section in sections:\n        label = config[section]['label']\n        value = int(config[section].get('value', 0))\n        if value >= 3:\n            label_sums[label] = label_sums.get(label, 0) + value\n    # Sort by sum (descending), then by first appearance (ascending)\n    sorted_labels = sorted(label_sums.keys(), key=lambda l: (-label_sums[l], sections.index(section)))\n    return sorted_labels\n```",
+   "stop": "stop",
+   "usage": {
+    "completion_tokens": 135,
+    "prompt_tokens": 287,
+    "total_tokens": 422,
+    "prompt_tokens_details": {
+     "cached_tokens": 0
+    }
+   },
+   "seconds": 71.173
+  }
+ ],
+ "weights": [
+  {
+   "id": 0,
+   "path": "/tmp/hive-astra-orders-assets/t80.g55trunk.gguf",
+   "scale": 1.0
+  }
+ ]
+}

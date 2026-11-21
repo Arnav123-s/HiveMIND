@@ -1,0 +1,162 @@
+{
+ "complete": true,
+ "assets": {
+  "server": "0dc642d61dc39d51a8b5da348c43ba19d29f720b2a3ac790e0019351239da3b2",
+  "model": "1376f942aa90e60f7b570c1d81b3916fea1315ff85aa1c4d19006af68fb4b922",
+  "adapter": "72913f1c566638f2177574178f1d6925cde956a92b35af06795e7598c5729036"
+ },
+ "affinity": [
+  1,
+  2
+ ],
+ "flags": [
+  "-ngl",
+  "0",
+  "-c",
+  "2048",
+  "-t",
+  "2",
+  "-tb",
+  "2",
+  "-rtr",
+  "-b",
+  "128",
+  "-ub",
+  "128",
+  "--parallel",
+  "1",
+  "--threads-http",
+  "2",
+  "--host",
+  "127.0.0.1",
+  "--port",
+  "43499",
+  "--jinja"
+ ],
+ "sampling": {
+  "temperature": 0,
+  "max_tokens": 256,
+  "top_k": 0,
+  "top_p": 1,
+  "cache_prompt": false,
+  "seed": 8103,
+  "chat_template_kwargs": {
+   "enable_thinking": false
+  }
+ },
+ "seed": "spade-after-sft-20261121",
+ "panel": "transfer",
+ "pairs": [
+  {
+   "spec": "stream-v1/spade-after-sft-20261121/0",
+   "kind": "generated stream json streak",
+   "arm": "A",
+   "blind": {
+    "ok": false,
+    "matched": 7,
+    "cases": 24
+   },
+   "admitted": false
+  },
+  {
+   "spec": "stream-v1/spade-after-sft-20261121/9",
+   "kind": "generated stream csv last",
+   "arm": "A",
+   "blind": {
+    "ok": false,
+    "matched": 0,
+    "cases": 24
+   },
+   "admitted": false
+  },
+  {
+   "spec": "stream-v1/spade-after-sft-20261121/10",
+   "kind": "generated stream ini streak",
+   "arm": "A",
+   "blind": {
+    "ok": false,
+    "matched": 2,
+    "cases": 24
+   },
+   "admitted": false
+  }
+ ],
+ "calls": [
+  {
+   "messages": [
+    {
+     "role": "system",
+     "content": "Write a self-contained Python function solve(x). Use the standard library. Return one complete Python code block."
+    },
+    {
+     "role": "user",
+     "content": "x is JSON text encoding an array of objects with keys label and value, in arrival order. Labels are short words and values are whole numbers from 0 to 12. Return a list of alert labels. Emit a label exactly once when its own uninterrupted run of readings at least 2 first reaches length 2. Only a lower value for that label resets its run. Emit alerts in event order, including later runs. Empty input is valid. Write solve(x), returning the result. One example is x = '[{\"label\": \"elm\", \"value\": 2}, {\"label\": \"oak\", \"value\": 12}, {\"label\": \"elm\", \"value\": 1}, {\"label\": \"lime\", \"value\": 2}, {\"label\": \"oak\", \"value\": 0}, {\"label\": \"elm\", \"value\": 3}]', which gives []."
+    }
+   ],
+   "raw": "```python\nimport json\n\ndef solve(x):\n    data = json.loads(x)\n    alerts = []\n    label_runs = {}\n\n    for entry in data:\n        label = entry[\"label\"]\n        value = entry[\"value\"]\n\n        if label not in label_runs:\n            label_runs[label] = [value]\n        else:\n            label_runs[label].append(value)\n\n        if len(label_runs[label]) >= 2:\n            if value < label_runs[label][-1]:\n                alerts.append(label)\n            else:\n                pass  # Reset the run\n    return alerts\n```",
+   "stop": "stop",
+   "usage": {
+    "completion_tokens": 117,
+    "prompt_tokens": 222,
+    "total_tokens": 339,
+    "prompt_tokens_details": {
+     "cached_tokens": 0
+    }
+   },
+   "seconds": 37.723
+  },
+  {
+   "messages": [
+    {
+     "role": "system",
+     "content": "Write a self-contained Python function solve(x). Use the standard library. Return one complete Python code block."
+    },
+    {
+     "role": "user",
+     "content": "x is CSV text with header label,value and one event per subsequent row, in arrival order. Labels are short words and values are whole numbers from 0 to 8. Return the labels whose final recorded value is at least 5. List them in the order they first appeared, even when the final observation order differs. Empty input is valid. Write solve(x), returning the result. One example is x = 'label,value\\r\\nlime,5\\r\\nelm,8\\r\\nlime,1\\r\\nfir,5\\r\\nelm,0\\r\\nlime,6\\r\\n', which gives ['lime', 'fir']."
+    }
+   ],
+   "raw": "```python\nimport csv\nfrom io import StringIO\n\ndef solve(x):\n    if not x.strip():\n        return []\n    \n    rows = x.strip().splitlines()\n    reader = csv.DictReader(StringIO(rows))\n    values = {}\n    \n    for row in reader:\n        label = row['label']\n        value = int(row['value'])\n        values[label] = value\n    \n    result = []\n    for label in values:\n        if values[label] >= 5:\n            result.append(label)\n    \n    return result\n```",
+   "stop": "stop",
+   "usage": {
+    "completion_tokens": 108,
+    "prompt_tokens": 165,
+    "total_tokens": 273,
+    "prompt_tokens_details": {
+     "cached_tokens": 0
+    }
+   },
+   "seconds": 75.184
+  },
+  {
+   "messages": [
+    {
+     "role": "system",
+     "content": "Write a self-contained Python function solve(x). Use the standard library. Return one complete Python code block."
+    },
+    {
+     "role": "user",
+     "content": "x is INI text with one section per event in arrival order, each with keys label and value. Labels are short words and values are whole numbers from 0 to 8. Return a list of alert labels. Emit a label exactly once when its own uninterrupted run of readings at least 4 first reaches length 2. Only a lower value for that label resets its run. Emit alerts in event order, including later runs. Empty input is valid. Write solve(x), returning the result. One example is x = '[event0]\\nlabel = teal\\nvalue = 4\\n\\n[event1]\\nlabel = lime\\nvalue = 8\\n\\n[event2]\\nlabel = teal\\nvalue = 1\\n\\n[event3]\\nlabel = elm\\nvalue = 4\\n\\n[event4]\\nlabel = lime\\nvalue = 0\\n\\n[event5]\\nlabel = teal\\nvalue = 5\\n\\n', which gives []."
+    }
+   ],
+   "raw": "```python\nimport re\n\ndef solve(x):\n    events = []\n    for line in x.strip().split('\\n'):\n        if line.strip() and not line.startswith('['):\n            key, value = line.split('=')\n            events.append((key.strip(), int(value.strip())))\n    \n    alerts = []\n    label_runs = {}\n    \n    for label, value in events:\n        if label not in label_runs:\n            label_runs[label] = [value]\n        else:\n            label_runs[label].append(value)\n        \n        if len(label_runs[label]) >= 2:\n            if len(label_runs[label]) >= 4:\n                alerts.append(label)\n            if value < label_runs[label][-1]:\n                label_runs[label] = [value]\n    \n    return alerts\n```",
+   "stop": "stop",
+   "usage": {
+    "completion_tokens": 158,
+    "prompt_tokens": 232,
+    "total_tokens": 390,
+    "prompt_tokens_details": {
+     "cached_tokens": 0
+    }
+   },
+   "seconds": 80.713
+  }
+ ],
+ "weights": [
+  {
+   "id": 0,
+   "path": "/tmp/hive-astra-orders-assets/t80.g55trunk.gguf",
+   "scale": 1.0
+  }
+ ]
+}

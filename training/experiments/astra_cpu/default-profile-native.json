@@ -1,0 +1,211 @@
+{
+  "seed": 56,
+  "cpu_affinity": [
+    3,
+    4
+  ],
+  "torch_threads": 2,
+  "precision_observed": "fp32",
+  "unpacked_revision": "ac20f03fc62e872399218b659c8e949dfca05769",
+  "stock_receipt": "native-pair.json#stock",
+  "source_commit": "9fd037a",
+  "chunk_128_and_row_checkpoint": {
+    "arm": "acceptance",
+    "elapsed_seconds": 233.8,
+    "process_cpu_seconds": 412.741,
+    "peak_rss_gib": 10.479,
+    "row_spans": [
+      {
+        "initial_rss_gib": 8.4703369140625,
+        "peak_rss_gib": 10.04470443725586,
+        "start_available_gib": 5.345058441162109,
+        "answer_tokens": 188,
+        "forward_projection_rows": [
+          128,
+          60
+        ],
+        "subject": "several tasks in one \u00b7 first \u00b7 new",
+        "training_loss": 0.03064821846783161,
+        "pieces": 475,
+        "elapsed_seconds": 82.234,
+        "cpu_seconds": 151.625
+      },
+      {
+        "initial_rss_gib": 9.323444366455078,
+        "peak_rss_gib": 10.479602813720703,
+        "start_available_gib": 3.8395767211914062,
+        "answer_tokens": 29,
+        "forward_projection_rows": [
+          30
+        ],
+        "subject": "sum up a text \u00b7 first \u00b7 new",
+        "training_loss": 0.03098740428686142,
+        "pieces": 198,
+        "elapsed_seconds": 27.455,
+        "cpu_seconds": 52.91
+      }
+    ],
+    "admissions": [
+      {
+        "pieces": 475,
+        "subject": "several tasks in one \u00b7 first \u00b7 new",
+        "mode": "checkpoint",
+        "available_gib": 5.345058441162109,
+        "head_gib": 0.28928565979003906,
+        "reserve_gib": 1.0,
+        "ordinary_floor_gib": 4.66766357421875,
+        "checkpoint_floor_gib": 0.536346435546875,
+        "cgroup_current": 11697319936,
+        "cgroup_limit": 17179869184,
+        "cgroup": {
+          "anon": 9686900736,
+          "active_file": 1294503936,
+          "inactive_file": 410861568,
+          "file_mapped": 79679488,
+          "file_dirty": 74424320,
+          "file_writeback": 0,
+          "kernel": 304107520
+        }
+      },
+      {
+        "pieces": 198,
+        "subject": "sum up a text \u00b7 first \u00b7 new",
+        "mode": "ordinary",
+        "available_gib": 3.8398208618164062,
+        "head_gib": 0.0678013265132904,
+        "reserve_gib": 1.0,
+        "ordinary_floor_gib": 1.9456787109375,
+        "checkpoint_floor_gib": 0.22357177734375,
+        "cgroup_current": 13280542720,
+        "cgroup_limit": 17179869184,
+        "cgroup": {
+          "anon": 10585071616,
+          "active_file": 1437454336,
+          "inactive_file": 862081024,
+          "file_mapped": 79679488,
+          "file_dirty": 558657536,
+          "file_writeback": 0,
+          "kernel": 380137472
+        }
+      }
+    ],
+    "training": {
+      "member": "t80+astrastudy",
+      "leans": "sources",
+      "dtype": "bf16",
+      "loss_chunk_tokens": 128,
+      "checkpoint": false,
+      "seconds_a_row": 54.9,
+      "ternary_edit": false,
+      "foresee": false,
+      "pairs": 0,
+      "int8_base": true,
+      "read": 0,
+      "judged": 0,
+      "parent": "t80.g53sources2.safetensors",
+      "parent_cell": "g53sources2",
+      "trunk": "t80.g55trunk.safetensors",
+      "mended": 0,
+      "new_rows": 2,
+      "shard": "",
+      "base": "prism-ml/Ternary-Bonsai-8B-unpacked",
+      "rows": 2,
+      "used": 2,
+      "passes": 2,
+      "epochs": 1.0,
+      "rank": 16,
+      "lr": 0.0002,
+      "layers": [
+        22,
+        35
+      ],
+      "steps": 2,
+      "seconds": 110,
+      "loss_first": 0.0306,
+      "loss_last": 0.0308,
+      "when": "2026-11-20 19:02",
+      "memory_gb": 10.5,
+      "gpu": "",
+      "subjects": [
+        {
+          "subject": "sum up a text \u00b7 first \u00b7 new",
+          "rows": 1,
+          "passes": 1,
+          "loss_first": 0.031,
+          "loss_last": 0.031
+        },
+        {
+          "subject": "several tasks in one \u00b7 first \u00b7 new",
+          "rows": 1,
+          "passes": 1,
+          "loss_first": 0.0306,
+          "loss_last": 0.0306
+        }
+      ],
+      "kept_back": {},
+      "rows_by_kind": {
+        "several tasks in one": {
+          "given": 1,
+          "too_long": 0,
+          "skipped_memory": 0,
+          "trained": 1
+        },
+        "sum up a text": {
+          "given": 1,
+          "too_long": 0,
+          "skipped_memory": 0,
+          "trained": 1
+        }
+      },
+      "memory": {
+        "peak_gb": 10.48,
+        "min_available_gb": 2.56,
+        "swap_peak_gb": 0.0,
+        "rows_skipped": 0,
+        "skipped_by_subject": {},
+        "cost_per_piece_mb": 10.062,
+        "formula_per_piece_mb": 10.062,
+        "spare_gb": 1.0,
+        "row_modes": {
+          "ordinary": 1,
+          "checkpoint": 1
+        },
+        "mode_changes": 1,
+        "checkpoint_cost_per_piece_mb": 1.851,
+        "checkpoint_formula_per_piece_mb": 1.156,
+        "training_max_len": 1152,
+        "evaluation_max_len": 371
+      },
+      "megabytes": 38.0
+    },
+    "adapter_sha256": "e4ff7f8fa51dbf0baca19d51732dfb1e29b724c7d601ae7cad36d6084c972f28",
+    "torch_inputs": {
+      "rows": "362168ee658d629b549259bbaad6485febf39a71dd59ad642193b1db42bc7e73",
+      "parent": "dbd31660e52ba2f45e5a80d087b4e63da735a5ac71b33e0cb9b73a72fad4ef38",
+      "trunk": "6d2b50f593941b73e564286a3889768948bf539fec5517c6b884cd2c390d0ab0"
+    },
+    "tested_sources": {
+      "grow.py": "3ab91466a8ef729a2e57d5d6da31466b02c89aa733fb9850e2c7e0650b6f46a3",
+      "ternary_base.py": "74dca9ff4eeafb22e2d51b8d5c6b4b3d39c1f8e9d2681e6f36a74d76fd3c9e9c",
+      "lm_head_loss.py": "7bf842d77084f2b06135fbaca26862188cc2940df31c83482a6beededf3822aa"
+    }
+  },
+  "equal_starting_tensor_values": true,
+  "start_files_sha256": {
+    "stock": "e062a5519b09ca6e97e38cc4a2a5af2632d02ebdfc9c24f6c0b6f925cc4fad67",
+    "candidate": "e062a5519b09ca6e97e38cc4a2a5af2632d02ebdfc9c24f6c0b6f925cc4fad67"
+  },
+  "candidate_peak_cgroup_nonreclaimable_gib": 12.01,
+  "comparison": {
+    "squared_delta": 0.0,
+    "squared_old_update": 0.21693569777032873,
+    "squared_new_update": 0.21693569777032873,
+    "dot_updates": 0.21693569777032873,
+    "max_abs_delta": 0.0,
+    "changed_values": 0,
+    "values": 16973824,
+    "tensors": 196,
+    "relative_difference_in_updates": 0.0,
+    "update_cosine": 1.0
+  }
+}
