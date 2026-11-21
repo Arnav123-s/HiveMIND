@@ -1,85 +1,54 @@
 # NEXT SESSION: the one current handoff
 
-Written 2026-11-19 23:05 UTC by D (session `session_014dX1CN76uUHTTTA9X1ZCHA`, branch
-`claude/blissful-mccarthy-32ekqy`), the loop holder since B handed over. Whoever holds the loop keeps this page true. Older
-handoffs are in `docs/history/`. How to work is in `CLAUDE.md`, and the whole story is in `docs/OVERVIEW.md`. Start with
-`python scripts/cycle.py`. The prompts to start a session are in `docs/START_PROMPT.md`.
+Written 2026-11-21 18:15 UTC by D (session `session_014dX1CN76uUHTTTA9X1ZCHA`), who hands over the loop. How to work is
+in `CLAUDE.md`; the story is in `docs/OVERVIEW.md`. Start with `python scripts/cycle.py`. GitHub here: `gh api` REST
+only (the GitHub MCP tools are retired). Older handoffs: `docs/history/`.
 
-## Where the hive stands (2026-11-21 12:20 UTC, D)
+## Where the hive stands (g60, recorded 2026-11-21 18:04 UTC)
 
-- **Newest record: g59**, kept 49 against 47; no bar met (hard 0.65, held out 2 of 28, first try 0.52, talk 7.5,
-  6.4 h). Best readings so far: hard 0.80 (g55), first try 0.72 (g57), talk 8.8 (g52). First try and talk swing
-  generation to generation (96 practice tasks, 40 talk messages): all five bars on one generation needs margin.
-- **g60 is running** (started 11:48 UTC), the first with PR 138: a train slice spent 92 of its 170 minutes measuring
-  before training (read 57, kept-back 35); now each is capped at 12% of the budget, so training gets 100+ minutes.
-  Judge g60 on hard kinds (more training) and train minutes (no slice past ~195).
-- Merged 19-21 Nov by D: PRs 112-121, 125-130, 137-138; PR 124 taken via 129. PRs 122, 131 judged not worth merging
-  (131 was then merged from the owner's account; checked: inert by default, 1015 tests). PRs 132-134: research only.
-- A trial run on the shared 20 runners stalls the line (run 58, cancelled on the owner's word): start one only
-  between generations.
+- **g60 kept**, 48 against 47. **Met:** hard kinds 0.78 (bar 0.78), talk 8.2 (bar 8). **Not met:** first try 0.53
+  (bar 0.7; old kinds 0.92, new 0.30), held out 1 of 30 on the fixed exam (0 of 10 kinds; bar half), 6.3 h (bar 3).
+- Best readings so far: hard 0.80 (g55), first try 0.72 (g57), talk 8.8 (g52). First try and talk swing a lot
+  between generations (96 practice tasks, 40 talk messages): five bars on one generation needs margin above each.
+- The line runs by itself: g61 started 18:04 UTC on main (same code as g60).
 
-## In flight, and who has it
+## In flight
 
-| What | Where | What to do |
+| What | Where | Note |
 |---|---|---|
-| g60's record | grow.yml run 60 | Read it; train minutes per slice; hard kinds by cause (worker files now in gate-work) |
-| D's scheduled wake | about 17:45 UTC 21 Nov | D reads g60; a new loop holder takes it over |
+| g61 | grow.yml run 61, started 18:04 UTC 21 Nov | record due about 00:30 UTC 22 Nov |
+| No helper, no scheduled wake | - | D's helper on the runner memory cap was stopped unfinished (its work was local only) |
 
-## Open, in order (the board in `docs/PLAN.md` has each row)
+## Open, in order
 
-1. **CX:** the Codex side's `improve/verified-learning-loop` in small PRs, never whole (P1 done, PR 112). Next P3
-   (schedule solver, off the path), P6 (delivered-answer checks, after a replay), P5a (engram fixes, engrams off).
-   Hold back: engrams on by default and the subject hint in every exam prompt (only as one flagged generation);
-   the saved-program bank in public chat (the owner's call, and its wrong-number problem first). Do not take its
-   NEXT_SESSION/OVERVIEW edits (they say memory is on).
-2. **H1:** held-out kinds: g51 3 of 30 on the fixed exam; 16 of 27 failed were near. General repairs merged (PR 117);
-   next by g53's causes. The 11 far ones (no grasp of the method: edit, quotes, queue) need more than repairs.
-3. **S1:** hours, 6.5 against 3. Part 1 merged (PR 119, about 4.8 h expected). Part 2: the memory guard's waste
-   (slice code s0 skipped 563 rows; 3 slices a child on 16 GB runners): shorter rows, last layers only, or fewer
-   slices a runner, so the same rows train in 60-90 minutes; then practice/dream shorter. Study: `s1_hours.py`.
-4. **F1:** first try on new kinds (0.25 at g51), after g53 shows what PR 113 moved.
-5. **V1:** g45's cause fixes: at g48, same-error stops fell 6 -> 2, dates/header and one-line data 2+1 -> 0;
-   lesson templates pasted 2 -> 3, lone right member 3 -> 5 (R1).
-6. **Y1, A1, G1, C1 (bank, calc, lru, machine, schedule still over 508), J1, D1, P1, W2, R3, M2, T3.**
+1. **Runners lost to memory starvation (S1).** 2-4 of 20 train slices are lost every generation (g60: data s1/3,
+   data s2/3, words s1/3, code2 s0/2). GitHub's annotation: "The hosted runner lost communication ... starves it for
+   CPU/Memory". The step never ends, no log survives, so PR 130's timeouts cannot act. Fix: run `grow.py train` in
+   the train job at low priority (nice, ionice) inside a memory-capped cgroup (`sudo systemd-run --scope -p
+   MemoryHigh/MemoryMax` sized from `free -m`, with a fallback), so the kernel kills the trainer, not the runner;
+   MemoryGuard should read the cgroup limit. Then consider PR 135's trainer memory cut alone (peak 12.17 -> 10.48 GiB
+   on a matched pair, identical updates).
+2. **Hours (S1).** 5.1-6.7 h. PR 138 capped the measuring before training (it took 92 of 170 min); train is ~175 min
+   when no slice is lost, gate ~55-90. Next: if more training time per slice does not lift hard kinds, cut the
+   170-minute budget; practice 26-53 and dream ~60 run side by side.
+3. **Held-out kinds (H1).** 0-1 of 10 kinds for weeks. g51 study: 16 of 27 failures near (shape, pasted template,
+   overwritten value; general repairs merged, PRs 117, 125), 11 far (no grasp of the method). Exam workers' own
+   files are now kept (PR 129: gate-work `runs/exam/worker-evidence`): read them by cause first.
+4. **First try on new kinds (F1).** Old kinds ~0.9, new (K2) 0.28-0.52. First try counts one program, no hint
+   (`scripts/selfreliance.one`): only lessons move it, not repairs. Compound tasks are solved part by part (PR 126).
+5. Board rows in `docs/PLAN.md`: Y1, A1, G1, C1 (lru rows still over 508 pieces), J1, D1, P1, W2, R3, M2, T3.
 
-## Done, do not redo
+## Codex side (other agent, same account)
 
-- **19 Nov night (D):** S1 part 1, slices end near their budget and the gate's seats split (PR 119).
-- **19 Nov late (D):** R1, extra seats when one answer is in and a member crashed (PR 116); H1's general repairs:
-  text-as-number hint, overwritten value, slot values (PR 117). A fill lesson taking columns by position was
-  rejected (brittle when pasted).
-- **19 Nov (D):** main's tests green and the knowledge test isolated (PR 112, CX-P1); g48's four practice causes
-  (PR 113, G48F); why K2 kinds had no lessons, three text kinds' rows fixed (PR 114, K2L). 6 held-out K2 kinds stay
-  untaught on purpose; 6 'none made' kinds are left to the hive by design.
+Judged, not taken into the line: PR 122 (a one-kind answer key), 131 (merged anyway from the owner's account;
+checked: inert by default, tests pass), 135 and 136 (their own numbers show no held-out gain: 2/30 and 4/30 against
+3/30). Research only: 123, 132-134. Taken: PR 124 (worker files kept). A trial run on the shared 20 runners stalls
+the line (run 58 was cancelled on the owner's word): start one only between generations.
 
-- **18 Nov evening:**
-  - the strict gate and the read fixes (PR 102);
-  - first try split by old and new kinds (PR 104);
-  - the CPU rule lab's newer work (PR 103);
-  - the checked deliveries and kept methods (PR 105);
-  - the fixed held-out exam, the talk exam budget, the talk smoke and g45's cause fixes (PR 106);
-  - chat from saved methods (PR 107);
-  - the memory test: the gain was the short orders, memory stays off (E1).
-  The orders A/B is built but off: it is moot on t80.
-- **K1:** one kind per file in `training/kinds/`, with a golden fixture that keeps old exams the same.
-  **K2:** 24 new hard kinds, 6 held out (`docs/KINDS.md` says how to add one).
-- **M1:** the talk exam (`training/talk_exam.py`), 40 messages checked by code, in the harder version, wired
-  into the gate (PR 96). It is written to `training/reports/talk/<gen>.json` and shown in the read and on the
-  progress page.
-- **Memory pieces** are built but OFF: per-cell engrams with lineage recall, the shared hive engram, notes
-  written from failures, the gated engram scale, embedding match, and the hive fold. Measured (E1): no gain beyond the short orders.
-- **The CPU rule lab** (the owner's experiment, PR 97, `training/reports/rule_lab/`): a child trained on 7 rows
-  of a checked procedure solved 4 of 4 hidden-rule puzzles that its parents solved 0 of 4. All 81 recorded runs
-  were re-scored and agree. This is research, not on the generation's path.
-- **The read is written by the record job again.** The fix is a sys.path insert in `training/reads.py`, PR 93,
-  with a regression test. g43's read was rewritten by hand.
-- **Colab child waiting, memory guard, rows-left-out measured, paired gate, T1/T2/T4/L2** are all done; see
-  `docs/AGENTS.md` and `docs/knowledge.json`.
+## Done, do not redo (D, 19-21 Nov)
 
-## The owner
-
-- Works from a phone and has no context. Give a few plain lines: what it is, what changed, what is next.
-- Wants the hive to improve by itself until the final build (the five bars in `CLAUDE.md`).
-- Wants sub-agents to do the hands-on work, while the loop holder judges and merges.
-- The dashboard artifact "HiveMIND Progress" (claude.ai artifact Xi5BfLZnLLzvkhZJK72Hvr) draws the generations;
-  refresh it after a record if your session has it.
+PRs 112-121, 125-130, 137-139: main's tests green; g48's practice causes (answers kept at the cap, guard on spending
+code, two-part agreement, data as a file); three text kinds' rows fit; extra seats when a member crashed (R1); held-out
+general repairs; the gate split into 33 jobs; slices end near their budget and are killed from outside at MIN+25;
+data-format notes and hints; compound tasks part by part with rows per part; spec-detail lessons; measuring before
+training capped. Earlier: see `docs/history/` and the log in `docs/AGENTS.md`.
