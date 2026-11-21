@@ -31,6 +31,10 @@ jobs:
           persist-credentials: false
       - name: Fetch the kept G55 body and verify every packed adapter
         run: |
+          STUDY=training/experiments/astra_orders/worker_contracts
+          gzip -dc "$STUDY/g55-checked-task-texts.json.gz" > "$RUNNER_TEMP/g55-checked-task-texts.json"
+          echo "6379846f333435ea1818a5821822b208f26d28da13a4f3ff4fb69983647418e6  $RUNNER_TEMP/g55-checked-task-texts.json" | sha256sum --check
+          echo "HIVE_FAMILIAR_TASKS=$RUNNER_TEMP/g55-checked-task-texts.json" >> "$GITHUB_ENV"
           G55_MANIFEST=training/experiments/astra_orders/worker_contracts/g55-contemporaneous.sha256
           python3 -c "import json; assert json.load(open('cells/body.json'))['generation'] == 55"
           WHO=$(python3 training/lineage.py members t80)
@@ -46,6 +50,7 @@ jobs:
           BASE_PATH=$(tail -1 evidence/base-path.txt)
           echo "1376f942aa90e60f7b570c1d81b3916fea1315ff85aa1c4d19006af68fb4b922  $BASE_PATH" | sha256sum --check
           cp training/experiments/astra_orders/worker_contracts/g55-contemporaneous.sha256 evidence/adapters.sha256
+          sha256sum "$HIVE_FAMILIAR_TASKS" > evidence/familiar-index.sha256
           sha256sum cells/body.json cells/studied.json > evidence/roster.sha256
           python -c "import os, json, platform; print(json.dumps({k:os.environ.get(k) for k in ('GITHUB_SHA','GITHUB_RUN_ID','ARM','SHARD','HIVE_MEMBERS','AGENT_TEAM_SOLO','HIVE_ASSERT_FIRST','HIVE_PAGE_CHECKS','HIVE_HTTP_CACHE')} | {'machine':platform.machine()}, indent=2))" > evidence/assignment.json
       - name: Run this shard of the normal fixed held-out exam
