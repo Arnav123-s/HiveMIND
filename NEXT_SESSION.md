@@ -1,6 +1,6 @@
 # NEXT SESSION: the one current handoff
 
-Written 2026-11-21 18:15 UTC by D (session `session_014dX1CN76uUHTTTA9X1ZCHA`), who hands over the loop. How to work is
+Written 2026-11-21 18:55 UTC by E (session `session_014dX1CQ9f1aJvPqnqdCbRfD`), who holds the loop. How to work is
 in `CLAUDE.md`; the story is in `docs/OVERVIEW.md`. Start with `python scripts/cycle.py`. GitHub here: `gh api` REST
 only (the GitHub MCP tools are retired). Older handoffs: `docs/history/`.
 
@@ -16,18 +16,15 @@ only (the GitHub MCP tools are retired). Older handoffs: `docs/history/`.
 
 | What | Where | Note |
 |---|---|---|
-| g61 | grow.yml run 61, started 18:04 UTC 21 Nov | record due about 00:30 UTC 22 Nov |
-| No helper, no scheduled wake | - | D's helper on the runner memory cap was stopped unfinished (its work was local only) |
+| g61 | grow.yml run 44933478344, started 18:04 UTC 21 Nov (before PR 141) | record due about 00:30 UTC 22 Nov; E wakes 00:45 |
+| PR 141 (S1 memory cap) | merged 18:50 UTC 21 Nov; first live run is g62 | in g62's train logs, look for `capped_run: memory scope` or the fallback warning; count lost slices against 2-4 of 20 (g57-g60) |
 
 ## Open, in order
 
-1. **Runners lost to memory starvation (S1).** 2-4 of 20 train slices are lost every generation (g60: data s1/3,
-   data s2/3, words s1/3, code2 s0/2). GitHub's annotation: "The hosted runner lost communication ... starves it for
-   CPU/Memory". The step never ends, no log survives, so PR 130's timeouts cannot act. Fix: run `grow.py train` in
-   the train job at low priority (nice, ionice) inside a memory-capped cgroup (`sudo systemd-run --scope -p
-   MemoryHigh/MemoryMax` sized from `free -m`, with a fallback), so the kernel kills the trainer, not the runner;
-   MemoryGuard should read the cgroup limit. Then consider PR 135's trainer memory cut alone (peak 12.17 -> 10.48 GiB
-   on a matched pair, identical updates).
+1. **Runners lost to memory starvation (S1): judge PR 141 on g62.** The trainer now runs niced and ioniced in a
+   `systemd-run` scope (Max = total-1200 MB, High = 512 MB lower, swap open), through `scripts/capped_run.sh`. It falls
+   back to a plain niced run if no scope starts. If slices are still lost, try a swap cap or PR 135's trainer memory
+   cut (peak 12.17 -> 10.48 GiB). If the scope never starts on the runners, fix sudo/systemd-run there.
 2. **Hours (S1).** 5.1-6.7 h. PR 138 capped the measuring before training (it took 92 of 170 min); train is ~175 min
    when no slice is lost, gate ~55-90. Next: if more training time per slice does not lift hard kinds, cut the
    170-minute budget; practice 26-53 and dream ~60 run side by side.
@@ -44,6 +41,10 @@ Judged, not taken into the line: PR 122 (a one-kind answer key), 131 (merged any
 checked: inert by default, tests pass), 135 and 136 (their own numbers show no held-out gain: 2/30 and 4/30 against
 3/30). Research only: 123, 132-134. Taken: PR 124 (worker files kept). A trial run on the shared 20 runners stalls
 the line (run 58 was cancelled on the owner's word): start one only between generations.
+
+## Done, do not redo (E, 21 Nov)
+
+PR 141: train slices in a memory-capped scope (S1, first part).
 
 ## Done, do not redo (D, 19-21 Nov)
 

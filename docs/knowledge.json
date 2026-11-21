@@ -862,6 +862,16 @@
    "by": "h1_causes.py over g51's held-after and gate-work-after artifacts, every failed task's last programs read.",
    "seen": "lesson template `key, col = 'name', 'city'` pasted (int('Lima')), a one-value helper called twice with the second overwriting, dict or list dumped for asked lines; 3 tasks each, the same causes as g48's taught kinds.",
    "fix": "General fixes, never a held-out kind's lesson: a same-error hint for int() on a text column, the asked line labels checked before delivery (a helper on it)."
+  },
+  {
+   "id": "runnerstarve",
+   "title": "Train slices lost because the runner agent is starved of memory, not because of the trainer's own error",
+   "lives_in": "workflow",
+   "blocks": "slowgeneration",
+   "status": "open",
+   "found": "g57-g60: 2-4 of 20 slices a generation end with 'The hosted runner lost communication', no log; PR 130's outer timeout cannot act. PR 141 runs the trainer in a memory-capped systemd scope (Max = total-1200 MB, High 512 MB lower, swap open), niced and ioniced, with a plain fallback.",
+   "by": "PR 141; 10 tests; first real run g62",
+   "seen": "the GitHub annotation 'starves it for CPU/Memory' on every lost slice"
   }
  ],
  "rules": [
