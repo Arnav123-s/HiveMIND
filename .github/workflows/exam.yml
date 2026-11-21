@@ -58,6 +58,11 @@ jobs:
           install -m 644 "$RUNNER_TEMP/f4-trunk.gguf" 'cells/members/t80+g55trunk.gguf'
           python "$STUDY/f4_manifest.py" > evidence/adapters.sha256
           sha256sum --check evidence/adapters.sha256
+          sha256sum "$BASE_PATH" > evidence/base.sha256
+          SERVER=$(python -c 'from team import ternary; print(ternary.binary())')
+          sha256sum "$SERVER" > evidence/server.sha256
+          python -c 'from team import ternary; print(ternary.PIN)' > evidence/runtime-pin.txt
+          lscpu > evidence/cpu.txt
           sha256sum "$HIVE_FAMILIAR_TASKS" > evidence/familiar-index.sha256
           sha256sum cells/body.json cells/studied.json > evidence/roster.sha256
           python -c "import os, json, platform; print(json.dumps({k:os.environ.get(k) for k in ('GITHUB_SHA','GITHUB_RUN_ID','ARM','SHARD','HIVE_MEMBERS','AGENT_TEAM_SOLO','HIVE_ASSERT_FIRST','HIVE_PAGE_CHECKS','HIVE_HTTP_CACHE')} | {'machine':platform.machine()}, indent=2))" > evidence/assignment.json
