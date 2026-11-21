@@ -29,6 +29,7 @@ if __name__ == "__main__":
         p.add_argument("--" + flag, type=Path, required=True)
     p.add_argument("--case", required=True)
     args = p.parse_args()
+    args.out.parent.mkdir(parents=True, exist_ok=True)
     def selected(rows):
         row, = [r for r in rows if r["id"] == args.case]
         yield from offers(row)

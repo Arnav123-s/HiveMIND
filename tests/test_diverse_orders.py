@@ -54,14 +54,16 @@ def test_second_member_gets_its_orders_and_the_third_gets_only_the_witness(tmp_p
     class Board:
         module_witness = "flip(1)"
     def capture(who, messages, **kwargs):
-        raise Seen(messages)
+        raise Seen(messages, kwargs["temperature"])
     monkeypatch.setenv("HIVE_DIVERSE_ORDERS", "1")
+    monkeypatch.setenv("HIVE_DIVERSE_GREEDY", "1")
     monkeypatch.setattr(solo, "familiar", lambda _: False)
     monkeypatch.setattr(solo.ternary, "chat", capture)
     for n in (2, 3):
         with pytest.raises(Seen) as seen:
             solo.member("compute", n, Board(), None, tmp_path, .7, "t80+trained", ())
-        system, task = seen.value.args[0]
+        (system, task), temperature = seen.value.args
+        assert temperature == (0. if n == 2 else .7)
         assert system["content"] == (solo.modular_orders("compute") if n == 2 else solo.orders("t80+trained"))
         assert ("flip(1)" in task["content"]) == (n == 3)
 

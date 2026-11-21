@@ -41,3 +41,10 @@ For the hosted comparison, download stock and F3 shard artifacts into one folder
 ```sh
 python -m training.experiments.astra_orders.worker_contracts.paired /path/to/shard-artifacts
 ```
+
+The F4 comparison reuses that study’s stock arm against a separately dispatched exam in which only the fitted trunk changes. Put the original `f3-stock-*` and `f4-child-*` artifacts in one directory. Take both run IDs and the full child workflow commit from the dispatch records. The stock and child Git objects must be available locally. The scorer reads the adapter registration from the pinned child commit and verifies all 25 adapter hashes against the appropriate arm. It reports changes in tasks and in kinds. A kind needs two of its three tasks, and both arms must have all 30 grades before the scorer reports an overall kind result.
+
+```sh
+python -m training.experiments.astra_orders.worker_contracts.f4_paired /path/to/shard-artifacts \
+  --stock-run "$STOCK_RUN_ID" --child-run "$CHILD_RUN_ID" --child-sha "$CHILD_WORKFLOW_SHA"
+```
