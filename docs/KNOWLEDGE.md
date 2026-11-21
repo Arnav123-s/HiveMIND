@@ -10,17 +10,17 @@ It runs by itself on GitHub (`.github/workflows/grow.yml`), one generation after
 
 ```mermaid
 flowchart TD
-  practise["Practise<br/>training/grow.py<br/>minutes: g56: 31 min<br/>open: the slowest runner sets the pace: task cap 1500 s, now 600 (L2)"]:::open
-  dreams["Dreams: failed tasks tried again<br/>training/grow.py<br/>minutes: g56: 59 min<br/>open: behind practice on the same runners; now 8 runners of their own (L2)"]:::open
-  gather["Gather checked rows, make lessons<br/>training/lessons.py<br/>minutes: g56: 9 min<br/>open: 126 of 300 lessons right; the kinds that fail are not printed (R2)"]:::open
-  plan["Plan the children and their slices<br/>training/lineage.py<br/>minutes: g56: 0 min<br/>open: 24 train jobs over the 20-job limit; now at most 20 (L2)"]:::open
-  trainc["Train each slice (Study, T1)<br/>training/ternary_base.py<br/>minutes: g56: 205 min<br/>open: 7 of 24 slices lost to memory; 32-bit runners drop ~100 rows (T1)"]:::open
-  join["Join each child's slices<br/>training/merge.py<br/>minutes: g56: 4 min<br/>open: a child that lost slices is joined from fewer (L1)"]:::open
-  trunk["Merge the trunk<br/>training/merge.py<br/>minutes: g56: 3 min"]
-  pulse["Pulse: the grown body's exam, 4 seats<br/>training/exam.py<br/>minutes: g56: 53 min<br/>open: a dead seat leaves its seed out; re-sat by hand (L1)"]:::open
-  recordg["Record, move levels, draw progress<br/>training/grow_record.py<br/>minutes: g56: 1 min<br/>open: the hours of each job are not recorded (L3)"]:::open
+  practise["Practise<br/>training/grow.py<br/>minutes: g57: 26 min<br/>open: the slowest runner sets the pace: task cap 1500 s, now 600 (L2)"]:::open
+  dreams["Dreams: failed tasks tried again<br/>training/grow.py<br/>minutes: g57: 59 min<br/>open: behind practice on the same runners; now 8 runners of their own (L2)"]:::open
+  gather["Gather checked rows, make lessons<br/>training/lessons.py<br/>minutes: g57: 4 min<br/>open: 126 of 300 lessons right; the kinds that fail are not printed (R2)"]:::open
+  plan["Plan the children and their slices<br/>training/lineage.py<br/>minutes: g57: 0 min<br/>open: 24 train jobs over the 20-job limit; now at most 20 (L2)"]:::open
+  trainc["Train each slice (Study, T1)<br/>training/ternary_base.py<br/>minutes: g57: 205 min<br/>open: 7 of 24 slices lost to memory; 32-bit runners drop ~100 rows (T1)"]:::open
+  join["Join each child's slices<br/>training/merge.py<br/>minutes: g57: 9 min<br/>open: a child that lost slices is joined from fewer (L1)"]:::open
+  trunk["Merge the trunk<br/>training/merge.py<br/>minutes: g57: 3 min"]
+  pulse["Pulse: the grown body's exam, 4 seats<br/>training/exam.py<br/>minutes: g57: 71 min<br/>open: a dead seat leaves its seed out; re-sat by hand (L1)"]:::open
+  recordg["Record, move levels, draw progress<br/>training/grow_record.py<br/>minutes: g57: 1 min<br/>open: the hours of each job are not recorded (L3)"]:::open
   verdictg["Verdict: read the generation<br/>scripts/read_generation.py<br/>minutes: by hand, after the record<br/>open: not written by the workflow yet (M3)"]:::open
-  nextg["Next generation, from main<br/>.github/workflows/grow.yml<br/>minutes: a whole generation: g56 5.6 h; the bar is 3<br/>open: started or mended by hand (L3)"]:::open
+  nextg["Next generation, from main<br/>.github/workflows/grow.yml<br/>minutes: a whole generation: g57 6.7 h; the bar is 3<br/>open: started or mended by hand (L3)"]:::open
   practise --> dreams
   dreams --> gather
   gather --> plan
