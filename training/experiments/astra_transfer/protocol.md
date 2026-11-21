@@ -1,0 +1,7 @@
+## Frozen transfer test
+
+Use only G51 first-turn lessons that passed their original deterministic lesson check, are eligible for instruction in the registry and fall outside the two held-back tasks per kind. A lesson can support multiple file operations. Each operation needs the same signature in at least three distinct successful tasks. Keep the three lowest row hashes as witnesses. Store no original answers, examples, field names or source code in the hints.
+
+The five hand-authored abstractions cover reading CSV or JSON lines and writing CSV, JSON or Python modules. They describe I/O mechanics. This tests whether a narrow reminder transfers across requests. It does not test retrieval of an algorithm. Each suffix, including its separator, is capped at 180 tokens by the production tokenizer. An empty selection reuses the original prediction. Suppress hints on known source prompts, explicitly protected tasks and negated file operations.
+
+Primary outcome is the exact independently graded response and files on the frozen six-task paired native worker panel, retaining wrong or missing outputs and unchanged prompts. Same G55 worker, inputs, generation cap and greedy decoding for both arms. Record changed, gained, lost and unchanged jobs, and overhead. The independent role panel measures exact selected sets and individual roles. Compare always-empty and the existing deliverables.wanted output-only resolver. Include incorrect offers and missed roles. Role matching alone earns no credit toward completed tasks. Neither panel may change the frozen selector.
