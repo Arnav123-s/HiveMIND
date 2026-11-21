@@ -1,0 +1,258 @@
+{
+  "counts": {
+    "distinct_linked_workers": 33,
+    "graded_workers": 611,
+    "individually_passing_workers": 316,
+    "labelled_questions": 177,
+    "linked_last_successful_sources": 316,
+    "question_sittings": 288,
+    "recurring_across_known_kinds": 4,
+    "recurring_across_questions": 7,
+    "standalone_definitions": 63,
+    "top_level_definitions": 165,
+    "unique_questions": 285,
+    "unique_standalone_signatures": 42
+  },
+  "recurring_provenance": {
+    "06d48c720119a50bfee385171fce2d9da324090021b1b92d0a89b999339268ab": [
+      {
+        "artifact": 14534856013,
+        "kind": "a number with given properties",
+        "line": 22,
+        "question_sha256": "2461dffdbccdf190f3423258f0631e33f8eee8322e328928a225c0854f60e5bf",
+        "source": "practice_10005108/h10005108_02/members/work/member1_1.py",
+        "source_sha256": "1b5df128f8c4c3cea4975297aca71cc152bb5be0f7add3243a83b58c42ea1502",
+        "worker": "t80+g49trunk"
+      },
+      {
+        "artifact": 14534856013,
+        "kind": "a number with given properties",
+        "line": 21,
+        "question_sha256": "2461dffdbccdf190f3423258f0631e33f8eee8322e328928a225c0854f60e5bf",
+        "source": "practice_10005108/h10005108_02/members/member2/member2_1.py",
+        "source_sha256": "557b3a3e32eb1f10a51719918ac314014f0a098540113be52020ea865a401cd8",
+        "worker": "t80+g47code2"
+      },
+      {
+        "artifact": 14569026740,
+        "kind": "write and run a program",
+        "line": 1,
+        "question_sha256": "12545b707691ed46537cd5e666cd584c9d3c97af5e6a7e89ab3068dd2e104d55",
+        "source": "practice_10005209/e10005209_03/members/work/member1_1.py",
+        "source_sha256": "7ad79890cef2657b1ebed82a27a1adb9efd20d74e902cc9733d89d248fc9c8c3",
+        "worker": "t80+g51trunk"
+      },
+      {
+        "artifact": 14569026740,
+        "kind": "write and run a program",
+        "line": 1,
+        "question_sha256": "12545b707691ed46537cd5e666cd584c9d3c97af5e6a7e89ab3068dd2e104d55",
+        "source": "practice_10005209/e10005209_03/members/member2/member2_1.py",
+        "source_sha256": "7ad79890cef2657b1ebed82a27a1adb9efd20d74e902cc9733d89d248fc9c8c3",
+        "worker": "t80+g51sources"
+      }
+    ],
+    "18fa953402f77c53b00dd50bf267037f751fd5e611f527c27686a4767764f73b": [
+      {
+        "artifact": 14533124659,
+        "kind": "an order of tasks by their dependencies, with hidden tests",
+        "line": 1,
+        "question_sha256": "bddf71c4b67a7ff697d36f565b1e49a2017a65c578aafb516e549c3b5729ee2c",
+        "source": "practice_10005102/h10005102_00/members/member2/member2_1.py",
+        "source_sha256": "61feab85a11974082ac8de9cdb82a1939582ff10220b82494c48c90e610dcee2",
+        "worker": "t80+g49code"
+      },
+      {
+        "artifact": 14568796333,
+        "kind": "an order of tasks by their dependencies, with hidden tests",
+        "line": 1,
+        "question_sha256": "4a013b0f34a2104433f26c3bd168350d69d0543bdb52d7e68a683a4cfc495903",
+        "source": "practice_10005211/h10005211_02/members/member3/member3_1.py",
+        "source_sha256": "8e8abcb95b4a1409f18cd52d50369f6f9dc52398cd748fe73290a7bc1bdc5a42",
+        "worker": "t80+g51data"
+      }
+    ],
+    "513eb44d300ebee7c567777a62ac6f9a4376cb9bc8cf9bde7958cc7a491f2452": [
+      {
+        "artifact": 14507103644,
+        "kind": "a module of two functions, with hidden tests",
+        "line": 1,
+        "question_sha256": "48ad5e96c7fad35de1bc3339f9abdd0c9b17582408035a20a2fda5b6519274df",
+        "source": "practice_10005003/h10005003_02/members/member2/member2_1.py",
+        "source_sha256": "2e1896060722518b82e6ac68cf69ceb8ac288a9ca0bdb95e1d3818393f4e87bc",
+        "worker": "t80+g49words"
+      },
+      {
+        "artifact": 14533124659,
+        "kind": "several tasks in one",
+        "line": 10,
+        "question_sha256": "f904e694d29126dd1f32111576b918a4014bbc6198ca43fa37a7ab5946a4cf48",
+        "source": "practice_10005102/c10005102_02/members/member3/member3_1.py",
+        "source_sha256": "13353ef93476a656a96ec59dac20f6c99428d1765326f0f6d3dbafbee1bf66f9",
+        "worker": "t80+g49code2"
+      }
+    ],
+    "c9d2461194b95ea26cbc91dbbfe921e56eeaa36b23d3e8130277d0115788061d": [
+      {
+        "artifact": 14534767525,
+        "kind": "several tasks in one",
+        "line": 16,
+        "question_sha256": "f318cb09e5bc6c5d37d69a5fed17388033ec396f3db1aa051e0222a97748d248",
+        "source": "practice_10005107/c10005107_02/members/work/member1_2.py",
+        "source_sha256": "99510753b888e6aa070a71f19ab988ec30ddb900105a96f3b1fad023f6cd6d23",
+        "worker": "t80+g49trunk"
+      },
+      {
+        "artifact": 14534767525,
+        "kind": "several tasks in one",
+        "line": 16,
+        "question_sha256": "f318cb09e5bc6c5d37d69a5fed17388033ec396f3db1aa051e0222a97748d248",
+        "source": "practice_10005107/c10005107_02/members/member2/member2_2.py",
+        "source_sha256": "54de7a548d83c99275198979c200c18aef783ca3b5837efe44e10e5dad87f03e",
+        "worker": "t80+g48sources"
+      },
+      {
+        "artifact": 14534856013,
+        "kind": "a number with given properties",
+        "line": 4,
+        "question_sha256": "2461dffdbccdf190f3423258f0631e33f8eee8322e328928a225c0854f60e5bf",
+        "source": "practice_10005108/h10005108_02/members/work/member1_1.py",
+        "source_sha256": "1b5df128f8c4c3cea4975297aca71cc152bb5be0f7add3243a83b58c42ea1502",
+        "worker": "t80+g49trunk"
+      },
+      {
+        "artifact": 14534856013,
+        "kind": "a number with given properties",
+        "line": 3,
+        "question_sha256": "2461dffdbccdf190f3423258f0631e33f8eee8322e328928a225c0854f60e5bf",
+        "source": "practice_10005108/h10005108_02/members/member2/member2_1.py",
+        "source_sha256": "557b3a3e32eb1f10a51719918ac314014f0a098540113be52020ea865a401cd8",
+        "worker": "t80+g47code2"
+      },
+      {
+        "artifact": 14567685815,
+        "kind": "several tasks in one",
+        "line": 5,
+        "question_sha256": "b44aca92cc7c7377650ca0053ef9815c3c103ffdb45d28ad962565853b47baef",
+        "source": "practice_10005202/c10005202_01/members/member3/member3_1.py",
+        "source_sha256": "45f3539a7788dca613ee50a61cdb64be56cd7be1b4a2881e1f98f871dced3cec",
+        "worker": "t80+g51code"
+      }
+    ],
+    "e7c92d212814c20b5f2ff53644bd7334512af3cf5d72fa04330b25ad7119d55b": [
+      {
+        "artifact": 14507480673,
+        "kind": "several tasks in one",
+        "line": 13,
+        "question_sha256": "587d66cb561c19fc21d7c95862141738bd2e076f05e092d8464d2136b0663564",
+        "source": "practice_10005002/c10005002_03/members/work/member1_1.py",
+        "source_sha256": "e0a7fd7eba28a2f7cf2f2f6250ce44d714e1d98a654a176cc30d45e098dba9d2",
+        "worker": "t80+g49trunk"
+      },
+      {
+        "artifact": 14507480673,
+        "kind": "several tasks in one",
+        "line": 12,
+        "question_sha256": "587d66cb561c19fc21d7c95862141738bd2e076f05e092d8464d2136b0663564",
+        "source": "practice_10005002/c10005002_03/members/member2/member2_1.py",
+        "source_sha256": "d8bd2ea4c98d4f7e5fff9c1c1c89715e6bbd29a718247baace973912ef2ee2f0",
+        "worker": "t80+g49data"
+      },
+      {
+        "artifact": 14507103644,
+        "kind": "a module of two functions, with hidden tests",
+        "line": 14,
+        "question_sha256": "48ad5e96c7fad35de1bc3339f9abdd0c9b17582408035a20a2fda5b6519274df",
+        "source": "practice_10005003/h10005003_02/members/work/member1_1.py",
+        "source_sha256": "8e7838ba1ecccd924ea9f925e5f060b60a6daf475e45e219e3367193c8339af7",
+        "worker": "t80+g49trunk"
+      },
+      {
+        "artifact": 14507103644,
+        "kind": "a module of two functions, with hidden tests",
+        "line": 11,
+        "question_sha256": "48ad5e96c7fad35de1bc3339f9abdd0c9b17582408035a20a2fda5b6519274df",
+        "source": "practice_10005003/h10005003_02/members/member2/member2_1.py",
+        "source_sha256": "2e1896060722518b82e6ac68cf69ceb8ac288a9ca0bdb95e1d3818393f4e87bc",
+        "worker": "t80+g49words"
+      },
+      {
+        "artifact": 14533124659,
+        "kind": "several tasks in one",
+        "line": 25,
+        "question_sha256": "f904e694d29126dd1f32111576b918a4014bbc6198ca43fa37a7ab5946a4cf48",
+        "source": "practice_10005102/c10005102_02/members/work/member1_1.py",
+        "source_sha256": "4f401ebc2f0e6393ec6b6d43da4ec860c627c3d32cde0c07ef19a97047e16aca",
+        "worker": "t80+g49trunk"
+      },
+      {
+        "artifact": 14533124659,
+        "kind": "several tasks in one",
+        "line": 18,
+        "question_sha256": "f904e694d29126dd1f32111576b918a4014bbc6198ca43fa37a7ab5946a4cf48",
+        "source": "practice_10005102/c10005102_02/members/member2/member2_1.py",
+        "source_sha256": "5d77ce09573af86c8bfcabc086f4b71069faa6ddff3de54123c54d7597a875c6",
+        "worker": "t80+g49words"
+      },
+      {
+        "artifact": 14533124659,
+        "kind": "several tasks in one",
+        "line": 20,
+        "question_sha256": "f904e694d29126dd1f32111576b918a4014bbc6198ca43fa37a7ab5946a4cf48",
+        "source": "practice_10005102/c10005102_02/members/member3/member3_1.py",
+        "source_sha256": "13353ef93476a656a96ec59dac20f6c99428d1765326f0f6d3dbafbee1bf66f9",
+        "worker": "t80+g49code2"
+      }
+    ],
+    "e7f627f8dfb634c900d384aa3b2b6e181ba3a7c0f95fd076d20ea272ec3f14b1": [
+      {
+        "artifact": 14507480673,
+        "kind": "several tasks in one",
+        "line": 4,
+        "question_sha256": "587d66cb561c19fc21d7c95862141738bd2e076f05e092d8464d2136b0663564",
+        "source": "practice_10005002/c10005002_03/members/work/member1_1.py",
+        "source_sha256": "e0a7fd7eba28a2f7cf2f2f6250ce44d714e1d98a654a176cc30d45e098dba9d2",
+        "worker": "t80+g49trunk"
+      },
+      {
+        "artifact": 14507480673,
+        "kind": "several tasks in one",
+        "line": 4,
+        "question_sha256": "587d66cb561c19fc21d7c95862141738bd2e076f05e092d8464d2136b0663564",
+        "source": "practice_10005002/c10005002_03/members/member2/member2_1.py",
+        "source_sha256": "d8bd2ea4c98d4f7e5fff9c1c1c89715e6bbd29a718247baace973912ef2ee2f0",
+        "worker": "t80+g49data"
+      },
+      {
+        "artifact": 14533124659,
+        "kind": "several tasks in one",
+        "line": 10,
+        "question_sha256": "f904e694d29126dd1f32111576b918a4014bbc6198ca43fa37a7ab5946a4cf48",
+        "source": "practice_10005102/c10005102_02/members/member2/member2_1.py",
+        "source_sha256": "5d77ce09573af86c8bfcabc086f4b71069faa6ddff3de54123c54d7597a875c6",
+        "worker": "t80+g49words"
+      }
+    ],
+    "ef6f4c0c90934752310bd6f4d8f5d30f17f4f7d9b9643eebbe603c30ae81d6cd": [
+      {
+        "artifact": 14534767525,
+        "kind": "a module of two functions, with hidden tests",
+        "line": 11,
+        "question_sha256": "ef6001266e459a96e968df30668fc86f59bfd60667b183535a002d3e79af67a3",
+        "source": "practice_10005107/h10005107_01/members/member2/member2_1.py",
+        "source_sha256": "704b7d8a98fbfcb827a9f358b1cae2dddf99bf6fafb98abb9f7ee71b26186c20",
+        "worker": "t80+g44words2"
+      },
+      {
+        "artifact": 14567054332,
+        "kind": "a module of two functions, with hidden tests",
+        "line": 11,
+        "question_sha256": "d2276d20f0953524fd8f126fc493ba2f1a925571a262fb76cbd779c4cb103925",
+        "source": "practice_10005210/h10005210_00/members/member3/member3_1.py",
+        "source_sha256": "66aae3768db75ca07b08defa9bb8cb0c8d159d9efca9c769bb323bfb43b5da9c",
+        "worker": "t80+g51code"
+      }
+    ]
+  },
+  "selected": "c9d2461194b95ea26cbc91dbbfe921e56eeaa36b23d3e8130277d0115788061d"
+}
