@@ -1,0 +1,1224 @@
+{
+  "runtimes": {
+    "cpython": [
+      {
+        "exploratory": {
+          "greedy_diverse2": {
+            "result": "right",
+            "seats": 2,
+            "selected": "short"
+          },
+          "greedy_diverse3": {
+            "result": "right",
+            "seats": 2,
+            "selected": "short"
+          }
+        },
+        "id": "m_percent",
+        "offers": {
+          "short": {
+            "answer": "1496.0000000000002",
+            "arm": "short",
+            "delivery": {
+              "byte_hashes": {},
+              "content": {},
+              "issues": {},
+              "sorts": {}
+            },
+            "error": false,
+            "grade": "wants 1496; the answer's numbers: [1496.0000000000002]",
+            "ok": true,
+            "stderr": []
+          },
+          "short2": {
+            "answer": "1496.0000000000002",
+            "arm": "short2",
+            "delivery": {
+              "byte_hashes": {},
+              "content": {},
+              "issues": {},
+              "sorts": {}
+            },
+            "error": false,
+            "grade": "wants 1496; the answer's numbers: [1496.0000000000002]",
+            "ok": true,
+            "stderr": []
+          },
+          "short3": {
+            "answer": "1496.0000000000002",
+            "arm": "short3",
+            "delivery": {
+              "byte_hashes": {},
+              "content": {},
+              "issues": {},
+              "sorts": {}
+            },
+            "error": false,
+            "grade": "wants 1496; the answer's numbers: [1496.0000000000002]",
+            "ok": true,
+            "stderr": []
+          }
+        },
+        "policies": {
+          "diverse2": {
+            "result": "right",
+            "seats": 2,
+            "selected": "short"
+          },
+          "diverse3": {
+            "result": "right",
+            "seats": 2,
+            "selected": "short"
+          },
+          "short2": {
+            "result": "right",
+            "seats": 2,
+            "selected": "short"
+          },
+          "short3": {
+            "result": "right",
+            "seats": 2,
+            "selected": "short"
+          }
+        }
+      },
+      {
+        "exploratory": {
+          "greedy_diverse2": {
+            "result": "right",
+            "seats": 2,
+            "selected": "short"
+          },
+          "greedy_diverse3": {
+            "result": "right",
+            "seats": 2,
+            "selected": "short"
+          }
+        },
+        "id": "m_weekday",
+        "offers": {
+          "short": {
+            "answer": "Saturday",
+            "arm": "short",
+            "delivery": {
+              "byte_hashes": {},
+              "content": {},
+              "issues": {},
+              "sorts": {}
+            },
+            "error": false,
+            "grade": "1 sentences, 1 lines",
+            "ok": true,
+            "stderr": []
+          },
+          "short2": {
+            "answer": "Saturday",
+            "arm": "short2",
+            "delivery": {
+              "byte_hashes": {},
+              "content": {},
+              "issues": {},
+              "sorts": {}
+            },
+            "error": false,
+            "grade": "1 sentences, 1 lines",
+            "ok": true,
+            "stderr": []
+          },
+          "short3": {
+            "answer": "Saturday",
+            "arm": "short3",
+            "delivery": {
+              "byte_hashes": {},
+              "content": {},
+              "issues": {},
+              "sorts": {}
+            },
+            "error": false,
+            "grade": "1 sentences, 1 lines",
+            "ok": true,
+            "stderr": []
+          }
+        },
+        "policies": {
+          "diverse2": {
+            "result": "right",
+            "seats": 2,
+            "selected": "short"
+          },
+          "diverse3": {
+            "result": "right",
+            "seats": 2,
+            "selected": "short"
+          },
+          "short2": {
+            "result": "right",
+            "seats": 2,
+            "selected": "short"
+          },
+          "short3": {
+            "result": "right",
+            "seats": 2,
+            "selected": "short"
+          }
+        }
+      },
+      {
+        "exploratory": {
+          "greedy_diverse2": {
+            "result": "right",
+            "seats": 2,
+            "selected": "short"
+          },
+          "greedy_diverse3": {
+            "result": "right",
+            "seats": 2,
+            "selected": "short"
+          }
+        },
+        "id": "m_table",
+        "offers": {
+          "short": {
+            "answer": "Day with the most emails: Tue\nDaily average: 152.0",
+            "arm": "short",
+            "delivery": {
+              "byte_hashes": {},
+              "content": {},
+              "issues": {},
+              "sorts": {}
+            },
+            "error": false,
+            "grade": "1 sentences, 2 lines; wants 152; the answer's numbers: [152.0]",
+            "ok": true,
+            "stderr": []
+          },
+          "short2": {
+            "answer": "Day with most emails: Tue\nDaily average: 152.0",
+            "arm": "short2",
+            "delivery": {
+              "byte_hashes": {},
+              "content": {},
+              "issues": {},
+              "sorts": {}
+            },
+            "error": false,
+            "grade": "1 sentences, 2 lines; wants 152; the answer's numbers: [152.0]",
+            "ok": true,
+            "stderr": []
+          },
+          "short3": {
+            "answer": "Day with most emails: Tue\nDaily average: 152.0",
+            "arm": "short3",
+            "delivery": {
+              "byte_hashes": {},
+              "content": {},
+              "issues": {},
+              "sorts": {}
+            },
+            "error": false,
+            "grade": "1 sentences, 2 lines; wants 152; the answer's numbers: [152.0]",
+            "ok": true,
+            "stderr": []
+          }
+        },
+        "policies": {
+          "diverse2": {
+            "result": "right",
+            "seats": 2,
+            "selected": "short"
+          },
+          "diverse3": {
+            "result": "right",
+            "seats": 2,
+            "selected": "short"
+          },
+          "short2": {
+            "result": "right",
+            "seats": 2,
+            "selected": "short"
+          },
+          "short3": {
+            "result": "right",
+            "seats": 2,
+            "selected": "short"
+          }
+        }
+      },
+      {
+        "exploratory": {
+          "greedy_diverse2": {
+            "result": "abstain",
+            "seats": 2,
+            "selected": null
+          },
+          "greedy_diverse3": {
+            "result": "abstain",
+            "seats": 3,
+            "selected": null
+          }
+        },
+        "id": "cold-chain",
+        "offers": {
+          "modular0": {
+            "answer": "3",
+            "arm": "modular0",
+            "delivery": {
+              "byte_hashes": {
+                "drift.json": "f2358a7019d0ea5888ebd15b814d0d895c86fd1b8c58754306c61bbfc6284fe1"
+              },
+              "content": {
+                "drift.json": "d08184ae68f369611d23fb61c64c85f32d428a5a3addca1451031979615c03d7"
+              },
+              "issues": {},
+              "sorts": {}
+            },
+            "error": false,
+            "grade": "expected drift.json=['A6', 'J7', 'P4'], stdout=3",
+            "ok": false,
+            "stderr": []
+          },
+          "modular2": {
+            "answer": "",
+            "arm": "modular2",
+            "delivery": {
+              "byte_hashes": {},
+              "content": {},
+              "issues": {
+                "drift.json": "the requested file is missing"
+              },
+              "sorts": {}
+            },
+            "error": true,
+            "grade": "missing or invalid drift.json",
+            "ok": false,
+            "stderr": [
+              "TypeError: bad operand type for unary -: 'str'"
+            ]
+          },
+          "short": {
+            "answer": "3",
+            "arm": "short",
+            "delivery": {
+              "byte_hashes": {},
+              "content": {},
+              "issues": {
+                "drift.json": "the requested file is missing"
+              },
+              "sorts": {}
+            },
+            "error": false,
+            "grade": "missing or invalid drift.json",
+            "ok": false,
+            "stderr": []
+          },
+          "short2": {
+            "answer": "3",
+            "arm": "short2",
+            "delivery": {
+              "byte_hashes": {},
+              "content": {},
+              "issues": {
+                "drift.json": "the requested file is missing"
+              },
+              "sorts": {}
+            },
+            "error": false,
+            "grade": "missing or invalid drift.json",
+            "ok": false,
+            "stderr": []
+          },
+          "short3": {
+            "answer": "",
+            "arm": "short3",
+            "delivery": {
+              "byte_hashes": {},
+              "content": {},
+              "issues": {
+                "drift.json": "the requested file is missing"
+              },
+              "sorts": {}
+            },
+            "error": true,
+            "grade": "missing or invalid drift.json",
+            "ok": false,
+            "stderr": [
+              "ValueError: invalid literal for int() with base 10: 'arrival_c'"
+            ]
+          }
+        },
+        "policies": {
+          "diverse2": {
+            "result": "abstain",
+            "seats": 2,
+            "selected": null
+          },
+          "diverse3": {
+            "result": "abstain",
+            "seats": 3,
+            "selected": null
+          },
+          "short2": {
+            "result": "abstain",
+            "seats": 2,
+            "selected": null
+          },
+          "short3": {
+            "result": "abstain",
+            "seats": 3,
+            "selected": null
+          }
+        }
+      },
+      {
+        "exploratory": {
+          "greedy_diverse2": {
+            "result": "right",
+            "seats": 2,
+            "selected": "short"
+          },
+          "greedy_diverse3": {
+            "result": "right",
+            "seats": 2,
+            "selected": "short"
+          }
+        },
+        "id": "delayed-release",
+        "offers": {
+          "modular0": {
+            "answer": "5\n34",
+            "arm": "modular0",
+            "delivery": {
+              "byte_hashes": {},
+              "content": {},
+              "issues": {},
+              "sorts": {}
+            },
+            "error": false,
+            "grade": "expected two lines 5, 34",
+            "ok": true,
+            "stderr": []
+          },
+          "modular2": {
+            "answer": "5\n34",
+            "arm": "modular2",
+            "delivery": {
+              "byte_hashes": {},
+              "content": {},
+              "issues": {},
+              "sorts": {}
+            },
+            "error": false,
+            "grade": "expected two lines 5, 34",
+            "ok": true,
+            "stderr": []
+          },
+          "short": {
+            "answer": "5\n34",
+            "arm": "short",
+            "delivery": {
+              "byte_hashes": {},
+              "content": {},
+              "issues": {},
+              "sorts": {}
+            },
+            "error": false,
+            "grade": "expected two lines 5, 34",
+            "ok": true,
+            "stderr": []
+          },
+          "short2": {
+            "answer": "5\n34",
+            "arm": "short2",
+            "delivery": {
+              "byte_hashes": {},
+              "content": {},
+              "issues": {},
+              "sorts": {}
+            },
+            "error": false,
+            "grade": "expected two lines 5, 34",
+            "ok": true,
+            "stderr": []
+          },
+          "short3": {
+            "answer": "5\n34",
+            "arm": "short3",
+            "delivery": {
+              "byte_hashes": {},
+              "content": {},
+              "issues": {},
+              "sorts": {}
+            },
+            "error": false,
+            "grade": "expected two lines 5, 34",
+            "ok": true,
+            "stderr": []
+          }
+        },
+        "policies": {
+          "diverse2": {
+            "result": "right",
+            "seats": 2,
+            "selected": "short"
+          },
+          "diverse3": {
+            "result": "right",
+            "seats": 2,
+            "selected": "short"
+          },
+          "short2": {
+            "result": "right",
+            "seats": 2,
+            "selected": "short"
+          },
+          "short3": {
+            "result": "right",
+            "seats": 2,
+            "selected": "short"
+          }
+        }
+      },
+      {
+        "exploratory": {
+          "greedy_diverse2": {
+            "result": "abstain",
+            "seats": 2,
+            "selected": null
+          },
+          "greedy_diverse3": {
+            "result": "right",
+            "seats": 3,
+            "selected": "modular0"
+          }
+        },
+        "id": "careful-meter",
+        "offers": {
+          "modular0": {
+            "answer": "38",
+            "arm": "modular0",
+            "delivery": {
+              "byte_hashes": {
+                "pulses.json": "91efabd624e7ad7f255901a7d7a713202a6781eb42febcaa316342d7ab43c3f5"
+              },
+              "content": {
+                "pulses.json": "3d6e0a780b333f21aeefdd149e624e7900f9ea1dbd6a210568e42a4fa99cf740"
+              },
+              "issues": {},
+              "sorts": {}
+            },
+            "error": false,
+            "grade": "expected pulses.json=[7, 6, 22, 3], stdout=38",
+            "ok": true,
+            "stderr": []
+          },
+          "modular2": {
+            "answer": "71",
+            "arm": "modular2",
+            "delivery": {
+              "byte_hashes": {
+                "pulses.json": "368e6f07a851b06c388ea7628af52a15ae1e64d4f546b63d8ac8c944c2a2953d"
+              },
+              "content": {
+                "pulses.json": "5c7e36cfcfb8e8dac631004adda54791d338ef2f6f4c7ab765c73cad5cd74a00"
+              },
+              "issues": {},
+              "sorts": {}
+            },
+            "error": false,
+            "grade": "expected pulses.json=[7, 6, 22, 3], stdout=38",
+            "ok": false,
+            "stderr": []
+          },
+          "short": {
+            "answer": "-26",
+            "arm": "short",
+            "delivery": {
+              "byte_hashes": {
+                "pulses.json": "c19c08ce9191c76c9c12fd2f19b5ae8e0e5ed84bd802672a601b7f4cbc743fcf"
+              },
+              "content": {
+                "pulses.json": "ce9bfd8158151a419a15f0a465454a8e09e3c351013eb6879d8382226651973f"
+              },
+              "issues": {},
+              "sorts": {}
+            },
+            "error": false,
+            "grade": "expected pulses.json=[7, 6, 22, 3], stdout=38",
+            "ok": false,
+            "stderr": []
+          },
+          "short2": {
+            "answer": "",
+            "arm": "short2",
+            "delivery": {
+              "byte_hashes": {},
+              "content": {},
+              "issues": {
+                "pulses.json": "the requested file is missing"
+              },
+              "sorts": {}
+            },
+            "error": true,
+            "grade": "missing or invalid pulses.json",
+            "ok": false,
+            "stderr": [
+              "FileNotFoundError: [Errno 2] No such file or directory: 'pulses.json'"
+            ]
+          },
+          "short3": {
+            "answer": "38",
+            "arm": "short3",
+            "delivery": {
+              "byte_hashes": {
+                "pulses.json": "91efabd624e7ad7f255901a7d7a713202a6781eb42febcaa316342d7ab43c3f5"
+              },
+              "content": {
+                "pulses.json": "3d6e0a780b333f21aeefdd149e624e7900f9ea1dbd6a210568e42a4fa99cf740"
+              },
+              "issues": {},
+              "sorts": {}
+            },
+            "error": false,
+            "grade": "expected pulses.json=[7, 6, 22, 3], stdout=38",
+            "ok": true,
+            "stderr": []
+          }
+        },
+        "policies": {
+          "diverse2": {
+            "result": "abstain",
+            "seats": 2,
+            "selected": null
+          },
+          "diverse3": {
+            "result": "abstain",
+            "seats": 3,
+            "selected": null
+          },
+          "short2": {
+            "result": "abstain",
+            "seats": 2,
+            "selected": null
+          },
+          "short3": {
+            "result": "abstain",
+            "seats": 3,
+            "selected": null
+          }
+        }
+      }
+    ],
+    "wasi": [
+      {
+        "exploratory": {
+          "greedy_diverse2": {
+            "result": "right",
+            "seats": 2,
+            "selected": "short"
+          },
+          "greedy_diverse3": {
+            "result": "right",
+            "seats": 2,
+            "selected": "short"
+          }
+        },
+        "id": "m_percent",
+        "offers": {
+          "short": {
+            "answer": "1496.0000000000002",
+            "arm": "short",
+            "delivery": {
+              "byte_hashes": {},
+              "content": {},
+              "issues": {},
+              "sorts": {}
+            },
+            "error": false,
+            "grade": "wants 1496; the answer's numbers: [1496.0000000000002]",
+            "ok": true,
+            "stderr": []
+          },
+          "short2": {
+            "answer": "1496.0000000000002",
+            "arm": "short2",
+            "delivery": {
+              "byte_hashes": {},
+              "content": {},
+              "issues": {},
+              "sorts": {}
+            },
+            "error": false,
+            "grade": "wants 1496; the answer's numbers: [1496.0000000000002]",
+            "ok": true,
+            "stderr": []
+          },
+          "short3": {
+            "answer": "1496.0000000000002",
+            "arm": "short3",
+            "delivery": {
+              "byte_hashes": {},
+              "content": {},
+              "issues": {},
+              "sorts": {}
+            },
+            "error": false,
+            "grade": "wants 1496; the answer's numbers: [1496.0000000000002]",
+            "ok": true,
+            "stderr": []
+          }
+        },
+        "policies": {
+          "diverse2": {
+            "result": "right",
+            "seats": 2,
+            "selected": "short"
+          },
+          "diverse3": {
+            "result": "right",
+            "seats": 2,
+            "selected": "short"
+          },
+          "short2": {
+            "result": "right",
+            "seats": 2,
+            "selected": "short"
+          },
+          "short3": {
+            "result": "right",
+            "seats": 2,
+            "selected": "short"
+          }
+        }
+      },
+      {
+        "exploratory": {
+          "greedy_diverse2": {
+            "result": "right",
+            "seats": 2,
+            "selected": "short"
+          },
+          "greedy_diverse3": {
+            "result": "right",
+            "seats": 2,
+            "selected": "short"
+          }
+        },
+        "id": "m_weekday",
+        "offers": {
+          "short": {
+            "answer": "Saturday",
+            "arm": "short",
+            "delivery": {
+              "byte_hashes": {},
+              "content": {},
+              "issues": {},
+              "sorts": {}
+            },
+            "error": false,
+            "grade": "1 sentences, 1 lines",
+            "ok": true,
+            "stderr": []
+          },
+          "short2": {
+            "answer": "Saturday",
+            "arm": "short2",
+            "delivery": {
+              "byte_hashes": {},
+              "content": {},
+              "issues": {},
+              "sorts": {}
+            },
+            "error": false,
+            "grade": "1 sentences, 1 lines",
+            "ok": true,
+            "stderr": []
+          },
+          "short3": {
+            "answer": "Saturday",
+            "arm": "short3",
+            "delivery": {
+              "byte_hashes": {},
+              "content": {},
+              "issues": {},
+              "sorts": {}
+            },
+            "error": false,
+            "grade": "1 sentences, 1 lines",
+            "ok": true,
+            "stderr": []
+          }
+        },
+        "policies": {
+          "diverse2": {
+            "result": "right",
+            "seats": 2,
+            "selected": "short"
+          },
+          "diverse3": {
+            "result": "right",
+            "seats": 2,
+            "selected": "short"
+          },
+          "short2": {
+            "result": "right",
+            "seats": 2,
+            "selected": "short"
+          },
+          "short3": {
+            "result": "right",
+            "seats": 2,
+            "selected": "short"
+          }
+        }
+      },
+      {
+        "exploratory": {
+          "greedy_diverse2": {
+            "result": "right",
+            "seats": 2,
+            "selected": "short"
+          },
+          "greedy_diverse3": {
+            "result": "right",
+            "seats": 2,
+            "selected": "short"
+          }
+        },
+        "id": "m_table",
+        "offers": {
+          "short": {
+            "answer": "Day with the most emails: Tue\nDaily average: 152.0",
+            "arm": "short",
+            "delivery": {
+              "byte_hashes": {},
+              "content": {},
+              "issues": {},
+              "sorts": {}
+            },
+            "error": false,
+            "grade": "1 sentences, 2 lines; wants 152; the answer's numbers: [152.0]",
+            "ok": true,
+            "stderr": []
+          },
+          "short2": {
+            "answer": "Day with most emails: Tue\nDaily average: 152.0",
+            "arm": "short2",
+            "delivery": {
+              "byte_hashes": {},
+              "content": {},
+              "issues": {},
+              "sorts": {}
+            },
+            "error": false,
+            "grade": "1 sentences, 2 lines; wants 152; the answer's numbers: [152.0]",
+            "ok": true,
+            "stderr": []
+          },
+          "short3": {
+            "answer": "Day with most emails: Tue\nDaily average: 152.0",
+            "arm": "short3",
+            "delivery": {
+              "byte_hashes": {},
+              "content": {},
+              "issues": {},
+              "sorts": {}
+            },
+            "error": false,
+            "grade": "1 sentences, 2 lines; wants 152; the answer's numbers: [152.0]",
+            "ok": true,
+            "stderr": []
+          }
+        },
+        "policies": {
+          "diverse2": {
+            "result": "right",
+            "seats": 2,
+            "selected": "short"
+          },
+          "diverse3": {
+            "result": "right",
+            "seats": 2,
+            "selected": "short"
+          },
+          "short2": {
+            "result": "right",
+            "seats": 2,
+            "selected": "short"
+          },
+          "short3": {
+            "result": "right",
+            "seats": 2,
+            "selected": "short"
+          }
+        }
+      },
+      {
+        "exploratory": {
+          "greedy_diverse2": {
+            "result": "abstain",
+            "seats": 2,
+            "selected": null
+          },
+          "greedy_diverse3": {
+            "result": "abstain",
+            "seats": 3,
+            "selected": null
+          }
+        },
+        "id": "cold-chain",
+        "offers": {
+          "modular0": {
+            "answer": "3",
+            "arm": "modular0",
+            "delivery": {
+              "byte_hashes": {
+                "drift.json": "f2358a7019d0ea5888ebd15b814d0d895c86fd1b8c58754306c61bbfc6284fe1"
+              },
+              "content": {
+                "drift.json": "d08184ae68f369611d23fb61c64c85f32d428a5a3addca1451031979615c03d7"
+              },
+              "issues": {},
+              "sorts": {}
+            },
+            "error": false,
+            "grade": "expected drift.json=['A6', 'J7', 'P4'], stdout=3",
+            "ok": false,
+            "stderr": []
+          },
+          "modular2": {
+            "answer": "",
+            "arm": "modular2",
+            "delivery": {
+              "byte_hashes": {},
+              "content": {},
+              "issues": {
+                "drift.json": "the requested file is missing"
+              },
+              "sorts": {}
+            },
+            "error": true,
+            "grade": "missing or invalid drift.json",
+            "ok": false,
+            "stderr": [
+              "TypeError: bad operand type for unary -: 'str'"
+            ]
+          },
+          "short": {
+            "answer": "3",
+            "arm": "short",
+            "delivery": {
+              "byte_hashes": {},
+              "content": {},
+              "issues": {
+                "drift.json": "the requested file is missing"
+              },
+              "sorts": {}
+            },
+            "error": false,
+            "grade": "missing or invalid drift.json",
+            "ok": false,
+            "stderr": []
+          },
+          "short2": {
+            "answer": "3",
+            "arm": "short2",
+            "delivery": {
+              "byte_hashes": {},
+              "content": {},
+              "issues": {
+                "drift.json": "the requested file is missing"
+              },
+              "sorts": {}
+            },
+            "error": false,
+            "grade": "missing or invalid drift.json",
+            "ok": false,
+            "stderr": []
+          },
+          "short3": {
+            "answer": "",
+            "arm": "short3",
+            "delivery": {
+              "byte_hashes": {},
+              "content": {},
+              "issues": {
+                "drift.json": "the requested file is missing"
+              },
+              "sorts": {}
+            },
+            "error": true,
+            "grade": "missing or invalid drift.json",
+            "ok": false,
+            "stderr": [
+              "ValueError: invalid literal for int() with base 10: 'arrival_c'"
+            ]
+          }
+        },
+        "policies": {
+          "diverse2": {
+            "result": "abstain",
+            "seats": 2,
+            "selected": null
+          },
+          "diverse3": {
+            "result": "abstain",
+            "seats": 3,
+            "selected": null
+          },
+          "short2": {
+            "result": "abstain",
+            "seats": 2,
+            "selected": null
+          },
+          "short3": {
+            "result": "abstain",
+            "seats": 3,
+            "selected": null
+          }
+        }
+      },
+      {
+        "exploratory": {
+          "greedy_diverse2": {
+            "result": "right",
+            "seats": 2,
+            "selected": "short"
+          },
+          "greedy_diverse3": {
+            "result": "right",
+            "seats": 2,
+            "selected": "short"
+          }
+        },
+        "id": "delayed-release",
+        "offers": {
+          "modular0": {
+            "answer": "5\n34",
+            "arm": "modular0",
+            "delivery": {
+              "byte_hashes": {},
+              "content": {},
+              "issues": {},
+              "sorts": {}
+            },
+            "error": false,
+            "grade": "expected two lines 5, 34",
+            "ok": true,
+            "stderr": []
+          },
+          "modular2": {
+            "answer": "5\n34",
+            "arm": "modular2",
+            "delivery": {
+              "byte_hashes": {},
+              "content": {},
+              "issues": {},
+              "sorts": {}
+            },
+            "error": false,
+            "grade": "expected two lines 5, 34",
+            "ok": true,
+            "stderr": []
+          },
+          "short": {
+            "answer": "5\n34",
+            "arm": "short",
+            "delivery": {
+              "byte_hashes": {},
+              "content": {},
+              "issues": {},
+              "sorts": {}
+            },
+            "error": false,
+            "grade": "expected two lines 5, 34",
+            "ok": true,
+            "stderr": []
+          },
+          "short2": {
+            "answer": "5\n34",
+            "arm": "short2",
+            "delivery": {
+              "byte_hashes": {},
+              "content": {},
+              "issues": {},
+              "sorts": {}
+            },
+            "error": false,
+            "grade": "expected two lines 5, 34",
+            "ok": true,
+            "stderr": []
+          },
+          "short3": {
+            "answer": "5\n34",
+            "arm": "short3",
+            "delivery": {
+              "byte_hashes": {},
+              "content": {},
+              "issues": {},
+              "sorts": {}
+            },
+            "error": false,
+            "grade": "expected two lines 5, 34",
+            "ok": true,
+            "stderr": []
+          }
+        },
+        "policies": {
+          "diverse2": {
+            "result": "right",
+            "seats": 2,
+            "selected": "short"
+          },
+          "diverse3": {
+            "result": "right",
+            "seats": 2,
+            "selected": "short"
+          },
+          "short2": {
+            "result": "right",
+            "seats": 2,
+            "selected": "short"
+          },
+          "short3": {
+            "result": "right",
+            "seats": 2,
+            "selected": "short"
+          }
+        }
+      },
+      {
+        "exploratory": {
+          "greedy_diverse2": {
+            "result": "abstain",
+            "seats": 2,
+            "selected": null
+          },
+          "greedy_diverse3": {
+            "result": "right",
+            "seats": 3,
+            "selected": "modular0"
+          }
+        },
+        "id": "careful-meter",
+        "offers": {
+          "modular0": {
+            "answer": "38",
+            "arm": "modular0",
+            "delivery": {
+              "byte_hashes": {
+                "pulses.json": "91efabd624e7ad7f255901a7d7a713202a6781eb42febcaa316342d7ab43c3f5"
+              },
+              "content": {
+                "pulses.json": "3d6e0a780b333f21aeefdd149e624e7900f9ea1dbd6a210568e42a4fa99cf740"
+              },
+              "issues": {},
+              "sorts": {}
+            },
+            "error": false,
+            "grade": "expected pulses.json=[7, 6, 22, 3], stdout=38",
+            "ok": true,
+            "stderr": []
+          },
+          "modular2": {
+            "answer": "71",
+            "arm": "modular2",
+            "delivery": {
+              "byte_hashes": {
+                "pulses.json": "368e6f07a851b06c388ea7628af52a15ae1e64d4f546b63d8ac8c944c2a2953d"
+              },
+              "content": {
+                "pulses.json": "5c7e36cfcfb8e8dac631004adda54791d338ef2f6f4c7ab765c73cad5cd74a00"
+              },
+              "issues": {},
+              "sorts": {}
+            },
+            "error": false,
+            "grade": "expected pulses.json=[7, 6, 22, 3], stdout=38",
+            "ok": false,
+            "stderr": []
+          },
+          "short": {
+            "answer": "-26",
+            "arm": "short",
+            "delivery": {
+              "byte_hashes": {
+                "pulses.json": "c19c08ce9191c76c9c12fd2f19b5ae8e0e5ed84bd802672a601b7f4cbc743fcf"
+              },
+              "content": {
+                "pulses.json": "ce9bfd8158151a419a15f0a465454a8e09e3c351013eb6879d8382226651973f"
+              },
+              "issues": {},
+              "sorts": {}
+            },
+            "error": false,
+            "grade": "expected pulses.json=[7, 6, 22, 3], stdout=38",
+            "ok": false,
+            "stderr": []
+          },
+          "short2": {
+            "answer": "",
+            "arm": "short2",
+            "delivery": {
+              "byte_hashes": {},
+              "content": {},
+              "issues": {
+                "pulses.json": "the requested file is missing"
+              },
+              "sorts": {}
+            },
+            "error": true,
+            "grade": "missing or invalid pulses.json",
+            "ok": false,
+            "stderr": [
+              "FileNotFoundError: [Errno 44] No such file or directory: 'pulses.json'"
+            ]
+          },
+          "short3": {
+            "answer": "38",
+            "arm": "short3",
+            "delivery": {
+              "byte_hashes": {
+                "pulses.json": "91efabd624e7ad7f255901a7d7a713202a6781eb42febcaa316342d7ab43c3f5"
+              },
+              "content": {
+                "pulses.json": "3d6e0a780b333f21aeefdd149e624e7900f9ea1dbd6a210568e42a4fa99cf740"
+              },
+              "issues": {},
+              "sorts": {}
+            },
+            "error": false,
+            "grade": "expected pulses.json=[7, 6, 22, 3], stdout=38",
+            "ok": true,
+            "stderr": []
+          }
+        },
+        "policies": {
+          "diverse2": {
+            "result": "abstain",
+            "seats": 2,
+            "selected": null
+          },
+          "diverse3": {
+            "result": "abstain",
+            "seats": 3,
+            "selected": null
+          },
+          "short2": {
+            "result": "abstain",
+            "seats": 2,
+            "selected": null
+          },
+          "short3": {
+            "result": "abstain",
+            "seats": 3,
+            "selected": null
+          }
+        }
+      }
+    ]
+  },
+  "source_sha256": {
+    "diverse/native.json": "a8033ab08c3883488950820dff633185bf4e5ade0b31dece4395344c4e98a321",
+    "native.json": "0d152f2baf1318f6d781d03742c1414bcb8f1f60ea637e2a8b169c1ace808cb9"
+  }
+}

@@ -2,6 +2,8 @@
 
 **The normal CPU worker passed 4/6 with short instructions, full instructions, the familiarity gate, and the scaffold.** Full instructions solved a counter-wrap task that short instructions missed, and lost a scheduling task that short instructions solved. The familiarity gate made the same trade and took 297 seconds across six first programs, compared with 159 seconds for short instructions. This paired trial gives no net gain to justify making full instructions the default on unfamiliar requests.
 
+The revised paired trial tested the normal chooser, modular instructions and a third independent worker on these six requests. The prespecified variant tied the short control at 4/6. An exploratory greedy variant with a third seat reached 5/6 on both Python runtimes. [Paired results and conditions](diverse/README.md)
+
 ## What the old results measure
 
 G55's 33/34 on older practice kinds and 29/62 on newer practice kinds add to 62/96. G56 scored 35/40 and 27/56, also 62/96. Both age groups had practice generators. G55 graded 1/29 fixed held-out tasks and G56 graded 2/30; each passed 0/10 held-out kinds. G55 was kept, and G56 was dropped. The generation records include no `orders_ab` measurements for either body. The older 1.7B experiment gives a separate comparison: on the same later-practice stream, the short-prompt control reached 16/18 and the memory-off full prompt reached 6/18. That smaller model scored 1/4 versus 0/4 on unseen kinds, with shared CPU time and two timeouts across the study. [G55](../../../docs/reads/g55.md) · [G56](../../../docs/reads/g56.md) · [Prior prompt experiment](../../../docs/RESEARCH.md#8-do-the-hives-memories-help-measured-on-one-stream-2026-11-18)
