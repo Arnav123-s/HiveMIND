@@ -64,6 +64,10 @@ def scheduled(panel):
 
 def run(args):
     specs = scheduled(args.panel)
+    if args.retest_index is not None:
+        if args.panel != "trained":
+            raise ValueError("Only the seen-task retests can run a single registered index")
+        specs = [specs[args.retest_index]]
     blind_only = args.panel in ("transfer", "trained")
     if args.panel == "transfer":
         check_transfer_manifest(specs)
@@ -91,6 +95,8 @@ def run(args):
                 "seed":8103, "chat_template_kwargs":{"enable_thinking":False}}
     rec = {"complete":False, "assets":expected_assets, "affinity":sorted(os.sched_getaffinity(0)), "flags":flags,
            "sampling":sampling, "seed":PANELS[args.panel][0] if args.panel in PANELS else "all-four-training-prompts", "panel":args.panel, "pairs":[], "calls":[]}
+    if args.retest_index is not None:
+        rec["retest_index"] = args.retest_index
     guest = Guest(args.sdk)
     with (args.out / "server.log").open("wb") as log:
         proc = subprocess.Popen([str(args.server), "-m", str(args.model), "--lora", str(args.adapter), *flags],
@@ -153,6 +159,7 @@ def run(args):
 if __name__ == "__main__":
     p = argparse.ArgumentParser(description=__doc__)
     p.add_argument("--panel", choices=(*PANELS, "trained"), default="initial")
+    p.add_argument("--retest-index", type=int, choices=range(4), help="one frozen seen-prompt retest in a short CPU slot")
     p.add_argument("--candidate-sha", default="", help="SHA-256 of a trained comparison adapter on the blind transfer panel")
     for name in (*ASSETS, "sdk", "out"):
         p.add_argument("--"+name, type=Path, required=True)
