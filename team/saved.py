@@ -57,7 +57,7 @@ def fit(message, bank):
         name = _stems(re.findall(r"[a-z]{3,}", task.replace("_", " "))) - SKIP
         shared = said & _stems(words(text))
         if name & said_short and len(shared) >= 2:
-            matches.append(((len(name & said_short), len(shared), -len(text)), task, text))
+            matches.append(((len(name & said_short), len(shared)), task, text))
     if not matches:
         return None
     score, task, description = max(matches)
@@ -148,6 +148,28 @@ def standalone_request(message, task, description, direct_only):
     return _stems(re.findall(r"[a-z]+", prose.lower())) <= vocabulary | wording
 
 
+def prior_request_finished(message, bank):
+    """Recognize earlier one-off requests. Keep unknown statements and standing conventions in context."""
+    # Questions and file jobs can also carry an instruction for subsequent turns.
+    if re.search(r"\b(?:always|never|henceforth|hereafter|whenever|from now on|going forward|by default|"
+                 r"for the rest|for (?:all|any) future|until I (?:say|tell)|(?:each|every|future|subsequent) "
+                 r"(?:time|turn|result|answer|request|reply|calculation|number)|I (?:want you to|prefer)|"
+                 r"(?:my|our|the) (?:convention|preference) is)\b", message, re.I):
+        return False
+    opening = re.sub(r"^(?:(?:please|(?:can|could|would|will) you)\s+)*", "", message.strip(), flags=re.I)
+    if re.match(r"(?:use|assume|remember|interpret|treat|consider|respond|reply|speak|format|round)\b|"
+                r"(?:give|show|write|print|return|express|display|put)\s+(?:(?:my|your|our|the|all|any)\s+)*"
+                r"(?:answers?|replies|numbers?|results?|outputs?|responses?)\b", opening, re.I):
+        return False
+    if message.rstrip().endswith("?"):
+        return True
+    method = fit(message, bank)
+    if method and opening.split() and opening.split()[0].lower() in method[0].split("_"):
+        return True
+    return bool(re.match(r"(?:what|who|when|where|how|why|which|calculate|compute|find|check|"
+                         r"create|save|summarize|explain|translate|list|draw|draft|describe|write)\b", opening, re.I))
+
+
 def answer(message, bank=None, runner=None, log=None, *, has_history=False, direct_only=False, history=()):
     """A saved method's answer to the message (see the module's notes), or None to go on as before."""
     from training.experiments.fieldwork.work import load_bank, shared_results
@@ -163,14 +185,11 @@ def answer(message, bank=None, runner=None, log=None, *, has_history=False, dire
             return None
     else:
         rows = load_bank(bank)
-    # A previous open-ended user request can constrain the format or the meaning of later turns.
-    # Only prior self-contained bank requests can safely bypass the conversational route.
     for turn in history:
         role, content = (turn.get("role"), turn.get("content")) if isinstance(turn, dict) else turn
         if role == "assistant":
             continue
-        earlier = fit(content, rows) if role == "user" and isinstance(content, str) else None
-        if not earlier or not standalone_request(content, earlier[0], earlier[1], True):
+        if role != "user" or not isinstance(content, str) or not prior_request_finished(content, rows):
             return None
     found = fit(message, rows)
     if found is None:

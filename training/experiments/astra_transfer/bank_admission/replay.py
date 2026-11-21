@@ -40,6 +40,24 @@ def write_contracts(folder):
         (folder / (spec["task"] + ".json")).write_text(json.dumps(spec, separators=(",", ":")) + "\n")
 
 
+def write_practice(folder):
+    """Reconstruct the numbered candidate rows from the published practice programs and per-seat verdicts."""
+    folder.mkdir(parents=True, exist_ok=False)
+    for filename, record in json.loads((HERE / "workers.json").read_text()).items():
+        source = (HERE / "workers" / filename).read_bytes()
+        if hashlib.sha256(source).hexdigest() != record["source_sha256"]:
+            raise ValueError("archived worker source does not match its receipt")
+        tag = record["source"].split("/", 1)[0]
+        seed = int(tag.removeprefix("practice_"))
+        seat = record["member"]
+        shard = folder / f"rows-{seed % 100}"
+        shard.mkdir(exist_ok=True)
+        row = {"type":"first", "member":seat["member"], "who":seat["who"], "seed":seed,
+               "verified_member":seat["ok"], "output":f"```python\n{source.decode()}\n```"}
+        with (shard / "rows.jsonl").open("a") as stream:
+            print(json.dumps(row), file=stream)
+
+
 def replay(root, sdk):
     trusted, bank = root / "contracts", root / "bank"
     write_contracts(trusted)
@@ -82,10 +100,13 @@ def main():
     p = argparse.ArgumentParser(description=__doc__)
     choice = p.add_mutually_exclusive_group(required=True)
     choice.add_argument("--write-contracts", type=Path)
+    choice.add_argument("--write-practice", type=Path)
     choice.add_argument("--sdk", type=Path)
     args = p.parse_args()
     if args.write_contracts:
         write_contracts(args.write_contracts)
+    elif args.write_practice:
+        write_practice(args.write_practice)
     else:
         with TemporaryDirectory() as tmp:
             print(json.dumps(replay(Path(tmp), args.sdk), indent=2, sort_keys=True))
