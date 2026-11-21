@@ -1,0 +1,58 @@
+{
+  "cases": [
+    {
+      "g55_checked_prompt_collision": false,
+      "kind": "h_tab_dates",
+      "official_fixed_prompt_collision": false,
+      "official_generator": "training.kinds.h_tab_dates",
+      "requested_files": [
+        "selected.csv"
+      ],
+      "seed": "f3-borrow-confirm:2b084971f13f923c0bc8351be2cd7cffd0a77032:h_tab_dates:0",
+      "task": "Here is the file shipments.csv:\nref,date,weight\nS985,19/04/2026,265\nS343,25/05/2026,414\nS998,2026-05-19,314\nS681,26 May 2026,304\nS301,06/05/2026,151\nS521,2026-05-24,298\nS809,12/05/2026,275\nS652,25 May 2026,134\nS139,09/05/2026,335\nS734,12 Apr 2026,18\nS524,2026-05-25,308\nS554,2026-05-05,46\nS403,07/05/2026,299\nS104,2026-05-06,77\nS1000,3 May 2026,6\nS1001,6 Jun 2026,8\nS590,8 Jun 2026,287\nS873,29/04/2026,265\n\nIts dates are written in three forms: YYYY-MM-DD, DD/MM/YYYY (the day first) and D Mon YYYY. Save a file selected.csv with the columns ref,date,weight, keeping in the order of the file only the rows dated from 2026-05-03 to 2026-06-06, both days included, with every date written as YYYY-MM-DD. Then tell me the total weight of the rows kept.",
+      "task_sha256": "3bafc0b26f82a77ab2102d3dcc8f0e01756ce51630fe8cd37552e2d1c7da65ef"
+    },
+    {
+      "g55_checked_prompt_collision": false,
+      "kind": "h_tab_topn",
+      "official_fixed_prompt_collision": false,
+      "official_generator": "training.kinds.h_tab_topn",
+      "requested_files": [
+        "leaders.csv"
+      ],
+      "seed": "f3-borrow-confirm:2b084971f13f923c0bc8351be2cd7cffd0a77032:h_tab_topn:0",
+      "task": "Here is the file shops.csv:\nshop,seller,sold\nClyde,Jonas,85\nClyde,Lena,95\nTees,Tomas,77\nClyde,Ravi,71\nSevern,Jonas,48\nTees,Omar,81\nClyde,Aiko,81\nSevern,Tomas,53\nAvon,Pavel,52\nAvon,Mira,50\n\nSave a file leaders.csv with the columns shop,rank,seller,sold: for each shop, sorted by shop, its 2 rows with the highest sold (a shop with fewer rows lists all it has), ranked 1 to 2 from the highest; equal sold values are ranked by seller name. Then tell me which seller has the highest sold of all.",
+      "task_sha256": "0ebe1da5af828920478c7f2ebdaba1124211e0469ac074fe9ffb3c38bc30634f"
+    },
+    {
+      "g55_checked_prompt_collision": false,
+      "kind": "h_txt_redact",
+      "official_fixed_prompt_collision": false,
+      "official_generator": "training.kinds.h_txt_redact",
+      "requested_files": [
+        "redacted.txt"
+      ],
+      "seed": "f3-borrow-confirm:2b084971f13f923c0bc8351be2cd7cffd0a77032:h_txt_redact:0",
+      "task": "Here is a text:\nLena gave the number 6918-7019-7967-6718. On file for Aiko: 3724-0496-8944! Jonas wrote: 2567 3897 9861 4025, then left. Reference 9362316638296433 belongs to Omar. On file for Nadia: 2026-09-03! Jonas wrote: 4832-8659 3160-8375, then left. Mira wrote: 299-987-3366, then left. Reference 6880 3056 5043 6474 belongs to Kofi. Nadia wrote: 5717.83, then left.\nA card number is exactly four groups of four digits, the groups joined all by '-' or all by single spaces, with no other digit or group right before or after it. Replace every digit of a card number except its last four with '*', keeping the separators, and leave every other number exactly as it is (dates, amounts, phone numbers, numbers of three or five groups, sixteen digits in one run, mixed separators). Save the whole text so changed in redacted.txt and tell me how many card numbers you masked.",
+      "task_sha256": "aa8f00c8c4863d1fb99885391ca16e0eb7ea95fe47340f061f1ae7df16895e15"
+    }
+  ],
+  "conditions": [
+    "fixed",
+    "borrow"
+  ],
+  "familiar_index_sha256": "6379846f333435ea1818a5821822b208f26d28da13a4f3ff4fb69983647418e6",
+  "generation_settings": {
+    "cache_prompt": false,
+    "ordinary_cap": 192,
+    "seed": 8103,
+    "temperature": 0.0,
+    "thinking": false,
+    "top_k": 0,
+    "top_p": 1.0,
+    "total_cap": 576,
+    "turns": 3
+  },
+  "receipt_code": "2b084971f13f923c0bc8351be2cd7cffd0a77032",
+  "registration": 1
+}
