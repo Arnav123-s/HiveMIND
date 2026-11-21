@@ -1,0 +1,41 @@
+{
+  "parent": "fffbb3692c8f1202b7df14014c8e515f77799f000428fe3fbd906f5b11f7490b",
+  "helpers": {
+    "csv": "66524dc816202b7dae7bcb8adb0f7c4dfa610c16777e98923dcb44903eae69b0",
+    "ini": "1b92980c21434a46df5d79e1cbd4a357d20f999b97d53c60d7d1edf3997dae23"
+  },
+  "tasks": [
+    {
+      "case": 0,
+      "input_format": "csv",
+      "rule": "span",
+      "offer_first": false,
+      "prompt_sha256": "4ea4412d63d4a1bf5255dd51fb151afd643a12a88489a0af38e23ebd1e15c65e",
+      "checks_sha256": "75fb9a54264ac8ed947627eabcd9930473f0104b2a9e4ef2d2222e965fedf13e"
+    },
+    {
+      "case": 1,
+      "input_format": "ini",
+      "rule": "minimum_index",
+      "offer_first": true,
+      "prompt_sha256": "07bce7812d8a5b83a8e35900500a617c4a3551554cd7425393826b4a89dba6e8",
+      "checks_sha256": "81498caac6be3481d56b61ff21558d0389aeece0ca9ec080f639d1dcfd801edd"
+    },
+    {
+      "case": 2,
+      "input_format": "csv",
+      "rule": "minimum_index",
+      "offer_first": true,
+      "prompt_sha256": "e3a75c7ff5b12d65adb634f59bfb483bbc430cc6e3627fd5d34e2d0e6672c7e8",
+      "checks_sha256": "81f6bb04393fa14ca8f9ce35b62c987a3d1b9927683b0ffabeb550f46f40723e"
+    },
+    {
+      "case": 3,
+      "input_format": "ini",
+      "rule": "span",
+      "offer_first": false,
+      "prompt_sha256": "dee988e649b2d3268ad93b7c8428d7b2f3a146827de7a86d9d9c18f78ccdd684",
+      "checks_sha256": "87af2343448213f34d4345ac537b3c20fcfd63751c01194f73921d0e768c5d60"
+    }
+  ]
+}
