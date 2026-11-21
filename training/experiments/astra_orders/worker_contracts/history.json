@@ -1,0 +1,25 @@
+{
+  "counts": {
+    "failed": {
+      "inapplicable": 12
+    },
+    "passed": {
+      "inapplicable": 52
+    }
+  },
+  "digests": {
+    "gate-after-1": "2594598da560a69521dd5b8ec53d2bf26ac7ece98c42da16d2ea2e77fd49f529",
+    "gate-after-2": "293e1ca2742cda20e6c0f658a939f4e3aa148aca94009911b355ba0d4f1cdb64",
+    "gate-after-3": "9328eb0d854636135d43e6690a276e2d4f1ba3eac188a6dc50eb28baf53a2715",
+    "gate-after-4": "5b4a4e24124069d0976084df2c8ab77cee67c4bf32c2da4f19df8fef3c41a15a",
+    "gate-after-5": "902774d868b269a3f875fe5e7d96e4cf217e5ee258bbfb5c793ee3e920797d69",
+    "gate-after-6": "fdf02a42769a07cf2799bddc93c900e712f93195774e559573c4b38d821cec25",
+    "gate-after-7": "8b350b43a44d52a0477c201b33d8b0f07aa3a23d6209f485071ed07897aac623",
+    "gate-after-8": "080cbfe1c58c0c50a9eb5ef7cacf66bf8e07c365837f10923ec84a26931be27c"
+  },
+  "empty_memory_fixed_exam": {
+    "explicit_examples_or_urls": 0,
+    "requests": 30
+  },
+  "public_workflow_run": "44728930517"
+}
