@@ -119,3 +119,16 @@ def test_both_production_arms_use_same_memory_recalled_only_from_public_task(tmp
     assert recalled == [hd.instructions(spec)[0]] and applied == [tuple(memories)] * 2
     assert result['row']['seed'] == 30005652 and result['row']['spec_id'] == spec.seed
     assert result['row']['verified_member'] and result['audit']['recalled'] == [list(memories[0])]
+
+
+def test_frozen_native_training_and_transfer_receipts_are_disjoint():
+    from training.experiments.hint_dream import fit, pilot
+    evidence = Path(pilot.__file__).parent / 'evidence'
+    assert [fit.checked_rows(evidence / arm)[1] for arm in ('initial', 'confirmation')] == [1, 3]
+    trained = pilot.scheduled('trained')
+    transfer = pilot.scheduled('transfer')
+    assert len(trained) == 4 and len(transfer) == 3
+    assert {(s.form, s.rule) for s in trained}.isdisjoint((s.form, s.rule) for s in transfer)
+    pilot.check_transfer_manifest(transfer)
+    with pytest.raises(ValueError):
+        fit.checked_rows(evidence / 'transfer-parent')
