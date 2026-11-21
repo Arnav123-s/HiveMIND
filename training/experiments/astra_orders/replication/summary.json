@@ -1,0 +1,118 @@
+{
+  "native_offers": 24,
+  "server_load_s": 57.77,
+  "native_wall_s": 1397.43,
+  "native_cpu_s": 2189.37,
+  "runtimes": {
+    "cpython": {
+      "policies": {
+        "stock2": {
+          "right": 0,
+          "wrong": 0,
+          "abstained": 6,
+          "any_correct_among_used": 3,
+          "calls": 12,
+          "wall_s": 634.3,
+          "cpu_s": 993.62,
+          "completion_tokens": 1377
+        },
+        "greedy2": {
+          "right": 1,
+          "wrong": 0,
+          "abstained": 5,
+          "any_correct_among_used": 3,
+          "calls": 12,
+          "wall_s": 782.22,
+          "cpu_s": 1201.84,
+          "completion_tokens": 1342
+        },
+        "stock3": {
+          "right": 3,
+          "wrong": 0,
+          "abstained": 3,
+          "any_correct_among_used": 4,
+          "calls": 18,
+          "wall_s": 939.67,
+          "cpu_s": 1491.66,
+          "completion_tokens": 2107
+        },
+        "greedy3": {
+          "right": 3,
+          "wrong": 0,
+          "abstained": 3,
+          "any_correct_among_used": 4,
+          "calls": 17,
+          "wall_s": 1033.89,
+          "cpu_s": 1615.4,
+          "completion_tokens": 1936
+        }
+      },
+      "single_offer_correct": {
+        "greedy2": 3,
+        "short": 1,
+        "short2": 2,
+        "short3": 4
+      },
+      "paired": {
+        "gained": [],
+        "lost": [],
+        "additional_wrong": []
+      }
+    },
+    "wasi": {
+      "policies": {
+        "stock2": {
+          "right": 0,
+          "wrong": 0,
+          "abstained": 6,
+          "any_correct_among_used": 3,
+          "calls": 12,
+          "wall_s": 634.3,
+          "cpu_s": 993.62,
+          "completion_tokens": 1377
+        },
+        "greedy2": {
+          "right": 1,
+          "wrong": 0,
+          "abstained": 5,
+          "any_correct_among_used": 3,
+          "calls": 12,
+          "wall_s": 782.22,
+          "cpu_s": 1201.84,
+          "completion_tokens": 1342
+        },
+        "stock3": {
+          "right": 3,
+          "wrong": 0,
+          "abstained": 3,
+          "any_correct_among_used": 4,
+          "calls": 18,
+          "wall_s": 939.67,
+          "cpu_s": 1491.66,
+          "completion_tokens": 2107
+        },
+        "greedy3": {
+          "right": 3,
+          "wrong": 0,
+          "abstained": 3,
+          "any_correct_among_used": 4,
+          "calls": 17,
+          "wall_s": 1033.89,
+          "cpu_s": 1615.4,
+          "completion_tokens": 1936
+        }
+      },
+      "single_offer_correct": {
+        "greedy2": 3,
+        "short": 1,
+        "short2": 2,
+        "short3": 4
+      },
+      "paired": {
+        "gained": [],
+        "lost": [],
+        "additional_wrong": []
+      }
+    }
+  }
+}

@@ -1,0 +1,1102 @@
+{
+  "cpython": [
+    {
+      "decisions": {
+        "greedy2": {
+          "any_correct": false,
+          "result": "abstain",
+          "seats": 2,
+          "selected": null
+        },
+        "greedy3": {
+          "any_correct": false,
+          "result": "abstain",
+          "seats": 3,
+          "selected": null
+        },
+        "stock2": {
+          "any_correct": false,
+          "result": "abstain",
+          "seats": 2,
+          "selected": null
+        },
+        "stock3": {
+          "any_correct": false,
+          "result": "abstain",
+          "seats": 3,
+          "selected": null
+        }
+      },
+      "id": "81171-cold-chain",
+      "offers": {
+        "greedy2": {
+          "answer": "3",
+          "arm": "greedy2",
+          "delivery": {
+            "byte_hashes": {
+              "drift.json": "9539a4e6ea7515dc744a91890627600b66a4b6ddf4cc30477f502bcc6152e767"
+            },
+            "content": {
+              "drift.json": "d443a3b8a6e8b95c1dbf4b63b18d51d625877f8760705f14cba6eda638695fbb"
+            },
+            "issues": {},
+            "sorts": {}
+          },
+          "error": false,
+          "ok": false,
+          "stderr": []
+        },
+        "short": {
+          "answer": "3",
+          "arm": "short",
+          "delivery": {
+            "byte_hashes": {},
+            "content": {},
+            "issues": {
+              "drift.json": "the requested file is missing"
+            },
+            "sorts": {}
+          },
+          "error": false,
+          "ok": false,
+          "stderr": []
+        },
+        "short2": {
+          "answer": "3",
+          "arm": "short2",
+          "delivery": {
+            "byte_hashes": {},
+            "content": {},
+            "issues": {
+              "drift.json": "the requested file is missing"
+            },
+            "sorts": {}
+          },
+          "error": false,
+          "ok": false,
+          "stderr": []
+        },
+        "short3": {
+          "answer": "3",
+          "arm": "short3",
+          "delivery": {
+            "byte_hashes": {},
+            "content": {},
+            "issues": {
+              "drift.json": "the requested file is missing"
+            },
+            "sorts": {}
+          },
+          "error": false,
+          "ok": false,
+          "stderr": []
+        }
+      }
+    },
+    {
+      "decisions": {
+        "greedy2": {
+          "any_correct": true,
+          "result": "abstain",
+          "seats": 2,
+          "selected": null
+        },
+        "greedy3": {
+          "any_correct": true,
+          "result": "right",
+          "seats": 3,
+          "selected": "greedy2"
+        },
+        "stock2": {
+          "any_correct": true,
+          "result": "abstain",
+          "seats": 2,
+          "selected": null
+        },
+        "stock3": {
+          "any_correct": true,
+          "result": "right",
+          "seats": 3,
+          "selected": "short2"
+        }
+      },
+      "id": "81171-delayed-release",
+      "offers": {
+        "greedy2": {
+          "answer": "16\n35",
+          "arm": "greedy2",
+          "delivery": {
+            "byte_hashes": {},
+            "content": {},
+            "issues": {},
+            "sorts": {}
+          },
+          "error": false,
+          "ok": true,
+          "stderr": []
+        },
+        "short": {
+          "answer": "16\n34",
+          "arm": "short",
+          "delivery": {
+            "byte_hashes": {},
+            "content": {},
+            "issues": {},
+            "sorts": {}
+          },
+          "error": false,
+          "ok": false,
+          "stderr": []
+        },
+        "short2": {
+          "answer": "16\n35",
+          "arm": "short2",
+          "delivery": {
+            "byte_hashes": {},
+            "content": {},
+            "issues": {},
+            "sorts": {}
+          },
+          "error": false,
+          "ok": true,
+          "stderr": []
+        },
+        "short3": {
+          "answer": "16\n35",
+          "arm": "short3",
+          "delivery": {
+            "byte_hashes": {},
+            "content": {},
+            "issues": {},
+            "sorts": {}
+          },
+          "error": false,
+          "ok": true,
+          "stderr": []
+        }
+      }
+    },
+    {
+      "decisions": {
+        "greedy2": {
+          "any_correct": false,
+          "result": "abstain",
+          "seats": 2,
+          "selected": null
+        },
+        "greedy3": {
+          "any_correct": true,
+          "result": "abstain",
+          "seats": 3,
+          "selected": null
+        },
+        "stock2": {
+          "any_correct": false,
+          "result": "abstain",
+          "seats": 2,
+          "selected": null
+        },
+        "stock3": {
+          "any_correct": true,
+          "result": "abstain",
+          "seats": 3,
+          "selected": null
+        }
+      },
+      "id": "81171-careful-meter",
+      "offers": {
+        "greedy2": {
+          "answer": "30",
+          "arm": "greedy2",
+          "delivery": {
+            "byte_hashes": {},
+            "content": {},
+            "issues": {
+              "pulses.json": "the requested file is missing"
+            },
+            "sorts": {}
+          },
+          "error": false,
+          "ok": false,
+          "stderr": []
+        },
+        "short": {
+          "answer": "-14",
+          "arm": "short",
+          "delivery": {
+            "byte_hashes": {
+              "pulses.json": "995a596863d02c16087832e3445f86aa385534ad8eda658f39bab5a54c066ac7"
+            },
+            "content": {
+              "pulses.json": "b9f9a4c14ec6ce41682d517ba56537260dde9fb574aa65d7fdd4bf5157e930e2"
+            },
+            "issues": {},
+            "sorts": {}
+          },
+          "error": false,
+          "ok": false,
+          "stderr": []
+        },
+        "short2": {
+          "answer": "30",
+          "arm": "short2",
+          "delivery": {
+            "byte_hashes": {},
+            "content": {},
+            "issues": {
+              "pulses.json": "the requested file is missing"
+            },
+            "sorts": {}
+          },
+          "error": false,
+          "ok": false,
+          "stderr": []
+        },
+        "short3": {
+          "answer": "34",
+          "arm": "short3",
+          "delivery": {
+            "byte_hashes": {
+              "pulses.json": "b4a8038a7ddf686ad0197ab63000d8d383606e1e8b00935426e0be88e5b16668"
+            },
+            "content": {
+              "pulses.json": "67bf1f857dfaf7919810d81c43b6f1f8f678af09012dd29f62dd5afccbe125cc"
+            },
+            "issues": {},
+            "sorts": {}
+          },
+          "error": false,
+          "ok": true,
+          "stderr": []
+        }
+      }
+    },
+    {
+      "decisions": {
+        "greedy2": {
+          "any_correct": false,
+          "result": "abstain",
+          "seats": 2,
+          "selected": null
+        },
+        "greedy3": {
+          "any_correct": false,
+          "result": "abstain",
+          "seats": 3,
+          "selected": null
+        },
+        "stock2": {
+          "any_correct": false,
+          "result": "abstain",
+          "seats": 2,
+          "selected": null
+        },
+        "stock3": {
+          "any_correct": false,
+          "result": "abstain",
+          "seats": 3,
+          "selected": null
+        }
+      },
+      "id": "81172-cold-chain",
+      "offers": {
+        "greedy2": {
+          "answer": "3",
+          "arm": "greedy2",
+          "delivery": {
+            "byte_hashes": {
+              "drift.json": "23f4bed51f7da9c3e30e4a00d214da70dc0a7f895704aedaaaaee0a6f7593ac8"
+            },
+            "content": {
+              "drift.json": "cffc69d03fd455050030d024b9956b7f0719c5b6fbd546dd8f19df707aa98b6d"
+            },
+            "issues": {},
+            "sorts": {}
+          },
+          "error": false,
+          "ok": false,
+          "stderr": []
+        },
+        "short": {
+          "answer": "3",
+          "arm": "short",
+          "delivery": {
+            "byte_hashes": {},
+            "content": {},
+            "issues": {
+              "drift.json": "the requested file is missing"
+            },
+            "sorts": {}
+          },
+          "error": false,
+          "ok": false,
+          "stderr": []
+        },
+        "short2": {
+          "answer": "3",
+          "arm": "short2",
+          "delivery": {
+            "byte_hashes": {},
+            "content": {},
+            "issues": {
+              "drift.json": "the requested file is missing"
+            },
+            "sorts": {}
+          },
+          "error": false,
+          "ok": false,
+          "stderr": []
+        },
+        "short3": {
+          "answer": "",
+          "arm": "short3",
+          "delivery": {
+            "byte_hashes": {},
+            "content": {},
+            "issues": {
+              "drift.json": "the requested file is missing"
+            },
+            "sorts": {}
+          },
+          "error": true,
+          "ok": false,
+          "stderr": [
+            "ValueError: invalid literal for int() with base 10: 'arrival_c'"
+          ]
+        }
+      }
+    },
+    {
+      "decisions": {
+        "greedy2": {
+          "any_correct": true,
+          "result": "abstain",
+          "seats": 2,
+          "selected": null
+        },
+        "greedy3": {
+          "any_correct": true,
+          "result": "right",
+          "seats": 3,
+          "selected": "greedy2"
+        },
+        "stock2": {
+          "any_correct": true,
+          "result": "abstain",
+          "seats": 2,
+          "selected": null
+        },
+        "stock3": {
+          "any_correct": true,
+          "result": "right",
+          "seats": 3,
+          "selected": "short2"
+        }
+      },
+      "id": "81172-delayed-release",
+      "offers": {
+        "greedy2": {
+          "answer": "28\n44",
+          "arm": "greedy2",
+          "delivery": {
+            "byte_hashes": {},
+            "content": {},
+            "issues": {},
+            "sorts": {}
+          },
+          "error": false,
+          "ok": true,
+          "stderr": []
+        },
+        "short": {
+          "answer": "28\n43",
+          "arm": "short",
+          "delivery": {
+            "byte_hashes": {},
+            "content": {},
+            "issues": {},
+            "sorts": {}
+          },
+          "error": false,
+          "ok": false,
+          "stderr": []
+        },
+        "short2": {
+          "answer": "28\n44",
+          "arm": "short2",
+          "delivery": {
+            "byte_hashes": {},
+            "content": {},
+            "issues": {},
+            "sorts": {}
+          },
+          "error": false,
+          "ok": true,
+          "stderr": []
+        },
+        "short3": {
+          "answer": "28\n44",
+          "arm": "short3",
+          "delivery": {
+            "byte_hashes": {},
+            "content": {},
+            "issues": {},
+            "sorts": {}
+          },
+          "error": false,
+          "ok": true,
+          "stderr": []
+        }
+      }
+    },
+    {
+      "decisions": {
+        "greedy2": {
+          "any_correct": true,
+          "result": "right",
+          "seats": 2,
+          "selected": "short"
+        },
+        "greedy3": {
+          "any_correct": true,
+          "result": "right",
+          "seats": 2,
+          "selected": "short"
+        },
+        "stock2": {
+          "any_correct": true,
+          "result": "abstain",
+          "seats": 2,
+          "selected": null
+        },
+        "stock3": {
+          "any_correct": true,
+          "result": "right",
+          "seats": 3,
+          "selected": "short"
+        }
+      },
+      "id": "81172-careful-meter",
+      "offers": {
+        "greedy2": {
+          "answer": "80",
+          "arm": "greedy2",
+          "delivery": {
+            "byte_hashes": {
+              "pulses.json": "f2396ce05b26a703a6e0db7ed6a5c78c8a6b369b918da6dc444e515467d8951f"
+            },
+            "content": {
+              "pulses.json": "272b640b122d6a6beceaa3a86cfe131d372a0f16bdf0a105806053f2ca6caf61"
+            },
+            "issues": {},
+            "sorts": {}
+          },
+          "error": false,
+          "ok": true,
+          "stderr": []
+        },
+        "short": {
+          "answer": "80",
+          "arm": "short",
+          "delivery": {
+            "byte_hashes": {
+              "pulses.json": "f2396ce05b26a703a6e0db7ed6a5c78c8a6b369b918da6dc444e515467d8951f"
+            },
+            "content": {
+              "pulses.json": "272b640b122d6a6beceaa3a86cfe131d372a0f16bdf0a105806053f2ca6caf61"
+            },
+            "issues": {},
+            "sorts": {}
+          },
+          "error": false,
+          "ok": true,
+          "stderr": []
+        },
+        "short2": {
+          "answer": "",
+          "arm": "short2",
+          "delivery": {
+            "byte_hashes": {},
+            "content": {},
+            "issues": {
+              "pulses.json": "the requested file is missing"
+            },
+            "sorts": {}
+          },
+          "error": true,
+          "ok": false,
+          "stderr": [
+            "AssertionError: There was more than one wrap"
+          ]
+        },
+        "short3": {
+          "answer": "80",
+          "arm": "short3",
+          "delivery": {
+            "byte_hashes": {
+              "pulses.json": "f2396ce05b26a703a6e0db7ed6a5c78c8a6b369b918da6dc444e515467d8951f"
+            },
+            "content": {
+              "pulses.json": "272b640b122d6a6beceaa3a86cfe131d372a0f16bdf0a105806053f2ca6caf61"
+            },
+            "issues": {},
+            "sorts": {}
+          },
+          "error": false,
+          "ok": true,
+          "stderr": []
+        }
+      }
+    }
+  ],
+  "wasi": [
+    {
+      "decisions": {
+        "greedy2": {
+          "any_correct": false,
+          "result": "abstain",
+          "seats": 2,
+          "selected": null
+        },
+        "greedy3": {
+          "any_correct": false,
+          "result": "abstain",
+          "seats": 3,
+          "selected": null
+        },
+        "stock2": {
+          "any_correct": false,
+          "result": "abstain",
+          "seats": 2,
+          "selected": null
+        },
+        "stock3": {
+          "any_correct": false,
+          "result": "abstain",
+          "seats": 3,
+          "selected": null
+        }
+      },
+      "id": "81171-cold-chain",
+      "offers": {
+        "greedy2": {
+          "answer": "3",
+          "arm": "greedy2",
+          "delivery": {
+            "byte_hashes": {
+              "drift.json": "9539a4e6ea7515dc744a91890627600b66a4b6ddf4cc30477f502bcc6152e767"
+            },
+            "content": {
+              "drift.json": "d443a3b8a6e8b95c1dbf4b63b18d51d625877f8760705f14cba6eda638695fbb"
+            },
+            "issues": {},
+            "sorts": {}
+          },
+          "error": false,
+          "ok": false,
+          "stderr": []
+        },
+        "short": {
+          "answer": "3",
+          "arm": "short",
+          "delivery": {
+            "byte_hashes": {},
+            "content": {},
+            "issues": {
+              "drift.json": "the requested file is missing"
+            },
+            "sorts": {}
+          },
+          "error": false,
+          "ok": false,
+          "stderr": []
+        },
+        "short2": {
+          "answer": "3",
+          "arm": "short2",
+          "delivery": {
+            "byte_hashes": {},
+            "content": {},
+            "issues": {
+              "drift.json": "the requested file is missing"
+            },
+            "sorts": {}
+          },
+          "error": false,
+          "ok": false,
+          "stderr": []
+        },
+        "short3": {
+          "answer": "3",
+          "arm": "short3",
+          "delivery": {
+            "byte_hashes": {},
+            "content": {},
+            "issues": {
+              "drift.json": "the requested file is missing"
+            },
+            "sorts": {}
+          },
+          "error": false,
+          "ok": false,
+          "stderr": []
+        }
+      }
+    },
+    {
+      "decisions": {
+        "greedy2": {
+          "any_correct": true,
+          "result": "abstain",
+          "seats": 2,
+          "selected": null
+        },
+        "greedy3": {
+          "any_correct": true,
+          "result": "right",
+          "seats": 3,
+          "selected": "greedy2"
+        },
+        "stock2": {
+          "any_correct": true,
+          "result": "abstain",
+          "seats": 2,
+          "selected": null
+        },
+        "stock3": {
+          "any_correct": true,
+          "result": "right",
+          "seats": 3,
+          "selected": "short2"
+        }
+      },
+      "id": "81171-delayed-release",
+      "offers": {
+        "greedy2": {
+          "answer": "16\n35",
+          "arm": "greedy2",
+          "delivery": {
+            "byte_hashes": {},
+            "content": {},
+            "issues": {},
+            "sorts": {}
+          },
+          "error": false,
+          "ok": true,
+          "stderr": []
+        },
+        "short": {
+          "answer": "16\n34",
+          "arm": "short",
+          "delivery": {
+            "byte_hashes": {},
+            "content": {},
+            "issues": {},
+            "sorts": {}
+          },
+          "error": false,
+          "ok": false,
+          "stderr": []
+        },
+        "short2": {
+          "answer": "16\n35",
+          "arm": "short2",
+          "delivery": {
+            "byte_hashes": {},
+            "content": {},
+            "issues": {},
+            "sorts": {}
+          },
+          "error": false,
+          "ok": true,
+          "stderr": []
+        },
+        "short3": {
+          "answer": "16\n35",
+          "arm": "short3",
+          "delivery": {
+            "byte_hashes": {},
+            "content": {},
+            "issues": {},
+            "sorts": {}
+          },
+          "error": false,
+          "ok": true,
+          "stderr": []
+        }
+      }
+    },
+    {
+      "decisions": {
+        "greedy2": {
+          "any_correct": false,
+          "result": "abstain",
+          "seats": 2,
+          "selected": null
+        },
+        "greedy3": {
+          "any_correct": true,
+          "result": "abstain",
+          "seats": 3,
+          "selected": null
+        },
+        "stock2": {
+          "any_correct": false,
+          "result": "abstain",
+          "seats": 2,
+          "selected": null
+        },
+        "stock3": {
+          "any_correct": true,
+          "result": "abstain",
+          "seats": 3,
+          "selected": null
+        }
+      },
+      "id": "81171-careful-meter",
+      "offers": {
+        "greedy2": {
+          "answer": "30",
+          "arm": "greedy2",
+          "delivery": {
+            "byte_hashes": {},
+            "content": {},
+            "issues": {
+              "pulses.json": "the requested file is missing"
+            },
+            "sorts": {}
+          },
+          "error": false,
+          "ok": false,
+          "stderr": []
+        },
+        "short": {
+          "answer": "-14",
+          "arm": "short",
+          "delivery": {
+            "byte_hashes": {
+              "pulses.json": "995a596863d02c16087832e3445f86aa385534ad8eda658f39bab5a54c066ac7"
+            },
+            "content": {
+              "pulses.json": "b9f9a4c14ec6ce41682d517ba56537260dde9fb574aa65d7fdd4bf5157e930e2"
+            },
+            "issues": {},
+            "sorts": {}
+          },
+          "error": false,
+          "ok": false,
+          "stderr": []
+        },
+        "short2": {
+          "answer": "30",
+          "arm": "short2",
+          "delivery": {
+            "byte_hashes": {},
+            "content": {},
+            "issues": {
+              "pulses.json": "the requested file is missing"
+            },
+            "sorts": {}
+          },
+          "error": false,
+          "ok": false,
+          "stderr": []
+        },
+        "short3": {
+          "answer": "34",
+          "arm": "short3",
+          "delivery": {
+            "byte_hashes": {
+              "pulses.json": "b4a8038a7ddf686ad0197ab63000d8d383606e1e8b00935426e0be88e5b16668"
+            },
+            "content": {
+              "pulses.json": "67bf1f857dfaf7919810d81c43b6f1f8f678af09012dd29f62dd5afccbe125cc"
+            },
+            "issues": {},
+            "sorts": {}
+          },
+          "error": false,
+          "ok": true,
+          "stderr": []
+        }
+      }
+    },
+    {
+      "decisions": {
+        "greedy2": {
+          "any_correct": false,
+          "result": "abstain",
+          "seats": 2,
+          "selected": null
+        },
+        "greedy3": {
+          "any_correct": false,
+          "result": "abstain",
+          "seats": 3,
+          "selected": null
+        },
+        "stock2": {
+          "any_correct": false,
+          "result": "abstain",
+          "seats": 2,
+          "selected": null
+        },
+        "stock3": {
+          "any_correct": false,
+          "result": "abstain",
+          "seats": 3,
+          "selected": null
+        }
+      },
+      "id": "81172-cold-chain",
+      "offers": {
+        "greedy2": {
+          "answer": "3",
+          "arm": "greedy2",
+          "delivery": {
+            "byte_hashes": {
+              "drift.json": "23f4bed51f7da9c3e30e4a00d214da70dc0a7f895704aedaaaaee0a6f7593ac8"
+            },
+            "content": {
+              "drift.json": "cffc69d03fd455050030d024b9956b7f0719c5b6fbd546dd8f19df707aa98b6d"
+            },
+            "issues": {},
+            "sorts": {}
+          },
+          "error": false,
+          "ok": false,
+          "stderr": []
+        },
+        "short": {
+          "answer": "3",
+          "arm": "short",
+          "delivery": {
+            "byte_hashes": {},
+            "content": {},
+            "issues": {
+              "drift.json": "the requested file is missing"
+            },
+            "sorts": {}
+          },
+          "error": false,
+          "ok": false,
+          "stderr": []
+        },
+        "short2": {
+          "answer": "3",
+          "arm": "short2",
+          "delivery": {
+            "byte_hashes": {},
+            "content": {},
+            "issues": {
+              "drift.json": "the requested file is missing"
+            },
+            "sorts": {}
+          },
+          "error": false,
+          "ok": false,
+          "stderr": []
+        },
+        "short3": {
+          "answer": "",
+          "arm": "short3",
+          "delivery": {
+            "byte_hashes": {},
+            "content": {},
+            "issues": {
+              "drift.json": "the requested file is missing"
+            },
+            "sorts": {}
+          },
+          "error": true,
+          "ok": false,
+          "stderr": [
+            "ValueError: invalid literal for int() with base 10: 'arrival_c'"
+          ]
+        }
+      }
+    },
+    {
+      "decisions": {
+        "greedy2": {
+          "any_correct": true,
+          "result": "abstain",
+          "seats": 2,
+          "selected": null
+        },
+        "greedy3": {
+          "any_correct": true,
+          "result": "right",
+          "seats": 3,
+          "selected": "greedy2"
+        },
+        "stock2": {
+          "any_correct": true,
+          "result": "abstain",
+          "seats": 2,
+          "selected": null
+        },
+        "stock3": {
+          "any_correct": true,
+          "result": "right",
+          "seats": 3,
+          "selected": "short2"
+        }
+      },
+      "id": "81172-delayed-release",
+      "offers": {
+        "greedy2": {
+          "answer": "28\n44",
+          "arm": "greedy2",
+          "delivery": {
+            "byte_hashes": {},
+            "content": {},
+            "issues": {},
+            "sorts": {}
+          },
+          "error": false,
+          "ok": true,
+          "stderr": []
+        },
+        "short": {
+          "answer": "28\n43",
+          "arm": "short",
+          "delivery": {
+            "byte_hashes": {},
+            "content": {},
+            "issues": {},
+            "sorts": {}
+          },
+          "error": false,
+          "ok": false,
+          "stderr": []
+        },
+        "short2": {
+          "answer": "28\n44",
+          "arm": "short2",
+          "delivery": {
+            "byte_hashes": {},
+            "content": {},
+            "issues": {},
+            "sorts": {}
+          },
+          "error": false,
+          "ok": true,
+          "stderr": []
+        },
+        "short3": {
+          "answer": "28\n44",
+          "arm": "short3",
+          "delivery": {
+            "byte_hashes": {},
+            "content": {},
+            "issues": {},
+            "sorts": {}
+          },
+          "error": false,
+          "ok": true,
+          "stderr": []
+        }
+      }
+    },
+    {
+      "decisions": {
+        "greedy2": {
+          "any_correct": true,
+          "result": "right",
+          "seats": 2,
+          "selected": "short"
+        },
+        "greedy3": {
+          "any_correct": true,
+          "result": "right",
+          "seats": 2,
+          "selected": "short"
+        },
+        "stock2": {
+          "any_correct": true,
+          "result": "abstain",
+          "seats": 2,
+          "selected": null
+        },
+        "stock3": {
+          "any_correct": true,
+          "result": "right",
+          "seats": 3,
+          "selected": "short"
+        }
+      },
+      "id": "81172-careful-meter",
+      "offers": {
+        "greedy2": {
+          "answer": "80",
+          "arm": "greedy2",
+          "delivery": {
+            "byte_hashes": {
+              "pulses.json": "f2396ce05b26a703a6e0db7ed6a5c78c8a6b369b918da6dc444e515467d8951f"
+            },
+            "content": {
+              "pulses.json": "272b640b122d6a6beceaa3a86cfe131d372a0f16bdf0a105806053f2ca6caf61"
+            },
+            "issues": {},
+            "sorts": {}
+          },
+          "error": false,
+          "ok": true,
+          "stderr": []
+        },
+        "short": {
+          "answer": "80",
+          "arm": "short",
+          "delivery": {
+            "byte_hashes": {
+              "pulses.json": "f2396ce05b26a703a6e0db7ed6a5c78c8a6b369b918da6dc444e515467d8951f"
+            },
+            "content": {
+              "pulses.json": "272b640b122d6a6beceaa3a86cfe131d372a0f16bdf0a105806053f2ca6caf61"
+            },
+            "issues": {},
+            "sorts": {}
+          },
+          "error": false,
+          "ok": true,
+          "stderr": []
+        },
+        "short2": {
+          "answer": "",
+          "arm": "short2",
+          "delivery": {
+            "byte_hashes": {},
+            "content": {},
+            "issues": {
+              "pulses.json": "the requested file is missing"
+            },
+            "sorts": {}
+          },
+          "error": true,
+          "ok": false,
+          "stderr": [
+            "AssertionError: There was more than one wrap"
+          ]
+        },
+        "short3": {
+          "answer": "80",
+          "arm": "short3",
+          "delivery": {
+            "byte_hashes": {
+              "pulses.json": "f2396ce05b26a703a6e0db7ed6a5c78c8a6b369b918da6dc444e515467d8951f"
+            },
+            "content": {
+              "pulses.json": "272b640b122d6a6beceaa3a86cfe131d372a0f16bdf0a105806053f2ca6caf61"
+            },
+            "issues": {},
+            "sorts": {}
+          },
+          "error": false,
+          "ok": true,
+          "stderr": []
+        }
+      }
+    }
+  ]
+}
