@@ -29,6 +29,10 @@ A second implementation decoded 64 fresh JSON streams and evaluated them in arri
 
 Three of five fresh tasks qualified **(60%)**. Across both chronological samples, four of eleven tasks **(36.4%)** yielded training rows. Three involved the final reading per label and one involved cyclic meters. The two cohorts used different format/rule combinations. The live opt-in slot uses the parser-and-rule reminder and keeps the blind and hinted inputs identical apart from that private line. [All 10 follow-up replies and grades](evidence/confirmation/results.json) · [The three exported rows](evidence/confirmation/rows.jsonl)
 
+## Four verified updates on the original weights
+
+The ordinary CPU training worker gathered all four programs, inherited all 98 G55 LoRA modules at rank 32 and finished one optimizer step per row. The average training length was 328 tokens. Three rows fit the ordinary backward pass and one used checkpointing. The measured fit and weight comparison took 407.66 seconds, peaked at 11.34 GiB and used zero swap. All 196 LoRA tensors changed. The 73,835,264-byte candidate GGUF has SHA-256 `fffbb3692c8f1202b7df14014c8e515f77799f000428fe3fbd906f5b11f7490b`. [Training receipt](evidence/fit/receipt.json) · [Worker log](evidence/fit/worker.log)
+
 ## Reproduce
 
 Use the pinned G55 weights and runtime hashes recorded in the receipts. `SDK` is the CPython WASI directory containing `python.wasm` and its standard library. Set `HF_HOME` to the cached unpacked Ternary-Bonsai-8B model and `HIVE_TERNARY_HOME` to a checkout containing the pinned `ik_llama.cpp` converter. The measured unpacked model revision was `ac20f03fc62e872399218b659c8e949dfca05769`. The host used wasmtime 36.0.0 with `python.wasm` SHA-256 `278a485c42319053a7989b837bbaa42c2b9d1892d65cb582d9c41dac8cef5f7e`. [WASI installation](../../reports/rule_lab/fieldwork/reproduce.md)
