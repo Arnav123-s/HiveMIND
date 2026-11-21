@@ -277,6 +277,8 @@ def _when(s):
 def stage_of(name):
     """The step a job belongs to, by its name ("train (g38code, ...)" -> train); None for another job."""
     first = re.split(r"[ (]", str(name), maxsplit=1)[0]
+    if first in {"archive_profiles", "gate_look4", "gate_5_6", "gate_look6", "gate_7_8"}:
+        return "gate"
     return first if first in STAGES else None
 
 

@@ -232,6 +232,17 @@ def test_the_record_line_takes_only_known_numbers_from_the_facts(tmp_path):
     assert progress._hours({"minutes_by_step": {"pulse": 60, "dreams": 5}}) == {"gate": 60.0, "dream": 5.0}  # the older names
 
 
+def test_gate_time_includes_profiling_and_all_sequential_blocks():
+    jobs = [
+        {"name": "archive_profiles (before, 1)", "started_at": "2026-11-20T12:01:00Z", "completed_at": "2026-11-20T12:04:00Z"},
+        {"name": "gate (after, 2, fresh)", "started_at": "2026-11-20T12:04:00Z", "completed_at": "2026-11-20T12:40:00Z"},
+        {"name": "gate_5_6 (before, 6, fresh)", "started_at": "2026-11-20T12:41:00Z", "completed_at": "2026-11-20T13:01:00Z"},
+        {"name": "gate_look6", "started_at": "2026-11-20T13:01:00Z", "completed_at": "2026-11-20T13:02:00Z"},
+        {"name": "gate_7_8", "conclusion": "skipped"},
+    ]
+    assert reads.hours_of(jobs)[0]["gate"] == 61
+
+
 def test_the_gate_writes_the_facts_into_the_record_line(tmp_path, monkeypatch):
     rec, body = tmp_path / "generations.jsonl", tmp_path / "body.json"
     body.write_text(json.dumps({"dna": "t80", "cells": [], "parents": {}}))
