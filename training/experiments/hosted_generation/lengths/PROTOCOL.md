@@ -1,0 +1,7 @@
+# G58 local length-limit check
+
+Select the two shortest full, first-turn exchanges above 1,152 tokens from the hash-verified G58 training archive and its 10-million-range practice seeds. Exclude lessons. Both are 1,155 tokens and benign programming tasks. One has a long answer and the other a long question. Use the archived source lines without edits. These are training records and are never scored as held-out tasks.
+
+Compare the production encoder at the hosted 1,152 limit against the same encoder at 1,155 on both complete examples. If those checks pass, run one epoch of the ordinary t80 CPU trainer on this pair using the original source child's parent and the body's trunk. Retain the G58 rank, layers, accumulation, chunked loss and adaptive row-checkpoint settings. Standard accumulation flushes the last partial batch. Two GiB of guard reserve, twice the trainer default, and an independent one-GiB emergency headroom limit protect this shared 16 GiB machine. No other rows, extra attempts after a memory refusal or production configuration changes.
+
+Record actual prompt and target lengths, real training passes and optimizer updates, memory decisions, peak RSS, minimum cgroup-adjusted headroom, elapsed time and export checksum. This small feasibility test cannot support claims about overall runtime, model quality, or safe admission of all 157 excluded exchanges.
