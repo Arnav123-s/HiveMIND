@@ -1,0 +1,5 @@
+# Paired synthetic practice on the kept G55 body
+
+Freeze seed `spade-development-20261120`, six consecutive generated format/rule pairs, a two-core native G55 trunk, one unhinted and one hinted first program per pair, greedy sampling and at most 256 generated tokens. Run both arms even when the blind program passes. Compile the program inside CPython WASI. The host computes expected answers from the source event sequence. Each program must produce the exact typed value on both fixed suites of twelve inputs. The two suites share boundary shapes and have independent seeded data; their calls do not count as independent tasks.
+
+Admit one unhinted supervised prompt and the verified hinted program only for a blind failure and a fully passing hinted reply. A broken inference or guest setup voids the affected trial. A zero-window run trains no synthetic rows. Report raw replies, timing, all paired outcomes and measured proportion. Six pairs would need at least two qualifying tasks to exceed 20%. None of these tasks is drawn from an official exam. Weight training and fresh task performance are separate measurements.
