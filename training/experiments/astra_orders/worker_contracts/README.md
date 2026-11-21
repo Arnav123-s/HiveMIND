@@ -29,6 +29,8 @@ The second pair used the first official held-out CSV editing request. Stock prin
 
 A later selected-case trial retained the same CSV input, first reply, three-turn limit and total 576-token budget. After the worker wrote its file without reporting the count, a fixed-cap reminder yielded three identical 192-token programs. Letting the next reply spend up to the unused budget allowed it to finish the file-reading code and print `8`. The unchanged whole-task grader accepted the file and the count, with 422 tokens used. This measured recovery is separate from the original held-out comparison. [Matched budget trial](continue_budget/README.md)
 
+A prospectively registered follow-up used three fresh task generators outside CSV editing. Both arms scored 0/3. The workers either never saved the requested file or stopped normally with an incorrect file, so none qualified for a larger allowance. [Three-task follow-up and raw evidence](prospective/README.md)
+
 ## Reproducing the checks
 
 Run from the repo root in its Python environment.
