@@ -163,9 +163,9 @@ def grade(reply, spec, guest):
 
 
 def trial(spec, member, ask, guest, all_pairs=False, format_hint=False):
-    prompt, hint = instructions(spec)
-    if format_hint:
-        hint = decoding_hint(spec.form) + " " + hint
+    prompt, rule_hint = instructions(spec)
+    private = [decoding_hint(spec.form), rule_hint] if format_hint else [rule_hint]
+    hint = " ".join(private)
     base = messages(prompt)
     blind = ask(member, base, max_new_tokens=TOKENS, temperature=0.0)
     first, _ = grade(blind, spec, guest)
@@ -174,7 +174,7 @@ def trial(spec, member, ask, guest, all_pairs=False, format_hint=False):
         return None, audit
     second, source = grade(ask(member, messages(prompt, hint), max_new_tokens=TOKENS, temperature=0.0), spec, guest)
     audit["hinted"] = second
-    if first["ok"] or not second["ok"] or hint in source:
+    if first["ok"] or not second["ok"] or any(part in source for part in private):
         return None, audit
     # The only supervised response is the checked member program paired to the unhinted public task.
     row = {"type": "first", "dream": True, "task": prompt, "kind": spec.kind, "seed": spec.seed,
@@ -225,7 +225,9 @@ def run_slot(seed, out, receipt, deadline, log=print):
             out.parent.mkdir(parents=True, exist_ok=True)
             with out.open("a") as f:
                 f.write(json.dumps(row) + "\n")
-        summary.update(tasks=int(report["status"] != "unavailable"), right=int(bool(row)), rows=int(bool(row)),
+        audit = report.get("audit", {})
+        solved = any((audit.get(arm) or {}).get("ok") is True for arm in ("blind", "hinted"))
+        summary.update(tasks=int(report["status"] != "unavailable"), right=int(solved), rows=int(bool(row)),
                        model_calls=report.get("calls", 0), status=report["status"])
         path.write_text(json.dumps(dict(report, admitted=bool(row)), indent=2) + "\n")
         path.replace(receipt)
