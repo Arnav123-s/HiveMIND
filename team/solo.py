@@ -534,6 +534,22 @@ def member(task, n, board, guard, work, temperature, who="coder", also=()):
         return _member(task, n, board, guard, work, temperature, who, also, required_urls)
 
 
+def _asks_for_printed_answer(task, blocks):
+    """Look for a direct response request outside the supplied data or prior chat."""
+    text = task.split("\n\n(This continues a conversation.", 1)[0]
+    for block in blocks:
+        text = text.replace(block["text"], "")
+    if re.search(r"\b(?:do not|don't|never|without)\s+(?:print(?:ing)?|reply(?:ing)?|respond(?:ing)?)\b"
+                 r"|\b(?:print nothing|no (?:stdout|printed output|reply)|(?:return|deliver) only the files?)\b", text, re.I):
+        return False
+    for m in re.finditer(r"(?:^|[.!?;]\s+|\band\s+)(?:(?:please|then|also)\s+)*"
+                         r"(tell me|reply with|print)\s+([^!?;\n]+?)(?=[.!?](?:\s|$)|[;\n]|$)", text, re.I | re.M):
+        if m[1].lower() != "print" or not re.search(r"\b(?:to|into|inside|in)\s+(?:(?:an?|the|your)\s+)?"
+                                                    r"(?:output\s+)?(?:file\b|[`'\"]?[\w-]+\.)", m[2], re.I):
+            return True
+    return False
+
+
 def _member(task, n, board, guard, work, temperature, who, also, required_urls):
     system, temperature = member_settings(task, n, who, also, temperature)
     messages = [{"role": "system", "content": system},
@@ -574,7 +590,8 @@ def _member(task, n, board, guard, work, temperature, who, also, required_urls):
             module_checks = ModuleChecks(names[0], examples, task)
     observed_gets = set()
     complete_observations = True
-    messages[-1]["content"] += note(give(task, work, skip=names))
+    blocks = give(task, work, skip=names)
+    messages[-1]["content"] += note(blocks)
     saved_files = tempfile.TemporaryDirectory() if names else None
     helped = []
 
@@ -584,16 +601,19 @@ def _member(task, n, board, guard, work, temperature, who, also, required_urls):
             board.log(f"member{n}", "hint", h)
     good, last_error, repeats, turn, typed, looking, shaped, insisted = None, None, 0, 0, 0, False, 0, False
     recover_cutoff = who != "coder" and os.environ.get("HIVE_CUTOFF_REPAIR") == "1"
+    follow_cutoff = (who != "coder" and os.environ.get("HIVE_CUTOFF_CONTINUE") == "1"
+                     and bool(names) and _asks_for_printed_answer(task, blocks))
+    observe_cutoff = recover_cutoff or follow_cutoff
     budget = TURNS * LONG
     longer = False
     for attempt in range(1, TURNS + 1):
-        if recover_cutoff and budget <= 0:
+        if observe_cutoff and budget <= 0:
             break
         turn = attempt
         stop.check()
         if who == "coder":
             reply = llm.chat("coder", messages, max_new_tokens=LONG, stop="code", temperature=temperature)
-        elif recover_cutoff:
+        elif observe_cutoff:
             cap = min(budget, LONG * (2 if longer else 1))
             with ternary.observe_completion() as end:
                 reply = ternary.chat(who, messages, max_new_tokens=cap, temperature=temperature, also=also)
@@ -639,6 +659,9 @@ def _member(task, n, board, guard, work, temperature, who, also, required_urls):
         if not guard.check_code("coder", code):
             board.log(f"member{n}", "stopped", "the program needs Arnav's approval; not run")
             break
+        previous_hashes = None
+        if follow_cutoff and hit_limit and turn < TURNS and budget and (not good or good["delivery"]["issues"]):
+            previous_hashes = deliverables.inspect(task, work, names)["byte_hashes"]
         res = run_python(code, work, name=f"member{n}_{turn}.py")
         out, err = res["stdout"].strip(), res["stderr"].strip()
         board.log(f"member{n}", "run", f"turn {turn}: exit {res['returncode']}, printed {len(out)} characters")
@@ -797,6 +820,15 @@ def _member(task, n, board, guard, work, temperature, who, also, required_urls):
             "\n\nThe error is in the program's own steps. Print the values it works with just before the line that failed, "
             "see where they go wrong, and reply with the whole corrected program." if LOOK.search(err or out) else
             "\n\nReply with the whole corrected program.")})
+        if (previous_hashes is not None and not res["stdout"] and delivery and not delivery["issues"]
+                and not deliverables.repairs(delivery) and all(i in observed_gets for i in range(len(required_urls or ())))
+                and all(line.startswith(("HIVE-URLS: ", "HIVE-GIVEN: ")) for line in err.splitlines())
+                and all(previous_hashes.get(name) != delivery["byte_hashes"][name]
+                        and f"HIVE-GIVEN: {name} was not here" not in err for name in names)):
+            helps("cutoff_saved_file")
+            messages[-1]["content"] = (
+                "Your reply reached the output limit. The program saved the requested files and printed nothing. "
+                "Read the saved files and print the answer the task asks for. Leave the files as they are.")
     if saved_files is not None:
         if good and not good["delivery"]["issues"]:
             try:
