@@ -16,6 +16,8 @@ On released G55 and G56 rows, 17 old questions passed the current checks, disjoi
 | 2 | 110/169 | 107/169 | 6/7 |
 | 4 | 106/169 | 106/169 | 6/7 |
 
+The follow-up uses original G53–G56 archives, three chronological updates and two separate old panels. The larger decline did not recur, while replay's share of the byte budget again exceeded its row share. [Three-transition retention study](chronology/README.md)
+
 ## Archive and seating
 
 Set `HIVE_ARCHIVE_K=3` to measure both incoming and current trunks on the same four development requests before either gate arm runs. Each request has a normal independent checker, two model turns, a 180-second subprocess limit and empty memory. The requests use four practice families, share no normalized question with the released G56 training rows, and are excluded from training while the archive is enabled. The probes run in parallel on eight hosted jobs. Their wall-clock and hosted-runner cost have not been measured in a full generation.
