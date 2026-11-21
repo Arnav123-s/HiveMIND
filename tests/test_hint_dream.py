@@ -100,7 +100,7 @@ def test_private_format_or_rule_prose_in_source_is_ineligible():
 
 def test_both_production_arms_use_same_memory_recalled_only_from_public_task(tmp_path, monkeypatch):
     from team import engram, saved, ternary
-    seed = 'remember'
+    seed = '30005652'
     spec = next(hd.draw(seed, 1))
     memories = [('old-skill', 0.75)]
     recalled, applied = [], []
@@ -117,4 +117,5 @@ def test_both_production_arms_use_same_memory_recalled_only_from_public_task(tmp
     hd._attempt(seed, path)
     result = json.loads(path.read_text())
     assert recalled == [hd.instructions(spec)[0]] and applied == [tuple(memories)] * 2
-    assert result['row'] and result['audit']['recalled'] == [list(memories[0])]
+    assert result['row']['seed'] == 30005652 and result['row']['spec_id'] == spec.seed
+    assert result['row']['verified_member'] and result['audit']['recalled'] == [list(memories[0])]

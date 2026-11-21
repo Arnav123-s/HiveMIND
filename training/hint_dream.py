@@ -210,6 +210,11 @@ def _attempt(seed, output):
 
     row, audit = trial(spec, member, ask, guest)
     audit["recalled"] = recalled
+    if row:
+        row["verified_member"] = True
+        row["spec_id"] = spec.seed
+        if str(seed).isascii() and str(seed).isdecimal():
+            row["seed"] = int(seed)  # preserve the actual grow shard's practice-only seed for self-replay
     output.write_text(json.dumps({"status": "checked", "calls": calls, "audit": audit, "row": row}))
 
 
