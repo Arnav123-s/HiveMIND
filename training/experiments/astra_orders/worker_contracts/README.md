@@ -25,6 +25,8 @@ The cache keys all eligible request headers, recognizes an explicitly varied X-C
 
 The G55 trunk missed the cold-chain file in both conditions. The stock worker printed the correct count of 3 and wrote temperature/code pairs. The task asks for lot codes ordered by descending rise and then by code. The inspect worker reached the 192-token limit on all three turns and produced no file. Stock used 100, 123 and 2 output tokens. This local pilot uses the first-program study’s token budget. The normal multi-member exam has a longer worker output allowance. [Raw worker turns and files](native.json)
 
+The second pair used the first official held-out CSV editing request. Stock printed the correct count of 8 and wrote the right rows in order, but every requested two-letter code was blank. The inspect worker wrote the entire correct CSV, including all eight codes. Its three 192-token replies all ended on the same comment before it printed the count. Each program had valid syntax and ran successfully. As a diagnostic, supplying the missing count to the original grader accepted only the inspect file. Both workers failed the whole task on their own outputs. Across the two frozen cases each condition passed 0/2. [Native receipts](native.json) · [Separate output-cutoff study](cutoff/README.md)
+
 ## Reproducing the checks
 
 Run from the repo root in its Python environment.
