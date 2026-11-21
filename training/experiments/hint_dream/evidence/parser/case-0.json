@@ -1,0 +1,86 @@
+{
+ "complete": true,
+ "case": 0,
+ "format": "csv",
+ "rule": "span",
+ "assets": {
+  "model": "1376f942aa90e60f7b570c1d81b3916fea1315ff85aa1c4d19006af68fb4b922",
+  "server": "0dc642d61dc39d51a8b5da348c43ba19d29f720b2a3ac790e0019351239da3b2",
+  "adapter": "fffbb3692c8f1202b7df14014c8e515f77799f000428fe3fbd906f5b11f7490b"
+ },
+ "helper_sha256": "66524dc816202b7dae7bcb8adb0f7c4dfa610c16777e98923dcb44903eae69b0",
+ "affinity": [
+  1,
+  2
+ ],
+ "calls": [
+  {
+   "offered": false,
+   "messages": [
+    {
+     "role": "system",
+     "content": "Write solve(x) in one Python code block. The standard library and any explicitly listed optional callables are available."
+    },
+    {
+     "role": "user",
+     "content": "x is CSV text with header label,value, in arrival order. Labels are short words and readings are signed integers from -7 to 7. Write solve(x). Return a dictionary that will map each observed label to its largest reading minus its smallest reading. Empty input gives an empty dictionary. For example x = 'label,value\\r\\nivy,4\\r\\noak,-1\\r\\nivy,1\\r\\noak,-1\\r\\nivy,1\\r\\n' gives {'ivy': 3, 'oak': 0}."
+    }
+   ],
+   "raw": "```python\nimport csv\nfrom io import StringIO\n\ndef solve(x):\n    data = {}\n    if not x.strip():\n        return data\n    \n    csv_file = StringIO(x)\n    reader = csv.DictReader(csv_file)\n    \n    for row in reader:\n        label = row['label']\n        value = int(row['value'])\n        \n        if label not in data:\n            data[label] = {'max': value, 'min': value}\n        else:\n            data[label]['max'] = max(data[label]['max'], value)\n            data[label]['min'] = min(data[label]['min'], value)\n    \n    result = {label: data[label]['max'] - data[label]['min'] for label in data}\n    return result\n```",
+   "seconds": 42.155,
+   "stop": "stop",
+   "usage": {
+    "completion_tokens": 152,
+    "prompt_tokens": 149,
+    "total_tokens": 301,
+    "prompt_tokens_details": {
+     "cached_tokens": 0
+    }
+   },
+   "calls_helper_in_source": false,
+   "checks": 24,
+   "matched": 24,
+   "passed": true
+  },
+  {
+   "offered": true,
+   "messages": [
+    {
+     "role": "system",
+     "content": "Write solve(x) in one Python code block. The standard library and any explicitly listed optional callables are available."
+    },
+    {
+     "role": "user",
+     "content": "x is CSV text with header label,value, in arrival order. Labels are short words and readings are signed integers from -7 to 7. Write solve(x). Return a dictionary that will map each observed label to its largest reading minus its smallest reading. Empty input gives an empty dictionary. For example x = 'label,value\\r\\nivy,4\\r\\noak,-1\\r\\nivy,1\\r\\noak,-1\\r\\nivy,1\\r\\n' gives {'ivy': 3, 'oak': 0}.\n\nOptional library, already implemented: skill_parse_records(x) returns the input's [label, integer value] records in their original order."
+    }
+   ],
+   "raw": "```python\nimport csv\nfrom io import StringIO\n\ndef solve(x):\n    records = skill_parse_records(x)\n    result = {}\n    for label, value in records:\n        if label not in result:\n            result[label] = {'max': value, 'min': value}\n        else:\n            result[label]['max'] = max(result[label]['max'], value)\n            result[label]['min'] = min(result[label]['min'], value)\n    return {label: data['max'] - data['min'] for label, data in result.items()}\n```",
+   "seconds": 27.967,
+   "stop": "stop",
+   "usage": {
+    "completion_tokens": 114,
+    "prompt_tokens": 177,
+    "total_tokens": 291,
+    "prompt_tokens_details": {
+     "cached_tokens": 0
+    }
+   },
+   "calls_helper_in_source": true,
+   "checks": 24,
+   "matched": 24,
+   "passed": true,
+   "matched_with_helper_removed": 0
+  }
+ ],
+ "sampling": {
+  "temperature": 0.0,
+  "max_tokens": 256,
+  "seed": 8103,
+  "top_k": 0,
+  "top_p": 1.0,
+  "cache_prompt": false,
+  "chat_template_kwargs": {
+   "enable_thinking": false
+  }
+ }
+}
