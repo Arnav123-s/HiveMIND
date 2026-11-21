@@ -1,0 +1,206 @@
+{
+ "orders_study": {
+  "panel.json": "6de40e99d162efe5897c6486d897cebf1f694038755d9f14cf772d4b713c8350",
+  "inputs.json": "bf794b51abdbd4206d8df953f84968461435077a0775ba0a6efc385eed4b6062",
+  "native.json": "0d152f2baf1318f6d781d03742c1414bcb8f1f60ea637e2a8b169c1ace808cb9",
+  "grade.py": "d3faf53ab1967652f2145b09491c4d3eff342e3dd0afb7f8cdffe9c2fedfcbb6",
+  "grades.json": "34b7978b80874c80baae9cb396a72ec44345e10096a5f82bc15154875a976cd2",
+  "panel.py": "ce390d831dd25c19f83275c0de5a326f10fa75a96922ef11ebacf8251b848b41",
+  "production.json": "f08e6b222c82b9dfe3d24c2db2db2a16318edf9aa32b0c40327ff598ed18117f",
+  "production_replay.py": "96ededc7fcf9e169fadc4e8646b63056b1396d4bfe052bb4ebdf20207b2aca82"
+ },
+ "rows": [
+  {
+   "id": "m_percent",
+   "group": "practiced_family",
+   "suffix_applied": false,
+   "short": {
+    "ok": true,
+    "status": "passed",
+    "stdout": "1496.0000000000002\n",
+    "files": {},
+    "reason": "wants 1496; the answer's numbers: [1496.0000000000002]",
+    "output_sha256": "4e6197c304b192b811e38bfbc85b29848ab61955d6a04856fd87e2aec12a9727",
+    "prompt_tokens": 112,
+    "completion_tokens": 18,
+    "wall_s": 8.981,
+    "server_cpu_s": 17.7,
+    "normal_runtime_ok": true
+   },
+   "scaffold": {
+    "ok": true,
+    "status": "passed",
+    "stdout": "1496.0000000000002\n",
+    "files": {},
+    "reason": "wants 1496; the answer's numbers: [1496.0000000000002]",
+    "output_sha256": "4e6197c304b192b811e38bfbc85b29848ab61955d6a04856fd87e2aec12a9727",
+    "prompt_tokens": 112,
+    "completion_tokens": 18,
+    "wall_s": 8.981,
+    "server_cpu_s": 17.7,
+    "normal_runtime_ok": true
+   }
+  },
+  {
+   "id": "m_weekday",
+   "group": "practiced_family",
+   "suffix_applied": false,
+   "short": {
+    "ok": true,
+    "status": "passed",
+    "stdout": "Saturday\n",
+    "files": {},
+    "reason": "1 sentences, 1 lines",
+    "output_sha256": "5e092ff2dd3bb04ff8973f58a3e6a466a6cb31fa89ed81262904177b962f0c00",
+    "prompt_tokens": 104,
+    "completion_tokens": 40,
+    "wall_s": 15.918,
+    "server_cpu_s": 30.58,
+    "normal_runtime_ok": true
+   },
+   "scaffold": {
+    "ok": true,
+    "status": "passed",
+    "stdout": "Saturday\n",
+    "files": {},
+    "reason": "1 sentences, 1 lines",
+    "output_sha256": "5e092ff2dd3bb04ff8973f58a3e6a466a6cb31fa89ed81262904177b962f0c00",
+    "prompt_tokens": 104,
+    "completion_tokens": 40,
+    "wall_s": 15.918,
+    "server_cpu_s": 30.58,
+    "normal_runtime_ok": true
+   }
+  },
+  {
+   "id": "m_table",
+   "group": "practiced_family",
+   "suffix_applied": false,
+   "short": {
+    "ok": true,
+    "status": "passed",
+    "stdout": "Day with the most emails: Tue\nDaily average: 152.0\n",
+    "files": {},
+    "reason": "1 sentences, 2 lines; wants 152; the answer's numbers: [152.0]",
+    "output_sha256": "08172a1414bd2629849808ccfc5c557de34dfd99bf7239ee6037528165cde22c",
+    "prompt_tokens": 135,
+    "completion_tokens": 97,
+    "wall_s": 30.912,
+    "server_cpu_s": 60.51,
+    "normal_runtime_ok": true
+   },
+   "scaffold": {
+    "ok": true,
+    "status": "passed",
+    "stdout": "Day with the most emails: Tue\nDaily average: 152.0\n",
+    "files": {},
+    "reason": "1 sentences, 2 lines; wants 152; the answer's numbers: [152.0]",
+    "output_sha256": "08172a1414bd2629849808ccfc5c557de34dfd99bf7239ee6037528165cde22c",
+    "prompt_tokens": 135,
+    "completion_tokens": 97,
+    "wall_s": 30.912,
+    "server_cpu_s": 60.51,
+    "normal_runtime_ok": true
+   }
+  },
+  {
+   "id": "cold-chain",
+   "group": "new_contract",
+   "suffix_applied": true,
+   "short": {
+    "ok": false,
+    "status": "incorrect",
+    "stdout": "3\n",
+    "files": {},
+    "reason": "missing or invalid drift.json",
+    "output_sha256": "9440dc38e9c4f830f474738e35fcd4bc689e50a897ee00e25a1850382b22b140",
+    "prompt_tokens": 264,
+    "completion_tokens": 100,
+    "wall_s": 35.256,
+    "server_cpu_s": 68.63,
+    "normal_runtime_ok": false
+   },
+   "scaffold": {
+    "ok": false,
+    "status": "incorrect",
+    "stdout": "3\n",
+    "files": {
+     "drift.json": "af382ee9ecc32056a743c106a90f5d8022440fbdf95521711feda99d80b870f6"
+    },
+    "reason": "expected drift.json=['A6', 'J7', 'P4'], stdout=3",
+    "output_sha256": "8f3c9386e4abea1ec0c63031e08f27078d2659021b6587cdcfef98825aaf62fb",
+    "prompt_tokens": 309,
+    "completion_tokens": 125,
+    "wall_s": 41.847,
+    "server_cpu_s": 80.26,
+    "normal_runtime_ok": false
+   }
+  },
+  {
+   "id": "delayed-release",
+   "group": "new_contract",
+   "suffix_applied": false,
+   "short": {
+    "ok": true,
+    "status": "passed",
+    "stdout": "5\n34\n",
+    "files": {},
+    "reason": "expected two lines 5, 34",
+    "output_sha256": "447ce4a4b5ea398bc0df48b40febd7349d3ba4bbfd8612cf1e256bdbd11ba8f8",
+    "prompt_tokens": 190,
+    "completion_tokens": 119,
+    "wall_s": 36.87,
+    "server_cpu_s": 72.8,
+    "normal_runtime_ok": true
+   },
+   "scaffold": {
+    "ok": true,
+    "status": "passed",
+    "stdout": "5\n34\n",
+    "files": {},
+    "reason": "expected two lines 5, 34",
+    "output_sha256": "447ce4a4b5ea398bc0df48b40febd7349d3ba4bbfd8612cf1e256bdbd11ba8f8",
+    "prompt_tokens": 190,
+    "completion_tokens": 119,
+    "wall_s": 36.87,
+    "server_cpu_s": 72.8,
+    "normal_runtime_ok": true
+   }
+  },
+  {
+   "id": "careful-meter",
+   "group": "new_contract",
+   "suffix_applied": true,
+   "short": {
+    "ok": false,
+    "status": "incorrect",
+    "stdout": "-26\n",
+    "files": {
+     "pulses.json": "c19c08ce9191c76c9c12fd2f19b5ae8e0e5ed84bd802672a601b7f4cbc743fcf"
+    },
+    "reason": "expected pulses.json=[7, 6, 22, 3], stdout=38",
+    "output_sha256": "5aa0f00ee766a1b0ca2fa4337eda2e643c35c7c25d4723704598082e6c027fa1",
+    "prompt_tokens": 162,
+    "completion_tokens": 112,
+    "wall_s": 31.311,
+    "server_cpu_s": 61.97,
+    "normal_runtime_ok": false
+   },
+   "scaffold": {
+    "ok": false,
+    "status": "incorrect",
+    "stdout": "36\n",
+    "files": {
+     "pulses.json": "887113e64a97f0f2067009d9c94721efe8cc5d57e2d0ac65fb450364d2e2494f"
+    },
+    "reason": "expected pulses.json=[7, 6, 22, 3], stdout=38",
+    "output_sha256": "3ee6b3d314133fde014fdf5e4b84369891fda6f2d941ca1c414769fcd1d3996d",
+    "prompt_tokens": 207,
+    "completion_tokens": 148,
+    "wall_s": 41.413,
+    "server_cpu_s": 81.6,
+    "normal_runtime_ok": false
+   }
+  }
+ ]
+}

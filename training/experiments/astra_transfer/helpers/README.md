@@ -24,4 +24,15 @@ python -m training.experiments.astra_transfer.helpers.scratch_bank "$SDK" --bank
 
 Omit `--bank` for a disposable scratch directory. Supplying a fresh empty directory preserves the verified method for local reuse. The builder calls the existing fieldwork verifier, bank admission and loader, and `team.saved.answer`. It requires the bank path explicitly and leaves the user's configured bank alone. The original short G51 source remains unchanged inside `solve(x)`'s guarded module. The declared contract accepts exactly one integer field named `n`.
 
+After building the bank once, use the saved-method reader directly. This example prints `True`. Changing 17 to 18 returns `False`. The reader withholds a value for 10,001 because the independent check stopped at 10,000.
+
+```sh
+HIVE_BANK=/tmp/hive-verified-prime-bank HIVE_FIELDWORK_SDK="$SDK" python - <<'PY'
+from team.saved import answer
+
+result = answer('Prime integer check {"n": 17}')
+print(result.get("value", result["status"]))
+PY
+```
+
 To reproduce the optional kind-label join, pass the original `g55-rows.jsonl` to the miner using `--original-labels`. It verifies file SHA-256 `c33f707c7120d279c050748a5752067be708687711aa9acc84a4f434208fadfd`. The saved hashed kind map suffices for the ordinary replay. Extraction and independent guest checking require no hosted inference.
