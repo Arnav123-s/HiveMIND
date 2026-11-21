@@ -1257,7 +1257,7 @@ def train(rows_file, name, base="t17", epochs=2.0, rank=16, lr=2e-4, max_len=115
     which = (list(range(nl)) if layers == "all" else list(range(nl // 2, nl)) if layers == "top" else
              list(range(nl - int(layers[4:]), nl)) if layers.startswith("last") else list(range(*map(int, layers.split("-")))))
     row_checkpoint_requested = not checkpoint and not gpu and os.environ.get("HIVE_ROW_CHECKPOINT", "0") == "1"
-    limits = _cgroup_limits()  # the guard's ceiling is the lower of the host's memory and any cgroup cap
+    limits = _cgroup_limits() if row_checkpoint_requested else ()
     cell = None
     if int8_base:
         # the frozen DNA held as what it is, ternary: one byte a weight, so a 4B or 8B DNA trains on a free runner
@@ -1266,7 +1266,7 @@ def train(rows_file, name, base="t17", epochs=2.0, rank=16, lr=2e-4, max_len=115
             raise ValueError("--ternary is not made for --int8-base")
         from training import ternary_base
         model, cell = ternary_base.load(src, rank, 2 * rank, 0.0, which, torch.bfloat16 if half else torch.float32, log=log,
-                                        release_source_cache=bool(limits) and row_checkpoint_requested)
+                                        release_source_cache=bool(limits))
         # how long a row fits beside the DNA on this machine: worked out below, once the optimizer exists
     else:
         model = AutoModelForCausalLM.from_pretrained(src, dtype=torch.bfloat16 if half else torch.float32).to(dev)
@@ -1328,6 +1328,7 @@ def train(rows_file, name, base="t17", epochs=2.0, rank=16, lr=2e-4, max_len=115
             row_checkpoints = _RowCheckpoints(model, which[0])
         except ValueError as exc:
             log(f"row checkpointing unavailable: {exc}; using fixed admission", flush=True)
+            limits = ()
     params = cell.params if cell else [p for p in model.parameters() if p.requires_grad]
     opt = torch.optim.AdamW(params, lr=lr, weight_decay=0.0)
     # Measured on the 8B (2026-11-15): 8.1 GB held, and every piece of a row takes about 5 MB more while it is trained

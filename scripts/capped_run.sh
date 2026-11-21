@@ -8,8 +8,8 @@
 #
 # Limits, from the machine's total memory (free -m): Max = total - 1200 MB (the OS, the runner agent and its
 # services keep 1.2 GB that the trainer cannot take); High = Max - 512 MB (above it the kernel throttles and reclaims
-# the trainer hard before it ever reaches Max). Swap for the trainer is 0: a cgroup that swaps thrashes the disk and
-# starves the agent, which is the failure itself. A machine under 3000 MB gets no cap.
+# the trainer hard before it ever reaches Max). Swap stays open to the trainer (the workflow's swapfile lets a long row
+# slow, not die); the cap keeps the agent's own memory resident, and ionice idle keeps its disk turn. A machine under 3000 MB gets no cap.
 # If sudo, systemd-run or the scope does not start (a probe runs first), the command runs plain, still niced, so a
 # generation never breaks. The exit status is the command's (137 for a kill by the kernel or by the timeout's -k).
 # `timeout` runs inside the scope, as the same user, so it can end what it started.
@@ -37,9 +37,9 @@ TOTAL=$(free -m 2>/dev/null | awk '/^Mem:/ {print $2}')
 read -r HIGH MAX <<< "$(limits "$TOTAL")"
 if [ "$HIGH" != none ] && [ -n "$HIGH" ] && command -v systemd-run >/dev/null 2>&1 && command -v sudo >/dev/null 2>&1; then
   scope=(sudo -n -E env "PATH=$PATH" "HOME=$HOME" systemd-run --scope --quiet --uid="$(id -u)" --gid="$(id -g)"
-         -p "MemoryHigh=${HIGH}M" -p "MemoryMax=${MAX}M" -p MemorySwapMax=0)
+         -p "MemoryHigh=${HIGH}M" -p "MemoryMax=${MAX}M")
   if "${scope[@]}" true >/dev/null 2>&1; then
-    echo "capped_run: memory scope High=${HIGH}M Max=${MAX}M (total ${TOTAL}M), swap 0, nice 10"
+    echo "capped_run: memory scope High=${HIGH}M Max=${MAX}M (total ${TOTAL}M), swap open, nice 10"
     exec "${scope[@]}" "${pre[@]}" "${run[@]}"
   fi
   echo "capped_run: ::warning::could not start a memory scope; running without the cap" >&2
