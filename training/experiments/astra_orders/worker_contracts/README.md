@@ -27,6 +27,8 @@ The G55 trunk missed the cold-chain file in both conditions. The stock worker pr
 
 The second pair used the first official held-out CSV editing request. Stock printed the correct count of 8 and wrote the right rows in order, but every requested two-letter code was blank. The inspect worker wrote the entire correct CSV, including all eight codes. Its three 192-token replies all ended on the same comment before it printed the count. Each program had valid syntax and ran successfully. As a diagnostic, supplying the missing count to the original grader accepted only the inspect file. Both workers failed the whole task on their own outputs. Across the two frozen cases each condition passed 0/2. [Native receipts](native.json) · [Separate output-cutoff study](cutoff/README.md)
 
+A later selected-case trial retained the same CSV input, first reply, three-turn limit and total 576-token budget. After the worker wrote its file without reporting the count, a fixed-cap reminder yielded three identical 192-token programs. Letting the next reply spend up to the unused budget allowed it to finish the file-reading code and print `8`. The unchanged whole-task grader accepted the file and the count, with 422 tokens used. This measured recovery is separate from the original held-out comparison. [Matched budget trial](continue_budget/README.md)
+
 ## Reproducing the checks
 
 Run from the repo root in its Python environment.
