@@ -95,6 +95,44 @@ def test_retains_distinct_verified_complements_and_routes_available_files(tmp_pa
     assert archive.retain(kept, None) == kept
 
 
+def test_managed_sparse_chat_loads_only_qualified_older_trunks(tmp_path, monkeypatch):
+    import io
+    import urllib.error
+    now, older = "t80+g53trunk", "t80+g51trunk"
+    live = tmp_path / (now + ".gguf")
+    live.write_text("incumbent")
+    sparse = [now, "t80+g53words"]
+    def record(actor, content, ok):
+        return {"actor":actor, "asset":archive.asset(actor), "sha256":archive.sha256(content).hexdigest(),
+                "protocol":"same", "results":{"q":{"ok":ok, "organ":"words"}}}
+    current, previous = record(now, live.read_bytes(), False), record(older, b"old", True)
+    frozen = {"incumbent":now, "bodies":[current, previous]}
+    body = tmp_path / "body.json"
+    body.write_text(json.dumps({"dna":"t80", "trunk":"g53trunk", "cells":["g53words","g52words","g53code"]}))
+    (tmp_path / "body_archive.json").write_text(json.dumps(frozen))
+    monkeypatch.setattr(ternary, "BODY", body)
+    monkeypatch.setattr(ternary, "ADAPTERS", tmp_path)
+    monkeypatch.setenv("HIVE_ARCHIVE_K", "3")
+    def unavailable(url, timeout):
+        raise urllib.error.URLError("offline")
+    monkeypatch.setattr(archive.urllib.request, "urlopen", unavailable)
+    assert archive.chat_members(sparse, tmp_path, frozen) == sparse
+    monkeypatch.setattr(archive.urllib.request, "urlopen", lambda url, timeout:io.BytesIO(b"corrupt"))
+    assert archive.chat_members(sparse, tmp_path, frozen) == sparse and not (tmp_path / (older+".gguf")).exists()
+    monkeypatch.setattr(archive.urllib.request, "urlopen", lambda url, timeout:io.BytesIO(b"old"))
+    who = archive.chat_members(sparse, tmp_path, frozen)
+    assert who == [*sparse, older]
+    monkeypatch.setenv("HIVE_MEMBERS", ",".join(who))
+    assert ternary.seating("write a poem") == [now, older, sparse[1]]
+    assert ternary.seating("calculate 5+4") == sparse
+    monkeypatch.setenv("HIVE_MEMBERS", ",".join(sparse))
+    assert ternary.seating("write a poem") == sparse
+    newer = record("t80+g56trunk", b"old", True)
+    assert archive.chat_members(sparse, tmp_path, {"incumbent":now, "bodies":[current, newer]}) == sparse
+    live.write_text("another incumbent")
+    assert archive.chat_members(sparse, tmp_path, frozen) == sparse
+
+
 def test_collect_requires_matching_complete_pre_gate_coverage(tmp_path):
     body = {"generation": 53, "dna": "t80", "trunk": "g53trunk", "cells": ["g53code"]}
     for slot in range(1, 5):

@@ -125,28 +125,34 @@ def route(base, message, history=()):
     return decide(base, message, last), convo
 
 
+def bank_reply(message, history, say, t0):
+    from . import saved
+    kept = saved.direct(message, history, say)
+    if kept:
+        say(f"saved method {kept['task']}: {kept['status']}")
+        return {"text": kept["text"], "worked": True, "agreed": kept["status"] == "answered", "task": message, "dir": "",
+                "files": [], "saved": kept, "seconds": round(time.time() - t0)}
+
+
 def reply(message, history=(), name="the user", run_dir=None, log=None, base=None, now=None):
     """The hive's reply to the latest message: {"text", "worked", "agreed", "task", "dir", "seconds"}.
     history: the earlier messages, oldest first ({"role", "content"}). base: who talks (default: the body's DNA).
     now: the date and time the hive is told it is (default: the clock; the talk exam gives its own)."""
     t0 = time.time()
+    say = log or (lambda *a: None)
+    kept = bank_reply(message, history, say, t0)
+    if kept:
+        return kept
     base = base or speaker()
     if not base:
         raise RuntimeError("the hive's body is not on this machine: bash scripts/cloud_setup.sh (or python -m team.ternary install, then python training/grow.py fetch)")
-    say = log or (lambda *a: None)
     today = (now or datetime.datetime.now()).strftime("%Y-%m-%d (%A), %H:%M")
     system = {"role": "system", "content": TALK.format(name=name, today=today)}
     way, convo = route(base, message, history)
     if way == "talk":
         text = ternary.chat(base, [system] + convo, max_new_tokens=LONG, temperature=0.0).strip()
         return {"text": text, "worked": False, "agreed": None, "task": "", "dir": "", "files": [], "seconds": round(time.time() - t0)}
-    # a saved, checked method (HIVE_BANK) answers what it fits, with no model call; off when no bank is configured
-    from . import saved
-    kept = saved.answer(message, log=say, has_history=bool(history)) if saved.bank_path() else None
-    if kept:
-        say(f"saved method {kept['task']}: {kept['status']}")
-        return {"text": kept["text"], "worked": True, "agreed": kept["status"] == "answered", "task": message, "dir": "",
-                "files": [], "saved": kept, "seconds": round(time.time() - t0)}
+
     # the task is the user's own message; what it refers to in the conversation goes with it
     before = "\n".join(f"{'User' if m['role'] == 'user' else 'HiveMIND'}: {m['content'][:700]}" for m in convo[:-1][-4:])
     task = f"{message}\n\n(This continues a conversation. What was said before, for what the task refers to:\n{before})" if before else message
@@ -228,9 +234,18 @@ def main(argv):
         if not msgs or msgs[-1].get("role") == "assistant":
             print("nothing to answer: the last message is not the user's")
             return 0
-        out = reply(str(msgs[-1]["content"]), msgs[:-1], str(thread.get("name") or name), opt("--run-dir", None), log=lambda *a: print(*a, flush=True))
+        message, history = str(msgs[-1]["content"]), msgs[:-1]
+        say = lambda *args: print(*args, flush=True)
+        if "--bank-only" in argv:
+            out = bank_reply(message, history, say, time.time())
+            if out is None:
+                return 3  # The hosted talk workflow now starts the normal model path.
+        else:
+            out = reply(message, history, str(thread.get("name") or name), opt("--run-dir", None), log=say)
         foot = (f"\n\n<sub>{'Worked out by programs; two members agreed' if out['agreed'] else 'Worked on by programs; not confirmed'} · {out['seconds']} s</sub>"
                 if out["worked"] else f"\n\n<sub>Answered directly · {out['seconds']} s</sub>")
+        if out.get("saved"):
+            foot = f"\n\n<sub>Saved method · {out['seconds']} s</sub>"
         notes = repair_notes(out)
         response = out["text"].strip() + ("\n\n" + "\n".join(notes) if notes else "")
         Path(opt("--out", "reply.md")).write_text(response + foot + "\n")
@@ -246,7 +261,8 @@ def main(argv):
     if words:
         print_one(" ".join(words), name=name, run_dir=opt("--run-dir", None), log=lambda *a: print(*a, flush=True))
         return 0
-    if not speaker():
+    from . import saved
+    if not saved.bank_path() and not speaker():
         print("the hive's body is not on this machine: bash scripts/cloud_setup.sh")
         return 1
     print("HiveMIND. Say anything, or give it a task; 'exit' ends the conversation.")

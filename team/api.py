@@ -174,7 +174,12 @@ class H(BaseHTTPRequestHandler):
             return self._error(400, "the body is not JSON")
         try:
             if path == "/api/task":  # the chat page
-                job = SWARM.submit(str(body.get("task", "")), until_done=DEFAULTS["until_done"])
+                from . import saved
+                task = str(body.get("task", ""))
+                result = saved.direct(task)
+                if result:
+                    return self._json(200, {"answer": result["text"]})
+                job = SWARM.submit(task, until_done=DEFAULTS["until_done"])
                 return self._json(200, {"queued": job.id})
             if path in ("/v1/stop", "/api/stop"):
                 SWARM.stop("api: POST /v1/stop")
@@ -203,6 +208,11 @@ class H(BaseHTTPRequestHandler):
             raise ValueError("no user message with text")
         rounds = body.get("until_done", DEFAULTS["until_done"])
         from . import converse
+        if not body.get("job"):
+            from . import saved
+            kept = saved.direct(task, history_from(body.get("messages")))
+            if kept:
+                return converse.Reply(kept["text"], kind="saved")
         if converse.on() and not body.get("job"):  # a conversation: talk is answered at once, work becomes a job
             hist = history_from(body.get("messages"))
             from . import project

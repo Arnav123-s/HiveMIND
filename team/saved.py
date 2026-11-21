@@ -24,7 +24,11 @@ SKIP = {"what", "much", "many", "does", "cost", "costs", "please", "tell", "give
 
 def bank_path():
     path = os.environ.get("HIVE_BANK", "").strip()
-    return Path(path) if path else None
+    if path:
+        return Path(path)
+    if os.environ.get("HIVE_USE_METHOD_BANK") == "1":
+        return config.ROOT / "cells" / "method_bank.json"
+    return None
 
 
 def guest():
@@ -48,20 +52,20 @@ def fit(message, bank):
     from training.experiments.fieldwork.work import words
     said = _stems(words(message)) - SKIP
     said_short = _stems(re.findall(r"[a-z]{3,}", message.lower()))
-    groups = {}
-    for row in bank:
-        groups.setdefault((row["task"], row["description"]), []).append(row)
-    best = None
-    for (task, text), rows in groups.items():
+    matches = []
+    for task, text in {(row["task"], row["description"]) for row in bank}:
         name = _stems(re.findall(r"[a-z]{3,}", task.replace("_", " "))) - SKIP
         shared = said & _stems(words(text))
-        if not (name & said_short) or len(shared) < 2:
-            continue
-        key = (len(name & said_short), len(shared), -len(text))
-        if best is None or key > best[0]:
-            rows = sorted({r["digest"]: r for r in rows}.values(), key=lambda r: (-r["validation"], r["digest"]))
-            best = (key, task, text, rows)
-    return best[1:] if best else None
+        if name & said_short and len(shared) >= 2:
+            matches.append(((len(name & said_short), len(shared), -len(text)), task, text))
+    if not matches:
+        return None
+    score, task, description = max(matches)
+    if any(other != task and points == score for points, other, _ in matches):
+        return None
+    # A description is a retrieval hint. Every applicable version of the same method must get a vote.
+    versions = {row["digest"]: row for row in bank if row["task"] == task}
+    return task, description, sorted(versions.values(), key=lambda row: (-row["validation"], row["digest"]))
 
 
 def input_keys(versions, description):
@@ -127,6 +131,8 @@ def standalone_request(message, task, description, direct_only):
         except ValueError:
             return False
         prose = prose[:start] + " " + prose[start+length:]
+        if re.search(r"\d", prose):  # extra arguments or a transformation outside the JSON call
+            return False
     if re.search(r"[{}\n;/%=<>@^*]|\b(?:file|save|write|export|download|upload|explain|repeat|again|instead|"
                  r"previous|last|same|above|earlier|that|those|these|it|them|then)\b", prose, re.I):
         return False
@@ -142,14 +148,31 @@ def standalone_request(message, task, description, direct_only):
     return _stems(re.findall(r"[a-z]+", prose.lower())) <= vocabulary | wording
 
 
-def answer(message, bank=None, runner=None, log=None, *, has_history=False, direct_only=False):
+def answer(message, bank=None, runner=None, log=None, *, has_history=False, direct_only=False, history=()):
     """A saved method's answer to the message (see the module's notes), or None to go on as before."""
     from training.experiments.fieldwork.work import load_bank, shared_results
     say = log or (lambda *a: None)
     bank = bank or bank_path()
     if bank is None:
         return None
-    found = fit(message, load_bank(bank))
+    if bank.is_file():
+        from .bank_snapshot import read
+        try:
+            rows = read(bank)
+        except (OSError, ValueError, TypeError):
+            return None
+    else:
+        rows = load_bank(bank)
+    # A previous open-ended user request can constrain the format or the meaning of later turns.
+    # Only prior self-contained bank requests can safely bypass the conversational route.
+    for turn in history:
+        role, content = (turn.get("role"), turn.get("content")) if isinstance(turn, dict) else turn
+        if role == "assistant":
+            continue
+        earlier = fit(content, rows) if role == "user" and isinstance(content, str) else None
+        if not earlier or not standalone_request(content, earlier[0], earlier[1], True):
+            return None
+    found = fit(message, rows)
     if found is None:
         return None
     task, description, versions = found
@@ -187,10 +210,10 @@ def answer(message, bank=None, runner=None, log=None, *, has_history=False, dire
     if conflict and "different answers" in conflict:
         amounts = re.search(r"\((.*)\)\.$", conflict)
         return dict(status="ambiguous", task=task, methods=[r["digest"] for r in versions], input=value,
-                    text=f"My {len(versions)} saved methods for {task} disagree on this bill, {shown}"
+                    text=f"My {len(versions)} saved methods for {task} disagree on this input, {shown}"
                          + (f": they give {amounts.group(1)}" if amounts else "")
-                         + ". Both passed their own checks, so I am not giving an answer. Tell me which convention "
-                           "applies, or give a bill with its correct amount that tells them apart.")
+                         + ". Each passed its own checks, so I am not giving an answer. Tell me which convention "
+                           "applies, or give an input with its expected result that tells them apart.")
     if conflict:
         return dict(status="missing", task=task, methods=[r["digest"] for r in versions], input=value,
                     text=f"I have a saved, checked method for this, {method}, but it does not run on what I read from "
@@ -201,3 +224,11 @@ def answer(message, bank=None, runner=None, log=None, *, has_history=False, dire
     return dict(status="answered", task=task, methods=[r["digest"] for r in versions], input=value, value=result,
                 text=f"{json.dumps(result) if not isinstance(result, str) else result}\n\n"
                      f"Worked out by {who}, on {shown}, with no model call.")
+
+
+def direct(message, history=(), log=None):
+    """Try the configured bank only for a complete request independent of prior conversation instructions."""
+    bank = bank_path()
+    if bank is None or os.environ.get("HIVE_ROLES") == "1":
+        return None
+    return answer(message, bank=bank, log=log, has_history=bool(history), direct_only=True, history=history)

@@ -176,6 +176,9 @@ def main(argv=None):
     if argv[:1] == ["exposure"]:
         from .exposure import main as exposure
         return exposure(argv[1:])
+    if argv[:1] == ["bank-promote"]:
+        from .bank_snapshot import main as promote
+        return promote(argv[1:])
     if argv[:1] == ["bank-admit"]:
         from .bank_admit import main as admit
         return admit(argv[1:])
@@ -241,7 +244,7 @@ def main(argv=None):
     def local_step(msg, history):
         nonlocal swarm
         if bank is not None:
-            result = saved.answer(msg, bank=bank, has_history=bool(history), direct_only=True)
+            result = saved.direct(msg, history)
             if result is not None:
                 print(result["text"])
                 return result["text"]

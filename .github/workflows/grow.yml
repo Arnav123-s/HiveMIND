@@ -1234,6 +1234,35 @@ jobs:
           # this run's rows as the slices had them, before the release's are joined in below (the read counts them)
           cp got/rows.jsonl all_rows.jsonl 2>/dev/null || : > all_rows.jsonl
           python3 training/reads.py facts "${{ github.run_id }}" --gate gate --practice-work pw --out facts.json || { echo "::warning::the run's facts could not be read; the record goes on without them"; echo '{}' > facts.json; }
+      - name: Install the optional method verifier
+        id: method_guest
+        continue-on-error: true
+        if: ${{ vars.HIVE_BANK_CONTRACTS_DIR != '' && needs.plan.outputs.grow && !inputs.trial && !inputs.versus && !inputs.cells_from_run }}
+        uses: ./.github/actions/method-bank
+      - name: Verify methods from checked practice against repository contracts
+        id: method_bank
+        continue-on-error: true
+        if: ${{ steps.method_guest.outcome == 'success' }}
+        env:
+          CONTRACT_DIR: ${{ vars.HIVE_BANK_CONTRACTS_DIR }}
+        run: |
+          [[ "$CONTRACT_DIR" =~ ^[A-Za-z0-9_./-]+$ && "$CONTRACT_DIR" != /* && "$CONTRACT_DIR" != *..* ]]
+          contracts=$(mktemp -d)
+          # Read only ordinary JSON blobs committed at the workflow revision, never files written by a worker.
+          git ls-tree -z "$GITHUB_SHA:$CONTRACT_DIR" > "$RUNNER_TEMP/method-contracts.list"
+          while IFS= read -r -d '' entry; do
+            name=${entry#*$'	'}
+            [[ "$name" == *.json ]] || continue
+            [[ "$entry" == '100644 blob '* || "$entry" == '100755 blob '* ]]
+            git cat-file blob "$GITHUB_SHA:$CONTRACT_DIR/$name" > "$contracts/$name"
+          done < "$RUNNER_TEMP/method-contracts.list"
+          prior=()
+          if [ -f cells/method_bank.json ]; then prior=(--previous cells/method_bank.json); fi
+          python -m team.bank_snapshot "${prior[@]}" --contracts "$contracts" --practice prac --output "$RUNNER_TEMP/new-method-bank.json" | tee -a "$GITHUB_STEP_SUMMARY"
+          mv "$RUNNER_TEMP/new-method-bank.json" cells/method_bank.json
+      - name: Keep the previous bank if this optional promotion could not finish
+        if: ${{ steps.method_guest.outcome == 'failure' || steps.method_bank.outcome == 'failure' }}
+        run: echo "::warning::Method promotion did not finish. The body record continues with the previous bank."
       - name: The record (only numbers and names this repository knows are taken from the other jobs)
         env:
           STAGED: ${{ needs.plan.outputs.grow && vars.HIVE_GATE_SPRT == '1' && '1' || '0' }}
@@ -1248,6 +1277,7 @@ jobs:
           python3 training/grow_record.py gate gate got "$GEN" --dna "$DNA" --practice prac ${{ (inputs.trial || inputs.versus) && '--trial' || '' }} ${{ needs.plan.outputs.grow && '--grow' || '' }} --facts facts.json --held held --archive archive "${check[@]}" | tee -a "$GITHUB_STEP_SUMMARY"
       - name: Keep the cells and the rows in the release, the numbers and the body in the repository
         env:
+          BANK_UPDATED: ${{ steps.method_bank.outcome == 'success' && '1' || '0' }}
           GH_TOKEN: ${{ github.token }}
         run: |
           gh release view hive-grown >/dev/null 2>&1 || gh release create hive-grown --title "What the hive grew" --notes "The cells of the hive's body (weight edits of its ternary model) and the checked rows they were grown from (training/grow.py). Machine-made." --latest=false
@@ -1272,6 +1302,7 @@ jobs:
           FAILED="${RUNNER_TEMP:-/tmp}/drawn_failed"
           : > "$FAILED"
           git add training/reports/generations.jsonl cells/body.json $(ls cells/strengths.json cells/studied.json cells/body_archive.json 2>/dev/null)
+          if [ "$BANK_UPDATED" = 1 ]; then git add cells/method_bank.json; fi
           git commit -q -m "The hive's body: generation $GEN" || exit 0
           # the talk exam's sitting (when the gate sat it) is kept aside: a lost race below resets the tree it is drawn into
           if [ -f "training/reports/talk/$GEN.json" ]; then cp "training/reports/talk/$GEN.json" talk.json; fi

@@ -45,6 +45,7 @@ jobs:
       AGENT_TEAM_SOLO: "2"
       AGENT_TEAM_SOLO_ALONE: "1"
       HIVE_LIGHT: "1"
+      HIVE_ARCHIVE_K: ${{ vars.HIVE_ARCHIVE_K || '0' }}
     steps:
       - uses: actions/checkout@v4
       - name: The conversation so far (the issue and its comments)
@@ -64,15 +65,41 @@ jobs:
           done
           python3 team/thread.py "${GITHUB_REPOSITORY_OWNER}" issue.json comments-*.json > thread.json
           python3 -c "import json; t = json.load(open('thread.json')); print(len(t['messages']), 'messages; the last is the', t['messages'][-1]['role'] + \"'s\" if t['messages'] else 'none')"
+      - name: Install the saved method guest when a bank is available
+        if: ${{ vars.HIVE_BANK_CONTRACTS_DIR != '' && hashFiles('cells/method_bank.json') != '' }}
+        id: bank_guest
+        continue-on-error: true
+        uses: ./.github/actions/method-bank
+      - name: Try an independent saved request before downloading any model
+        id: bank
+        if: ${{ steps.bank_guest.outcome == 'success' }}
+        env:
+          HIVE_USE_METHOD_BANK: "1"
+        run: |
+          if python -m team.talk --bank-only --thread thread.json --out reply.md; then
+            if [ -f reply.md ]; then
+              echo "served=true" >> "$GITHUB_OUTPUT"
+              cat reply.md >> "$GITHUB_STEP_SUMMARY"
+            fi
+          else
+            code=$?
+            [ "$code" = 3 ] || exit "$code"
+          fi
       - name: The body (cells/body.json), its trunk and the newest cell of each organ; with no cells yet, its DNA
+        if: ${{ steps.bank.outputs.served != 'true' }}
         run: |
           DNA=$(python3 -c "import json; print(json.load(open('cells/body.json'))['dna'])")
-          WHO=$(python3 training/lineage.py members "$DNA" few)
+          WHO=${HIVE_MEMBERS:-$(python3 training/lineage.py members "$DNA" few)}
           python3 training/grow_record.py fetch "$WHO"
+          if [ "$HIVE_ARCHIVE_K" = 3 ] && [ -z "${HIVE_MEMBERS:-}" ]; then
+            WHO=$(python3 -m training.body_archive chat-members "$WHO")
+          fi
           echo "HIVE_MEMBERS=$WHO" >> "$GITHUB_ENV"
           echo "who answers: $WHO" >> "$GITHUB_STEP_SUMMARY"
       - uses: ./.github/actions/hive
+        if: ${{ steps.bank.outputs.served != 'true' }}
       - name: The hive replies
+        if: ${{ steps.bank.outputs.served != 'true' }}
         run: |
           python -m team.talk --thread thread.json --out reply.md --run-dir run --export-files delivery
           cat reply.md >> "$GITHUB_STEP_SUMMARY"
